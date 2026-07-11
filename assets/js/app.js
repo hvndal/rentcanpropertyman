@@ -181,3 +181,16 @@
     } else { RC.toast(RC.user ? 'Listed (preview).' : 'Listed as preview \u2014 sign in as an owner to save it.'); }
   });
 })();
+
+
+// Sticky Header Logic
+const header = document.querySelector('.header');
+if(header) {
+  window.addEventListener('scroll', () => {
+    if(window.scrollY > 50) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  });
+}

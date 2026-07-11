@@ -18,7 +18,7 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{
-    font-family:var(--sans);
+    font-family:var(--sans); letter-spacing: -0.01em;
     color:var(--ink);
     background:var(--paper);
     line-height:1.55;
