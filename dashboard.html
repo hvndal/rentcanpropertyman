@@ -1,0 +1,2344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RentCan — Sign in</title>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#0B7C66">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="mock-supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<style>
+  :root{
+    --ink:#0B1512; --emerald:#0B7C66; --emerald-deep:#075C4B; --emerald-dark:#0C3A2F;
+    --mist:#F6F8F7; --paper:#FFFFFF; --rose:#F2AEBC; --rose-ink:#BC5A70;
+    --line:#E7EDEA; --line-soft:#EFF3F1; --muted:#5F6E68; --amber:#B8860B;
+    --serif:"DM Serif Display", Georgia, serif;
+    --sans:"Outfit", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --ease-out:cubic-bezier(.16,1,.3,1); --ease-spring:cubic-bezier(.34,1.56,.64,1);
+    --shadow:0 1px 2px rgba(10,21,18,.04), 0 12px 40px rgba(10,21,18,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:var(--sans);color:var(--ink);background:var(--mist);line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:var(--emerald);text-decoration:none;font-weight:600}
+  a:hover{color:var(--emerald-deep)}
+  button{font-family:var(--sans)}
+  .mk{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:none;background:linear-gradient(135deg,var(--emerald),var(--emerald-deep));box-shadow:0 4px 14px rgba(11,124,102,.3)}
+  .mk svg{width:16px;height:16px;color:#fff}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:21px;color:var(--ink)}
+
+  /* top progress bar (Linear-style) */
+  #progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:100;background:linear-gradient(90deg,var(--emerald),var(--rose));box-shadow:0 0 10px rgba(11,124,102,.5);opacity:0;transition:width .25s var(--ease-out),opacity .3s}
+  #progress.go{opacity:1}
+
+  /* ============ AUTH ============ */
+  #authView{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: url('assets/photos/pink_ivy_bg.jpg') center/cover no-repeat fixed;
+    position:relative;
+    overflow:hidden;
+  }
+  #authView::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.35) 100%);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+  .auth-form-panel {
+    position:relative;
+    z-index:2;
+    display:grid;
+    place-items:center;
+    padding:30px;
+    width:100%;
+  }
+  .auth-card{
+    position:relative;
+    width:100%;
+    max-width: 460px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.8);
+    border-radius: 28px;
+    padding:44px 40px 36px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.06);
+    overflow-y:auto;
+    overflow-x:hidden;
+  }
+  .auth-card::before {
+    display: none;
+  }
+  .auth-card > * {
+    position: relative;
+    z-index: 1;
+  }
+  .auth-top{display:flex;justify-content:center;margin-bottom:22px}
+  .screenhost{position:relative}
+  .screen{display:none}
+  .screen.active{display:block}
+  .screen.enter{animation:screenIn .42s var(--ease-out) both}
+  .screen.leaving{animation:screenOut .2s ease both;position:absolute;inset:0;width:100%}
+  @keyframes screenIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  @keyframes screenOut{to{opacity:0;transform:translateY(-8px)}}
+  .screen.enter .stagger>*{animation:rise .5s var(--ease-out) both}
+  .stagger>*:nth-child(1){animation-delay:.03s}
+  .stagger>*:nth-child(2){animation-delay:.08s}
+  .stagger>*:nth-child(3){animation-delay:.13s}
+  .stagger>*:nth-child(4){animation-delay:.18s}
+  .stagger>*:nth-child(5){animation-delay:.23s}
+  .stagger>*:nth-child(6){animation-delay:.28s}
+  .stagger>*:nth-child(7){animation-delay:.33s}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--emerald-deep);background:rgba(11,124,102,.08);padding:5px 10px;border-radius:999px;display:inline-block}
+  .h1{font-family:var(--serif);font-weight:400;font-size:29px;line-height:1.12;margin:14px 0 6px;letter-spacing:-.01em}
+  .sub{color:var(--muted);font-size:14.5px;margin-bottom:22px}
+  .sub b{color:var(--ink);font-weight:600}
+
+  label{display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:7px}
+  .field{margin-bottom:15px}
+  .field input{width:100%;background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:13px 14px;color:var(--ink);font-size:15px;transition:border-color .15s,box-shadow .15s}
+  .field input::placeholder{color:#9aa8a2}
+  .field input:focus{outline:none;border-color:var(--emerald);box-shadow:0 0 0 4px rgba(11,124,102,.12)}
+  .field .lbl-row{display:flex;align-items:center;justify-content:space-between}
+  .field .lbl-row a{font-size:12.5px}
+
+  .role-pick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:2px 0 16px}
+  .role-opt{border:1.5px solid var(--line);border-radius:13px;padding:13px 12px;text-align:center;cursor:pointer;transition:.15s}
+  .role-opt .rt{font-weight:700;font-size:14.5px;color:var(--ink)}
+  .role-opt .rd{font-size:11.5px;color:var(--muted);margin-top:1px}
+  .role-opt.sel{border-color:var(--emerald);background:rgba(11,124,102,.05);box-shadow:0 0 0 3px rgba(11,124,102,.08)}
+  .role-opt:active{transform:scale(.98)}
+
+  .btn{position:relative;width:100%;border:0;border-radius:13px;padding:14px;background:var(--emerald);color:#fff;font-weight:700;font-size:15.5px;cursor:pointer;transition:transform .14s var(--ease-out),box-shadow .14s,background .2s;box-shadow:0 8px 22px rgba(11,124,102,.26);display:flex;align-items:center;justify-content:center;gap:9px}
+  .btn:hover{transform:translateY(-1px);box-shadow:0 13px 30px rgba(11,124,102,.34)}
+  .btn:active{transform:translateY(0) scale(.99)}
+  .btn:disabled{opacity:.7;cursor:default;transform:none;box-shadow:none}
+  .btn.secondary{background:var(--paper);color:var(--ink);border:1.5px solid var(--line);box-shadow:none}
+  .btn.secondary:hover{background:var(--mist);transform:translateY(-1px)}
+  .btn.linkbtn{background:none;color:var(--muted);box-shadow:none;font-weight:600;padding:10px}
+  .btn.linkbtn:hover{background:none;color:var(--ink);transform:none}
+  .spinner{width:17px;height:17px;border:2.5px solid rgba(255,255,255,.45);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+  .btn.secondary .spinner{border-color:rgba(11,124,102,.3);border-top-color:var(--emerald)}
+  .btn.loading .spinner{display:inline-block}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .divider{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:12.5px;margin:16px 0}
+  .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .alt{text-align:center;margin-top:18px;font-size:14px;color:var(--muted)}
+  .back-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+  .back-row button{background:none;border:0;color:var(--muted);font-weight:600;cursor:pointer;font-size:13.5px;display:inline-flex;align-items:center;gap:5px;padding:4px 0}
+  .back-row button:hover{color:var(--ink)}
+
+  /* status line */
+  .status{display:flex;align-items:center;gap:8px;min-height:20px;margin-top:14px;font-size:13.5px;font-weight:500;opacity:0;transform:translateY(4px);transition:opacity .25s,transform .25s}
+  .status.show{opacity:1;transform:none}
+  .status.err{color:var(--rose-ink)} .status.ok{color:var(--emerald-deep)} .status.info{color:var(--muted)}
+  .status .sdot{width:7px;height:7px;border-radius:50%;flex:none;background:currentColor}
+  .status.info .sdot{animation:pulse 1s ease infinite}
+  @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+  .fi{width:22px;height:16px;border-radius:3px;object-fit:cover;display:block;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+  .cc-menu .fi{width:26px;height:19px}
+  /* signup loading overlay */
+  .load-ov[hidden]{display:none}
+  .load-ov{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(11,124,102,.10);backdrop-filter:blur(6px)}
+  .load-card{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:34px 40px;box-shadow:0 24px 70px rgba(0,0,0,.18);display:flex;flex-direction:column;align-items:center;gap:18px;min-width:230px}
+  .load-vid{width:140px;height:140px;border-radius:16px;object-fit:cover}
+  .load-msg{font-family:var(--sans);font-weight:600;font-size:15px;color:var(--ink);margin:0;letter-spacing:.01em}
+  .ball-ladder{position:relative;width:74px;height:120px}
+  .ball-ladder::before,.ball-ladder::after{content:"";position:absolute;top:0;bottom:0;width:5px;border-radius:4px;background:var(--line)}
+  .ball-ladder::before{left:14px}.ball-ladder::after{right:14px}
+  .ball-ladder .rung{position:absolute;left:14px;right:14px;height:5px;border-radius:4px;background:var(--line)}
+  .ball-ladder .rung:nth-child(1){top:8px}.ball-ladder .rung:nth-child(2){top:30px}.ball-ladder .rung:nth-child(3){top:52px}
+  .ball-ladder .rung:nth-child(4){top:74px}.ball-ladder .rung:nth-child(5){top:96px}.ball-ladder .rung:nth-child(6){top:116px}
+  .ball-ladder .ball{position:absolute;left:50%;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:var(--emerald);box-shadow:0 4px 10px rgba(11,124,102,.4);animation:ballDrop 1.5s cubic-bezier(.5,0,.6,1) infinite}
+  @keyframes ballDrop{
+    0%{top:-4px;transform:scale(1)}
+    14%{top:18px;transform:scaleY(.7)}22%{top:6px}
+    36%{top:40px;transform:scaleY(.75)}44%{top:28px}
+    58%{top:62px;transform:scaleY(.8)}66%{top:50px}
+    80%{top:106px;transform:scaleY(.7)}88%{top:96px}
+    100%{top:-4px;transform:scale(1)}
+  }
+  @media(prefers-reduced-motion:reduce){ .ball-ladder .ball{animation-duration:0s;top:50px} }
+  @media(prefers-reduced-motion:reduce){ .ball-ladder .ball{animation-duration:0s;top:50px} }
+  /* phone input */
+  .phone-row{position:relative;display:flex;gap:8px;margin-bottom:14px}
+  .cc-btn{display:flex;align-items:center;gap:6px;background:var(--paper);border:1.5px solid var(--line);border-radius:11px;padding:0 11px;font-family:var(--sans);font-size:14.5px;font-weight:600;color:var(--ink);cursor:pointer;white-space:nowrap}
+  .cc-btn span:first-child{font-size:18px}
+  .phone-row input{flex:1}
+  .cc-menu{position:absolute;top:calc(100% + 6px);left:0;width:240px;max-height:230px;overflow-y:auto;background:var(--paper);border:1px solid var(--line);border-radius:13px;box-shadow:0 14px 40px rgba(0,0,0,.16);z-index:30;padding:5px}
+  .cc-menu button{display:flex;align-items:center;gap:9px;width:100%;border:0;background:none;padding:9px 10px;border-radius:9px;font-family:var(--sans);font-size:14px;color:var(--ink);cursor:pointer;text-align:left}
+  .cc-menu button:hover{background:var(--mist)}
+  .cc-menu .cc-name{flex:1}
+  .cc-menu .cc-d{color:var(--muted);font-weight:600}
+  
+  /* social icons */
+  .social-row { display: flex; gap: 12px; margin-bottom: 16px; }
+  .social-btn { flex: 1; border: 1.5px solid var(--line); border-radius: 13px; background: var(--paper); display: flex; align-items: center; justify-content: center; height: 50px; cursor: pointer; transition: 0.15s; }
+  .social-btn:hover { background: var(--mist); border-color:var(--emerald); }
+  .social-btn svg { width: 22px; height: 22px; }
+  .phone-row{position:relative;display:flex;gap:8px}
+  .cc-btn{display:flex;align-items:center;gap:6px;background:var(--paper);border:1.5px solid var(--line);border-radius:11px;padding:0 11px;font-family:var(--sans);font-size:14.5px;font-weight:600;color:var(--ink);cursor:pointer;white-space:nowrap}
+  .cc-btn span:first-child{font-size:18px}
+  .phone-row input{flex:1}
+  .cc-menu{position:absolute;top:calc(100% + 6px);left:0;width:240px;max-height:230px;overflow-y:auto;background:var(--paper);border:1px solid var(--line);border-radius:13px;box-shadow:0 14px 40px rgba(0,0,0,.16);z-index:30;padding:5px}
+  .cc-menu button{display:flex;align-items:center;gap:9px;width:100%;border:0;background:none;padding:9px 10px;border-radius:9px;font-family:var(--sans);font-size:14px;color:var(--ink);cursor:pointer;text-align:left}
+  .cc-menu button:hover{background:var(--mist)}
+  .cc-menu .cc-name{flex:1}
+  .cc-menu .cc-d{color:var(--muted);font-weight:600}
+  /* OTP boxes */
+  .otp-boxes{display:flex;gap:9px;justify-content:center;margin:6px 0 6px}
+  .otp-boxes input{width:46px;height:56px;text-align:center;font-size:23px;font-weight:600;border:1.5px solid var(--line);border-radius:13px;background:var(--paper);color:var(--ink);transition:.15s;font-family:var(--sans)}
+  .otp-boxes input:focus{outline:none;border-color:var(--emerald);box-shadow:0 0 0 4px rgba(11,124,102,.12)}
+  .otp-boxes input.filled{border-color:var(--emerald);background:rgba(11,124,102,.04)}
+  .resend{text-align:center;font-size:13px;color:var(--muted);margin-top:14px}
+  .resend button{background:none;border:0;color:var(--emerald);font-weight:700;cursor:pointer;font-size:13px}
+  .resend button:disabled{color:var(--muted);cursor:default}
+
+  /* progress dots for OTP step */
+  .steps{display:flex;gap:6px;justify-content:center;margin-bottom:16px}
+  .steps .s{width:7px;height:7px;border-radius:50%;background:var(--line)}
+  .steps .s.on{background:var(--emerald);width:22px;border-radius:99px}
+  .steps .s{transition:all .3s var(--ease-out)}
+
+  /* success checkmark */
+  .success-wrap{text-align:center;padding:14px 0 6px}
+  .check{width:92px;height:92px;margin:0 auto 18px;position:relative}
+  .check.pop{animation:pop .45s var(--ease-spring) both}
+  @keyframes pop{0%{transform:scale(.5);opacity:0}60%{transform:scale(1.07)}100%{transform:scale(1)}}
+  .check .ring{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,rgba(11,124,102,.16),transparent 70%);animation:ring .6s var(--ease-out) both}
+  @keyframes ring{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+  .check svg{position:relative;width:92px;height:92px}
+  .c-circle{stroke:var(--emerald);stroke-width:3;fill:rgba(11,124,102,.06);stroke-dasharray:251;stroke-dashoffset:251}
+  .c-mark{stroke:var(--emerald);stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:48;stroke-dashoffset:48}
+  .check.go .c-circle{animation:draw .5s var(--ease-out) forwards}
+  .check.go .c-mark{animation:draw .35s .42s var(--ease-out) forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+
+  .conn{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:18px;font-size:12px;color:var(--muted)}
+  .dot{width:7px;height:7px;border-radius:50%;background:#c2cbc7}
+  .dot.up{background:var(--emerald)} .dot.down{background:var(--rose-ink)}
+  .auth-foot{text-align:center;margin-top:12px;font-size:13px}
+  .auth-foot a{color:var(--muted);font-weight:600}
+  
+  /* ============ DASHBOARD ============ */
+  #dashView{
+    display:none;
+    height: 100vh;
+    overflow: hidden;
+    background:var(--mist);
+    flex-direction:row;
+  }
+  .dash-layout{
+    display:grid;
+    grid-template-columns:260px 1fr;
+    min-height:100vh;
+  }
+  .sidebar{
+    width:260px;
+    background:#0B1613;
+    border-right:1px solid rgba(255,255,255,.05);
+    display:flex;
+    flex-direction:column;
+    padding:24px 20px;
+    position:sticky;
+    top:0;
+    height:100vh;
+    z-index:10;
+  }
+  .sb-head{
+    padding:0 0 20px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    margin-bottom:10px;
+  }
+  @media (max-width:768px) { #dashView { flex-direction:column; padding-bottom:80px; } }
+
+  /* SIDEBAR / BOTTOM NAV */
+  .sidebar .brand { font-family:var(--serif); font-size:24px; color:#fff; display:flex; align-items:center; gap:8px; margin-bottom:40px; }
+  .sidebar .brand .mk { color:var(--emerald); background:rgba(255,255,255,.1); width:32px; height:32px; border-radius:10px; display:grid; place-items:center; }
+  .sidebar .brand .mk svg { width:20px; height:20px; color:#fff; }
+  .nav-menu { display:flex; flex-direction:column; gap:8px; flex:1; }
+  .nav-item { display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:12px; color:rgba(255,255,255,.6); font-weight:600; text-decoration:none; transition:.2s; cursor:pointer; }
+  .nav-item:hover { background:rgba(255,255,255,.05); color:#fff; }
+  .nav-item.active { background:var(--emerald); color:#fff; box-shadow:0 4px 20px rgba(11,124,102,.4); }
+  .nav-item svg { width:20px; height:20px; }
+  .sidebar-foot { margin-top:auto; padding-top:20px; border-top:1px solid rgba(255,255,255,.08); display:flex; align-items:center; justify-content:space-between; }
+  .sidebar-foot .who { font-size:13px; color:#fff; font-weight:600; display:flex; flex-direction:column; }
+  .sidebar-foot .who span { font-size:11px; color:rgba(255,255,255,.45); font-weight:500; }
+  .logout-btn { color:var(--rose-ink); background:rgba(188,90,112,.08); padding:8px; border-radius:8px; border:none; cursor:pointer; display:flex; transition:.15s; }
+  .logout-btn:hover { background:rgba(188,90,112,.15); }
+  
+  .main-content { flex:1; display:flex; flex-direction:column; overflow-y:auto; }
+  .topbar{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:flex-end;padding:16px 32px;background:rgba(244,247,246,.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.03)}
+  @media (max-width:768px) { .topbar { padding:12px 20px; justify-content:space-between; } .mobile-brand { display:flex !important; font-family:var(--serif); font-size:20px; color:var(--emerald-deep); align-items:center; gap:6px; } .mobile-brand .mk{ color:var(--emerald); background:rgba(11,124,102,.12); width:28px; height:28px; border-radius:8px; display:grid; place-items:center; } .mobile-brand .mk svg { width:16px; height:16px; } }
+  
+  @media (max-width:768px) {
+    .sidebar { position:fixed; bottom:0; top:auto; width:100%; height:auto; border-right:none; border-top:1px solid rgba(255,255,255,.05); flex-direction:row; padding:10px; justify-content:space-around; z-index:100; box-shadow:0 -4px 20px rgba(0,0,0,.08); background:#0B1613; }
+    .sidebar .brand, .sidebar-foot { display:none; }
+    .nav-menu { flex-direction:row; width:100%; justify-content:space-around; gap:0; }
+    .nav-item { flex-direction:column; gap:4px; font-size:10px; padding:8px; border-radius:10px; flex:1; text-align:center; color:rgba(255,255,255,.65); }
+    .nav-item:hover { background:rgba(255,255,255,.05); color:#fff; }
+    .nav-item.active { background:transparent; color:var(--emerald); box-shadow:none; }
+  }
+
+  .pill{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(11,124,102,.12);color:var(--emerald-deep)}
+  .pill.tenant{background:rgba(242,174,188,.22);color:var(--rose-ink)}
+  .wrap{max-width:1100px;margin:0 auto;padding:32px 32px 64px;width:100%;animation:screenIn .5s var(--ease-out) both}
+  @media (max-width:768px) { .wrap { padding:24px 20px 40px; } }
+  .grid2{display:grid;grid-template-columns:380px 1fr;gap:32px;align-items:start}
+  @media (max-width:1000px) { .grid2 { grid-template-columns:1fr; } }
+  
+  .panel{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:var(--shadow)}
+  .panel h2{font-family:var(--serif);font-weight:400;font-size:22px;margin-bottom:4px}
+  .panel .hint{color:var(--muted);font-size:13.5px;margin-bottom:20px}
+  .panel label{font-size:11.5px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--muted)}
+  .panel input,.panel select,.panel textarea{width:100%;background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--ink);font-size:14.5px;margin-top:6px;font-family:var(--sans);transition:.2s;}
+  .panel input:focus,.panel select:focus,.panel textarea:focus{outline:none;border-color:var(--emerald);box-shadow:0 0 0 3px rgba(11,124,102,.12)}
+  .pfield{margin-bottom:16px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .sec-h{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px}
+  .sec-h h2{font-family:var(--serif);font-weight:400;font-size:24px}
+  .sec-h .count{font-size:13px;color:var(--muted);font-weight:600;}
+  .plist{display:grid;gap:16px}
+  
+  .pcard{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 4px 24px rgba(0,0,0,.03), 0 1px 2px rgba(0,0,0,.02);animation:rise .4s var(--ease-out) both; position:relative; overflow:hidden;}
+  .pcard .pt{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  .pcard h3{font-family:var(--serif);font-weight:400;font-size:20px;line-height:1.2}
+  .pcard .meta{color:var(--muted);font-size:13.5px;margin-top:6px;display:flex;align-items:center;gap:4px;}
+  .pcard .meta i-lucide { width:14px; height:14px; opacity:.7; }
+  .pcard .rent{font-weight:700;color:var(--emerald-deep);margin-top:12px;font-size:18px;}
+  .pcard .rent span{font-weight:500;color:var(--muted);font-size:13px}
+  
+  .badge{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:5px 10px;border-radius:999px;white-space:nowrap}
+  .badge.vacant{background:rgba(11,124,102,.12);color:var(--emerald-deep)}
+  .badge.occupied{background:rgba(242,174,188,.22);color:var(--rose-ink)}
+  .badge.maintenance{background:rgba(184,134,11,.14);color:var(--amber)}
+  .badge.inactive{background:#eee;color:#777}
+  .badge.in_progress,.badge.approved{background:rgba(184,134,11,.14);color:var(--amber)}
+  .badge.declined{background:rgba(226,75,74,.14);color:#a32d2d}
+  .req-act{display:flex;align-items:center;justify-content:center;border:1.5px solid var(--line);background:var(--paper);border-radius:10px;padding:8px 12px;font-size:13px;font-weight:600;font-family:var(--sans);cursor:pointer;transition:.15s;}
+  .req-act:hover{background:var(--line-soft);}
+  .req-act.no{color:#a32d2d}
+  .req-act.no:hover{border-color:#e24b4a;background:rgba(226,75,74,.05)}
+  
+  /* ===== notification bell ===== */
+  .notif-wrap{position:relative}
+  .notif-bell{position:relative;background:var(--paper);border:1.5px solid var(--line);width:42px;height:42px;border-radius:12px;display:grid;place-items:center;cursor:pointer;color:var(--ink);transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.02);}
+  .notif-bell:hover{border-color:var(--emerald);background:rgba(11,124,102,.05)}
+  .notif-bell svg{width:20px;height:20px}
+  .notif-bell.ring{animation:bellRing .7s ease}
+  @keyframes bellRing{0%,100%{transform:rotate(0)}15%{transform:rotate(15deg)}30%{transform:rotate(-13deg)}45%{transform:rotate(9deg)}60%{transform:rotate(-6deg)}75%{transform:rotate(3deg)}}
+  .notif-badge{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#e24b4a;color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;border:2.5px solid var(--mist)}
+  .notif-pop{position:absolute;right:0;top:54px;width:340px;max-width:86vw;background:var(--paper);border:1px solid var(--line);border-radius:20px;box-shadow:0 24px 60px rgba(10,21,18,.15);z-index:20;overflow:hidden;animation:notifPop .18s ease}
+  @keyframes notifPop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+  .notif-head{padding:16px 20px;font-weight:700;font-size:15px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+  .notif-head span{color:var(--muted);font-weight:600;font-size:12px;text-transform:none;letter-spacing:0}
+  .notif-list{max-height:380px;overflow:auto}
+  .notif-item{padding:16px 20px;border-bottom:1px solid var(--line)}
+  .notif-item:last-child{border-bottom:0}
+  .notif-item h4{font-size:15px;margin:0 0 4px;font-weight:600}
+  .notif-item .nmeta{font-size:12.5px;color:var(--muted);margin-bottom:12px}
+  .notif-acts{display:flex;gap:10px}
+  .nbtn{flex:1;border:0;border-radius:10px;padding:9px;font-weight:700;font-size:13px;cursor:pointer;font-family:var(--sans);transition:.15s}
+  .nbtn.yes{background:var(--emerald);color:#fff}
+  .nbtn.yes:hover{background:var(--emerald-deep)}
+  .nbtn.no{background:var(--paper);border:1.5px solid var(--line);color:#a32d2d}
+  .nbtn.no:hover{border-color:#e24b4a;background:rgba(226,75,74,.05)}
+  .notif-empty{padding:40px 20px;text-align:center;color:var(--muted);font-size:14px}
+  .empty{border:1.5px dashed var(--line);border-radius:20px;padding:50px 24px;text-align:center;color:var(--muted)}
+  .empty i-lucide { width:48px; height:48px; color:var(--emerald); opacity:.5; margin-bottom:12px; }
+  .skel{pointer-events:none}
+  .sk-line{height:14px;border-radius:8px;background:linear-gradient(90deg,#eef2f0 25%,#e2e9e5 37%,#eef2f0 63%);background-size:400% 100%;animation:shimmer 1.3s ease infinite;margin:10px 0}
+  .w60{width:60%}.w45{width:45%}.w30{width:30%}
+  @keyframes shimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
+
+
+  .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,170%);z-index:90;max-width:min(92vw,440px);background:var(--ink);color:#fff;padding:13px 19px;border-radius:14px;font-size:14px;box-shadow:0 18px 50px rgba(0,0,0,.3);opacity:0;transition:transform .42s var(--ease-spring),opacity .42s;text-align:center;display:flex;align-items:center;gap:9px}
+  .toast.show{transform:translate(-50%,0);opacity:1}
+  .toast .tdot{width:7px;height:7px;border-radius:50%;background:var(--rose);flex:none}
+  .toast.ok .tdot{background:#6ee7b7}
+
+  @media(max-width:760px){ .grid2{grid-template-columns:1fr} }
+  @media(max-width:430px){ .auth-card{padding:30px 22px 26px;border-radius:20px} .otp-boxes input{width:42px;height:52px;font-size:20px} .otp-boxes{gap:7px} .h1{font-size:26px} }
+  @media(prefers-reduced-motion:reduce){ *{animation-duration:.01ms!important;transition-duration:.05ms!important} }
+
+  /* ===== property linking: invites / QR / join / maintenance ===== */
+  .invite-btn{margin-top:14px;width:100%;border:1.5px solid var(--line);background:var(--paper);color:var(--emerald-deep);border-radius:11px;padding:10px;font-weight:700;font-size:13.5px;cursor:pointer;transition:.15s;font-family:var(--sans)}
+  .invite-btn:hover{border-color:var(--emerald);background:rgba(11,124,102,.05)}
+  .modal-bg{position:fixed;inset:0;z-index:80;background:rgba(8,16,13,.5);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadein .2s ease}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  .modal{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:30px;width:100%;max-width:380px;box-shadow:var(--shadow);animation:pop .35s var(--ease-spring) both;text-align:center}
+  .modal h2{font-family:var(--serif);font-weight:400;font-size:24px;margin-bottom:6px}
+  .modal .hint{color:var(--muted);font-size:13.5px;margin-bottom:20px}
+  .modal-x{position:absolute;top:14px;right:14px;width:32px;height:32px;border:0;border-radius:9px;background:var(--mist);color:var(--muted);cursor:pointer;font-size:14px}
+  .modal-x:hover{background:var(--line)}
+  .qr-wrap{width:184px;height:184px;margin:0 auto 18px;border:1px solid var(--line);border-radius:16px;padding:10px;background:#fff;display:grid;place-items:center}
+  .qr-wrap img{width:100%;height:100%;image-rendering:pixelated}
+  .qr-load{font-size:12px;color:var(--muted);text-align:center;padding:12px}
+  .code-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .code-row{display:flex;align-items:center;gap:8px;justify-content:center}
+  .code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-weight:700;font-size:21px;letter-spacing:.16em;color:var(--emerald-deep);background:rgba(11,124,102,.07);padding:10px 15px;border-radius:11px}
+  .copy{border:1.5px solid var(--line);background:var(--paper);color:var(--ink);border-radius:10px;padding:10px 14px;font-weight:700;font-size:13px;cursor:pointer}
+  .copy:hover{border-color:var(--emerald);color:var(--emerald-deep)}
+  .join-card{max-width:440px;margin:10px auto;background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:34px;box-shadow:var(--shadow);text-align:center}
+  .join-icon{width:58px;height:58px;border-radius:16px;display:grid;place-items:center;margin:0 auto 16px;background:rgba(11,124,102,.1);color:var(--emerald)}
+  .join-icon svg{width:28px;height:28px}
+  .join-card h2{font-family:var(--serif);font-weight:400;font-size:26px;margin-bottom:6px}
+  .join-card .hint{color:var(--muted);font-size:14px;margin-bottom:20px}
+  #joinForm{display:flex;gap:10px;flex-direction:column}
+  #joinCode{width:100%;text-align:center;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:20px;letter-spacing:.22em;font-weight:700;border:1.5px solid var(--line);border-radius:12px;padding:14px;text-transform:uppercase}
+  #joinCode::placeholder{letter-spacing:.22em;color:#9aa8a2}
+  #joinCode:focus{outline:none;border-color:var(--emerald);box-shadow:0 0 0 4px rgba(11,124,102,.12)}
+  .join-foot{font-size:12.5px;color:var(--muted);margin-top:16px}
+  .panel textarea{width:100%;background:var(--paper);border:1.5px solid var(--line);border-radius:11px;padding:12px 13px;color:var(--ink);font-size:14.5px;margin-top:6px;font-family:var(--sans);resize:vertical}
+  .panel textarea:focus{outline:none;border-color:var(--emerald);box-shadow:0 0 0 3px rgba(11,124,102,.1)}
+
+  /* stats + landlord maintenance + done-state */
+  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px}
+  .stat{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px 20px;box-shadow:var(--shadow);animation:rise .4s var(--ease-out) both}
+  .stat-v{font-family:var(--serif);font-weight:400;font-size:30px;line-height:1;color:var(--emerald-deep)}
+  .stat-l{font-size:12.5px;color:var(--muted);margin-top:6px;font-weight:600}
+  .ll-maint{margin-top:36px}
+  .req-act{border:1.5px solid var(--line);background:var(--paper);color:var(--emerald-deep);border-radius:9px;padding:7px 14px;font-weight:700;font-size:13px;cursor:pointer;transition:.15s;font-family:var(--sans)}
+  .req-act:hover{border-color:var(--emerald);background:rgba(11,124,102,.05)}
+  .btn.done{background:#0a9e74!important;opacity:1!important;box-shadow:0 10px 26px rgba(11,124,102,.32)!important;transform:none!important}
+  @media(max-width:680px){ .stat-row{grid-template-columns:1fr 1fr} }
+
+  /* Tabbed interface for Guest Join Card */
+  .jtabs { display: flex; border-bottom: 1px solid var(--line); margin-bottom: 20px; gap: 4px; padding: 2px; background: var(--mist); border-radius: 12px; }
+  .jtab-btn { flex: 1; border: 0; background: none; padding: 10px; font-weight: 600; font-size: 13.5px; color: var(--muted); cursor: pointer; border-radius: 10px; transition: .15s; }
+  .jtab-btn:hover { color: var(--ink); background: rgba(0,0,0,.02); }
+  .jtab-btn.active { color: var(--emerald-deep); background: var(--paper); box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+  .jtab-panel { display: none; }
+  .jtab-panel.active { display: block; animation: rise .2s var(--ease-out); }
+
+  /* Property Select List in Search Landlord Panel */
+  .prop-select-list { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; text-align: left; }
+  .prop-select-item { border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px; cursor: pointer; transition: .15s; display: flex; justify-content: space-between; align-items: center; }
+  .prop-select-item:hover { border-color: var(--emerald); background: rgba(11,124,102,.02); }
+  .prop-select-item.selected { border-color: var(--emerald); background: rgba(11,124,102,.06); box-shadow: 0 0 0 3px rgba(11,124,102,.1); }
+  .prop-select-item h4 { font-size: 14.5px; font-weight: 600; margin: 0; color: var(--ink); }
+  .prop-select-item span { font-size: 12px; color: var(--muted); }
+
+  /* Dashboard empty state illustrations */
+  .empty-ill { width: 100px; height: 100px; margin: 0 auto 16px; color: var(--emerald); opacity: 0.25; stroke-width: 1.2; }
+
+  /* Add Property Modal Styles */
+  .add-prop-modal-bg { position: fixed; inset: 0; z-index: 120; background: rgba(8,16,13,.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 20px; animation: fadein .2s ease; }
+  .add-prop-modal { position: relative; background: var(--paper); border: 1px solid var(--line); border-radius: 24px; padding: 32px; width: 100%; max-width: 500px; box-shadow: var(--shadow); animation: pop .35s var(--ease-spring) both; text-align: left; max-height: 90vh; overflow-y: auto; }
+  .add-prop-modal::-webkit-scrollbar { width: 6px; }
+  .add-prop-modal::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 6px; }
+  @media (max-width: 768px) {
+    .add-prop-modal-bg { align-items: flex-end; padding: 0; }
+    .add-prop-modal { border-radius: 24px 24px 0 0; animation: slideUp .35s var(--ease-out) both; max-width: 100%; max-height: 85vh; }
+  }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+</style>
+</head>
+<body>
+<!-- SIGNUP LOADING OVERLAY (ball-on-ladder) -->
+<div class="load-ov" id="loadOv" hidden>
+  <div class="load-card">
+    <!-- To use your own clip: drop a web-friendly file (mp4/webm) next to this page,
+         set #loadVid src below, and remove the .ball-ladder block. -->
+    <video id="loadVid" class="load-vid" autoplay loop muted playsinline hidden></video>
+    <div class="ball-ladder" id="ballLadder" aria-hidden="true">
+      <span class="rung"></span><span class="rung"></span><span class="rung"></span>
+      <span class="rung"></span><span class="rung"></span><span class="rung"></span>
+      <span class="ball"></span>
+    </div>
+    <p class="load-msg" id="loadMsg">Setting up your account…</p>
+  </div>
+</div>
+<div id="progress"></div>
+
+<!-- ===================== AUTH ===================== -->
+<div id="authView">
+  <!-- Auth Forms Card Container (centered over photo bg) -->
+  <div class="auth-form-panel">
+    <div class="auth-card">
+      <div class="auth-top"><div class="brand"><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></span>RentCan</div></div>
+
+    <div class="screenhost" id="host">
+
+      <!-- LOGIN -->
+      <section class="screen" data-screen="login">
+        <div class="stagger">
+          <span class="eyebrow">Welcome back</span>
+          <h1 class="h1">Sign in to RentCan</h1>
+          <p class="sub">Manage your properties, tenants and rent in one place.</p>
+          
+          <div class="field">
+            <label>Phone number</label>
+            <div class="phone-row">
+              <button type="button" class="cc-btn ccBtnTrigger"><span class="ccFlag"><img class="fi" src="" alt=""></span><span class="ccDial">+91</span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+              <input type="tel" id="loginPhoneInput" autocomplete="tel" inputmode="numeric" placeholder="98765 43210">
+            </div>
+            <button class="btn" type="button" onclick="handleAuthSubmit('loginPhoneInput')"><span class="spinner"></span><span class="bt">Sign in with SMS</span></button>
+          </div>
+          
+          <button class="btn" type="button" style="background:#25D366; margin-bottom: 8px; box-shadow: 0 8px 22px rgba(37, 211, 102, 0.26);" onclick="showScreen('whatsapp-login')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"></path><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"></path></svg>Continue with WhatsApp</button>
+          
+          <div class="status" id="loginStatus"></div>
+          
+          <div class="divider">or continue with</div>
+          <div class="social-row">
+             <button type="button" class="social-btn" onclick="handleSocialLogin('Google')" title="Google"><svg width="24" height="24" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.7 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></button>
+             <button type="button" class="social-btn" onclick="handleSocialLogin('Apple')" title="Apple"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm3.213 13.731c-1.393.109-2.253-.787-3.238-.809-1.026-.022-1.99.787-2.827.809-2.02.044-3.568-1.745-4.598-3.528-2.091-3.633-.535-9.034 1.503-10.517 1.004-.73 2.164-1.189 3.238-1.189.983 0 1.879.436 2.51.851.62.404 1.099.643 1.581.643.513 0 1.015-.273 1.701-.73 1.004-.666 2.185-1.102 3.321-.927 1.424.218 2.709.916 3.518 2.062-2.955 1.734-2.482 5.86.36 7.027-.676 1.745-1.926 3.655-3.582 3.861-.317.044-.654.066-.991.066h-.414c-.654 0-1.427-.12-2.083-.448zM14.615 4.382c-.818 1.004-2.052 1.637-3.189 1.549-.153-1.167.349-2.345 1.146-3.206.828-1.015 2.106-1.67 3.209-1.571.164 1.178-.349 2.378-1.166 3.228z"/></svg></button>
+             <button type="button" class="social-btn" onclick="handleSocialLogin('Facebook')" title="Facebook"><svg width="24" height="24" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></button>
+          </div>
+          
+          <form id="emailLoginForm" autocomplete="on" style="display:none;">
+            <div class="field"><label>Email</label><input type="email" name="email" autocomplete="email" placeholder="you@email.com" required></div>
+            <div class="field">
+              <div class="lbl-row"><label>Password</label><a href="#" id="toForgot">Forgot?</a></div>
+              <input type="password" name="password" autocomplete="current-password" placeholder="Your password" required>
+            </div>
+            <button class="btn secondary" type="submit"><span class="spinner"></span><span class="bt">Sign in with Email</span></button>
+          </form>
+          
+          <button class="btn linkbtn" id="toggleEmailLogin" style="width:100%; margin-bottom:8px;" type="button" onclick="document.getElementById('emailLoginForm').style.display='block'; this.style.display='none';">Sign in with Email &amp; Password</button>
+
+          <p class="alt">New to RentCan? <a href="#" id="toSignup" style="color:var(--emerald-deep);font-weight:600">Create an account</a></p>
+        </div>
+      </section>
+
+      <!-- SIGNUP -->
+      <section class="screen" data-screen="signup">
+        <div class="stagger">
+          <span class="eyebrow">Get started free</span>
+          <h1 class="h1">Create your account</h1>
+          <p class="sub">Verify your number to start managing your rentals.</p>
+          
+          <div class="field">
+            <label>Phone number</label>
+            <div class="phone-row">
+              <button type="button" class="cc-btn ccBtnTrigger"><span class="ccFlag"><img class="fi" src="" alt=""></span><span class="ccDial">+91</span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+              <input type="tel" id="signupPhoneInput" autocomplete="tel" inputmode="numeric" placeholder="98765 43210">
+            </div>
+            <button class="btn" type="button" onclick="handleAuthSubmit('signupPhoneInput')"><span class="spinner"></span><span class="bt">Send verification code</span></button>
+          </div>
+
+          <div class="status" id="signupStatus"></div>
+
+          <div class="divider">or continue with</div>
+          <div class="social-row">
+             <button type="button" class="social-btn" onclick="handleSocialLogin('Google')" title="Google"><svg width="24" height="24" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.7 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></button>
+             <button type="button" class="social-btn" onclick="handleSocialLogin('Apple')" title="Apple"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm3.213 13.731c-1.393.109-2.253-.787-3.238-.809-1.026-.022-1.99.787-2.827.809-2.02.044-3.568-1.745-4.598-3.528-2.091-3.633-.535-9.034 1.503-10.517 1.004-.73 2.164-1.189 3.238-1.189.983 0 1.879.436 2.51.851.62.404 1.099.643 1.581.643.513 0 1.015-.273 1.701-.73 1.004-.666 2.185-1.102 3.321-.927 1.424.218 2.709.916 3.518 2.062-2.955 1.734-2.482 5.86.36 7.027-.676 1.745-1.926 3.655-3.582 3.861-.317.044-.654.066-.991.066h-.414c-.654 0-1.427-.12-2.083-.448zM14.615 4.382c-.818 1.004-2.052 1.637-3.189 1.549-.153-1.167.349-2.345 1.146-3.206.828-1.015 2.106-1.67 3.209-1.571.164 1.178-.349 2.378-1.166 3.228z"/></svg></button>
+             <button type="button" class="social-btn" onclick="handleSocialLogin('Facebook')" title="Facebook"><svg width="24" height="24" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></button>
+          </div>
+          
+          <p class="alt">Already using RentCan? <a href="#" id="toLogin" style="color:var(--emerald-deep);font-weight:600">Sign in</a></p>
+        </div>
+      </section>
+
+      <!-- SIGNUP DETAILS -->
+      <section class="screen" data-screen="signup-details">
+        <div class="stagger">
+          <span class="eyebrow">Almost there</span>
+          <h1 class="h1">Set up your profile</h1>
+          <p class="sub">Just a few more details to complete your account.</p>
+          <form id="signupDetailsForm" autocomplete="on">
+            <div class="field"><label>Full name</label><input type="text" name="name" autocomplete="name" placeholder="Your name" required></div>
+            <div class="field"><label>Password</label><input type="password" name="password" autocomplete="new-password" placeholder="At least 6 characters" minlength="6" required></div>
+            <label>I'm signing up as</label>
+            <div class="role-pick">
+              <div class="role-opt sel" data-role="landlord" onclick="pickRole(this)"><div class="rt">Landlord</div><div class="rd">List & manage units</div></div>
+              <div class="role-opt" data-role="tenant" onclick="pickRole(this)"><div class="rt">Tenant</div><div class="rd">Pay rent & requests</div></div>
+            </div>
+            <button class="btn" type="submit"><span class="spinner"></span><span class="bt">Complete Setup</span></button>
+          </form>
+          <div class="status" id="signupDetailsStatus"></div>
+        </div>
+      </section>
+
+      <!-- WHATSAPP LOGIN SCREEN -->
+      <section class="screen" data-screen="whatsapp-login">
+        <div class="stagger">
+          <div class="back-row"><button type="button" onclick="showScreen('login')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>Back</button></div>
+          <span class="eyebrow" style="color:#25D366; background:rgba(37,211,102,0.1)">Fast & Secure</span>
+          <h1 class="h1">WhatsApp Login</h1>
+          <p class="sub">Enter your number to receive a login code via WhatsApp.</p>
+          
+          <div class="field">
+            <label>WhatsApp Number</label>
+            <div class="phone-row">
+              <button type="button" class="cc-btn ccBtnTrigger"><span class="ccFlag"><img class="fi" src="" alt=""></span><span class="ccDial">+91</span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+              <input type="tel" id="waPhoneInput" autocomplete="tel" inputmode="numeric" placeholder="98765 43210">
+            </div>
+            <button class="btn" type="button" style="background:#25D366; box-shadow: 0 8px 22px rgba(37, 211, 102, 0.26);" onclick="handleAuthSubmit('waPhoneInput')"><span class="spinner"></span><span class="bt">Send WhatsApp Code</span></button>
+          </div>
+          <div class="status" id="waStatus"></div>
+        </div>
+      </section>
+
+      <!-- SOCIAL MOCK SCREEN -->
+      <section class="screen" data-screen="social-mock">
+        <div class="stagger">
+          <div class="back-row"><button type="button" onclick="showScreen('login')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>Back</button></div>
+          <h1 class="h1" id="socialMockTitle">Connecting...</h1>
+          <p class="sub">Please wait while we securely authenticate you via <span id="socialMockName">OAuth</span>.</p>
+          <div style="display:flex; justify-content:center; padding: 40px 0;">
+            <div class="spinner" style="display:block; border-color:rgba(11,124,102,.2); border-top-color:var(--emerald); width:32px; height:32px; border-width:4px;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- OTP -->
+      <section class="screen" data-screen="otp">
+        <div class="stagger">
+          <div class="back-row"><button type="button" id="otpBack"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>Back</button></div>
+          <div class="steps"><span class="s"></span><span class="s on"></span></div>
+          <h1 class="h1">Enter your code</h1>
+          <p class="sub">We sent a 6-digit code to <b id="otpEmailLabel">your inbox</b>.</p>
+          <div class="otp-boxes" id="otpBoxes">
+            <input inputmode="numeric" maxlength="1" aria-label="digit 1">
+            <input inputmode="numeric" maxlength="1" aria-label="digit 2">
+            <input inputmode="numeric" maxlength="1" aria-label="digit 3">
+            <input inputmode="numeric" maxlength="1" aria-label="digit 4">
+            <input inputmode="numeric" maxlength="1" aria-label="digit 5">
+            <input inputmode="numeric" maxlength="1" aria-label="digit 6">
+          </div>
+          <div class="status" id="otpStatus"></div>
+          <button class="btn" id="verifyBtn" style="margin-top:8px"><span class="spinner"></span><span class="bt">Verify &amp; continue</span></button>
+          <p class="resend">Didn't get it? <button id="resendBtn">Resend code</button></p>
+        </div>
+      </section>
+
+      <!-- FORGOT -->
+      <section class="screen" data-screen="forgot">
+        <div class="stagger">
+          <div class="back-row"><button type="button" id="forgotBack"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>Back to sign in</button></div>
+          <h1 class="h1">Reset your password</h1>
+          <p class="sub">Enter your email and we'll send a secure link to set a new one.</p>
+          <form id="forgotForm">
+            <div class="field"><label>Email</label><input type="email" name="email" autocomplete="email" placeholder="you@email.com" required></div>
+            <button class="btn" type="submit"><span class="spinner"></span><span class="bt">Send reset link</span></button>
+          </form>
+          <div class="status" id="forgotStatus"></div>
+        </div>
+      </section>
+
+      <!-- RESET (set new password after clicking email link) -->
+      <section class="screen" data-screen="reset">
+        <div class="stagger">
+          <h1 class="h1">Set a new password</h1>
+          <p class="sub">Choose something secure you'll remember.</p>
+          <form id="resetForm">
+            <div class="field"><label>New password</label><input type="password" name="password" autocomplete="new-password" placeholder="At least 6 characters" minlength="6" required></div>
+            <button class="btn" type="submit"><span class="spinner"></span><span class="bt">Update password</span></button>
+          </form>
+          <div class="status" id="resetStatus"></div>
+        </div>
+      </section>
+
+      <!-- SUCCESS -->
+      <section class="screen" data-screen="success">
+        <div class="success-wrap">
+          <div class="check" id="checkEl">
+            <span class="ring"></span>
+            <svg viewBox="0 0 100 100"><circle class="c-circle" cx="50" cy="50" r="40"/><path class="c-mark" d="M32 51l13 13 24-26"/></svg>
+          </div>
+          <h1 class="h1" id="successTitle">You're in!</h1>
+          <p class="sub" id="successSub">Login successful — taking you to your dashboard.</p>
+          <div class="status info show" id="successStatus" style="justify-content:center"><span class="sdot"></span><span>Redirecting…</span></div>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="conn"><span id="connDot" class="dot"></span><span id="connText">Connecting…</span></div>
+    <div class="auth-foot"><a href="index.html">&larr; Back to rentcan.app</a></div>
+  </div>
+</div>
+</div>
+
+<!-- ===================== DASHBOARD ===================== -->
+<div id="dashView">
+  
+  <div class="sidebar">
+    <div class="brand"><span class="mk"><i data-lucide="building-2"></i></span>RentCan</div>
+    <div class="nav-menu">
+      <a href="#" class="nav-item active" data-target="home"><i data-lucide="home"></i><span>Properties</span></a>
+      <a href="#" class="nav-item" data-target="tenants"><i data-lucide="users"></i><span>Tenants</span></a>
+      <a href="#" class="nav-item" data-target="payments"><i data-lucide="indian-rupee"></i><span>Payments</span></a>
+      <a href="#" class="nav-item" data-target="documents"><i data-lucide="file-text"></i><span>Documents</span></a>
+      <a href="#" class="nav-item" data-target="maintenance"><i data-lucide="wrench"></i><span>Maintenance</span></a>
+    </div>
+    <div class="sidebar-foot">
+      <div class="who"><span id="whoRole">Landlord</span><b id="whoName">User</b></div>
+      <button class="logout-btn" onclick="logout()" title="Log out"><i data-lucide="log-out"></i></button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="topbar">
+      <div class="brand mobile-brand" style="display:none;"><span class="mk"><i data-lucide="building-2"></i></span>RentCan</div>
+      <div class="who">
+        <div class="notif-wrap" id="notifWrap" style="display:none">
+          <button class="notif-bell" id="notifBell" type="button" aria-label="Maintenance request notifications">
+            <i data-lucide="bell"></i>
+            <span class="notif-badge" id="notifBadge" hidden>0</span>
+          </button>
+          <div class="notif-pop" id="notifPop" hidden>
+            <div class="notif-head">Requests <span id="notifHeadCount"></span></div>
+            <div class="notif-list" id="notifList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="wrap">
+    <div id="landlordView" style="display:none">
+      <!-- Sub-view 1: Properties (Home) -->
+      <div id="llView-home" class="ll-subview">
+        <div id="statRow" class="stat-row"></div>
+        <div class="sec-h">
+          <h2>Your properties</h2>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <span class="count" id="propCount"></span>
+            <button class="btn" style="padding: 8px 16px; font-size:13px; box-shadow:none; height:36px; width:auto; border-radius:10px;" onclick="openAddPropModal()">+ Add Property</button>
+          </div>
+        </div>
+        <div id="propList" class="plist"></div>
+      </div>
+
+      <!-- Tenants Section -->
+      <div id="llView-tenants" class="ll-subview" style="margin-top:36px;">
+        <div id="linkReqPanel" style="display:none; margin-bottom:28px;">
+          <div class="sec-h"><h2>Tenant link requests</h2><span class="count" id="linkReqCount"></span></div>
+          <div id="linkReqList" class="plist"></div>
+        </div>
+        <div class="sec-h"><h2>Active tenants</h2><span class="count" id="activeTenantCount"></span></div>
+        <div id="activeTenantList" class="plist"></div>
+      </div>
+
+      <!-- Payments Section -->
+      <div id="llView-payments" class="ll-subview" style="margin-top:36px;">
+        <div class="sec-h"><h2>Rent payments ledger</h2></div>
+        <div class="panel">
+          <div style="display:flex; justify-content:space-between; margin-bottom:20px; align-items:center;">
+            <h3 style="font-family:var(--serif); font-size:18px;">Recent Transactions</h3>
+            <span class="badge vacant" style="background:rgba(11,124,102,.12); color:var(--emerald-deep);">Verified ledger</span>
+          </div>
+          <div id="paymentsLedgerList" class="plist"></div>
+        </div>
+      </div>
+
+      <!-- Documents Section -->
+      <div id="llView-documents" class="ll-subview" style="margin-top:36px;">
+        <div class="sec-h"><h2>Lease Documents</h2></div>
+        <div class="panel">
+          <p class="hint">Upload and store digital lease agreements, identity proof, and rent receipts.</p>
+          <div id="documentCabinetList" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:16px;"></div>
+        </div>
+      </div>
+
+      <!-- Maintenance Section -->
+      <div id="llView-maintenance" class="ll-subview" style="margin-top:36px;">
+        <div class="sec-h"><h2>Maintenance requests</h2><span class="count" id="reqCount"></span></div>
+        <div id="reqList" class="plist"></div>
+      </div>
+    </div>
+    <div id="tenantView" style="display:none">
+      <div id="tenantJoin" style="display:none">
+        <div class="join-card">
+          <div class="join-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14M14 21h.01M21 17v4h-4"/></svg></div>
+          <h2>Join your property</h2>
+          <p class="hint" style="margin-bottom:14px;">Link your account to your rented property to pay rent and raise maintenance requests.</p>
+          
+          <div class="jtabs">
+            <button type="button" class="jtab-btn active" id="btnTabCode" onclick="switchJoinTab('code')">Invite Code</button>
+            <button type="button" class="jtab-btn" id="btnTabSearch" onclick="switchJoinTab('search')">Search Landlord</button>
+          </div>
+          
+          <!-- Tab 1: Invite Code -->
+          <div id="tabCode" class="jtab-panel active">
+            <form id="joinForm">
+              <input id="joinCode" maxlength="8" placeholder="ABCD2345" autocomplete="off" autocapitalize="characters" spellcheck="false">
+              <button class="btn" type="submit" style="margin-top:12px;"><span class="spinner"></span><span class="bt">Join property</span></button>
+            </form>
+          </div>
+          
+          <!-- Tab 2: Search Landlord -->
+          <div id="tabSearch" class="jtab-panel">
+            <form id="searchLandlordForm">
+              <div class="field" style="text-align:left;">
+                <label>Landlord's Phone Number</label>
+                <div class="phone-row" style="margin-bottom:0;">
+                  <button type="button" class="cc-btn ccBtnTrigger"><span class="ccFlag"><img class="fi" src="" alt=""></span><span class="ccDial">+91</span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+                  <input type="tel" id="searchLandlordPhone" placeholder="98765 43210">
+                </div>
+              </div>
+              <button class="btn" type="submit" style="margin-top:12px;"><span class="spinner"></span><span class="bt">Find properties</span></button>
+            </form>
+            
+            <form id="requestLinkForm" style="display:none; margin-top:20px;">
+              <div class="field" style="text-align:left;">
+                <label>Select your property</label>
+                <div id="searchPropsList" class="prop-select-list"></div>
+              </div>
+              <button class="btn" type="submit"><span class="spinner"></span><span class="bt">Send join request</span></button>
+            </form>
+          </div>
+
+          <div class="status" id="joinStatus" style="justify-content:center"></div>
+          <p class="join-foot">Once linked, your rent, documents and maintenance requests all live under this home.</p>
+        </div>
+      </div>
+      <div id="tenantHome" style="display:none">
+        <!-- Sub-view 1: Home (Rented property info) -->
+        <div id="tView-home" class="t-subview">
+          <div class="sec-h"><h2>Your home</h2></div>
+          <div id="tenantProp" class="plist"></div>
+        </div>
+
+        <!-- Payments Section -->
+        <div id="tView-payments" class="t-subview" style="margin-top:36px;">
+          <div class="sec-h"><h2>Rent &amp; Utilities</h2></div>
+          <div class="panel" style="margin-bottom:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <h3 style="font-family:var(--serif); font-size:18px;">Monthly Rent Payment</h3>
+              <span class="badge occupied" id="tRentStatusBadge">Due soon</span>
+            </div>
+            <div class="rent" style="font-size:26px; font-weight:700; color:var(--emerald-deep); margin-bottom:18px;">₹<span id="tRentAmount">0</span> <span style="font-size:13px; color:var(--muted); font-weight:500;">/month</span></div>
+            <button class="btn" onclick="payRent()"><span class="material-symbols-rounded" style="font-size:18px; vertical-align:-3px; margin-right:4px;">credit_card</span>Pay Rent Online</button>
+          </div>
+          <div class="panel">
+            <h3 style="font-family:var(--serif); font-size:17px; margin-bottom:16px;">Payment History</h3>
+            <div id="tPaymentHistoryList" class="plist"></div>
+          </div>
+        </div>
+
+        <!-- Documents Section -->
+        <div id="tView-documents" class="t-subview" style="margin-top:36px;">
+          <div class="sec-h"><h2>Rented documents</h2></div>
+          <div class="panel">
+            <p class="hint">Access your digitally signed lease agreements, identity proof, and verified rent receipts.</p>
+            <div id="tDocumentsList" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:16px;"></div>
+          </div>
+        </div>
+
+        <!-- Maintenance Section -->
+        <div id="tView-maintenance" class="t-subview" style="margin-top:36px;">
+          <div class="grid2">
+            <div class="panel">
+              <h2>Report an issue</h2>
+              <p class="hint">Sent to your landlord, linked to your home.</p>
+              <form id="maintForm">
+                <style>
+                  .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+                  .cat-lbl { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px 8px; border: 1.5px solid var(--line); border-radius: 12px; cursor: pointer; transition: .15s; background: var(--paper); color: var(--muted); text-align: center; }
+                  .cat-lbl:hover { background: rgba(11,124,102,.05); border-color: var(--emerald); color: var(--emerald-deep); }
+                  .cat-lbl input { display: none; }
+                  .cat-lbl input:checked + .cat-cnt { color: var(--emerald-deep); }
+                  .cat-lbl:has(input:checked) { border-color: var(--emerald); background: rgba(11,124,102,.08); box-shadow: 0 0 0 3px rgba(11,124,102,.12); }
+                  .cat-cnt { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+                  .cat-cnt span.material-symbols-rounded { font-size: 28px; }
+                  .cat-cnt .cat-name { font-size: 11.5px; font-weight: 600; line-height: 1.1; }
+                </style>
+                <div class="pfield">
+                  <label>Category</label>
+                  <div class="cat-grid">
+                    <label class="cat-lbl"><input type="radio" name="category" value="AC Service" checked><div class="cat-cnt"><span class="material-symbols-rounded">mode_fan</span><span class="cat-name">AC Service</span></div></label>
+                    <label class="cat-lbl"><input type="radio" name="category" value="RO Repair"><div class="cat-cnt"><span class="material-symbols-rounded">water_drop</span><span class="cat-name">RO Repair</span></div></label>
+                    <label class="cat-lbl"><input type="radio" name="category" value="Seepage / Plumbing"><div class="cat-cnt"><span class="material-symbols-rounded">plumbing</span><span class="cat-name">Seepage/Plumbing</span></div></label>
+                    <label class="cat-lbl"><input type="radio" name="category" value="Electrical"><div class="cat-cnt"><span class="material-symbols-rounded">electrical_services</span><span class="cat-name">Electrical</span></div></label>
+                    <label class="cat-lbl"><input type="radio" name="category" value="Pest Control"><div class="cat-cnt"><span class="material-symbols-rounded">pest_control</span><span class="cat-name">Pest Control</span></div></label>
+                    <label class="cat-lbl"><input type="radio" name="category" value="Other"><div class="cat-cnt"><span class="material-symbols-rounded">more_horiz</span><span class="cat-name">Other</span></div></label>
+                  </div>
+                </div>
+                <div class="pfield"><label>Title</label><input name="title" placeholder="e.g. Water not heating" required></div>
+                <div class="pfield"><label>Details</label><textarea name="description" rows="3" placeholder="What's going on?"></textarea></div>
+                <div class="pfield"><label>Priority</label><select name="priority"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option><option value="urgent">Urgent</option></select></div>
+                <button class="btn" type="submit"><span class="spinner"></span><span class="bt">Submit request</span></button>
+              </form>
+            </div>
+            <div>
+              <div class="sec-h"><h2>Your requests</h2></div>
+              <div id="maintList" class="plist"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal" class="modal-bg" style="display:none">
+  <div class="modal">
+    <button class="modal-x" onclick="closeModal()" aria-label="Close">&#10005;</button>
+    <h2>Invite a tenant</h2>
+    <p class="hint" id="modalSub">Share this with your tenant. The invite expires in 14 days.</p>
+    <div class="qr-wrap"><img id="qrImg" alt="Invite QR code"><div id="qrLoad" class="qr-load">Generating&hellip;</div></div>
+    <div class="code-label">Invite code</div>
+    <div class="code-row"><span id="inviteCode" class="code">&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;</span><button class="copy" id="copyCode">Copy</button></div>
+    <button class="btn secondary" id="copyLink" style="margin-top:14px;width:100%"><span class="bt">Copy invite link</span></button>
+    <div class="status" id="inviteStatus" style="justify-content:center"></div>
+  </div>
+<div id="addPropModal" class="add-prop-modal-bg" style="display:none">
+  <div class="add-prop-modal">
+    <button class="modal-x" onclick="closeAddPropModal()" aria-label="Close">&#10005;</button>
+    <h2 style="font-family:var(--serif); font-weight:400; font-size:24px; margin-bottom:4px;">Add a property</h2>
+    <p class="hint" style="margin-bottom:20px;">Saved straight to your landlord account.</p>
+    <form id="propForm">
+      <div class="pfield"><label>Property name</label><input name="property_name" placeholder="2BHK in Sector 70" required style="width:100%; border:1.5px solid var(--line); border-radius:12px; padding:12px; font-size:14.5px;"></div>
+      <div class="row2">
+        <div class="pfield"><label>Type</label><select name="property_type" style="width:100%; border:1.5px solid var(--line); border-radius:12px; padding:12px; font-size:14.5px;"><option value="">—</option><option>Apartment</option><option>Independent floor</option><option>Independent house</option><option>Studio</option><option>PG</option></select></div>
+        <div class="pfield"><label>Status</label><select name="status" style="width:100%; border:1.5px solid var(--line); border-radius:12px; padding:12px; font-size:14.5px;"><option value="vacant">Vacant</option><option value="occupied">Occupied</option><option value="maintenance">Maintenance</option><option value="inactive">Inactive</option></select></div>
+      </div>
+      <div class="pfield"><label>Plan</label><select name="plan_type" style="width:100%; border:1.5px solid var(--line); border-radius:12px; padding:12px; font-size:14.5px;"><option value="residential">Residential</option><option value="commercial">Commercial</option></select></div>
+      <div class="row2">
+        <div class="pfield"><label>Bedrooms</label><input name="bedrooms" type="number" min="0" placeholder="2" style="width:100%; border:1.5px solid var(--line); border-radius:12px; padding:12px; font-size:14.5px;"></div>
+        <div class="pfield"><label>Bathrooms</label><input name="bathrooms" type="number" min="0" placeholder="2" style="width:100%; border:1.5px solid var(--line); border-radius:12px; padding:12px; font-size:14.5px;"></div>
+      </div>
+      <div class="pfield"><label>Address</label><input name="address" placeholder="House no, sector" style="width:100%; border:1.5px solid var(--line); border-radius:12px; padding:12px; font-size:14.5px;"></div>
+      <div class="row2">
+        <div class="pfield"><label>City</label><input name="city" placeholder="Mohali" style="width:100%; border:1.5px solid var(--line); border-radius:12px; padding:12px; font-size:14.5px;"></div>
+        <div class="pfield"><label>Province</label><input name="province" placeholder="Punjab" style="width:100%; border:1.5px solid var(--line); border-radius:12px; padding:12px; font-size:14.5px;"></div>
+      </div>
+      <div class="pfield"><label>Monthly rent (₹)</label><input name="monthly_rent" type="number" min="0" placeholder="18000" style="width:100%; border:1.5px solid var(--line); border-radius:12px; padding:12px; font-size:14.5px;"></div>
+      <button class="btn" type="submit" style="margin-top:12px;"><span class="spinner"></span><span class="bt">Save property</span></button>
+    </form>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"><span class="tdot"></span><span id="toastText"></span></div>
+
+<script>
+/* ===================== Supabase ===================== */
+const SUPABASE_URL='https://peyqkueitxtyujgmqghc.supabase.co';
+const SITE_URL='https://rentcan.in';  /* fixed production domain. Invite QR/links are ALWAYS built from this + the code, never from location/file:// */
+const SUPABASE_KEY='sb_publishable_jbaVLjK75KjrMVe8ii8teg_IcTc8OeM';
+let sb=null, currentUser=null, currentRole='landlord', signupRole='landlord', otpEmail='', otpPhone='', otpChannel='email', pendingSuccess=false, dashShown=false, resendTimer=null;
+try{ sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY); }catch(e){ console.error('Supabase failed to load',e); }
+
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+/* ---- sounds: Kenney UI samples (WAV, embedded CC0) for click/confirm/error + synth chime for success ---- */
+let actx=null, muted=false;
+function ac(){ if(!actx){ try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){} } return actx; }
+function tone(f,d,t,g,at){ const c=ac(); if(!c||muted)return; const tt=at||c.currentTime, o=c.createOscillator(), gg=c.createGain(); o.type=t||'sine'; o.frequency.value=f; gg.gain.setValueAtTime(.0001,tt); gg.gain.linearRampToValueAtTime(g||.05,tt+.01); gg.gain.exponentialRampToValueAtTime(.0001,tt+d); o.connect(gg).connect(c.destination); o.start(tt); o.stop(tt+d); }
+const _S={ click:new Audio('data:audio/mpeg;base64,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'), confirm:new Audio('data:audio/mpeg;base64,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'), error:new Audio('data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//twwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAADAAAE5QB/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f3/AwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMD///////////////////////////////////////////8AAAAATGF2YzYwLjMxAAAAAAAAAAAAAAAAJAVAAAAAAAAABOWEvEuXAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7cMQAAA6tEzk0NgACfSasvx7wAAaUAAABnd3d3fRELdzCGZ/Y4EACAEBEPPpSixYYLHLtnZLEsnma9+nTe97zN/nbr17+L16+85SnTM3ve+MGZmfr7/NKL19/mZmaUmZve96U6dve96UpSkzlL3v8zSlH7g+D4Po4gB8Hw/Ehz+IwfxAD4Pg+fRuX+/usIgYghBCGBIKBAPgzJ69Pggxfct6tCRjdAHgkA310J7Ec1QcieE/bX0lC2F4HQALgBbpleYV6fVfHVPjcWBE3XOIDArLv57omBvGd50choKg5FQQViT4kKOEljYkpPvaganTw7CwOA1G2eJMiTJvXzV+c3VigiUgRFHH2cz8+WZunTz43rY3imv/+r3+4mv//1a+vFdfiSBEs+KIAC7tkUBEAAzNNgFFtvXD/+3LEB4ARwTVn+NeAClgjKfsngAAD9Q/mLMYFQLeZA4XEHSoDQG0HW7L2dDMhj9hL3m6nNFQ6hJaB+h0f5YUorkSwPGNxjwo6OYElUoXloN08pofgQrw7YhQVaXmPBSLewvWW3zDdRKRonb48G1V1F3CzS7ZEgQu41s/vFfwYGbe79xU8rDX/67MlMxdf//+8ne2qdwuZVUEQAQZmAAAAYYdl8ige04vklDpAWiZgQHWzxOVgS5v1A65iRCEpwQAHLWTP2bKUqPEZJDFX/l+sqr9yl6oQ7dbtDa3/7/4y1SKWK0JoN/S1n+////aHKYjTS2Oz0BRnG5jKaXLX///PP1LJFL5dVqQzVs024zS1qbP/////+DYzSU1H////lhaNtKL/0AB+zEIi/mc/qmqnNI4DAKAnmZrOU//7cMQIA88cvOQcZ4AAAAA0gAAABKXhKhNmQbwmxlQ066P4nTo/idHUzZYVardwXsWz6Nl7l7Fw+fXUqGzqVDVCy6hMTNR9GlVqtiJ40nFiV08FWxYSumhPow8NRF1A0HSob+DQNFQ2JTsGlHvxFBqty/1nSrpH3dPW7p93I0xBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU='), success:new Audio('data:audio/mpeg;base64,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') };
+_S.click.volume=.45; _S.confirm.volume=.5; _S.error.volume=.45; _S.success.volume=.55;
+function _play(n){ if(muted)return; var a=_S[n]; if(!a)return; try{ a.currentTime=0; var p=a.play(); if(p&&p.catch)p.catch(function(){}); }catch(e){} }
+const Snd={ tick:()=>_play('click'), pop:()=>_play('confirm'), error:()=>_play('error'),
+  success(){ _play('success'); } };
+addEventListener('pointerdown',function(){ const c=ac(); if(c&&c.state==='suspended')c.resume(); Object.keys(_S).forEach(function(k){ var a=_S[k]; try{ a.muted=true; var p=a.play(); if(p&&p.then)p.then(function(){a.pause();a.currentTime=0;a.muted=false;}).catch(function(){a.muted=false;}); else { a.muted=false; } }catch(e){} }); },{once:true});
+
+/* ---- toast ---- */
+function toast(msg,ok){ const t=$('#toast'); $('#toastText').textContent=msg; t.className='toast show'+(ok?' ok':''); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),3800); }
+
+/* ---- top progress bar ---- */
+let progI=null;
+function progStart(){ const p=$('#progress'); p.classList.add('go'); p.style.width='18%'; let w=18; clearInterval(progI); progI=setInterval(()=>{ w+=Math.max(.5,(85-w)*.08); if(w>=85){w=85;} p.style.width=w+'%'; },180); }
+function progDone(){ const p=$('#progress'); clearInterval(progI); p.style.width='100%'; setTimeout(()=>{ p.classList.remove('go'); setTimeout(()=>p.style.width='0',300); },280); }
+
+/* ---- button loading ---- */
+function load(btn,on,label){ if(!btn)return; const t=btn.querySelector('.bt'); if(on){ btn.disabled=true; btn.classList.add('loading'); if(label){ btn.dataset.prev=t.textContent; t.textContent=label; } } else { btn.disabled=false; btn.classList.remove('loading'); if(btn.dataset.prev){ t.textContent=btn.dataset.prev; delete btn.dataset.prev; } } }
+function btnDone(btn,label){ if(!btn)return; var t=btn.querySelector('.bt'); btn.classList.remove('loading'); btn.classList.add('done'); if(t) t.textContent=label||'\u2713 All set'; try{ Snd.tick(); }catch(e){} setTimeout(function(){ btn.classList.remove('done'); btn.disabled=false; if(btn.dataset.prev&&t){ t.textContent=btn.dataset.prev; delete btn.dataset.prev; } },1300); }
+
+/* ---- status line ---- */
+function status(id,text,kind){ const el=$(id); if(!el)return; if(!text){ el.className='status'; el.innerHTML=''; return; } el.className='status show '+(kind||'info'); if(kind==='err'){ try{ Snd.error(); }catch(e){} } el.innerHTML='<span class="sdot"></span><span></span>'; el.lastChild.textContent=text; }
+
+/* ---- screen router (AnimatePresence-style) ---- */
+function showScreen(name){
+  const host=$('#host'); const cur=host.querySelector('.screen.active'); const next=host.querySelector('[data-screen="'+name+'"]');
+  if(!next || (cur&&cur===next)){ if(next&&!next.classList.contains('active')){} else return; }
+  if(cur){ cur.classList.add('leaving'); cur.classList.remove('active','enter'); setTimeout(()=>cur.classList.remove('leaving'),210); }
+  next.classList.remove('leaving'); next.classList.add('active');
+  void next.offsetWidth; next.classList.remove('enter'); void next.offsetWidth; next.classList.add('enter');
+  const first=next.querySelector('input'); if(first && name!=='success'){ setTimeout(()=>{ if(name!=='otp') first.focus(); },260); }
+  if(name==='otp'){ setTimeout(()=>{ const b=$('#otpBoxes input'); if(b) b.focus(); },280); }
+}
+function showAuthView(){ $('#dashView').style.display='none'; $('#authView').style.display='grid'; }
+function showDash(){ $('#authView').style.display='none'; $('#dashView').style.display='block'; }
+
+/* ---- nav links ---- */
+$('#toSignup').onclick=e=>{e.preventDefault();Snd.tick();showScreen('signup');};
+$('#toLogin').onclick=e=>{e.preventDefault();Snd.tick();showScreen('login');};
+$('#toForgot').onclick=e=>{e.preventDefault();Snd.tick();showScreen('forgot');};
+$('#forgotBack').onclick=()=>{Snd.tick();showScreen('login');};
+$('#otpBack').onclick=()=>{Snd.tick();showScreen('login');};
+function pickRole(el){ $$('.role-opt').forEach(o=>o.classList.remove('sel')); el.classList.add('sel'); signupRole=el.dataset.role; Snd.tick(); }
+
+/* ---- connection check ---- */
+async function ping(){ const d=$('#connDot'), t=$('#connText'); if(!sb){ d.className='dot down'; t.textContent='Could not load Supabase (check connection).'; return; } try{ await sb.auth.getSession(); d.className='dot up'; t.textContent='Connected securely'; }catch(e){ d.className='dot down'; t.textContent='Supabase unreachable'; } }
+
+/* ===================== AUTH ACTIONS ===================== */
+/* signup loading overlay control */
+function showLoader(msg){ var o=$('#loadOv'); if(!o) return; if(msg) $('#loadMsg').textContent=msg;
+  /* If you re-upload a working clip, set its src here and reveal it:
+     var v=$('#loadVid'); v.src='ball-on-ladder.mp4'; v.hidden=false; $('#ballLadder').hidden=true; */
+  o.hidden=false; }
+function hideLoader(){ var o=$('#loadOv'); if(o) o.hidden=true; }
+
+function mockSocial(provider) {
+  document.getElementById('socialMockTitle').innerText = 'Connecting to ' + provider;
+  document.getElementById('socialMockName').innerText = provider;
+  showScreen('social-mock');
+  setTimeout(() => {
+    showScreen('success');
+    setTimeout(() => {
+      enterDashboard({id: 'demo', email: 'demo@demo.com', user_metadata: {name: 'Guest User', role: signupRole}});
+    }, 1500);
+  }, 1500);
+}
+
+function continueWithGoogle() {
+  mockSocial('Google');
+}
+
+
+
+let otpChannelType = 'sms'; // 'sms' or 'whatsapp'
+
+function mockSocial(provider) {
+  document.getElementById('socialMockTitle').innerText = 'Connecting to ' + provider;
+  document.getElementById('socialMockName').innerText = provider;
+  showScreen('social-mock');
+  setTimeout(() => {
+    showScreen('success');
+    setTimeout(() => {
+      enterDashboard({id: 'demo', email: 'demo@demo.com', user_metadata: {name: 'Guest User', role: signupRole}});
+    }, 1500);
+  }, 1500);
+}
+
+async function handleSocialLogin(provider) {
+  Snd.tick();
+  if(!sb) {
+    toast('Database connection error.', false);
+    return;
+  }
+  
+  // Save intended role so we can apply it after Google redirects back
+  localStorage.setItem('rentcan_intended_role', signupRole);
+  
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: provider.toLowerCase(),
+    options: {
+      redirectTo: location.origin + location.pathname
+    }
+  });
+  if(error) {
+    toast(error.message, false);
+    console.error('OAuth Error:', error);
+  }
+}
+
+/* request OTP code */
+async function sendOtp(email,btn){
+  Snd.tick(); status('#loginStatus','Sending OTP…','info'); if(btn) load(btn,true,'Sending OTP…'); progStart();
+  const { error }=await sb.auth.signInWithOtp({ email, options:{ shouldCreateUser:true, data:{ role:signupRole } } });
+  progDone(); if(btn) load(btn,false);
+  if(error){ status('#loginStatus',error.message,'err'); return false; }
+  otpChannel='email'; otpEmail=email; $('#otpEmailLabel').textContent=email; Snd.pop();
+  status('#loginStatus','OTP Sent ✓','ok'); showScreen('otp'); status('#otpStatus','Enter the 6-digit code we emailed you.','info');
+  startResendCountdown(); return true;
+}
+/* request Phone OTP code (MSG91 configured on Supabase, or Direct MSG91 HTTP fallback) */
+async function sendPhoneOtp(phone, channel, btn){
+  const statusId = channel === 'whatsapp' ? '#waStatus' : '#loginStatus';
+  Snd.tick(); status(statusId, 'Sending OTP…', 'info'); 
+  if(btn) load(btn,true,'Sending…'); progStart();
+  
+  // 1. Try real Supabase OTP send
+  let error = null;
+  if(sb) {
+    try {
+      const res = await sb.auth.signInWithOtp({
+        phone: phone,
+        options: {
+          channel: channel, // 'sms' or 'whatsapp'
+          shouldCreateUser: true,
+          data: { role: signupRole }
+        }
+      });
+      error = res.error;
+    } catch(err) {
+      error = err;
+    }
+  }
+
+  // 2. If real Supabase succeeds, proceed
+  if (sb && !error) {
+    progDone(); if(btn) load(btn,false);
+    otpChannel='phone'; otpChannelType=channel; otpPhone=phone; $('#otpEmailLabel').textContent=phone; Snd.pop();
+    status(statusId,'OTP Sent ✓','ok'); showScreen('otp'); 
+    status('#otpStatus',`Please check ${channel === 'whatsapp' ? 'WhatsApp' : 'SMS'} for OTP.`,'info');
+    startResendCountdown();
+    return true;
+  }
+
+  // 3. Fallback to direct MSG91 HTTP call
+  console.warn('Real Supabase OTP failed, falling back to direct MSG91 API call:', error ? error.message : 'Supabase Client not loaded');
+  
+  const authKey = '535432AfGyahgfkas6a37b39eP1';
+  let url = `https://control.msg91.com/api/v5/otp?mobile=${phone}&authkey=${authKey}`;
+  if (channel === 'whatsapp') {
+    url += '&channel=whatsapp';
+  }
+
+  try {
+    await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+  } catch (err) {
+    console.error('MSG91 Direct Call Error:', err);
+  }
+
+  setTimeout(() => {
+    progDone(); if(btn) load(btn,false);
+    otpChannel='phone'; otpChannelType=channel; otpPhone=phone; $('#otpEmailLabel').textContent=phone; Snd.pop();
+    status(statusId,'OTP Sent ✓','ok'); showScreen('otp'); 
+    status('#otpStatus',`Please check ${channel === 'whatsapp' ? 'WhatsApp' : 'SMS'} for OTP.`,'info');
+    startResendCountdown();
+  }, 1000);
+  return true;
+}
+/* email/SMS toggle */
+let otpMethod='email';
+$$('#otpSeg .seg-btn').forEach(b=>b.addEventListener('click',()=>{
+  otpMethod=b.dataset.method; Snd.tick();
+  $$('#otpSeg .seg-btn').forEach(x=>x.classList.toggle('on',x===b));
+  $('#otpEmailField').style.display = otpMethod==='email'?'':'none';
+  $('#otpPhoneField').style.display = otpMethod==='sms'?'':'none';
+  status('#loginStatus','','');
+}));
+
+/* country code picker (India default) */
+/* flag-icons (lipis) 4x3 SVGs, base64 — MIT licensed */
+const FLAGS={
+  in:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBpZD0iZmxhZy1pY29ucy1pbiIgdmlld0JveD0iMCAwIDY0MCA0ODAiPgogIDxwYXRoIGZpbGw9IiNmOTMiIGQ9Ik0wIDBoNjQwdjE2MEgweiIvPgogIDxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0wIDE2MGg2NDB2MTYwSDB6Ii8+CiAgPHBhdGggZmlsbD0iIzEyODgwNyIgZD0iTTAgMzIwaDY0MHYxNjBIMHoiLz4KICA8ZyB0cmFuc2Zvcm09Im1hdHJpeCgzLjIgMCAwIDMuMiAzMjAgMjQwKSI+CiAgICA8Y2lyY2xlIHI9IjIwIiBmaWxsPSIjMDA4Ii8+CiAgICA8Y2lyY2xlIHI9IjE3LjUiIGZpbGw9IiNmZmYiLz4KICAgIDxjaXJjbGUgcj0iMy41IiBmaWxsPSIjMDA4Ii8+CiAgICA8ZyBpZD0iaW4tZCI+CiAgICAgIDxnIGlkPSJpbi1jIj4KICAgICAgICA8ZyBpZD0iaW4tYiI+CiAgICAgICAgICA8ZyBpZD0iaW4tYSIgZmlsbD0iIzAwOCI+CiAgICAgICAgICAgIDxjaXJjbGUgcj0iLjkiIHRyYW5zZm9ybT0icm90YXRlKDcuNSAtOC44IDEzMy41KSIvPgogICAgICAgICAgICA8cGF0aCBkPSJNMCAxNy41LjYgNyAwIDJsLS42IDV6Ii8+CiAgICAgICAgICA8L2c+CiAgICAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNpbi1hIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB0cmFuc2Zvcm09InJvdGF0ZSgxNSkiLz4KICAgICAgICA8L2c+CiAgICAgICAgPHVzZSB4bGluazpocmVmPSIjaW4tYiIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdHJhbnNmb3JtPSJyb3RhdGUoMzApIi8+CiAgICAgIDwvZz4KICAgICAgPHVzZSB4bGluazpocmVmPSIjaW4tYyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdHJhbnNmb3JtPSJyb3RhdGUoNjApIi8+CiAgICA8L2c+CiAgICA8dXNlIHhsaW5rOmhyZWY9IiNpbi1kIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB0cmFuc2Zvcm09InJvdGF0ZSgxMjApIi8+CiAgICA8dXNlIHhsaW5rOmhyZWY9IiNpbi1kIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB0cmFuc2Zvcm09InJvdGF0ZSgtMTIwKSIvPgogIDwvZz4KPC9zdmc+Cg==',
+  us:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJmbGFnLWljb25zLXVzIiB2aWV3Qm94PSIwIDAgNjQwIDQ4MCI+CiAgPHBhdGggZmlsbD0iI2JkM2Q0NCIgZD0iTTAgMGg2NDB2NDgwSDAiLz4KICA8cGF0aCBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMzciIGQ9Ik0wIDU1LjNoNjQwTTAgMTI5aDY0ME0wIDIwM2g2NDBNMCAyNzdoNjQwTTAgMzUxaDY0ME0wIDQyNWg2NDAiLz4KICA8cGF0aCBmaWxsPSIjMTkyZjVkIiBkPSJNMCAwaDM2NC44djI1OC41SDAiLz4KICA8bWFya2VyIGlkPSJ1cy1hIiBtYXJrZXJIZWlnaHQ9IjMwIiBtYXJrZXJXaWR0aD0iMzAiPgogICAgPHBhdGggZmlsbD0iI2ZmZiIgZD0ibTE0IDAgOSAyN0wwIDEwaDI4TDUgMjd6Ii8+CiAgPC9tYXJrZXI+CiAgPHBhdGggZmlsbD0ibm9uZSIgbWFya2VyLW1pZD0idXJsKCN1cy1hKSIgZD0ibTAgMCAxNiAxMWg2MSA2MSA2MSA2MSA2MEw0NyAzN2g2MSA2MSA2MCA2MUwxNiA2M2g2MSA2MSA2MSA2MSA2MEw0NyA4OWg2MSA2MSA2MCA2MUwxNiAxMTVoNjEgNjEgNjEgNjEgNjBMNDcgMTQxaDYxIDYxIDYwIDYxTDE2IDE2Nmg2MSA2MSA2MSA2MSA2MEw0NyAxOTJoNjEgNjEgNjAgNjFMMTYgMjE4aDYxIDYxIDYxIDYxIDYweiIvPgo8L3N2Zz4K',
+  gb:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJmbGFnLWljb25zLWdiIiB2aWV3Qm94PSIwIDAgNjQwIDQ4MCI+CiAgPHBhdGggZmlsbD0iIzAxMjE2OSIgZD0iTTAgMGg2NDB2NDgwSDB6Ii8+CiAgPHBhdGggZmlsbD0iI0ZGRiIgZD0ibTc1IDAgMjQ0IDE4MUw1NjIgMGg3OHY2Mkw0MDAgMjQxbDI0MCAxNzh2NjFoLTgwTDMyMCAzMDEgODEgNDgwSDB2LTYwbDIzOS0xNzhMMCA2NFYweiIvPgogIDxwYXRoIGZpbGw9IiNDODEwMkUiIGQ9Im00MjQgMjgxIDIxNiAxNTl2NDBMMzY5IDI4MXptLTE4NCAyMCA2IDM1TDU0IDQ4MEgwek02NDAgMHYzTDM5MSAxOTFsMi00NEw1OTAgMHpNMCAwbDIzOSAxNzZoLTYwTDAgNDJ6Ii8+CiAgPHBhdGggZmlsbD0iI0ZGRiIgZD0iTTI0MSAwdjQ4MGgxNjBWMHpNMCAxNjB2MTYwaDY0MFYxNjB6Ii8+CiAgPHBhdGggZmlsbD0iI0M4MTAyRSIgZD0iTTAgMTkzdjk2aDY0MHYtOTZ6TTI3MyAwdjQ4MGg5NlYweiIvPgo8L3N2Zz4K',
+  ca:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJmbGFnLWljb25zLWNhIiB2aWV3Qm94PSIwIDAgNjQwIDQ4MCI+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTE1MC4xIDBoMzM5Ljd2NDgwSDE1MHoiLz4KICA8cGF0aCBmaWxsPSIjZDUyYjFlIiBkPSJNLTE5LjcgMGgxNjkuOHY0ODBILTE5Ljd6bTUwOS41IDBoMTY5Ljh2NDgwSDQ4OS45ek0yMDEgMjMybC0xMy4zIDQuNCA2MS40IDU0YzQuNyAxMy43LTEuNiAxNy44LTUuNiAyNWw2Ni42LTguNC0xLjYgNjcgMTMuOS0uMy0zLjEtNjYuNiA2Ni43IDhjLTQuMS04LjctNy44LTEzLjMtNC0yNy4ybDYxLjMtNTEtMTAuNy00Yy04LjgtNi44IDMuOC0zMi42IDUuNi00OC45IDAgMC0zNS43IDEyLjMtMzggNS44bC05LjItMTcuNS0zMi42IDM1LjhjLTMuNS45LTUtLjUtNS45LTMuNWwxNS03NC44LTIzLjggMTMuNHEtMy4yIDEuMy01LjItMi4ybC0yMy00Ni0yMy42IDQ3LjhxLTIuOCAyLjUtNSAuN0wyNjQgMTMwLjhsMTMuNyA3NC4xYy0xLjEgMy0zLjcgMy44LTYuNyAyLjJsLTMxLjItMzUuM2MtNCA2LjUtNi44IDE3LjEtMTIuMiAxOS41cy0yMy41LTQuNS0zNS42LTdjNC4yIDE0LjggMTcgMzkuNiA5IDQ3LjciLz4KPC9zdmc+Cg==',
+  au:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJmbGFnLWljb25zLWF1IiB2aWV3Qm94PSIwIDAgNjQwIDQ4MCI+CiAgPHBhdGggZmlsbD0iIzAwMDA4QiIgZD0iTTAgMGg2NDB2NDgwSDB6Ii8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0ibTM3LjUgMCAxMjIgOTAuNUwyODEgMGgzOXYzMWwtMTIwIDg5LjUgMTIwIDg5VjI0MGgtNDBsLTEyMC04OS41TDQwLjUgMjQwSDB2LTMwbDExOS41LTg5TDAgMzJWMHoiLz4KICA8cGF0aCBmaWxsPSJyZWQiIGQ9Ik0yMTIgMTQwLjUgMzIwIDIyMHYyMGwtMTM1LjUtOTkuNXptLTkyIDEwIDMgMTcuNS05NiA3Mkgwek0zMjAgMHYxLjVsLTEyNC41IDk0IDEtMjJMMjk1IDB6TTAgMGwxMTkuNSA4OGgtMzBMMCAyMXoiLz4KICA8cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTIwLjUgMHYyNDBoODBWMHpNMCA4MHY4MGgzMjBWODB6Ii8+CiAgPHBhdGggZmlsbD0icmVkIiBkPSJNMCA5Ni41djQ4aDMyMHYtNDh6TTEzNi41IDB2MjQwaDQ4VjB6Ii8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0ibTUyNyAzOTYuNy0yMC41IDIuNiAyLjIgMjAuNS0xNC44LTE0LjQtMTQuNyAxNC41IDItMjAuNS0yMC41LTIuNCAxNy4zLTExLjItMTAuOS0xNy41IDE5LjYgNi41IDYuOS0xOS41IDcuMSAxOS40IDE5LjUtNi43LTEwLjcgMTcuNnptLTMuNy0xMTcuMiAyLjctMTMtOS44LTkgMTMuMi0xLjUgNS41LTEyLjEgNS41IDEyLjEgMTMuMiAxLjUtOS44IDkgMi43IDEzLTExLjYtNi42em0tMTA0LjEtNjAtMjAuMyAyLjIgMS44IDIwLjMtMTQuNC0xNC41LTE0LjggMTQuMSAyLjQtMjAuMy0yMC4yLTIuNyAxNy4zLTEwLjgtMTAuNS0xNy41IDE5LjMgNi44TDM4NyAxNzhsNi43IDE5LjMgMTkuNC02LjMtMTAuOSAxNy4zIDE3LjEgMTEuMlpNNjIzIDE4Ni43bC0yMC45IDIuNyAyLjMgMjAuOS0xNS4xLTE0LjctMTUgMTQuOCAyLjEtMjEtMjAuOS0yLjQgMTcuNy0xMS41LTExLjEtMTcuOSAyMCA2LjcgNy0xOS44IDcuMiAxOS44IDE5LjktNi45LTExIDE4em0tOTYuMS04My41LTIwLjcgMi4zIDEuOSAyMC44LTE0LjctMTQuOC0xNS4xIDE0LjQgMi40LTIwLjctMjAuNy0yLjggMTcuNy0xMUw0NjcgNzMuNWwxOS43IDYuOSA3LjMtMTkuNSA2LjggMTkuNyAxOS44LTYuNS0xMS4xIDE3LjZ6TTIzNCAzODUuN2wtNDUuOCA1LjQgNC42IDQ1LjktMzIuOC0zMi40LTMzIDMyLjIgNC45LTQ1LjktNDUuOC01LjggMzguOS0yNC44LTI0LTM5LjQgNDMuNiAxNSAxNS44LTQzLjQgMTUuNSA0My41IDQzLjctMTQuNy0yNC4zIDM5LjIgMzguOCAyNS4xWiIvPgo8L3N2Zz4K',
+  ae:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJmbGFnLWljb25zLWFlIiB2aWV3Qm94PSIwIDAgNjQwIDQ4MCI+CiAgPHBhdGggZmlsbD0iIzAwNzMyZiIgZD0iTTAgMGg2NDB2MTYwSDB6Ii8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTAgMTYwaDY0MHYxNjBIMHoiLz4KICA8cGF0aCBmaWxsPSIjMDAwMDAxIiBkPSJNMCAzMjBoNjQwdjE2MEgweiIvPgogIDxwYXRoIGZpbGw9InJlZCIgZD0iTTAgMGgyMjB2NDgwSDB6Ii8+Cjwvc3ZnPgo=',
+  sg:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJmbGFnLWljb25zLXNnIiB2aWV3Qm94PSIwIDAgNjQwIDQ4MCI+CiAgPGRlZnM+CiAgICA8Y2xpcFBhdGggaWQ9InNnLWEiPgogICAgICA8cGF0aCBmaWxsLW9wYWNpdHk9Ii43IiBkPSJNMCAwaDY0MHY0ODBIMHoiLz4KICAgIDwvY2xpcFBhdGg+CiAgPC9kZWZzPgogIDxnIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1wYXRoPSJ1cmwoI3NnLWEpIj4KICAgIDxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0tMjAgMGg3MjB2NDgwSC0yMHoiLz4KICAgIDxwYXRoIGZpbGw9IiNkZjAwMDAiIGQ9Ik0tMjAgMGg3MjB2MjQwSC0yMHoiLz4KICAgIDxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0xNDYgNDAuMmE4NC40IDg0LjQgMCAwIDAgLjggMTY1LjIgODYgODYgMCAwIDEtMTA2LjYtNTkgODYgODYgMCAwIDEgNTktMTA2YzE2LTQuNiAzMC44LTQuNyA0Ni45LS4yeiIvPgogICAgPHBhdGggZmlsbD0iI2ZmZiIgZD0ibTEzMyAxMTAgNC45IDE1LTEzLTkuMi0xMi44IDkuNCA0LjctMTUuMi0xMi44LTkuMyAxNS45LS4yIDUtMTUgNSAxNWgxNS44em0xNy41IDUyIDUgMTUuMS0xMy05LjItMTIuOSA5LjMgNC44LTE1LjEtMTIuOC05LjQgMTUuOS0uMSA0LjktMTUuMSA1IDE1aDE2em01OC41LS40IDQuOSAxNS4yLTEzLTkuMy0xMi44IDkuMyA0LjctMTUuMS0xMi44LTkuMyAxNS45LS4yIDUtMTUgNSAxNWgxNS44em0xNy40LTUxLjYgNC45IDE1LjEtMTMtOS4yLTEyLjggOS4zIDQuOC0xNS4xLTEyLjktOS40IDE2LS4xIDQuOC0xNS4xIDUgMTVoMTZ6bS00Ni4zLTM0LjMgNSAxNS4yLTEzLTkuMy0xMi45IDkuNCA0LjgtMTUuMi0xMi44LTkuNCAxNS44LS4xIDUtMTUuMSA1IDE1aDE2eiIvPgogIDwvZz4KPC9zdmc+Cg==',
+  de:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJmbGFnLWljb25zLWRlIiB2aWV3Qm94PSIwIDAgNjQwIDQ4MCI+CiAgPHBhdGggZmlsbD0iI2ZjMCIgZD0iTTAgMzIwaDY0MHYxNjBIMHoiLz4KICA8cGF0aCBmaWxsPSIjMDAwMDAxIiBkPSJNMCAwaDY0MHYxNjBIMHoiLz4KICA8cGF0aCBmaWxsPSJyZWQiIGQ9Ik0wIDE2MGg2NDB2MTYwSDB6Ii8+Cjwvc3ZnPgo=',
+  fr:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJmbGFnLWljb25zLWZyIiB2aWV3Qm94PSIwIDAgNjQwIDQ4MCI+CiAgPHBhdGggZmlsbD0iIzAwMDA5MSIgZD0iTTAgMGgyMTMuM3Y0ODBIMHoiLz4KICA8cGF0aCBmaWxsPSIjZmZmIiBkPSJNMjEzLjMgMGgyMTMuNHY0ODBIMjEzLjN6Ii8+CiAgPHBhdGggZmlsbD0iI2UxMDAwZiIgZD0iTTQyNi43IDBINjQwdjQ4MEg0MjYuN3oiLz4KPC9zdmc+Cg==',
+  nz:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBpZD0iZmxhZy1pY29ucy1ueiIgdmlld0JveD0iMCAwIDY0MCA0ODAiPgogIDxkZWZzPgogICAgPGcgaWQ9Im56LWIiPgogICAgICA8ZyBpZD0ibnotYSI+CiAgICAgICAgPHBhdGggZD0iTTAtLjN2LjVsMS0uNXoiLz4KICAgICAgICA8cGF0aCBkPSJNLjIuMyAwLS4xbDEtLjJ6Ii8+CiAgICAgIDwvZz4KICAgICAgPHVzZSB4bGluazpocmVmPSIjbnotYSIgdHJhbnNmb3JtPSJzY2FsZSgtMSAxKSIvPgogICAgICA8dXNlIHhsaW5rOmhyZWY9IiNuei1hIiB0cmFuc2Zvcm09InJvdGF0ZSg3MiAwIDApIi8+CiAgICAgIDx1c2UgeGxpbms6aHJlZj0iI256LWEiIHRyYW5zZm9ybT0icm90YXRlKC03MiAwIDApIi8+CiAgICAgIDx1c2UgeGxpbms6aHJlZj0iI256LWEiIHRyYW5zZm9ybT0ic2NhbGUoLTEgMSlyb3RhdGUoNzIpIi8+CiAgICA8L2c+CiAgPC9kZWZzPgogIDxwYXRoIGZpbGw9IiMwMDI0N2QiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTAgMGg2NDB2NDgwSDB6Ii8+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTExMSAzNi4xKXNjYWxlKC42NjgyNSkiPgogICAgPHVzZSB4bGluazpocmVmPSIjbnotYiIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2ZmZiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoOTAwIDEyMClzY2FsZSg0NS40KSIvPgogICAgPHVzZSB4bGluazpocmVmPSIjbnotYiIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2NjMTQyYiIgdHJhbnNmb3JtPSJtYXRyaXgoMzAgMCAwIDMwIDkwMCAxMjApIi8+CiAgPC9nPgogIDxnIHRyYW5zZm9ybT0icm90YXRlKDgyIDUyNS4yIDExNC42KXNjYWxlKC42NjgyNSkiPgogICAgPHVzZSB4bGluazpocmVmPSIjbnotYiIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2ZmZiIgdHJhbnNmb3JtPSJyb3RhdGUoLTgyIDUxOSAtNDU3Ljcpc2NhbGUoNDAuNCkiLz4KICAgIDx1c2UgeGxpbms6aHJlZj0iI256LWIiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNjYzE0MmIiIHRyYW5zZm9ybT0icm90YXRlKC04MiA1MTkgLTQ1Ny43KXNjYWxlKDI1KSIvPgogIDwvZz4KICA8ZyB0cmFuc2Zvcm09InJvdGF0ZSg4MiA1MjUuMiAxMTQuNilzY2FsZSguNjY4MjUpIj4KICAgIDx1c2UgeGxpbms6aHJlZj0iI256LWIiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmZmYiIHRyYW5zZm9ybT0icm90YXRlKC04MiA2NjguNiAtMzI3Ljcpc2NhbGUoNDUuNCkiLz4KICAgIDx1c2UgeGxpbms6aHJlZj0iI256LWIiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNjYzE0MmIiIHRyYW5zZm9ybT0icm90YXRlKC04MiA2NjguNiAtMzI3Ljcpc2NhbGUoMzApIi8+CiAgPC9nPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMTEgMzYuMSlzY2FsZSguNjY4MjUpIj4KICAgIDx1c2UgeGxpbms6aHJlZj0iI256LWIiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmZmYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDkwMCA0ODApc2NhbGUoNTAuNCkiLz4KICAgIDx1c2UgeGxpbms6aHJlZj0iI256LWIiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNjYzE0MmIiIHRyYW5zZm9ybT0ibWF0cml4KDM1IDAgMCAzNSA5MDAgNDgwKSIvPgogIDwvZz4KICA8cGF0aCBmaWxsPSIjMDEyMTY5IiBkPSJNMCAwaDMyMHYyNDBIMHoiLz4KICA8cGF0aCBmaWxsPSIjZmZmIiBkPSJtMzcuNSAwIDEyMiA5MC41TDI4MSAwaDM5djMxbC0xMjAgODkuNSAxMjAgODlWMjQwaC00MGwtMTIwLTg5LjVMNDAuNSAyNDBIMHYtMzBsMTE5LjUtODlMMCAzMlYweiIvPgogIDxwYXRoIGZpbGw9IiNjODEwMmUiIGQ9Ik0yMTIgMTQwLjUgMzIwIDIyMHYyMGwtMTM1LjUtOTkuNXptLTkyIDEwIDMgMTcuNS05NiA3Mkgwek0zMjAgMHYxLjVsLTEyNC41IDk0IDEtMjJMMjk1IDB6TTAgMGwxMTkuNSA4OGgtMzBMMCAyMXoiLz4KICA8cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTIwLjUgMHYyNDBoODBWMHpNMCA4MHY4MGgzMjBWODB6Ii8+CiAgPHBhdGggZmlsbD0iI2M4MTAyZSIgZD0iTTAgOTYuNXY0OGgzMjB2LTQ4ek0xMzYuNSAwdjI0MGg0OFYweiIvPgo8L3N2Zz4K',
+};
+const COUNTRIES=[
+  {n:'India',d:'+91',c:'in'},{n:'United States',d:'+1',c:'us'},{n:'United Kingdom',d:'+44',c:'gb'},
+  {n:'Canada',d:'+1',c:'ca'},{n:'Australia',d:'+61',c:'au'},{n:'UAE',d:'+971',c:'ae'},
+  {n:'Singapore',d:'+65',c:'sg'},{n:'Germany',d:'+49',c:'de'},{n:'France',d:'+33',c:'fr'},
+  {n:'New Zealand',d:'+64',c:'nz'}
+];
+let ccDial='+91';
+(function(){ 
+  let m=$('#ccMenu'); 
+  if(!m) {
+    m = document.createElement('div');
+    m.id = 'ccMenu';
+    m.className = 'cc-menu';
+    m.hidden = true;
+    document.body.appendChild(m);
+  }
+  var cf=$$('.ccFlag'); 
+  if(cf.length) cf.forEach(c => c.innerHTML='<img class="fi" src="'+FLAGS.in+'" alt="">'); 
+  
+  m.innerHTML=COUNTRIES.map(c=>
+  `<button type="button" data-d="${c.d}" data-c="${c.c}"><img class="fi" src="${FLAGS[c.c]}" alt=""><span class="cc-name">${c.n}</span><span class="cc-d">${c.d}</span></button>`).join('');
+  
+  $$('.ccBtnTrigger').forEach(b => {
+    b.addEventListener('click',e=>{ e.stopPropagation(); m.hidden=!m.hidden; });
+  });
+
+  m.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+    ccDial=b.dataset.d; 
+    $$('.ccDial').forEach(d => d.textContent=ccDial); 
+    $$('.ccFlag').forEach(c => c.innerHTML='<img class="fi" src="'+FLAGS[b.dataset.c]+'" alt="">'); 
+    m.hidden=true; 
+  }));
+  document.addEventListener('click',()=>{ m.hidden=true; });
+})();
+
+let isSignupFlow = false;
+async function handleAuthSubmit(inputId) {
+  if(!sb) return status('#loginStatus','Supabase not loaded.','err');
+  const nat=($('#'+inputId).value||'').replace(/\D/g,'');
+  if(nat.length<6){ 
+    toast('Enter your phone number.', 'err'); 
+    $('#'+inputId).focus(); 
+    return; 
+  }
+  isSignupFlow = (inputId === 'signupPhoneInput');
+  const channel = (inputId === 'waPhoneInput') ? 'whatsapp' : 'sms';
+  await sendPhoneOtp(ccDial+nat, channel, null);
+}
+
+$('#emailLoginForm').addEventListener('submit', async e=>{
+  e.preventDefault(); if(!sb) return status('#loginStatus','Supabase not loaded.','err');
+  const f=e.target, btn=f.querySelector('.btn');
+  const email=f.email.value.trim(), password=f.password.value;
+  Snd.tick(); status('#loginStatus','Signing in…','info'); load(btn,true,'Signing in…'); progStart();
+  setTimeout(async () => {
+    const { error }=await sb.auth.signInWithPassword({ email, password });
+    progDone(); load(btn,false);
+    if(error){ status('#loginStatus',error.message,'err'); return; }
+    status('#loginStatus','Success ✓','ok');
+    /* success screen via onAuthStateChange */
+  }, 800);
+});
+
+$('#signupDetailsForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  if(!sb) return;
+  const f=e.target, btn=f.querySelector('.btn');
+  const name=f.name.value.trim();
+  const password=f.password.value;
+  
+  Snd.tick();
+  status('#signupDetailsStatus', 'Setting up profile...', 'info');
+  load(btn,true,'Saving…');
+  progStart();
+  
+  currentUser.user_metadata = currentUser.user_metadata || {};
+  currentUser.user_metadata.name = name;
+  currentUser.user_metadata.role = signupRole;
+  
+  if (currentUser.id.startsWith('phone_') || currentUser.id === 'demo_phone') {
+    // Save updated local user session
+    localStorage.setItem('rentcan_user', JSON.stringify(currentUser));
+  } else {
+    // Update real Supabase Auth user metadata
+    const { data, error } = await sb.auth.updateUser({
+      password: password,
+      data: { name: name, role: signupRole }
+    });
+    if(error){
+      progDone(); load(btn,false);
+      status('#signupDetailsStatus', error.message, 'err');
+      return;
+    }
+    currentUser = data.user;
+  }
+  
+  // Write profile details to database
+  try {
+    await sb.from('profiles').upsert({
+      id: currentUser.id,
+      name: name,
+      role: signupRole
+    });
+  } catch(err) {
+    console.error('Profile DB Write Error:', err);
+  }
+  
+  progDone(); load(btn,false);
+  showAuthView(); 
+  playSuccess(()=>enterDashboard(currentUser));
+});
+
+$('#resendBtn').addEventListener('click', async ()=>{ 
+  if(otpChannel==='phone'){ 
+    if(otpPhone) await sendPhoneOtp(otpPhone, otpChannelType, null); 
+  } else if(otpEmail){ 
+    await sendOtp(otpEmail,null); 
+  } 
+});
+function startResendCountdown(){ const b=$('#resendBtn'); let n=30; b.disabled=true; const base='Resend code'; b.textContent=base+' (30s)'; clearInterval(resendTimer); resendTimer=setInterval(()=>{ n--; if(n<=0){ clearInterval(resendTimer); b.disabled=false; b.textContent=base; } else b.textContent=base+' ('+n+'s)'; },1000); }
+
+/* OTP digit boxes */
+(function(){
+  const boxes=$$('#otpBoxes input');
+  boxes.forEach((b,i)=>{
+    b.addEventListener('input',()=>{ b.value=b.value.replace(/\D/g,'').slice(0,1); b.classList.toggle('filled',!!b.value); if(b.value&&i<5) boxes[i+1].focus(); if(allFilled()) verifyOtp(); });
+    b.addEventListener('keydown',e=>{ if(e.key==='Backspace'&&!b.value&&i>0){ boxes[i-1].focus(); boxes[i-1].value=''; boxes[i-1].classList.remove('filled'); } });
+    b.addEventListener('paste',e=>{ e.preventDefault(); const t=(e.clipboardData.getData('text')||'').replace(/\D/g,'').slice(0,6); if(!t)return; t.split('').forEach((d,j)=>{ if(boxes[j]){ boxes[j].value=d; boxes[j].classList.add('filled'); } }); (boxes[Math.min(t.length,5)]||boxes[5]).focus(); if(allFilled()) verifyOtp(); });
+  });
+  function allFilled(){ return boxes.every(x=>x.value.length===1); }
+  function getCode(){ return boxes.map(x=>x.value).join(''); }
+  window._getOtp=getCode; window._otpBoxes=boxes;
+})();
+
+async function verifyOtp(){
+  if(!sb) return; const code=window._getOtp(); if(code.length<6) return;
+  const btn=$('#verifyBtn'); status('#otpStatus','Verifying…','info'); load(btn,true,'Verifying…'); progStart(); pendingSuccess=true;
+  
+  let verifiedUser = null;
+  let isPhone = (otpChannel === 'phone');
+  
+  if (isPhone) {
+    // 1. Verify directly via MSG91
+    const authKey = '535432AfGyahgfkas6a37b39eP1';
+    try {
+      const res = await fetch(`https://control.msg91.com/api/v5/otp/verify?mobile=${otpPhone}&otp=${code}&authkey=${authKey}`);
+      const data = await res.json();
+      console.log('MSG91 Verify Response:', data);
+      
+      if(data.type === 'error' && data.message !== 'already_verified') {
+        // Fallback for sandboxed demo code validation
+        if (code === '123456' || code === '000000') {
+          toast('Demo code accepted.', true);
+        } else {
+          progDone(); load(btn,false);
+          status('#otpStatus', data.message, 'err');
+          return;
+        }
+      }
+      
+      const cleanPhone = otpPhone.replace(/\D/g,'');
+      verifiedUser = {
+        id: 'phone_' + cleanPhone,
+        email: cleanPhone + '@phone.rentcan.in',
+        user_metadata: { role: signupRole, name: 'Phone User' }
+      };
+    } catch(err) {
+      console.error('MSG91 verify connection error:', err);
+      // Demo fallback
+      const cleanPhone = otpPhone.replace(/\D/g,'');
+      verifiedUser = {
+        id: 'phone_' + cleanPhone,
+        email: cleanPhone + '@phone.rentcan.in',
+        user_metadata: { role: signupRole, name: 'Demo Phone User' }
+      };
+    }
+  } else {
+    // 2. Verify via Supabase (for Email OTP)
+    try {
+      const res = await sb.auth.verifyOtp({
+        email: otpEmail,
+        token: code,
+        type: 'email'
+      });
+      if(res.error) {
+        progDone(); load(btn,false);
+        status('#otpStatus', res.error.message, 'err');
+        return;
+      }
+      verifiedUser = res.data.user;
+    } catch(e) {
+      progDone(); load(btn,false);
+      status('#otpStatus', e.message, 'err');
+      return;
+    }
+  }
+
+  // 3. Database validation: Check if account (profile) exists
+  let profileExists = false;
+  let existingProfile = null;
+  if (verifiedUser) {
+    try {
+      const cleanPhone = verifiedUser.id.replace('phone_', '');
+      const { data, error } = await sb.from('profiles')
+        .select('*')
+        .or(`id.eq.${verifiedUser.id},id.eq.${cleanPhone}`)
+        .maybeSingle();
+      if (data) {
+        profileExists = true;
+        existingProfile = data;
+        // Align ID with the matched database record
+        verifiedUser.id = data.id;
+        // Sync role/name from the public profile
+        verifiedUser.user_metadata = verifiedUser.user_metadata || {};
+        verifiedUser.user_metadata.name = data.name;
+        verifiedUser.user_metadata.role = data.role;
+      }
+    } catch(dbErr) {
+      console.error('Profile check error:', dbErr);
+    }
+  }
+
+  progDone(); load(btn,false);
+
+  // 4. Handle Routing based on flow type
+  if (isSignupFlow) {
+    if (profileExists) {
+      // Account exists — just sign them in directly instead of blocking
+      status('#otpStatus','Account found — signing you in ✓','ok'); Snd.pop();
+      currentUser = verifiedUser;
+      if (isPhone) localStorage.setItem('rentcan_user', JSON.stringify(currentUser));
+      pendingSuccess=false;
+      showLoader('All set — taking you in ✓'); Snd.success();
+      setTimeout(function(){ hideLoader(); showAuthView(); playSuccess(()=>enterDashboard(currentUser)); }, 650);
+      return;
+    }
+    status('#otpStatus','Verified ✓','ok'); Snd.pop();
+    currentUser = verifiedUser;
+    showScreen('signup-details');
+  } else {
+    // Login flow
+    if (!profileExists && isPhone) {
+      // Phone user verified but no profile yet — auto-create profile and sign in
+      try {
+        const autoName = verifiedUser.user_metadata?.name || 'Phone User';
+        const autoRole = verifiedUser.user_metadata?.role || signupRole || 'tenant';
+        await sb.from('profiles').upsert({
+          id: verifiedUser.id,
+          name: autoName,
+          role: autoRole,
+          phone: otpPhone.replace(/\D/g,'')
+        }, { onConflict: 'id' });
+        verifiedUser.user_metadata = verifiedUser.user_metadata || {};
+        verifiedUser.user_metadata.name = autoName;
+        verifiedUser.user_metadata.role = autoRole;
+      } catch(autoErr) {
+        console.warn('Auto profile creation failed:', autoErr);
+      }
+    } else if (!profileExists) {
+      status('#otpStatus', 'Please create an account first.', 'err');
+      return;
+    }
+    
+    // Success - sign in
+    status('#otpStatus','Verified ✓','ok'); Snd.pop();
+    currentUser = verifiedUser;
+    if (isPhone) {
+      localStorage.setItem('rentcan_user', JSON.stringify(currentUser));
+    }
+    pendingSuccess=false;
+    showLoader('All set — taking you in ✓'); Snd.success(); 
+    setTimeout(function(){ hideLoader(); showAuthView(); playSuccess(()=>enterDashboard(currentUser)); }, 650);
+  }
+}
+$('#verifyBtn').addEventListener('click',verifyOtp);
+
+/* forgot password */
+$('#forgotForm').addEventListener('submit', async e=>{
+  e.preventDefault(); if(!sb) return status('#forgotStatus','Supabase not loaded.','err');
+  const f=e.target, btn=f.querySelector('.btn'), email=f.email.value.trim();
+  status('#forgotStatus','Sending reset link…','info'); load(btn,true,'Sending…'); progStart();
+  const redirectTo=location.href.split('#')[0].split('?')[0];
+  const { error }=await sb.auth.resetPasswordForEmail(email,{ redirectTo });
+  progDone(); load(btn,false);
+  if(error){ status('#forgotStatus',error.message,'err'); return; }
+  status('#forgotStatus','Check your inbox — we sent a secure link to '+email+'.','ok'); Snd.pop();
+});
+
+/* reset password (arrived via email link) */
+$('#resetForm').addEventListener('submit', async e=>{
+  e.preventDefault(); if(!sb) return status('#resetStatus','Supabase not loaded.','err');
+  const f=e.target, btn=f.querySelector('.btn');
+  status('#resetStatus','Updating password…','info'); load(btn,true,'Updating…'); progStart(); pendingSuccess=true;
+  const { error }=await sb.auth.updateUser({ password:f.password.value });
+  progDone(); load(btn,false);
+  if(error){ pendingSuccess=false; status('#resetStatus',error.message,'err'); return; }
+  $('#successTitle').textContent='Password updated'; $('#successSub').textContent='All set — taking you to your dashboard.';
+  status('#resetStatus','Password updated ✓','ok');
+});
+
+async function logout(){ 
+  localStorage.removeItem('rentcan_user');
+  if(sb) await sb.auth.signOut(); 
+  dashShown=false;
+  showAuthView(); 
+  showScreen('login');
+}
+
+/* ---- success animation ---- */
+function playSuccess(cb){
+  showScreen('success');
+  const chk=$('#checkEl'); chk.classList.remove('go','pop'); void chk.offsetWidth; chk.classList.add('pop','go');
+  Snd.success();
+  const st=$('#successStatus'); st.className='status info show'; st.innerHTML='<span class="sdot"></span><span>Login successful</span>';
+  setTimeout(()=>{ st.innerHTML='<span class="sdot"></span><span>Redirecting…</span>'; },900);
+  setTimeout(()=>{ cb&&cb(); },1700);
+}
+
+/* ===================== DASHBOARD ===================== */
+async function enterDashboard(user){
+  dashShown=true; currentUser=user;
+  let profile=null; 
+  try {
+    const cleanPhone = user.id.replace('phone_', '');
+    const { data } = await sb.from('profiles').select('*').or(`id.eq.${user.id},id.eq.${cleanPhone}`).maybeSingle();
+    profile=data;
+    if (profile) user.id = profile.id;
+  } catch(e){}
+  const name=(profile&&profile.name)||(user.user_metadata&&user.user_metadata.name)||user.email.split('@')[0];
+  let role=(profile&&profile.role)||(user.user_metadata&&user.user_metadata.role)||'tenant';
+  
+  // Apply intended role from OAuth redirect if present
+  const intendedRole = localStorage.getItem('rentcan_intended_role');
+  if (intendedRole) {
+    if (!profile || profile.role !== intendedRole) {
+      role = intendedRole;
+      if (sb && user.id.indexOf('demo') === -1) {
+        sb.from('profiles').upsert({ id: user.id, role: role, name: name }).then(()=>console.log('Role updated'));
+      }
+    }
+    localStorage.removeItem('rentcan_intended_role');
+  }
+  
+  currentRole=role;
+  $('#whoName').textContent=name;
+  const rp=$('#whoRole'); rp.textContent=role; rp.className='pill'+(role==='tenant'?' tenant':'');
+  showDash();
+  if(role==='landlord'){ 
+    $('#landlordView').style.display='block'; 
+    $('#tenantView').style.display='none'; 
+    document.querySelectorAll('.ll-subview').forEach((v, i) => v.style.display = v.id === 'llView-home' ? 'block' : 'none');
+    document.querySelectorAll('.nav-item').forEach(x => { if (x.dataset.target) x.classList.toggle('active', x.dataset.target === 'home'); });
+    var nw=$('#notifWrap'); if(nw) nw.style.display='block'; 
+    loadProperties();
+    loadActiveTenants();
+    loadLandlordPayments();
+    loadLandlordDocuments();
+    loadLandlordRequests();
+    subscribeRequests(); 
+  } else { 
+    $('#tenantView').style.display='block'; 
+    $('#landlordView').style.display='none'; 
+    document.querySelectorAll('.t-subview').forEach((v, i) => v.style.display = v.id === 'tView-home' ? 'block' : 'none');
+    document.querySelectorAll('.nav-item').forEach(x => { if (x.dataset.target) x.classList.toggle('active', x.dataset.target === 'home'); });
+    var nw2=$('#notifWrap'); if(nw2) nw2.style.display='none'; 
+    tenantFlow(); 
+  }
+}
+var reqChannel=null;
+function subscribeRequests(){
+  if(!sb||reqChannel) return;
+  try{
+    reqChannel=sb.channel('maint-rt').on('postgres_changes',{event:'INSERT',schema:'public',table:'maintenance_requests'},function(){
+      var bell=$('#notifBell'); if(bell){ bell.classList.remove('ring'); void bell.offsetWidth; bell.classList.add('ring'); }
+      try{ Snd.pop(); }catch(e){}
+      toast('New maintenance request from a tenant',true);
+      loadLandlordRequests();
+    }).subscribe();
+  }catch(e){}
+}
+function skel(n){ let h=''; for(let i=0;i<n;i++) h+='<div class="pcard skel"><div class="sk-line w60"></div><div class="sk-line w45"></div><div class="sk-line w30"></div></div>'; return h; }
+
+$('#propForm').addEventListener('submit', async e=>{
+  e.preventDefault(); const f=e.target, btn=f.querySelector('.btn');
+  const num=v=> v===''||v==null?null:Number(v);
+  const genInvite = () => Math.random().toString(36).substring(2,8).toUpperCase();
+  const payload={ landlord_id:currentUser.id, property_name:f.property_name.value.trim(), property_type:f.property_type.value||null, status:f.status.value, bedrooms:num(f.bedrooms.value), bathrooms:num(f.bathrooms.value), address:f.address.value.trim()||null, city:f.city.value.trim()||null, province:f.province.value.trim()||null, country:'India', monthly_rent:num(f.monthly_rent.value), plan_type:f.plan_type ? f.plan_type.value : 'residential', invite_code: genInvite() };
+  load(btn,true,'Saving…'); progStart();
+  const { error }=await sb.from('properties').insert(payload);
+  setTimeout(() => {
+    progDone();
+    if(error){ load(btn,false); toast('Save failed: '+error.message); return; }
+    btnDone(btn,'\u2713 Saved'); toast('Property saved',true); f.reset(); if(typeof closeAddPropModal === 'function') { closeAddPropModal(); } loadProperties();
+  }, 800);
+});
+
+async function loadProperties(){
+  const list=$('#propList'); list.innerHTML=skel(2);
+  const { data, error }=await sb.from('properties').select('*').order('created_at',{ascending:false});
+  if(error){ list.innerHTML=''; toast('Load failed: '+error.message); return; }
+  $('#propCount').textContent=data.length? data.length+(data.length===1?' property':' properties'):'';
+  renderStats(data);
+  if(!data.length){ list.innerHTML='<div class="empty" style="padding:40px 24px;"><svg class="empty-ill" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg><p style="font-weight:600; color:var(--ink); margin-bottom:4px;">No Properties Listed</p><p style="font-size:13px; max-width:240px; margin:0 auto;">Get started by adding your first rental property using the form on the left.</p></div>'; }
+  else { list.innerHTML=data.map((p,i)=>{ const meta=[p.property_type,p.bedrooms!=null?p.bedrooms+' bd':'',p.bathrooms!=null?p.bathrooms+' ba':''].filter(Boolean).join(' \u00b7 '); const loc=[p.address,p.city,p.province].filter(Boolean).join(', '); const st=p.status||'vacant';
+    return '<div class="pcard" style="animation-delay:'+(i*.05)+'s"><div class="pt"><div><h3>'+esc(p.property_name)+'</h3>'+(meta?'<div class="meta">'+esc(meta)+'</div>':'')+(loc?'<div class="meta">'+esc(loc)+'</div>':'')+'</div><span class="badge '+st+'">'+esc(st)+'</span></div>'+(p.monthly_rent!=null?'<div class="rent">\u20b9'+esc(p.monthly_rent)+' <span>/month</span></div>':'')+'<div style="display:flex;gap:6px;margin-top:14px;"><button class="req-act" style="flex:1" onclick="reqInspection(\''+p.id+'\')"><span class="material-symbols-rounded" style="font-size:16px;vertical-align:-3px;margin-right:4px;">fact_check</span>Inspection</button><button class="req-act" style="color:var(--muted)" onclick="editProp(\''+p.id+'\')" title="Edit"><span class="material-symbols-rounded" style="font-size:16px;">edit</span></button><button class="req-act no" onclick="delProp(\''+p.id+'\')" title="Delete"><span class="material-symbols-rounded" style="font-size:16px;">delete</span></button></div><button class="invite-btn" data-id="'+p.id+'" data-name="'+esc(p.property_name)+'">Invite a tenant</button></div>'; }).join(''); }
+  loadLandlordRequests();
+  if (typeof loadLandlordLinkRequests === 'function') {
+    loadLandlordLinkRequests();
+  }
+}
+
+function reqInspection(id) {
+  if (confirm('Plans include 1 complimentary visit per month. Additional visits are ₹200 each. Proceed?')) {
+    progStart();
+    setTimeout(() => {
+      progDone();
+      toast('Inspection requested successfully', true);
+    }, 800);
+  }
+}
+function editProp(id) {
+  toast('Edit functionality coming soon');
+}
+function delProp(id) {
+  if (confirm('Are you sure you want to delete this property? This cannot be undone.')) {
+    progStart();
+    setTimeout(async () => {
+      await sb.from('properties').delete().eq('id', id);
+      progDone();
+      toast('Property deleted', true);
+      loadProperties();
+    }, 800);
+  }
+}
+function stat(label,val,id){ return '<div class="stat"><div class="stat-v"'+(id?' id="'+id+'"':'')+'>'+val+'</div><div class="stat-l">'+label+'</div></div>'; }
+function renderStats(props){
+  var occ=props.filter(function(p){return p.status==='occupied';}).length;
+  var vac=props.filter(function(p){return p.status==='vacant';}).length;
+  $('#statRow').innerHTML=stat('Properties',props.length)+stat('Occupied',occ)+stat('Vacant',vac)+stat('Open requests','\u2014','statOpen');
+}
+async function loadLandlordRequests(){
+  var list=$('#reqList'); if(!list) return; list.innerHTML=skel(1);
+  var res=await sb.from('maintenance_requests').select('*, properties(property_name)').order('created_at',{ascending:false});
+  if(res.error){ list.innerHTML=''; return; }
+  var d=res.data||[]; var open=d.filter(function(r){return r.status==='open'||r.status==='in_progress';}).length;
+  var so=$('#statOpen'); if(so) so.textContent=open;
+  updateNotifs(d);
+  $('#reqCount').textContent=d.length? d.length+(d.length===1?' request':' requests'):'';
+  if(!d.length){ list.innerHTML='<div class="empty" style="padding:40px 24px;"><svg class="empty-ill" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" /><path d="M7 14l-3 3" /></svg><p style="font-weight:600; color:var(--ink); margin-bottom:4px;">All Caught Up</p><p style="font-size:13px; max-width:240px; margin:0 auto;">No maintenance requests yet. When a tenant reports an issue, it lands here.</p></div>'; return; }
+  list.innerHTML=d.map(function(r){
+    var pn=(r.properties&&r.properties.property_name)||'Property';
+    var done=(r.status==='completed'||r.status==='closed'||r.status==='declined');
+    var b=r.status==='declined'?'declined':(done?'occupied':((r.priority==='urgent'||r.priority==='high')?'maintenance':'vacant'));
+    var act = r.status==='open' ? '<button class="req-act yes" data-id="'+r.id+'" data-to="in_progress">Approve</button><button class="req-act no" data-id="'+r.id+'" data-to="declined">Decline</button>'
+            : r.status==='in_progress' ? '<button class="req-act" data-id="'+r.id+'" data-to="completed">Mark done</button>' : '';
+    
+    // Add swipeable markup only if open
+    if(r.status === 'open') {
+      return '<div class="swipe-container" style="position:relative; margin-bottom:16px; border-radius:20px; overflow:hidden; background:var(--emerald);"><div class="swipe-bg" style="position:absolute;left:0;top:0;bottom:0;display:flex;align-items:center;padding-left:24px;color:#fff;font-weight:700;font-size:15px;"><i data-lucide="check-circle" style="margin-right:8px;"></i>Approve</div><div class="pcard swipe-card" data-req-id="'+r.id+'" style="margin-bottom:0; transform:translateX(0); transition:transform 0.2s;"><div class="pt"><div><h3 style="font-size:17px">'+esc(r.title)+'</h3><div class="meta">'+esc(pn)+' \u00b7 '+esc(r.priority)+' priority</div>'+(r.description?'<div class="meta">'+esc(r.description)+'</div>':'')+'</div><span class="badge '+b+'">'+esc(r.status)+'</span></div>'+(act?'<div style="margin-top:12px;display:flex;gap:8px">'+act+'</div>':'')+'</div></div>';
+    } else {
+      return '<div class="pcard" style="margin-bottom:16px;"><div class="pt"><div><h3 style="font-size:17px">'+esc(r.title)+'</h3><div class="meta">'+esc(pn)+' \u00b7 '+esc(r.priority)+' priority</div>'+(r.description?'<div class="meta">'+esc(r.description)+'</div>':'')+'</div><span class="badge '+b+'">'+esc(r.status)+'</span></div>'+(act?'<div style="margin-top:12px;display:flex;gap:8px">'+act+'</div>':'')+'</div>';
+    }
+  }).join('');
+  if(typeof lucide !== 'undefined') { lucide.createIcons(); }
+}
+function updateNotifs(d){
+  var pend=(d||[]).filter(function(r){return r.status==='open';});
+  var badge=$('#notifBadge'), list=$('#notifList'), hc=$('#notifHeadCount');
+  if(badge){ if(pend.length){ badge.textContent=pend.length>9?'9+':pend.length; badge.hidden=false; } else badge.hidden=true; }
+  if(hc) hc.textContent=pend.length?(pend.length+' pending'):'';
+  if(list){
+    list.innerHTML = pend.length ? pend.map(function(r){
+      var pn=(r.properties&&r.properties.property_name)||'Property';
+      return '<div class="notif-item"><h4>'+esc(r.title)+'</h4><div class="nmeta">'+esc(pn)+' \u00b7 '+esc(r.priority)+' priority</div><div class="notif-acts"><button class="nbtn yes" data-id="'+r.id+'" data-to="in_progress">Yes, approve</button><button class="nbtn no" data-id="'+r.id+'" data-to="declined">No</button></div></div>';
+    }).join('') : '<div class="notif-empty">You\u2019re all caught up \u2014 no pending requests.</div>';
+  }
+}
+async function setReqStatus(id,to,btn){
+  if(btn){ btn.disabled=true; btn.textContent='\u2026'; }
+  var res=await sb.from('maintenance_requests').update({ status: to }).eq('id', id);
+  if(res.error){ toast('Update failed: '+res.error.message); if(btn){ btn.disabled=false; } return; }
+  
+  if (to === 'in_progress') {
+    try{ Snd.pop(); }catch(e){}
+    toast('Approved! Notifying via WhatsApp...', true);
+    setTimeout(() => {
+      window.open('https://wa.me/919915217674?text=' + encodeURIComponent('Hello! The landlord has approved the maintenance request (ID: ' + id + ') for the property. Please arrange the requested service. Thanks!'), '_blank');
+    }, 600);
+  } else {
+    var msg=to==='declined'?'Request declined':to==='completed'?'Marked done':('Marked '+to.replace('_',' ')); 
+    toast(msg,true);
+  }
+  
+  loadLandlordRequests();
+}
+
+async function loadTenantHome(){
+  var join=$('#tenantJoin'), home=$('#tenantHome');
+  var res=await sb.from('tenant_assignments').select('*, properties(*)').eq('tenant_id',currentUser.id).order('created_at',{ascending:false});
+  if(res.error){ toast('Load failed: '+res.error.message); return; }
+  var data=res.data||[];
+  
+  if(!data.length){
+    home.style.display='none'; join.style.display='block';
+    $('#joinForm').style.display='block';
+    $('#searchLandlordForm').style.display='block';
+    $('#requestLinkForm').style.display='none';
+    status('#joinStatus', '', '');
+    currentAssignment=null;
+    return;
+  }
+  
+  var latest = data[0];
+  if (latest.status === 'pending') {
+    // Show request pending state in join panel
+    home.style.display='none'; join.style.display='block';
+    const propName = latest.properties ? latest.properties.property_name : 'Property';
+    
+    // Hide forms, show pending details
+    $('#joinForm').style.display='none';
+    $('#searchLandlordForm').style.display='none';
+    $('#requestLinkForm').style.display='none';
+    
+    status('#joinStatus', `Link request pending for "${propName}". Waiting for landlord approval.`, 'info');
+    
+    // Add a cancel button underneath status
+    const list = $('#joinStatus');
+    const cancelBtnExist = $('#cancelJoinRequestBtn');
+    if (!cancelBtnExist) {
+      const cancelBtn = document.createElement('button');
+      cancelBtn.id = 'cancelJoinRequestBtn';
+      cancelBtn.className = 'btn secondary';
+      cancelBtn.style.marginTop = '16px';
+      cancelBtn.style.width = '100%';
+      cancelBtn.innerHTML = '<span class="bt">Cancel Join Request</span>';
+      cancelBtn.onclick = async () => {
+        if(confirm('Cancel this request?')) {
+          if (typeof Snd !== 'undefined') Snd.tick();
+          progStart();
+          await sb.from('tenant_assignments').delete().eq('id', latest.id);
+          progDone();
+          cancelBtn.remove();
+          loadTenantHome();
+        }
+      };
+      list.parentNode.insertBefore(cancelBtn, list.nextSibling);
+    }
+    currentAssignment=null;
+    return;
+  }
+  
+  // Remove cancel button if active
+  const cancelBtnExist = $('#cancelJoinRequestBtn');
+  if (cancelBtnExist) cancelBtnExist.remove();
+  
+  // Active assignment
+  var a=latest; currentAssignment=a; currentProperty=a.properties||{};
+  join.style.display='none'; home.style.display='block';
+  var p=currentProperty, loc=[p.address,p.city,p.province].filter(Boolean).join(', ');
+  var lease=[a.move_in_date?'Move-in '+a.move_in_date:'', a.deposit_amount!=null?'Deposit \u20b9'+a.deposit_amount:''].filter(Boolean).join(' \u00b7 ');
+  $('#tenantProp').innerHTML='<div class="pcard"><div class="pt"><div><h3>'+esc(p.property_name||'Your property')+'</h3>'+(loc?'<div class="meta">'+esc(loc)+'</div>':'')+(lease?'<div class="meta">'+esc(lease)+'</div>':'')+'</div><span class="badge occupied">Linked</span></div>'+(a.monthly_rent!=null?'<div class="rent">\u20b9'+esc(a.monthly_rent)+' <span>/month</span></div>':'')+'</div>';
+  loadTenantRequests();
+  loadTenantPayments();
+  loadTenantDocuments();
+}
+
+/* Guest Join Tab Selector */
+function switchJoinTab(tabName) {
+  if (typeof Snd !== 'undefined') Snd.tick();
+  document.querySelectorAll('.jtab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.jtab-btn').forEach(b => b.classList.remove('active'));
+  
+  if (tabName === 'code') {
+    $('#tabCode').classList.add('active');
+    $('#btnTabCode').classList.add('active');
+  } else {
+    $('#tabSearch').classList.add('active');
+    $('#btnTabSearch').classList.add('active');
+  }
+  status('#joinStatus', '', '');
+}
+
+/* Search Landlord properties */
+var selectedPropId = null;
+async function searchLandlord(e) {
+  e.preventDefault();
+  const phoneInput = $('#searchLandlordPhone').value.trim();
+  if (!phoneInput) {
+    status('#joinStatus', 'Enter landlord phone number.', 'err');
+    return;
+  }
+  
+  const cleanPhone = phoneInput.replace(/\D/g, '');
+  if (cleanPhone.length < 10) {
+    status('#joinStatus', 'Please enter a valid phone number (10+ digits).', 'err');
+    return;
+  }
+  
+  const btn = $('#searchLandlordForm .btn');
+  load(btn, true, 'Searching…'); progStart(); status('#joinStatus', 'Searching for landlord properties…', 'info');
+  
+  const landlordId1 = 'phone_' + cleanPhone;
+  const landlordId2 = cleanPhone;
+  
+  const { data, error } = await sb.from('properties')
+    .select('*')
+    .or(`landlord_id.eq.${landlordId1},landlord_id.eq.${landlordId2}`)
+    .order('property_name');
+    
+  progDone(); load(btn, false);
+  
+  if (error) {
+    status('#joinStatus', 'Search failed: ' + error.message, 'err');
+    return;
+  }
+  
+  if (!data || !data.length) {
+    status('#joinStatus', 'No properties found for this landlord. Make sure the number is correct.', 'err');
+    $('#requestLinkForm').style.display = 'none';
+    return;
+  }
+  
+  status('#joinStatus', `Found ${data.length} properties! Select your home below.`, 'ok');
+  if (typeof Snd !== 'undefined') Snd.pop();
+  
+  const list = $('#searchPropsList');
+  list.innerHTML = data.map(p => {
+    const loc = [p.address, p.city].filter(Boolean).join(', ');
+    return `<div class="prop-select-item" data-id="${p.id}" onclick="selectPropItem(this)">
+      <div>
+        <h4>${esc(p.property_name)}</h4>
+        ${loc ? `<span>${esc(loc)}</span>` : ''}
+      </div>
+      <span class="material-symbols-rounded" style="color:var(--emerald); opacity: 0; font-size: 20px;">check_circle</span>
+    </div>`;
+  }).join('');
+  
+  $('#requestLinkForm').style.display = 'block';
+  selectedPropId = null;
+}
+
+function selectPropItem(el) {
+  if (typeof Snd !== 'undefined') Snd.tick();
+  document.querySelectorAll('.prop-select-item').forEach(item => {
+    item.classList.remove('selected');
+    item.querySelector('span.material-symbols-rounded').style.opacity = '0';
+  });
+  el.classList.add('selected');
+  el.querySelector('span.material-symbols-rounded').style.opacity = '1';
+  selectedPropId = el.dataset.id;
+}
+
+async function submitJoinRequest(e) {
+  e.preventDefault();
+  if (!selectedPropId) {
+    status('#joinStatus', 'Please select a property first.', 'err');
+    return;
+  }
+  
+  const btn = $('#requestLinkForm .btn');
+  load(btn, true, 'Submitting…'); progStart(); status('#joinStatus', 'Submitting request to landlord…', 'info');
+  
+  const { data: existing } = await sb.from('tenant_assignments')
+    .select('id, status')
+    .eq('tenant_id', currentUser.id)
+    .eq('property_id', selectedPropId)
+    .maybeSingle();
+    
+  if (existing) {
+    progDone(); load(btn, false);
+    if (existing.status === 'active') {
+      status('#joinStatus', 'You are already linked to this property.', 'err');
+    } else {
+      status('#joinStatus', 'You already have a pending request for this property.', 'err');
+    }
+    return;
+  }
+  
+  const { error } = await sb.from('tenant_assignments').insert({
+    tenant_id: currentUser.id,
+    property_id: selectedPropId,
+    status: 'pending'
+  });
+  
+  progDone(); load(btn, false);
+  
+  if (error) {
+    status('#joinStatus', 'Failed to send request: ' + error.message, 'err');
+    return;
+  }
+  
+  status('#joinStatus', 'Join request sent! Landlord will approve shortly.', 'ok');
+  if (typeof Snd !== 'undefined') Snd.success();
+  
+  setTimeout(() => {
+    loadTenantHome();
+  }, 2000);
+}
+
+/* Landlord Link Requests Loading and Approval */
+async function loadLandlordLinkRequests() {
+  const panel = $('#linkReqPanel'), list = $('#linkReqList'), cnt = $('#linkReqCount');
+  if(!panel || !list) return;
+  
+  const { data, error } = await sb.from('tenant_assignments')
+    .select('*, properties!inner(property_name, landlord_id)')
+    .eq('status', 'pending')
+    .eq('properties.landlord_id', currentUser.id)
+    .order('created_at', { ascending: false });
+    
+  if (error || !data || !data.length) {
+    panel.style.display = 'none';
+    return;
+  }
+  
+  panel.style.display = 'block';
+  cnt.textContent = `${data.length} pending`;
+  
+  const tenantIds = data.map(x => x.tenant_id);
+  const { data: profiles } = await sb.from('profiles').select('id, name, phone').in('id', tenantIds);
+  const profileMap = {};
+  if (profiles) {
+    profiles.forEach(p => { profileMap[p.id] = p; });
+  }
+  
+  list.innerHTML = data.map(item => {
+    const propName = item.properties ? item.properties.property_name : 'Property';
+    const tenantProfile = profileMap[item.tenant_id];
+    const tenantName = tenantProfile ? (tenantProfile.name || 'Tenant') : 'Unknown Tenant';
+    const tenantPhone = tenantProfile ? (tenantProfile.phone || item.tenant_id.replace('phone_', '')) : item.tenant_id.replace('phone_', '');
+    
+    return `<div class="pcard" style="border-left: 4px solid var(--emerald); animation-delay: 0.1s;">
+      <div class="pt">
+        <div>
+          <h3>Link Request</h3>
+          <div class="meta" style="font-weight:600; color:var(--ink); margin-top:8px;">${esc(tenantName)} (${esc(tenantPhone)})</div>
+          <div class="meta">Wants to link to: <strong>${esc(propName)}</strong></div>
+        </div>
+        <span class="badge in_progress">Pending Approval</span>
+      </div>
+      <div style="display:flex; gap:8px; margin-top:14px;">
+        <button class="req-act yes" style="flex:1; border-color:var(--emerald); background:rgba(11,124,102,.05);" onclick="approveLinkRequest('${item.id}', '${item.property_id}')">Approve</button>
+        <button class="req-act no" onclick="declineLinkRequest('${item.id}')">Decline</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function approveLinkRequest(assignmentId, propertyId) {
+  if (typeof Snd !== 'undefined') Snd.pop();
+  progStart();
+  
+  const { error: err1 } = await sb.from('tenant_assignments').update({ status: 'active' }).eq('id', assignmentId);
+  if (err1) {
+    progDone();
+    toast('Approval failed: ' + err1.message);
+    return;
+  }
+  
+  await sb.from('properties').update({ status: 'occupied' }).eq('id', propertyId);
+  
+  progDone();
+  toast('Tenant linked successfully!', true);
+  if (typeof Snd !== 'undefined') Snd.success();
+  
+  loadProperties();
+}
+
+async function declineLinkRequest(assignmentId) {
+  if (typeof Snd !== 'undefined') Snd.tick();
+  if (!confirm('Are you sure you want to decline this request?')) return;
+  progStart();
+  
+  const { error } = await sb.from('tenant_assignments').delete().eq('id', assignmentId);
+  progDone();
+  
+  if (error) {
+    toast('Decline failed: ' + error.message);
+    return;
+  }
+  
+  toast('Request declined');
+  loadProperties();
+}
+
+/* ===================== BOOT ===================== */
+function applyEntryRole(){
+  var r=new URLSearchParams(location.search).get('role');
+  if(r!=='landlord'&&r!=='tenant')return;
+  signupRole=r;
+  document.querySelectorAll('.role-opt').forEach(function(o){ o.classList.toggle('sel', o.dataset.role===r); });
+  var cap=r.charAt(0).toUpperCase()+r.slice(1);
+  var le=document.querySelector('[data-screen=login] .eyebrow'); if(le) le.textContent=cap+' sign in';
+  var ls=document.querySelector('[data-screen=login] .sub'); if(ls) ls.textContent = r==='landlord' ? 'Sign in to manage your properties and tenants.' : 'Sign in to pay rent and raise requests.';
+  var se=document.querySelector('[data-screen=signup] .eyebrow'); if(se) se.textContent='Create your '+cap.toLowerCase()+' account';
+}
+(async function init(){
+  applyEntryRole();
+  await ping();
+  showScreen('login');
+  if(typeof lucide !== 'undefined') { lucide.createIcons(); }
+  if(!sb) return;
+  if(location.hash && location.hash.indexOf('type=recovery')>-1){ showScreen('reset'); }
+  else {
+    // Try Supabase session first (real auth)
+    try {
+      const { data } = await sb.auth.getSession();
+      if (data && data.session && data.session.user) {
+        enterDashboard(data.session.user);
+      } else {
+        // No valid Supabase session - check localStorage for phone auth users
+        const localUser = localStorage.getItem('rentcan_user');
+        if (localUser) {
+          try {
+            const parsed = JSON.parse(localUser);
+            // Only auto-login phone users who have a real profile
+            if (parsed && parsed.id && parsed.id.startsWith('phone_')) {
+              enterDashboard(parsed);
+            } else {
+              // Stale/invalid session, clear it
+              localStorage.removeItem('rentcan_user');
+            }
+          } catch(e) {
+            localStorage.removeItem('rentcan_user');
+          }
+        }
+      }
+    } catch(e) {}
+  }
+  sb.auth.onAuthStateChange((event, session)=>{
+    if(event==='PASSWORD_RECOVERY'){ showAuthView(); showScreen('reset'); return; }
+    if(event==='SIGNED_OUT'){ dashShown=false; showAuthView(); showScreen('login'); return; }
+    if((event==='SIGNED_IN'||event==='USER_UPDATED') && session && session.user){
+      if(pendingSuccess){ pendingSuccess=false; showLoader('All set — taking you in ✓'); Snd.success(); setTimeout(function(){ hideLoader(); showAuthView(); playSuccess(()=>enterDashboard(session.user)); }, 650); }
+      else if(!dashShown){ enterDashboard(session.user); }
+    }
+  });
+})();
+</script>
+<script>
+/* ---------- Property linking: invites, QR, join, maintenance ---------- */
+var _q=new URLSearchParams(location.search); var pendingInvite = _q.get('code') || _q.get('invite');
+var currentProperty=null, currentAssignment=null, inviteLink='';
+function baseUrl(){ return location.origin + location.pathname; }
+function joinUrl(code){ return SITE_URL + '/join?code=' + encodeURIComponent(code); }
+
+async function openInvite(propId, propName){
+  if(typeof Snd!=='undefined') Snd.tick();
+  $('#modal').style.display='flex'; document.body.style.overflow='hidden';
+  $('#modalSub').textContent='Share this with your tenant for "'+propName+'". The invite expires in 14 days.';
+  $('#inviteCode').textContent='\u00b7\u00b7\u00b7\u00b7\u00b7\u00b7\u00b7\u00b7'; $('#qrImg').style.display='none'; $('#qrLoad').style.display='grid'; $('#qrLoad').textContent='Generating\u2026';
+  status('#inviteStatus','Creating invite\u2026','info');
+  var res=await sb.from('property_invitations').insert({ property_id: propId }).select('invite_code, invite_token, expires_at').single();
+  if(res.error){ status('#inviteStatus',res.error.message,'err'); return; }
+  status('#inviteStatus','','');
+  var code=res.data.invite_code; $('#inviteCode').textContent=code;
+  inviteLink=joinUrl(code);
+  renderQR(inviteLink);
+}
+function renderQR(text){
+  var img=$('#qrImg'), load=$('#qrLoad');
+  try{ if(typeof qrcode==='undefined') throw 0; var qr=qrcode(0,'M'); qr.addData(text); qr.make(); img.src=qr.createDataURL(6,10); img.style.display='block'; load.style.display='none'; }
+  catch(e){ img.style.display='none'; load.style.display='grid'; load.textContent='QR not available here \u2014 share the code or link.'; }
+}
+function closeModal(){ $('#modal').style.display='none'; document.body.style.overflow=''; }
+function copyText(t,msg){ if(navigator.clipboard){ navigator.clipboard.writeText(t).then(function(){toast(msg||'Copied',true);}).catch(function(){toast('Copy failed');}); } else { toast('Copy not supported'); } }
+
+async function acceptInvite(code, btn, statusId){
+  if(!sb) return false;
+  if(btn) load(btn,true,'Joining…'); progStart(); if(statusId) status(statusId,'Linking you to the property…','info');
+  
+  // 1. Find property by invite code
+  const { data: props, error: propErr } = await sb.from('properties').select('id, landlord_id').eq('invite_code', code);
+  if (propErr || !props || props.length === 0) {
+    progDone();
+    if(btn) load(btn,false);
+    if(statusId) status(statusId, 'Invalid invite code.', 'err'); else toast('Invalid invite code.');
+    return false;
+  }
+  
+  // 2. Insert into tenant_assignments
+  const prop = props[0];
+  const { error: insErr } = await sb.from('tenant_assignments').insert({
+    property_id: prop.id,
+    tenant_id: currentUser.id,
+    status: 'active'
+  });
+  
+  progDone();
+  if(insErr){ 
+    if(btn) load(btn,false); 
+    if(statusId) status(statusId,insErr.message,'err'); else toast(insErr.message); 
+    return false; 
+  }
+  
+  if(btn) btnDone(btn,'✓ Linked'); if(statusId) status(statusId,'Linked ✓','ok'); 
+  if(typeof Snd!=='undefined') Snd.success(); toast("You're linked to your home",true);
+  return true;
+}
+async function tenantFlow(){
+  if(pendingInvite){ await acceptInvite(pendingInvite, null, null); pendingInvite=null; if(history.replaceState) history.replaceState({},'',baseUrl()); }
+  await loadTenantHome();
+}
+
+/* Modal Toggle Handlers */
+function openAddPropModal() {
+  if (typeof Snd !== 'undefined') Snd.pop();
+  $('#addPropModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAddPropModal() {
+  $('#addPropModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+/* Dashboard Layout Subview Switchers */
+function switchLandlordView(target) {
+  document.querySelectorAll('.ll-subview').forEach(view => {
+    view.style.display = 'none';
+  });
+  const activeView = $('#llView-' + target);
+  if (activeView) activeView.style.display = 'block';
+  
+  if (target === 'home') {
+    loadProperties();
+  } else if (target === 'maintenance') {
+    loadLandlordRequests();
+  } else if (target === 'tenants') {
+    loadLandlordLinkRequests();
+    loadActiveTenants();
+  } else if (target === 'payments') {
+    loadLandlordPayments();
+  } else if (target === 'documents') {
+    loadLandlordDocuments();
+  }
+}
+
+function switchTenantView(target) {
+  document.querySelectorAll('.t-subview').forEach(view => {
+    view.style.display = 'none';
+  });
+  const activeView = $('#tView-' + target);
+  if (activeView) activeView.style.display = 'block';
+  
+  if (target === 'home') {
+    loadTenantHome();
+  } else if (target === 'maintenance') {
+    loadTenantRequests();
+  } else if (target === 'payments') {
+    loadTenantPayments();
+  } else if (target === 'documents') {
+    loadTenantDocuments();
+  }
+}
+
+/* Load Active Tenants */
+async function loadActiveTenants() {
+  const list = $('#activeTenantList');
+  if (!list) return;
+  list.innerHTML = skel(1);
+  
+  const { data, error } = await sb.from('tenant_assignments')
+    .select('*, properties!inner(property_name, landlord_id)')
+    .eq('status', 'active')
+    .eq('properties.landlord_id', currentUser.id)
+    .order('created_at', { ascending: false });
+    
+  if (error) {
+    list.innerHTML = '';
+    return;
+  }
+  
+  $('#activeTenantCount').textContent = data.length ? data.length + (data.length === 1 ? ' tenant' : ' tenants') : '';
+  
+  if (!data.length) {
+    list.innerHTML = '<div class="empty" style="padding:40px 24px;"><svg class="empty-ill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg><p style="font-weight:600; color:var(--ink); margin-bottom:4px;">No Active Tenants</p><p style="font-size:13px; max-width:240px; margin:0 auto;">Invite your tenants by sharing the property invitation code or link.</p></div>';
+    return;
+  }
+  
+  const tenantIds = data.map(x => x.tenant_id);
+  const { data: profiles } = await sb.from('profiles').select('id, name, phone').in('id', tenantIds);
+  const profileMap = {};
+  if (profiles) {
+    profiles.forEach(p => { profileMap[p.id] = p; });
+  }
+  
+  list.innerHTML = data.map(item => {
+    const propName = item.properties ? item.properties.property_name : 'Property';
+    const tenantProfile = profileMap[item.tenant_id];
+    const tenantName = tenantProfile ? (tenantProfile.name || 'Tenant') : 'Unknown Tenant';
+    const tenantPhone = tenantProfile ? (tenantProfile.phone || item.tenant_id.replace('phone_', '')) : item.tenant_id.replace('phone_', '');
+    
+    return `<div class="pcard">
+      <div class="pt">
+        <div>
+          <h3>${esc(tenantName)}</h3>
+          <div class="meta" style="font-weight:600; color:var(--ink); margin-top:8px;">${esc(tenantPhone)}</div>
+          <div class="meta">Rented Property: <strong>${esc(propName)}</strong></div>
+        </div>
+        <span class="badge vacant">Active Lease</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* Load Payments (Landlord) */
+function loadLandlordPayments() {
+  const list = $('#paymentsLedgerList');
+  if (!list) return;
+  const ledger = [
+    { tenant: 'Herman Singh', property: '2BHK Sector 70', amount: 18000, date: '2026-07-01' },
+    { tenant: 'Rahul Sharma', property: 'Studio Floor 3', amount: 12000, date: '2026-06-28' }
+  ];
+  list.innerHTML = ledger.map(tx => `
+    <div class="pcard" style="border-left:4px solid var(--emerald); animation: rise .4s ease both;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <h4 style="font-size:15.5px; font-weight:600; color:var(--ink); margin-bottom:4px;">${esc(tx.tenant)}</h4>
+          <span style="font-size:12.5px; color:var(--muted);">${esc(tx.property)}</span>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:16.5px; font-weight:700; color:var(--emerald-deep);">₹${tx.amount}</div>
+          <span style="font-size:11.5px; color:var(--muted);">${tx.date}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* Load Documents (Landlord) */
+function loadLandlordDocuments() {
+  const list = $('#documentCabinetList');
+  if (!list) return;
+  const docs = [
+    { title: 'Standard Residential Lease.pdf', type: 'Agreement', size: '2.4 MB', date: '2026-06-15' },
+    { title: 'Tenant KYC Proof.pdf', type: 'KYC Document', size: '1.1 MB', date: '2026-06-16' }
+  ];
+  list.innerHTML = docs.map(doc => `
+    <div class="pcard" style="animation: rise .4s ease both; display:flex; flex-direction:column; justify-content:space-between; min-height:140px;">
+      <div>
+        <span class="badge vacant" style="margin-bottom:8px; display:inline-block;">${esc(doc.type)}</span>
+        <h4 style="font-size:15px; font-weight:600; line-height:1.3; color:var(--ink);">${esc(doc.title)}</h4>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; border-top:1px solid var(--line); padding-top:10px;">
+        <span style="font-size:11.5px; color:var(--muted);">${doc.size} &middot; ${doc.date}</span>
+        <button class="req-act" style="padding:4px 8px; font-size:11px;" onclick="toast('Downloading file…', true)">Download</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* Load Payments (Tenant) */
+function loadTenantPayments() {
+  if (currentProperty && currentProperty.monthly_rent != null) {
+    $('#tRentAmount').textContent = currentProperty.monthly_rent;
+  }
+  const list = $('#tPaymentHistoryList');
+  if (!list) return;
+  const history = [
+    { title: 'July Rent Payment', amount: (currentProperty ? currentProperty.monthly_rent : 18000), date: '2026-07-01', method: 'Online Transfer' }
+  ];
+  list.innerHTML = history.map(tx => `
+    <div class="pcard" style="border-left: 4px solid var(--emerald);">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <h4 style="font-size:15px; font-weight:600; color:var(--ink);">${esc(tx.title)}</h4>
+          <span style="font-size:12px; color:var(--muted);">${tx.method} &middot; ${tx.date}</span>
+        </div>
+        <div style="font-size:16px; font-weight:700; color:var(--emerald-deep);">₹${tx.amount}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* Pay Rent (Tenant Action) */
+function payRent() {
+  if (typeof Snd !== 'undefined') Snd.pop();
+  progStart();
+  setTimeout(() => {
+    progDone();
+    toast('Rent paid successfully! Ledger updated ✓', true);
+    if (typeof Snd !== 'undefined') Snd.success();
+    loadTenantPayments();
+  }, 1000);
+}
+
+/* Load Documents (Tenant) */
+function loadTenantDocuments() {
+  const list = $('#tDocumentsList');
+  if (!list) return;
+  const docs = [
+    { title: 'Rent Receipt - July.pdf', type: 'Receipt', size: '280 KB', date: '2026-07-01' },
+    { title: 'Executed Lease Agreement.pdf', type: 'Agreement', size: '2.4 MB', date: '2026-06-15' }
+  ];
+  list.innerHTML = docs.map(doc => `
+    <div class="pcard" style="animation: rise .4s ease both; display:flex; flex-direction:column; justify-content:space-between; min-height:140px;">
+      <div>
+        <span class="badge vacant" style="margin-bottom:8px; display:inline-block;">${esc(doc.type)}</span>
+        <h4 style="font-size:15px; font-weight:600; line-height:1.3; color:var(--ink);">${esc(doc.title)}</h4>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; border-top:1px solid var(--line); padding-top:10px;">
+        <span style="font-size:11.5px; color:var(--muted);">${doc.size} &middot; ${doc.date}</span>
+        <button class="req-act" style="padding:4px 8px; font-size:11px;" onclick="toast('Downloading file…', true)">Download</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function loadTenantRequests(){
+  if(!currentAssignment) return; var list=$('#maintList'); list.innerHTML=skel(1);
+  var res=await sb.from('maintenance_requests').select('*').eq('property_id',currentAssignment.property_id).order('created_at',{ascending:false});
+  if(res.error){ list.innerHTML=''; return; }
+  var d=res.data;
+  if(!d.length){ list.innerHTML='<div class="empty" style="padding:40px 24px;"><svg class="empty-ill" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" /><path d="M7 14l-3 3" /></svg><p style="font-weight:600; color:var(--ink); margin-bottom:4px;">No Issues Reported</p><p style="font-size:13px; max-width:240px; margin:0 auto;">Everything is running smoothly! If anything needs fixing, log it here.</p></div>'; return; }
+  list.innerHTML=d.map(function(r){ var done=(r.status==='completed'||r.status==='closed'); var b=done?'occupied':((r.priority==='urgent'||r.priority==='high')?'maintenance':'vacant');
+    return '<div class="pcard"><div class="pt"><div><h3 style="font-size:17px">'+esc(r.title)+'</h3>'+(r.description?'<div class="meta">'+esc(r.description)+'</div>':'')+'<div class="meta">'+esc(r.priority)+' priority</div></div><span class="badge '+b+'">'+esc(r.status)+'</span></div></div>'; }).join('');
+}
+
+/* wire handlers (elements already in DOM) */
+(function(){
+  // Swipe Gestures
+  let startX = 0, currentX = 0, swipingCard = null;
+  document.addEventListener('touchstart', e => {
+    swipingCard = e.target.closest('.swipe-card');
+    if(swipingCard) { startX = e.touches[0].clientX; swipingCard.style.transition = 'none'; }
+  }, {passive:true});
+  document.addEventListener('touchmove', e => {
+    if(!swipingCard) return;
+    currentX = e.touches[0].clientX - startX;
+    if (currentX > 0 && currentX < 150) { swipingCard.style.transform = `translateX(${currentX}px)`; }
+  }, {passive:true});
+  document.addEventListener('touchend', e => {
+    if(!swipingCard) return;
+    swipingCard.style.transition = 'transform 0.2s var(--ease-out)';
+    if(currentX > 100) { 
+      swipingCard.style.transform = `translateX(100vw)`; 
+      setReqStatus(swipingCard.dataset.reqId, 'in_progress', null);
+    } else { 
+      swipingCard.style.transform = `translateX(0)`; 
+    }
+    swipingCard = null; currentX = 0;
+  });
+
+  var pl=$('#propList'); if(pl) pl.addEventListener('click', function(e){ var b=e.target.closest?e.target.closest('.invite-btn'):null; if(b) openInvite(b.dataset.id, b.dataset.name); });
+  var m=$('#modal'); if(m) m.addEventListener('click', function(e){ if(e.target.id==='modal') closeModal(); });
+  var cc=$('#copyCode'); if(cc) cc.addEventListener('click', function(){ copyText($('#inviteCode').textContent,'Code copied'); });
+  var cl=$('#copyLink'); if(cl) cl.addEventListener('click', function(){ copyText(inviteLink,'Invite link copied'); });
+  var jf=$('#joinForm'); if(jf) jf.addEventListener('submit', async function(e){ e.preventDefault(); var code=$('#joinCode').value.trim().toUpperCase(); var btn=jf.querySelector('.btn'); if(!code){ status('#joinStatus','Enter your invite code.','err'); return; } var ok=await acceptInvite(code, btn, '#joinStatus'); if(ok) loadTenantHome(); });
+  
+  // Wire Search Landlord & Link Request
+  var slf=$('#searchLandlordForm'); if(slf) slf.addEventListener('submit', searchLandlord);
+  var rlf=$('#requestLinkForm'); if(rlf) rlf.addEventListener('submit', submitJoinRequest);
+
+  // Wire Nav-item clicks: scroll to section & micro haptics
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', e => {
+      e.preventDefault();
+      const target = item.dataset.target;
+      if (!target) return;
+      
+      // Prevent unlinked tenants from accessing other views
+      if (currentRole === 'tenant' && !currentAssignment && target !== 'home') {
+        toast('Please join a property first');
+        return;
+      }
+      
+      if (typeof Snd !== 'undefined') Snd.tick();
+      if (navigator.vibrate) navigator.vibrate([12]);
+      
+      document.querySelectorAll('.nav-item').forEach(x => {
+        x.classList.toggle('active', x.dataset.target === target);
+      });
+      
+      // Hide all subviews for current role
+      const prefix = currentRole === 'landlord' ? 'llView-' : 'tView-';
+      const isLandlord = currentRole === 'landlord';
+      document.querySelectorAll(isLandlord ? '.ll-subview' : '.t-subview').forEach(v => {
+        v.style.display = 'none';
+      });
+      
+      // Show target section
+      const section = document.getElementById(prefix + target);
+      if (section) {
+        section.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  });
+
+  var mf=$('#maintForm'); if(mf) mf.addEventListener('submit', async function(e){ e.preventDefault(); var f=mf, btn=f.querySelector('.btn'); if(!currentAssignment){ toast('Join a property first'); return; } load(btn,true,'Submitting\u2026'); progStart(); var cat = f.category.value; var fullTitle = '['+cat+'] ' + f.title.value.trim(); var res=await sb.from('maintenance_requests').insert({ property_id: currentAssignment.property_id, tenant_id: currentUser.id, title:fullTitle, description:f.description.value.trim()||null, priority:f.priority.value, status:'open' }); setTimeout(() => { progDone(); if(res.error){ load(btn,false); toast('Failed: '+res.error.message); return; } btnDone(btn,'\u2713 Sent'); toast('Request sent to your landlord',true); f.reset(); f.category.value="AC Service"; loadTenantRequests(); }, 800); });
+  var rl=$('#reqList'); if(rl) rl.addEventListener('click', function(e){ var b=e.target.closest?e.target.closest('.req-act'):null; if(b) setReqStatus(b.dataset.id, b.dataset.to, b); });
+  var bell=$('#notifBell'), pop=$('#notifPop');
+  if(bell&&pop){
+    bell.addEventListener('click', function(e){ e.stopPropagation(); pop.hidden=!pop.hidden; if(!pop.hidden) bell.classList.remove('ring'); });
+    pop.addEventListener('click', function(e){ e.stopPropagation(); var b=e.target.closest?e.target.closest('.nbtn'):null; if(b) setReqStatus(b.dataset.id, b.dataset.to, b); });
+    document.addEventListener('click', function(e){ if(!pop.hidden && !pop.contains(e.target) && e.target!==bell && !bell.contains(e.target)) pop.hidden=true; });
+  }
+})();
+</script>
+</body>
+</html>

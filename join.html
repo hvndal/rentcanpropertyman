@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RentCan — Joining your property…</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#0B1512;--emerald:#0B7C66;--emerald-deep:#075C4B;--mist:#F6F8F7;--paper:#fff;--line:#E7EDEA;--muted:#5F6E68}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:"DM Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);
+    background:radial-gradient(80% 55% at 50% -8%,rgba(11,124,102,.10),transparent 62%),var(--mist);
+    display:grid;place-items:center;padding:24px;-webkit-font-smoothing:antialiased}
+  .card{width:100%;max-width:420px;background:var(--paper);border:1px solid var(--line);border-radius:24px;
+    padding:40px 32px;box-shadow:0 1px 2px rgba(10,21,18,.04),0 12px 40px rgba(10,21,18,.08);text-align:center;
+    animation:rise .5s cubic-bezier(.16,1,.3,1) both}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .brand{display:inline-flex;align-items:center;gap:10px;font-family:"DM Serif Display",serif;font-size:22px;margin-bottom:26px}
+  .mk{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,var(--emerald),var(--emerald-deep));box-shadow:0 4px 14px rgba(11,124,102,.3)}
+  .mk svg{width:17px;height:17px;color:#fff}
+  .spin{width:42px;height:42px;border:3px solid rgba(11,124,102,.18);border-top-color:var(--emerald);border-radius:50%;margin:6px auto 22px;animation:sp .7s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  h1{font-family:"DM Serif Display",serif;font-weight:400;font-size:25px;letter-spacing:-.01em;margin-bottom:8px}
+  p{color:var(--muted);font-size:14.5px;line-height:1.5}
+  .code{display:inline-block;margin-top:10px;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-weight:700;
+    font-size:18px;letter-spacing:.16em;color:var(--emerald-deep);background:rgba(11,124,102,.07);padding:8px 14px;border-radius:10px}
+  .btn{display:none;align-items:center;justify-content:center;margin-top:24px;width:100%;border:0;border-radius:13px;
+    padding:14px;background:var(--emerald);color:#fff;font-weight:700;font-size:15px;text-decoration:none;
+    box-shadow:0 8px 22px rgba(11,124,102,.26)}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="brand"><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></span>RentCan</div>
+    <div class="spin" id="spin"></div>
+    <h1 id="t">Linking you to your property…</h1>
+    <p id="s">One moment while we open your invite.</p>
+    <a id="manual" class="btn" href="dashboard.html?role=tenant">Enter a code manually</a>
+  </div>
+<script>
+(function(){
+  function getCode(){
+    var q=new URLSearchParams(location.search);
+    var c=q.get('code')||q.get('invite');
+    if(!c){ var m=location.pathname.match(/\/(?:join|invite)\/([A-Za-z0-9]{4,})/i); if(m) c=m[1]; }
+    return c ? c.trim().toUpperCase().replace(/[^A-Z0-9]/g,'') : '';
+  }
+  var code=getCode();
+  if(code){
+    // hand off to the app, which reads ?code/?invite, signs the tenant in, and calls accept_invitation()
+    location.replace('dashboard.html?invite='+encodeURIComponent(code)+'&role=tenant');
+  } else {
+    document.getElementById('spin').style.display='none';
+    document.getElementById('t').textContent='No invite code found';
+    document.getElementById('s').textContent='This link is missing its code. Ask your landlord for a fresh invite link or QR — or enter the code by hand.';
+    document.getElementById('manual').style.display='inline-flex';
+  }
+})();
+</script>
+</body>
+</html>
