@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 "Accept": "application/json",
               },
               body: JSON.stringify({
-                "authkey": "535432AfGyahgfkas6a37b39eP1",
+                "authkey": "{YOUR_MSG91_AUTHKEY_HERE}",
                 "access-token": jwtToken
               })
             })
