@@ -27,6 +27,11 @@
   }
 
 
+  window.RC = window.RC || {};
+  try { window.RC.sb = window.supabase.createClient('https://peyqkueitxtyujgmqghc.supabase.co','sb_publishable_jbaVLjK75KjrMVe8ii8teg_IcTc8OeM'); }
+  catch(e){ console.warn('Supabase init failed', e); }
+
+
 /* ---------- RentCan UI sound + toast (self-contained, Web Audio) ---------- */
 (function(){
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -85,11 +90,12 @@
   });
 })();
 
-/* ---------- Sign-in: Mock OTP (2-step) ---------- */
+/* ---------- Sign-in: Supabase email OTP (2-step) ---------- */
 (function(){
+  var SB = (window.RC && RC.sb) ? RC.sb : null;
   function roleOf(card){ return card.classList.contains('owner') ? 'landlord' : 'tenant'; }
   function markSignedIn(role){ RC.role = role || RC.role; document.querySelectorAll('.role-signin').forEach(function(c){ c.classList.add('signed'); }); }
-  if(localStorage.getItem('rc_mock_user')){ RC.user = {id: 'mock'}; RC.role = localStorage.getItem('rc_mock_role') || 'tenant'; markSignedIn(RC.role); }
+  if(SB){ SB.auth.getUser().then(function(r){ var u = r && r.data && r.data.user; if(u){ RC.user = u; RC.role = (u.user_metadata && u.user_metadata.role) || 'tenant'; markSignedIn(RC.role); } }).catch(function(){}); }
   document.querySelectorAll('.rc-otp').forEach(function(f){
     var card = f.closest('.rc-card'); var role = roleOf(card);
     var s1 = f.querySelector('.otp-step1'), s2 = f.querySelector('.otp-step2');
@@ -98,12 +104,14 @@
       var email = ident.value.trim();
       if(!email || email.indexOf('@') < 0){ card.classList.add('err'); RC.toast('Enter your email to get a sign-in code.'); return; }
       card.classList.remove('err'); if(RC.Sound) RC.Sound.pop();
-      var btn = this, old = btn.innerHTML; btn.disabled = true; btn.classList.add('loading'); btn.innerHTML = '<span class="rc-spinner"></span>Please wait\u2026';
-      setTimeout(function(){
-        btn.disabled = false; btn.classList.remove('loading'); btn.innerHTML = old;
+      if(!SB){ RC.toast('Sign-in is being set up \u2014 try again shortly.'); return; }
+      var btn = this, old = btn.textContent; btn.disabled = true; btn.textContent = 'Sending\u2026';
+      SB.auth.signInWithOtp({ email: email, options: { shouldCreateUser: true, data: { role: role, name: email.split('@')[0] } } }).then(function(res){
+        btn.disabled = false; btn.textContent = old;
+        if(res.error){ RC.toast(res.error.message); return; }
         target.textContent = email; s1.hidden = true; s2.hidden = false; code.focus();
-        RC.toast('Mock code sent to ' + email + ' (use any code).');
-      }, 800);
+        RC.toast('Code sent to ' + email + ' \u2014 check your inbox.');
+      });
     });
     f.querySelector('.otp-edit').addEventListener('click', function(){ s2.hidden = true; s1.hidden = false; ident.focus(); });
     f.addEventListener('submit', function(ev){
@@ -111,15 +119,17 @@
       var email = ident.value.trim(), token = code.value.trim();
       if(token.length < 4){ card.classList.add('err'); RC.toast('Enter the code from your email.'); return; }
       card.classList.remove('err');
-      var btn = f.querySelector('.verify-code'), old = btn.innerHTML; btn.disabled = true; btn.classList.add('loading'); btn.innerHTML = '<span class="rc-spinner"></span>Verifying\u2026';
-      setTimeout(function(){
-        btn.disabled = false; btn.classList.remove('loading'); btn.innerHTML = old;
-        RC.user = {id: 'mock', email: email}; localStorage.setItem('rc_mock_user', '1'); localStorage.setItem('rc_mock_role', role); markSignedIn(role);
+      if(!SB){ RC.toast('Sign-in is being set up \u2014 try again shortly.'); return; }
+      var btn = f.querySelector('.verify-code'), old = btn.textContent; btn.disabled = true; btn.textContent = 'Verifying\u2026';
+      SB.auth.verifyOtp({ email: email, token: token, type: 'email' }).then(function(res){
+        btn.disabled = false; btn.textContent = old;
+        if(res.error){ RC.toast(res.error.message); return; }
+        RC.user = res.data.user; markSignedIn(role);
         if(RC.Sound) RC.Sound.chime();
         RC.toast('Signed in as ' + role + '. Welcome back!');
         f.reset(); s2.hidden = true; s1.hidden = false;
         if(role === 'landlord'){ var l = document.getElementById('list'); if(l) setTimeout(function(){ l.scrollIntoView({behavior:'smooth'}); }, 650); }
-      }, 600);
+      });
     });
   });
 })();
@@ -133,22 +143,41 @@
   });
 })();
 
-/* ---------- splash: hide once all videos with sources are ready (or after 4s max) ---------- */
+
+/* ---------- List your property (Supabase insert for signed-in owners) ---------- */
 (function(){
-  var splash = document.getElementById('rcSplash');
-  if(!splash) return;
-  function dismiss(){ splash.classList.add('hidden'); }
-  var vids = Array.from(document.querySelectorAll('video')).filter(function(v){
-    return v.querySelector('source[src]') || v.src;
-  });
-  if(!vids.length){ setTimeout(dismiss, 400); return; }
-  var ready = 0;
-  var timeout = setTimeout(dismiss, 4000);
-  vids.forEach(function(v){
-    function check(){ ready++; if(ready >= vids.length){ clearTimeout(timeout); dismiss(); } }
-    v.addEventListener('canplay', check, {once:true});
-    v.addEventListener('loadeddata', check, {once:true});
-    v.addEventListener('error', check, {once:true});
-    if(v.readyState >= 3) check();
+  var form = document.querySelector('.rc-listform'); if(!form) return;
+  var grid = document.getElementById('rlGrid'), empty = document.getElementById('rlEmpty');
+  var fileInput = form.querySelector('input[type=file]'); var photoData = null;
+  if(fileInput){ fileInput.addEventListener('change', function(){ var f = fileInput.files && fileInput.files[0]; if(!f){ photoData = null; return; } var r = new FileReader(); r.onload = function(){ photoData = r.result; }; r.readAsDataURL(f); }); }
+  function val(n){ var el = form.querySelector('[name='+n+']'); return el ? el.value.trim() : ''; }
+  function esc(s){ return s.replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var title = val('title'), city = val('city'), config = val('config');
+    if(!title || !city || !config){ form.classList.add('err'); RC.toast('Add at least a title, city and configuration.'); return; }
+    form.classList.remove('err'); if(empty) empty.style.display = 'none';
+    var area = val('area'), type = val('type'), furnish = val('furnish'), rent = val('rent'), desc = val('desc');
+    var meta = [config, type, furnish].filter(Boolean).join(' \u00b7 ');
+    var loc  = [area, city].filter(Boolean).join(', ');
+    var img  = photoData ? '<img class="rl-img" src="'+photoData+'" alt="">' : '<div class="rl-img"></div>';
+    var saved = !!(RC.user && RC.role === 'landlord' && RC.sb);
+    var card = document.createElement('div'); card.className = 'rl-card';
+    card.innerHTML = img + '<div class="rl-body"><h4>'+esc(title)+'</h4>'
+      + (loc ? '<div class="rl-meta">'+esc(loc)+'</div>' : '')
+      + (meta ? '<div class="rl-meta">'+esc(meta)+'</div>' : '')
+      + (rent ? '<div class="rl-rent">\u20b9'+esc(rent)+' <span>/month</span></div>' : '')
+      + (desc ? '<div class="rl-desc">'+esc(desc)+'</div>' : '')
+      + '<span class="rl-tag">'+(saved ? 'Saving\u2026' : (RC.user ? 'Preview' : 'Preview \u00b7 sign in to save'))+'</span></div>';
+    grid.insertBefore(card, grid.firstChild);
+    if(RC.Sound) RC.Sound.chime(); form.reset(); photoData = null;
+    if(saved){
+      var m = (config || '').match(/\d+/); var bed = m ? parseInt(m[0], 10) : null;
+      RC.sb.from('properties').insert({ landlord_id: RC.user.id, property_name: title, address: area || null, city: city, country: 'India', bedrooms: bed, property_type: type || null, furnishing: furnish || null, monthly_rent: rent ? Number(rent) : null, description: desc || null, status: 'vacant' }).then(function(res){
+        var tag = card.querySelector('.rl-tag');
+        if(res.error){ if(tag) tag.textContent = 'Saved locally (sync failed)'; RC.toast('Listed, but save failed: ' + res.error.message); }
+        else { if(tag) tag.textContent = 'Saved to your account'; RC.toast('Property saved to your RentCan account.'); }
+      });
+    } else { RC.toast(RC.user ? 'Listed (preview).' : 'Listed as preview \u2014 sign in as an owner to save it.'); }
   });
 })();

@@ -4,32 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RentCan — Rent, maintenance &amp; inspections for your Tricity property</title>
-<link rel="manifest" href="manifest.json">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#0B7C66">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-<div id="rcSplash" role="status" aria-label="Loading">
-  <span class="sp-logo">RentCan</span>
-  <div class="sp-ring"></div>
-  <span class="sp-hint">Loading…</span>
-</div>
 <!-- NAV -->
 <header class="nav" id="nav">
   <a href="#" class="brand">
-    <img class="mark-img" src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/extracted_img_0.jpeg" loading="lazy" alt="RentCan">
+    <img class="mark-img" src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/apartment-interior.jpg" alt="RentCan">
     RentCan
   </a>
   <nav class="links" id="links">
     <a href="#how">How it works</a>
     <a href="#maintenance">Maintenance</a>
     <a href="#plans">Plans</a>
+    <a href="#list">List property</a>
   <a href="dashboard.html">Sign in</a>
   <a href="#get" class="nav-cta">Get the app</a>
   </nav>
@@ -47,12 +38,10 @@
   <div class="hero-grain" aria-hidden="true"></div>
   <!-- Hero clip embedded (Mixkit: happy home cleaning) — optimized, muted, web-ready.
        To swap: replace the data: URI in <source> with another clip's data URI or an assets/ path. -->
-  <video class="hero-video" id="heroVideo" autoplay muted loop playsinline poster="">
-    <source src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/videos/owner-7578552-sd.mp4" type="video/mp4">
-  </video>
+  <video class="hero-video ready" id="heroVideo" autoplay muted loop playsinline src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/videos/prop-2099568.mp4"></video>
   <div class="hero-scrim" aria-hidden="true"></div>
   <div class="wrap hero-inner center">
-    <img class="hero-logo" src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/extracted_img_0.jpeg" loading="lazy" alt="RentCan">
+    <img class="hero-logo" src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/apartment-interior.jpg" alt="RentCan — Aapka ghar aur hamari dekhbhal">
     <span class="eyebrow dark center">Aapka ghar, aur hamari dekhbhal</span>
     <h1 class="hero-title">Your property, <span class="accent">fully managed</span> — wherever you are.</h1>
     <p class="hero-sub">Rent collection, maintenance, and inspections for your home in the Tricity, all in one app. Whether you're across the city or across the world.</p>
@@ -62,7 +51,7 @@
       </a>
       <a href="#plans" class="btn btn-ghost">See plans</a>
     </div>
-    <p class="hero-free">Start free — your first month is on us — no card needed</p>
+    <p class="hero-free">Start free · your first month is on us · no card needed</p>
     <div class="hero-trust center">
       <span>Rent via Razorpay (UPI &amp; cards)</span>
       <span>Owner &amp; tenant portals</span>
@@ -76,11 +65,11 @@
     <div class="reveal">
       <span class="eyebrow">However far you are</span>
       <h2>Next sector or next country — <em>same</em> control.</h2>
-      <p class="lede">Whether your property is ten minutes away or ten time zones away, managing it usually means endless calls and trusting whoever happens to be nearby. RentCan replaces the guesswork with one dashboard you open anytime Ã¢â‚¬â€ and a tenant app that makes paying and reporting effortless.</p>
+      <p class="lede">Whether your property is ten minutes away or ten time zones away, managing it usually means endless calls and trusting whoever happens to be nearby. RentCan replaces the guesswork with one dashboard you open anytime — and a tenant app that makes paying and reporting effortless.</p>
       <div class="from-to">
-        <div class="ft-node"><div class="place">You</div><div class="meta">Anywhere • anytime</div></div>
+        <div class="ft-node"><div class="place">You</div><div class="meta">Anywhere · anytime</div></div>
         <div class="ft-line"><span class="pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></span></div>
-        <div class="ft-node"><div class="place">Tricity</div><div class="meta">Your property • IST</div></div>
+        <div class="ft-node"><div class="place">Tricity</div><div class="meta">Your property · IST</div></div>
       </div>
     </div>
     <div class="reveal">
@@ -101,24 +90,24 @@
     <div class="sec-head center reveal">
       <span class="eyebrow center">How it works</span>
       <h2>Set up once. Then let it run.</h2>
-      <p class="lede">From adding your first unit to getting paid, RentCan keeps every step in one place Ã¢â‚¬â€ no spreadsheets, no chasing.</p>
+      <p class="lede">From adding your first unit to getting paid, RentCan keeps every step in one place — no spreadsheets, no chasing.</p>
     </div>
     <div class="steps">
       <div class="step reveal">
         <div class="idx">Step 01</div>
-        <div class="ic"><img src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/apartment-interior.jpg" alt="" loading="lazy"></div>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5"/><path d="M5 8.5V21h14V8.5"/><path d="M9 21v-6h6v6"/></svg></div>
         <h3>Add your property</h3>
         <p>List your units, set the rent, and add tenant details in minutes. Upload agreements and documents so everything lives in one place.</p>
       </div>
       <div class="step reveal">
         <div class="idx">Step 02</div>
-        <div class="ic"><img src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/payment-online.jpg" alt="" loading="lazy"></div>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/><path d="M6 15h4"/></svg></div>
         <h3>Tenants pay in-app</h3>
         <p>Tenants pay rent through Razorpay — UPI, cards, or netbanking. You get paid and notified instantly, with automatic reminders before each due date.</p>
       </div>
       <div class="step reveal">
         <div class="idx">Step 03</div>
-        <div class="ic"><img src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/plumber-tools.jpg" alt="" loading="lazy"></div>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4l-6 6a1.5 1.5 0 0 0 2.1 2.1l6-6a4 4 0 0 0 5.4-5.4l-2.5 2.5-2-2 2.4-2.6Z"/></svg></div>
         <h3>Maintenance handled</h3>
         <p>Tenants raise a request with photos. You approve the cost from your phone, a vendor is dispatched, and you see it through to done.</p>
       </div>
@@ -126,64 +115,47 @@
   </div>
 </section>
 <!-- MAINTENANCE FEATURE -->
-<section class="feature feature-sm" id="maintenance">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="eyebrow dark">Maintenance &amp; inspections</span>
+<section class="feature" id="maintenance">
+  <div class="wrap feature-grid">
+    <div class="reveal">
+      <span class="eyebrow dark">Maintenance, sorted</span>
       <h2>A leak at 2am shouldn't be <em>your</em> 2am problem.</h2>
-      <p class="lede">Tenants report it, the right people get moving, and a technician checks in every month Ã¢â‚¬â€ all on record, all from your phone.</p>
-    </div>
-    <div class="feat-duo">
-      <div class="reveal">
-        <div class="phone real">
-          <div class="island"></div>
-          <div class="screen">
-            <div class="statusbar">
-              <span>9:41</span>
-              <span class="sb-ic">
-                <svg width="17" height="12" viewBox="0 0 17 12" fill="#fff"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="4.5" y="4.5" width="3" height="7.5" rx="1"/><rect x="9" y="2" width="3" height="10" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".4"/></svg>
-                <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="#fff" stroke-width="1.4"><path d="M1 4.2a10 10 0 0 1 14 0M3.4 6.8a6.5 6.5 0 0 1 9.2 0M5.8 9.3a3 3 0 0 1 4.4 0"/><circle cx="8" cy="11" r=".5" fill="#fff"/></svg>
-                <svg width="24" height="12" viewBox="0 0 24 12" fill="none"><rect x="1" y="1" width="19" height="10" rx="2.5" stroke="#fff" stroke-width="1.2" opacity=".6"/><rect x="2.5" y="2.5" width="14" height="7" rx="1" fill="#fff"/><rect x="21" y="4" width="1.6" height="4" rx=".8" fill="#fff" opacity=".6"/></svg>
-              </span>
-            </div>
-            <div class="appbar">
-              <div><div class="ab-t">SECTOR 70, MOHALI</div><div class="ab-h">Maintenance</div></div>
-              <div class="ab-ic"><span class="dot"></span><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></div>
-            </div>
-            <div class="scr-card">
-              <div class="ch"><span class="scr-tag">Awaiting approval</span><span style="font-size:11px;color:#5C6B65">2h ago</span></div>
-              <div class="addr">Geyser — replace heating element</div>
-              <div class="desc">Vendor quote — ₹1,400 incl. parts &amp; labour</div>
-              <div class="scr-mini"><span>Raised by tenant</span><span>3 photos</span></div>
-              <div class="scr-act"><button class="yes">Approve ₹1,400</button><button class="no">Decline</button></div>
-            </div>
-            <div class="scr-card">
-              <div class="ch"><span class="scr-tag green">Completed</span><span style="font-size:11px;color:#5C6B65">Yesterday</span></div>
-              <div class="addr">Kitchen tap leak</div>
-              <div class="desc">Fixed — ₹600 — approved by you</div>
-            </div>
-          </div>
-          <div class="home-ind"></div>
+      <p class="lede">RentCan turns maintenance from a panic into a process. Tenants report it, the right people get moving, and you stay in control of the cost — without ever being the one on call.</p>
+      <div class="flist">
+        <div class="row">
+          <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg></span>
+          <div><div class="rh">Photo-backed requests</div><div class="rp">Tenants attach pictures so you see exactly what's wrong before approving anything.</div></div>
+        </div>
+        <div class="row">
+          <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg></span>
+          <div><div class="rh">You approve the spend</div><div class="rp">Nothing gets charged without your tap. Set a threshold for small fixes to auto-clear.</div></div>
+        </div>
+        <div class="row">
+          <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg></span>
+          <div><div class="rh">Tracked to completion</div><div class="rp">Every request has a status — raised, approved, in progress, done — with a full history.</div></div>
         </div>
       </div>
-      <div class="feat-cards reveal">
-        <div class="fcard">
-          <div class="fc-photo"><img src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/maintenance-repair.jpg" alt="Maintenance work in a flat" loading="lazy"></div>
-          <h3>Maintenance, sorted</h3>
-          <ul>
-            <li>Photo-approval repairs — you approve the spend</li>
-            <li>Auto-approve small fixes under your limit</li>
-            <li>Tracked to completion, with full history</li>
-          </ul>
-        </div>
-        <div class="fcard">
-          <div class="fc-photo"><img src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/technician-inspection.jpg" alt="Technician inspecting a property" loading="lazy"></div>
-          <h3>Monthly inspection</h3>
-          <ul>
-            <li>A technician visits once a month</li>
-            <li>HD photos + complete checklist</li>
-            <li>Report to your phone — extra visit ₹200</li>
-          </ul>
+    </div>
+    <div class="reveal">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="scr-top">
+            <div class="t1">MAINTENANCE · Sector 70, Mohali</div>
+            <div class="t2">Geyser not heating</div>
+          </div>
+          <div class="scr-card">
+            <div class="ch"><span class="scr-tag">Awaiting approval</span><span style="font-size:11px;color:#5C6B65">2h ago</span></div>
+            <div class="addr">Replace heating element</div>
+            <div class="desc">Vendor quote · ₹1,400 incl. parts &amp; labour</div>
+            <div class="bar"><i></i></div>
+            <div class="scr-mini"><span>Raised by tenant</span><span>3 photos</span></div>
+          </div>
+          <div class="scr-card">
+            <div class="ch"><span class="scr-tag green">Completed</span><span style="font-size:11px;color:#5C6B65">Yesterday</span></div>
+            <div class="addr">Kitchen tap leak</div>
+            <div class="desc">Fixed · ₹600 · approved by you</div>
+          </div>
         </div>
       </div>
     </div>
@@ -199,9 +171,8 @@
     </div>
     <!-- PROPERTY EXAMPLE — swap the image src below for your own photo any time -->
     <div class="property-band reveal">
-      <img src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/apartment-interior.jpg" alt="Modern apartment interior" loading="lazy">
-      <video class="slot-vid" autoplay muted loop playsinline></video>
-      <!-- PROPERTY clip: a spare property b-roll is at https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/videos/prop-2099568.mp4 — add <source src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/videos/prop-2099568.mp4" type="video/mp4"> above to use it -->
+      <video class="slot-vid ready" autoplay muted loop playsinline src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/videos/landlord1.mp4"></video>
+      <!-- PROPERTY clip: paste a generic apartment/property video here, e.g. <source src="property.mp4" type="video/mp4"> -->
       <div class="pb-cap">
         <div class="pk">Your property</div>
         <h3>From a single flat to a handful of units &mdash; all in one tidy place.</h3>
@@ -211,10 +182,8 @@
       <div class="side-card reveal">
         <div class="side-photo" data-label="Owners">
           <!-- LANDLORD photo -->
-          <video class="slot-vid" autoplay muted loop playsinline><source src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/videos/prop-2099568.mp4" type="video/mp4"></video>
+          <video class="slot-vid ready" autoplay muted loop playsinline src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/videos/owner-7578552-hd.mp4"></video>
           <div class="slot-fallback" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6h5v6"/></svg></div>
-          <img src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/handing-keys.jpg" alt="Owner handing over property keys" loading="lazy">
-          <video class="slot-vid" autoplay muted loop playsinline preload="auto" poster="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/handing-keys.jpg"><source src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/videos/landlord1.mp4" type="video/mp4"></video>
           <span class="side-tag">For owners</span>
         </div>
         <div class="side-body">
@@ -230,7 +199,7 @@
       <div class="side-card reveal">
         <div class="side-photo" data-label="Tenants">
           <!-- TENANT photo -->
-          <video class="slot-vid" autoplay muted loop playsinline><source src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/videos/landlord1.mp4" type="video/mp4"></video>
+          <video class="slot-vid ready" autoplay muted loop playsinline src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/videos/owner-7578552-hd.mp4"></video>
           <div class="slot-fallback" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="8.5" r="4.5"/><path d="m12 12 8.5 8.5"/><path d="m16.5 16.5 2-2"/><path d="m19.5 19.5 2-2"/></svg></div>
           <span class="side-tag">For tenants</span>
         </div>
@@ -248,6 +217,46 @@
   </div>
 </section>
 <!-- TESTIMONIALS -->
+<!-- LIST YOUR PROPERTY -->
+<section class="rc-list" id="list">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow center">List your property</span>
+      <h2>Put your place on RentCan.</h2>
+      <p class="lede">Sign in, add your property, and it&rsquo;s ready to go live the day RentCan launches. Takes about a minute.</p>
+    </div>
+    <div class="rc-list-grid reveal">
+      <form class="rc-listform" novalidate>
+        <div class="lf-row"><label class="lf-full">Listing title<input type="text" name="title" placeholder="e.g. 2BHK in Sector 70, Mohali"></label></div>
+        <div class="lf-row">
+          <label>City<select name="city"><option value="">Select</option><option>Mohali</option><option>Chandigarh</option><option>Panchkula</option></select></label>
+          <label>Sector / locality<input type="text" name="area" placeholder="e.g. Sector 70"></label>
+        </div>
+        <div class="lf-row">
+          <label>Type<select name="type"><option value="">Select</option><option>Apartment</option><option>Independent floor</option><option>Independent house</option><option>Studio</option><option>PG</option></select></label>
+          <label>Configuration<select name="config"><option value="">Select</option><option>1 RK</option><option>1 BHK</option><option>2 BHK</option><option>3 BHK</option><option>4 BHK+</option></select></label>
+        </div>
+        <div class="lf-row">
+          <label>Furnishing<select name="furnish"><option value="">Select</option><option>Unfurnished</option><option>Semi-furnished</option><option>Fully furnished</option></select></label>
+          <label>Monthly rent (&#8377;)<input type="number" name="rent" min="0" placeholder="e.g. 18000"></label>
+        </div>
+        <div class="lf-row"><label class="lf-full">Description<textarea name="desc" rows="3" placeholder="A line or two &mdash; light, parking, what&rsquo;s nearby&hellip;"></textarea></label></div>
+        <div class="lf-row"><label class="lf-full lf-file">Cover photo (optional)<input type="file" name="photo" accept="image/*"><span class="lf-filehint">Tap to add a photo</span></label></div>
+        <button type="submit" class="rc-listbtn">Post property</button>
+        <p class="lf-note">Preview only &mdash; listings go live when RentCan launches, tied to your owner account.</p>
+      </form>
+      <div class="rc-listings">
+        <h3 class="rl-head">Just listed</h3>
+        <div class="rl-grid" id="rlGrid">
+          <div class="rl-empty" id="rlEmpty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6h5v6"/></svg>
+            <p>Post above and your listing shows up here.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 <section class="quotes" id="stories">
   <div class="wrap">
     <div class="sec-head center reveal">
@@ -278,53 +287,49 @@
     <div class="sec-head center reveal">
       <span class="eyebrow center">Plans</span>
       <h2>Simple pricing, in rupees.</h2>
-      <p class="lede">One free plan for communication, two paid plans for full property management. Per property, per month.</p>
+      <p class="lede">Two monthly plans for day-to-day management, plus a one-time service for when a unit falls vacant. New owners get their first month of Premium free — no card needed.</p>
     </div>
     <div class="plans">
       <div class="plan reveal">
-        <div class="tier">Free</div>
-        <div class="price">₹0<span class="per">/month</span></div>
-        <div class="price-note">Simple communication for landlords and tenants</div>
+        <div class="tier">Basic</div>
+        <div class="price">₹999<span class="per">/month</span></div>
+        <div class="price-note">Rent, agreement and a monthly check — the essentials</div>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Tenant messaging</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Maintenance request submission</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Property announcements</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>WhatsApp notifications</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Rent collection via UPI or cash</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Digital rental agreement</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Monthly 20-point inspection (with photos)</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Tenant &amp; owner portals + reminders</li>
         </ul>
-        <a href="#who" class="btn btn-outline">Get started free</a>
+        <a href="https://razorpay.me/@RentCan" target="_blank" rel="noopener" class="btn btn-outline">Start with Basic</a>
       </div>
       <div class="plan featured reveal">
         <span class="badge">Most popular</span>
-        <div class="tier">Residential</div>
-        <div class="price">₹799<span class="per">/month per property</span></div>
-        <div class="price-note">Everything in Free, plus full management tools</div>
+        <div class="tier">Premium</div>
+        <div class="price">₹2,000<span class="per">/month</span></div>
+        <div class="price-note">Hands-off management · first month free</div>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Rent collection (UPI or cash)</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Payment records &amp; rent history</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Everything in Basic</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>On-request maintenance &amp; vendor dispatch</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Photo-approval repairs — you approve the spend</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Auto-approve small repairs under your limit</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>1 inspection/month with HD photos &amp; checklist</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Secure document storage Ã‚Â· Owner dashboard</li>
         </ul>
-        <p class="vac-card-note" style="margin-bottom:8px">Extra inspection: ₹200 per visit</p>
-        <a href="#who" class="btn btn-fill">Choose Residential</a>
+        <a href="https://razorpay.me/@RentCan" target="_blank" rel="noopener" class="btn btn-fill">Go Premium</a>
       </div>
       <div class="plan reveal">
-        <div class="tier">Commercial</div>
-        <div class="price">₹1,499<span class="per">/month per property</span></div>
-        <div class="price-note">Everything in Residential, plus priority access</div>
+        <div class="tier">Vacancy Resolution</div>
+        <div class="price">from ₹1,999<span class="per"> one-time</span></div>
+        <div class="price-note">When a unit falls empty and you want it filled</div>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Priority maintenance coordination</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Multi-user property access</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Commercial document management</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Detailed reporting</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Priority support</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Listing assistance &amp; lead coordination</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Applicant &amp; document collection, ID checks</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Viewing coordination &amp; move-in support</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Pay once — you make the final tenant choice</li>
         </ul>
-        <p class="vac-card-note" style="margin-bottom:8px">Extra inspection: ₹200 per visit</p>
-        <a href="#who" class="btn btn-outline">Choose Commercial</a>
+        <a href="https://razorpay.me/@RentCan" target="_blank" rel="noopener" class="btn btn-outline">Reduce my vacancy</a>
+        <p class="vac-card-note">Not a broker. No placement guarantee — see <a href="service-agreement.html">Service Agreement</a>.</p>
       </div>
     </div>
-    <p class="plan-fineprint">All paid plans are per property per month. Extra inspections available on request at Ã¢â€šÂ¹200 per visit.</p>
+    <p class="plan-fineprint">Prices cover 1–2 properties per owner. Each extra property is <b>₹1,000/month</b>. Vacant units drop to <b>₹499/month</b> (rent paused, one monthly check kept). One-time tenant onboarding is <b>₹2,000</b> per tenant change. Card payments may carry a small convenience fee.</p>
   </div>
 </section>
 <!-- FAQ -->
@@ -362,7 +367,7 @@
       </details>
       <details>
         <summary>How do tenants pay rent?<span class="chev"></span></summary>
-        <div class="faq-a">Through the app via Razorpay — UPI, cards, or netbanking. You're notified the moment rent is paid, and reminders go out automatically before each due date.</div>
+        <div class="faq-a">Through the app via Razorpay &mdash; UPI, cards, or netbanking. You're notified the moment rent is paid, and reminders go out automatically before each due date.</div>
       </details>
       <details>
         <summary>What if a tenant pays late?<span class="chev"></span></summary>
@@ -374,11 +379,11 @@
       </details>
       <details>
         <summary>Can I manage more than one property?<span class="chev"></span></summary>
-        <div class="faq-a">Yes — one dashboard for all of them. Your plan covers 1-2 properties; each extra one is ₹1,000/month, and any vacant unit drops to ₹499/month.</div>
+        <div class="faq-a">Yes — one dashboard for all of them. Your plan covers 1–2 properties; each extra one is ₹1,000/month, and any vacant unit drops to ₹499/month.</div>
       </details>
       <details>
         <summary>Is RentCan a broker?<span class="chev"></span></summary>
-        <div class="faq-a">No. RentCan helps with listing, coordination and paperwork, but we're not a real estate broker, agent or property manager unless agreed in writing Ã¢â‚¬â€ and you always make the final tenant decision. Full terms live in our <a href="service-agreement.html" style="color:var(--emerald);font-weight:600">Service Agreement</a>.</div>
+        <div class="faq-a">No. RentCan helps with listing, coordination and paperwork, but we're not a real estate broker, agent or property manager unless agreed in writing — and you always make the final tenant decision. Full terms live in our <a href="service-agreement.html" style="color:var(--emerald);font-weight:600">Service Agreement</a>.</div>
       </details>
     </div>
   </div>
@@ -398,7 +403,7 @@
     <div class="store-row">
       <a href="#" id="apkBtn" class="store">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.6 2.3 13 12l-9.4 9.7c-.3-.2-.5-.6-.5-1V3.3c0-.4.2-.8.5-1Zm10.9 10 2.6 2.7-3.1 1.8L11 14l3.5-1.7Zm-3.5-1.3L7.5 7.2l8.5 4.9-2 1.1-3-2.2ZM14 12l3.6-2.1c.6.4.9 1 .9 1.6s-.3 1.2-.9 1.6L14 12Z"/></svg>
-        <span class="st"><small>Free — download the</small><b>Android APK</b></span>
+        <span class="st"><small>Free · download the</small><b>Android APK</b></span>
       </a>
       <a href="#" class="store soon">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.9c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.8-.9-3-.8c-1.5 0-2.9.9-3.7 2.3-1.6 2.7-.4 6.8 1.1 9 .8 1.1 1.6 2.3 2.8 2.2 1.1 0 1.6-.7 2.9-.7s1.8.7 3 .7 2-1.1 2.7-2.1c.9-1.3 1.2-2.5 1.3-2.6-.1 0-2.5-1-2.5-3.8ZM14.3 6c.6-.8 1-1.8.9-2.9-.9 0-2 .6-2.6 1.3-.6.7-1.1 1.7-1 2.7 1 .1 2-.5 2.7-1.1Z"/></svg>
@@ -413,10 +418,10 @@
     <div class="ft-grid">
       <div>
         <a href="#" class="brand">
-          <img class="mark-img" src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/extracted_img_0.jpeg" loading="lazy" alt="RentCan">
+          <img class="mark-img" src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/apartment-interior.jpg" alt="RentCan">
           RentCan
         </a>
-        <p class="ft-tag">Property management for landlords in Mohali, Chandigarh &amp; Panchkula</p>
+        <p class="ft-tag">Property management for landlords in Mohali, Chandigarh &amp; Panchkula — and wherever they happen to live.</p>
       </div>
       <div class="ft-cols">
         <div class="ft-col">
@@ -451,6 +456,9 @@
   <svg class="ico-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M16 9a3 3 0 0 1 0 6"/><path d="M19 6.5a7 7 0 0 1 0 11"/></svg>
   <svg class="ico-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 5 6M21 9l-5 6"/></svg>
 </button>
+
+
 <script src="assets/js/app.js"></script>
+<script src="mock-supabase.js"></script>
 </body>
 </html>
