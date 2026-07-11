@@ -26,13 +26,19 @@
 
 </head>
 <body>
-  <div class="auth-page reveal">
+  <div class="auth-page" style="animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
     <div class="auth-card">
       <a href="index.html" class="logo" style="color: var(--ink); font-size: 24px; display: block; margin-bottom: 24px;">RentCan</a>
       <h1>Welcome back</h1>
       <p>Enter your details to sign in to your account.</p>
       
       <form class="auth-form" id="loginForm">
+
+        <div class="role-selector">
+          <button type="button" class="role-btn active" data-role="tenant">I'm a Tenant</button>
+          <button type="button" class="role-btn" data-role="landlord">I'm a Landlord</button>
+        </div>
+
         <input type="text" id="email" class="auth-input" placeholder="Email or Mobile Number (e.g. 919999999999)" required>
         <button type="submit" class="btn btn-fill" style="width: 100%; border-radius: 12px; font-size: 16px;">Send OTP</button>
       </form>
