@@ -226,25 +226,40 @@
       <p class="lede">Sign in, add your property, and it&rsquo;s ready to go live the day RentCan launches. Takes about a minute.</p>
     </div>
     <div class="rc-list-grid reveal">
-      <form class="rc-listform" novalidate>
-        <div class="lf-row"><label class="lf-full">Listing title<input type="text" name="title" placeholder="e.g. 2BHK in Sector 70, Mohali"></label></div>
-        <div class="lf-row">
-          <label>City<select name="city"><option value="">Select</option><option>Mohali</option><option>Chandigarh</option><option>Panchkula</option></select></label>
-          <label>Sector / locality<input type="text" name="area" placeholder="e.g. Sector 70"></label>
-        </div>
-        <div class="lf-row">
-          <label>Type<select name="type"><option value="">Select</option><option>Apartment</option><option>Independent floor</option><option>Independent house</option><option>Studio</option><option>PG</option></select></label>
-          <label>Configuration<select name="config"><option value="">Select</option><option>1 RK</option><option>1 BHK</option><option>2 BHK</option><option>3 BHK</option><option>4 BHK+</option></select></label>
-        </div>
-        <div class="lf-row">
-          <label>Furnishing<select name="furnish"><option value="">Select</option><option>Unfurnished</option><option>Semi-furnished</option><option>Fully furnished</option></select></label>
-          <label>Monthly rent (&#8377;)<input type="number" name="rent" min="0" placeholder="e.g. 18000"></label>
-        </div>
-        <div class="lf-row"><label class="lf-full">Description<textarea name="desc" rows="3" placeholder="A line or two &mdash; light, parking, what&rsquo;s nearby&hellip;"></textarea></label></div>
-        <div class="lf-row"><label class="lf-full lf-file">Cover photo (optional)<input type="file" name="photo" accept="image/*"><span class="lf-filehint">Tap to add a photo</span></label></div>
-        <button type="submit" class="rc-listbtn">Post property</button>
-        <p class="lf-note">Preview only &mdash; listings go live when RentCan launches, tied to your owner account.</p>
-      </form>
+      
+<div class="rc-listform demo-mode" style="position:relative;">
+  <div class="demo-tag" style="position:absolute; top:-12px; right:20px; background:var(--rose); color:#04211B; font-size:11px; font-weight:700; padding:6px 12px; border-radius:999px; box-shadow:0 6px 14px rgba(242,174,188,0.4); text-transform:uppercase; letter-spacing:0.08em; z-index:10;">Dashboard Preview</div>
+  <div class="lf-row">
+    <div>
+      <label>Property Name</label>
+      <input type="text" value="Modern Studio in Sector 17" disabled style="opacity:0.8; background:#fff;">
+    </div>
+    <div>
+      <label>Area / Sector</label>
+      <input type="text" value="Sector 17, Chandigarh" disabled style="opacity:0.8; background:#fff;">
+    </div>
+  </div>
+  <div class="lf-row">
+    <div>
+      <label>Property Type</label>
+      <select disabled style="opacity:0.8; background:#fff;">
+        <option>Apartment</option>
+      </select>
+    </div>
+    <div>
+      <label>Monthly Rent (₹)</label>
+      <input type="text" value="25000" disabled style="opacity:0.8; background:#fff;">
+    </div>
+  </div>
+  <div class="lf-row">
+    <div class="lf-full">
+      <label>Description</label>
+      <textarea rows="2" disabled style="opacity:0.8; background:#fff;">Beautiful, newly renovated studio apartment with park views. Available from next month.</textarea>
+    </div>
+  </div>
+  <button type="button" class="rc-listbtn" disabled style="opacity:0.7; cursor:not-allowed;">Property Listed Automatically</button>
+</div>
+
       <div class="rc-listings">
         <h3 class="rl-head">Just listed</h3>
         <div class="rl-grid" id="rlGrid">
@@ -257,81 +272,136 @@
     </div>
   </div>
 </section>
-<section class="quotes" id="stories">
-  <div class="wrap">
-    <div class="sec-head center reveal">
-      <span class="eyebrow center">Landlords, at ease</span>
-      <h2>Less worrying. <em>More</em> living.</h2>
+
+<section class="quotes" id="stories" style="padding: 110px 0; overflow: hidden; background: var(--mist);">
+  <div class="sec-head center" style="margin-bottom: 50px;">
+    <h2>Loved by <em>Tricity</em> locals.</h2>
+    <p class="lede">See what landlords and tenants are saying about the RentCan experience.</p>
+  </div>
+  <div class="reviews-slider">
+    <div class="reviews-track">
+      <!-- Review 1 -->
+      <div class="gr-card">
+        <div class="gr-top">
+          <img src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/reviewer_1_1783777016449.jpg" alt="Reviewer" class="gr-avatar">
+          <div class="gr-meta">
+            <b>Manpreet Singh</b>
+            <span>Chandigarh &middot; Landlord</span>
+          </div>
+          <div class="gr-icon"><svg viewBox="0 0 24 24" fill="#4285F4"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.15v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.15C1.43 8.55 1 10.22 1 12s.43 3.45 1.15 4.93l3.69-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.15 7.07l3.69 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg></div>
+        </div>
+        <div class="gr-stars">⭐⭐⭐⭐⭐</div>
+        <p>"Renting out my apartment in Sector 20 used to be a huge headache with brokers. RentCan makes everything smooth, direct, and incredibly fast."</p>
+      </div>
+      <!-- Review 2 -->
+      <div class="gr-card">
+        <div class="gr-top">
+          <img src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/reviewer_2_1783777027443.jpg" alt="Reviewer" class="gr-avatar">
+          <div class="gr-meta">
+            <b>Aanya Sharma</b>
+            <span>Mohali &middot; Tenant</span>
+          </div>
+          <div class="gr-icon"><svg viewBox="0 0 24 24" fill="#4285F4"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.15v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.15C1.43 8.55 1 10.22 1 12s.43 3.45 1.15 4.93l3.69-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.15 7.07l3.69 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg></div>
+        </div>
+        <div class="gr-stars">⭐⭐⭐⭐⭐</div>
+        <p>"Found a beautiful flat in Phase 7 without paying a single rupee in brokerage. The transparent process and verified listings are a game changer."</p>
+      </div>
+      <!-- Review 3 -->
+      <div class="gr-card">
+        <div class="gr-top">
+          <img src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/reviewer_3_1783777037047.jpg" alt="Reviewer" class="gr-avatar">
+          <div class="gr-meta">
+            <b>Rohan Verma</b>
+            <span>Panchkula &middot; Tenant</span>
+          </div>
+          <div class="gr-icon"><svg viewBox="0 0 24 24" fill="#4285F4"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.15v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.15C1.43 8.55 1 10.22 1 12s.43 3.45 1.15 4.93l3.69-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.15 7.07l3.69 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg></div>
+        </div>
+        <div class="gr-stars">⭐⭐⭐⭐⭐</div>
+        <p>"The interface is so clean. I scheduled an inspection from my phone in 2 minutes and got approved the same day. Highly recommended!"</p>
+      </div>
+      <!-- Review 4 -->
+      <div class="gr-card">
+        <div class="gr-top">
+          <img src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/reviewer_4_1783777048345.jpg" alt="Reviewer" class="gr-avatar">
+          <div class="gr-meta">
+            <b>Priya Das</b>
+            <span>Chandigarh &middot; Landlord</span>
+          </div>
+          <div class="gr-icon"><svg viewBox="0 0 24 24" fill="#4285F4"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.15v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.15C1.43 8.55 1 10.22 1 12s.43 3.45 1.15 4.93l3.69-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.15 7.07l3.69 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg></div>
+        </div>
+        <div class="gr-stars">⭐⭐⭐⭐⭐</div>
+        <p>"Finally an app that treats property management like a modern service. Finding good tenants used to take weeks, now it takes days."</p>
+      </div>
+      <!-- Review 5 -->
+      <div class="gr-card">
+        <div class="gr-top">
+          <img src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/reviewer_5_1783777067366.jpg" alt="Reviewer" class="gr-avatar">
+          <div class="gr-meta">
+            <b>Amitabh Gill</b>
+            <span>Mohali &middot; Landlord</span>
+          </div>
+          <div class="gr-icon"><svg viewBox="0 0 24 24" fill="#4285F4"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.15v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.15C1.43 8.55 1 10.22 1 12s.43 3.45 1.15 4.93l3.69-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.15 7.07l3.69 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg></div>
+        </div>
+        <div class="gr-stars">⭐⭐⭐⭐⭐</div>
+        <p>"The dashboard saves me hours every month. I can see all my properties and rent status instantly. Best decision I made for my properties."</p>
+      </div>
+      <!-- Review 6 -->
+      <div class="gr-card">
+        <div class="gr-top">
+          <img src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/reviewer_6_1783777079274.jpg" alt="Reviewer" class="gr-avatar">
+          <div class="gr-meta">
+            <b>Simran Kaur</b>
+            <span>Zirakpur &middot; Tenant</span>
+          </div>
+          <div class="gr-icon"><svg viewBox="0 0 24 24" fill="#4285F4"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.15v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.15C1.43 8.55 1 10.22 1 12s.43 3.45 1.15 4.93l3.69-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.15 7.07l3.69 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg></div>
+        </div>
+        <div class="gr-stars">⭐⭐⭐⭐⭐</div>
+        <p>"Everything was digital and secure. The lease agreement was handled online, and move-in was a breeze without hidden fees."</p>
+      </div>
+      
+      <!-- Duplicate for infinite scroll loop -->
+      <div class="gr-card">
+        <div class="gr-top">
+          <img src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/reviewer_1_1783777016449.jpg" alt="Reviewer" class="gr-avatar">
+          <div class="gr-meta">
+            <b>Manpreet Singh</b>
+            <span>Chandigarh &middot; Landlord</span>
+          </div>
+          <div class="gr-icon"><svg viewBox="0 0 24 24" fill="#4285F4"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.15v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.15C1.43 8.55 1 10.22 1 12s.43 3.45 1.15 4.93l3.69-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.15 7.07l3.69 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg></div>
+        </div>
+        <div class="gr-stars">⭐⭐⭐⭐⭐</div>
+        <p>"Renting out my apartment in Sector 20 used to be a huge headache with brokers. RentCan makes everything smooth, direct, and incredibly fast."</p>
+      </div>
+      <div class="gr-card">
+        <div class="gr-top">
+          <img src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/reviewer_2_1783777027443.jpg" alt="Reviewer" class="gr-avatar">
+          <div class="gr-meta">
+            <b>Aanya Sharma</b>
+            <span>Mohali &middot; Tenant</span>
+          </div>
+          <div class="gr-icon"><svg viewBox="0 0 24 24" fill="#4285F4"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.15v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.15C1.43 8.55 1 10.22 1 12s.43 3.45 1.15 4.93l3.69-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.15 7.07l3.69 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg></div>
+        </div>
+        <div class="gr-stars">⭐⭐⭐⭐⭐</div>
+        <p>"Found a beautiful flat in Phase 7 without paying a single rupee in brokerage. The transparent process and verified listings are a game changer."</p>
+      </div>
+      <div class="gr-card">
+        <div class="gr-top">
+          <img src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/reviewer_3_1783777037047.jpg" alt="Reviewer" class="gr-avatar">
+          <div class="gr-meta">
+            <b>Rohan Verma</b>
+            <span>Panchkula &middot; Tenant</span>
+          </div>
+          <div class="gr-icon"><svg viewBox="0 0 24 24" fill="#4285F4"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.15v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.15C1.43 8.55 1 10.22 1 12s.43 3.45 1.15 4.93l3.69-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.15 7.07l3.69 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg></div>
+        </div>
+        <div class="gr-stars">⭐⭐⭐⭐⭐</div>
+        <p>"The interface is so clean. I scheduled an inspection from my phone in 2 minutes and got approved the same day. Highly recommended!"</p>
+      </div>
+
     </div>
-    <figure class="quote-lead reveal">
-      <span class="qmark">&ldquo;</span>
-      <blockquote>I'm in Toronto and my flat's in Mohali. I used to dread the 1st of every month &mdash; now rent just lands, and when the geyser died my tenant logged it with photos and I approved the fix from my couch.</blockquote>
-      <figcaption><b>Harpreet S.</b><span>Owner &middot; 2 flats, Mohali</span></figcaption>
-    </figure>
-    <div class="quote-row">
-      <figure class="quote-card reveal">
-        <blockquote>Even living ten minutes away, I didn't want the constant calls. Now it's all in one place &mdash; and my tenants actually like paying through the app.</blockquote>
-        <figcaption><b>Neha K.</b><span>Owner &middot; Chandigarh</span></figcaption>
-      </figure>
-      <figure class="quote-card reveal">
-        <blockquote>The tenant-finding service filled my empty unit in under two weeks &mdash; verification and agreement sorted. Worth every rupee.</blockquote>
-        <figcaption><b>Rajesh M.</b><span>Owner &middot; Panchkula</span></figcaption>
-      </figure>
-    </div>
-    <p class="quote-note reveal">Sample stories &mdash; replace with real reviews before launch.</p>
   </div>
 </section>
-<!-- PRICING -->
-<section class="pricing" id="plans">
-  <div class="wrap">
-    <div class="sec-head center reveal">
-      <span class="eyebrow center">Plans</span>
-      <h2>Simple pricing, in rupees.</h2>
-      <p class="lede">Two monthly plans for day-to-day management, plus a one-time service for when a unit falls vacant. New owners get their first month of Premium free — no card needed.</p>
-    </div>
-    <div class="plans">
-      <div class="plan reveal">
-        <div class="tier">Basic</div>
-        <div class="price">₹999<span class="per">/month</span></div>
-        <div class="price-note">Rent, agreement and a monthly check — the essentials</div>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Rent collection via UPI or cash</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Digital rental agreement</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Monthly 20-point inspection (with photos)</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Tenant &amp; owner portals + reminders</li>
-        </ul>
-        <a href="https://razorpay.me/@RentCan" target="_blank" rel="noopener" class="btn btn-outline">Start with Basic</a>
-      </div>
-      <div class="plan featured reveal">
-        <span class="badge">Most popular</span>
-        <div class="tier">Premium</div>
-        <div class="price">₹2,000<span class="per">/month</span></div>
-        <div class="price-note">Hands-off management · first month free</div>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Everything in Basic</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>On-request maintenance &amp; vendor dispatch</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Photo-approval repairs — you approve the spend</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Auto-approve small repairs under your limit</li>
-        </ul>
-        <a href="https://razorpay.me/@RentCan" target="_blank" rel="noopener" class="btn btn-fill">Go Premium</a>
-      </div>
-      <div class="plan reveal">
-        <div class="tier">Vacancy Resolution</div>
-        <div class="price">from ₹1,999<span class="per"> one-time</span></div>
-        <div class="price-note">When a unit falls empty and you want it filled</div>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Listing assistance &amp; lead coordination</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Applicant &amp; document collection, ID checks</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Viewing coordination &amp; move-in support</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>Pay once — you make the final tenant choice</li>
-        </ul>
-        <a href="https://razorpay.me/@RentCan" target="_blank" rel="noopener" class="btn btn-outline">Reduce my vacancy</a>
-        <p class="vac-card-note">Not a broker. No placement guarantee — see <a href="service-agreement.html">Service Agreement</a>.</p>
-      </div>
-    </div>
-    <p class="plan-fineprint">Prices cover 1–2 properties per owner. Each extra property is <b>₹1,000/month</b>. Vacant units drop to <b>₹499/month</b> (rent paused, one monthly check kept). One-time tenant onboarding is <b>₹2,000</b> per tenant change. Card payments may carry a small convenience fee.</p>
-  </div>
-</section>
+
+
 <!-- FAQ -->
 <!-- VACANCY RESOLUTION -->
 <section class="rc-vacancy" id="vacancy">
