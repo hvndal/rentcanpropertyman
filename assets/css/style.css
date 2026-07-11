@@ -586,3 +586,18 @@
     100% { transform: translateX(calc(-320px * 6)); }
   }
 }
+
+/* ---------- SMART COLLECTION FEATURE ---------- */
+@media (max-width: 900px) {
+  .rc-feature .wrap {
+    flex-direction: column;
+    text-align: center;
+  }
+  .rc-feature ul {
+    align-items: center;
+  }
+  .rc-feature .feature-visual {
+    justify-content: center;
+    width: 100%;
+  }
+}
