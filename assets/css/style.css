@@ -601,3 +601,34 @@
     width: 100%;
   }
 }
+
+
+/* ---------- AUTHENTICATION & DASHBOARDS ---------- */
+.auth-page { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: url('https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/photos/interior-hero.jpg') center/cover no-repeat; position: relative; }
+.auth-page::before { content: ''; position: absolute; inset: 0; background: rgba(10,21,18,0.6); backdrop-filter: blur(8px); }
+.auth-card { position: relative; z-index: 10; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.2); padding: 48px; border-radius: 24px; box-shadow: 0 32px 84px rgba(0,0,0,0.3); width: 100%; max-width: 440px; text-align: center; }
+.auth-card h1 { font-family: var(--serif); font-size: 32px; margin-bottom: 8px; color: var(--ink); letter-spacing: -0.02em; }
+.auth-card p { color: var(--muted); margin-bottom: 32px; font-size: 15px; }
+.auth-form { display: flex; flex-direction: column; gap: 20px; }
+.auth-input { width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--line); font-family: var(--sans); font-size: 15px; background: #fff; transition: border-color 0.3s ease; }
+.auth-input:focus { outline: none; border-color: var(--emerald); box-shadow: 0 0 0 4px rgba(11,124,102,0.1); }
+.role-selector { display: flex; gap: 12px; margin-bottom: 20px; }
+.role-btn { flex: 1; padding: 14px; border-radius: 12px; border: 2px solid var(--line); background: transparent; cursor: pointer; font-weight: 600; color: var(--muted); transition: all 0.3s ease; }
+.role-btn.active { border-color: var(--emerald); color: var(--emerald); background: rgba(11,124,102,0.05); }
+
+/* Dashboards */
+.dashboard-nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background: #fff; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 100; }
+.dashboard-nav .logo { color: var(--ink); font-weight: 700; font-size: 24px; font-family: var(--serif); letter-spacing: -0.02em; }
+.dashboard-main { padding: 40px; max-width: 1200px; margin: 0 auto; min-height: 100vh; }
+.dashboard-main h1 { font-family: var(--serif); font-size: 36px; letter-spacing: -0.02em; margin-bottom: 8px; }
+.dashboard-main p { color: var(--muted); font-size: 16px; margin-bottom: 40px; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 40px; }
+.stat-card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+.stat-card .label { font-size: 13px; color: var(--muted); text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+.stat-card .value { font-size: 32px; font-weight: 700; color: var(--ink); }
+
+/* Table for Landlords */
+.rc-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); }
+.rc-table th, .rc-table td { padding: 16px 24px; text-align: left; border-bottom: 1px solid var(--line); }
+.rc-table th { background: #fafafa; font-size: 13px; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.rc-table tr:last-child td { border-bottom: none; }

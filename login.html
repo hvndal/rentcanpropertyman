@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | RentCan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="auth-page reveal">
+    <div class="auth-card">
+      <a href="index.html" class="logo" style="color: var(--ink); font-size: 24px; display: block; margin-bottom: 24px;">RentCan</a>
+      <h1>Welcome back</h1>
+      <p>Enter your details to sign in to your account.</p>
+      
+      <form class="auth-form" id="loginForm">
+        <input type="email" id="email" class="auth-input" placeholder="Email Address" required>
+        <button type="submit" class="btn btn-fill" style="width: 100%; border-radius: 12px; font-size: 16px;">Sign In with Magic Link</button>
+      </form>
+      
+      <p style="margin-top: 24px; margin-bottom: 0;">Don't have an account? <a href="signup.html" style="color: var(--emerald); font-weight: 600;">Sign up</a></p>
+    </div>
+  </div>
+
+  <script src="mock-supabase.js"></script>
+  <script src="assets/js/auth.js"></script>
+</body>
+</html>
