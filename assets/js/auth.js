@@ -66,14 +66,53 @@ document.addEventListener('DOMContentLoaded', () => {
         window.verifyOtp(
           otpCode,
           (data) => {
-            console.log('OTP verified:', data);
-            // Simulate session creation
-            localStorage.setItem('rc_session_identifier', currentIdentifier);
-            localStorage.setItem('rc_session_role', selectedRole); // Captures role from signup or defaults to tenant
+            console.log('OTP verified from widget:', data);
             
-            // Redirect
-            window.location.href = selectedRole === 'landlord' ? 'landlord-dashboard.html' : 'tenant-dashboard.html';
-          },
+            // Extract the JWT token from the widget response.
+            // MSG91 typically returns the token in data.message
+            const jwtToken = data.message || data.jwt || data.token;
+            
+            if (!jwtToken) {
+               console.warn("No JWT token found in response, falling back to basic session.");
+               localStorage.setItem('rc_session_identifier', currentIdentifier);
+               localStorage.setItem('rc_session_role', selectedRole);
+               window.location.href = selectedRole === 'landlord' ? 'landlord-dashboard.html' : 'tenant-dashboard.html';
+               return;
+            }
+
+            // Verify the Access Token with MSG91
+            fetch('https://control.msg91.com/api/v5/widget/verifyAccessToken', {
+              method: 'POST',
+              headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+              },
+              body: JSON.stringify({
+                "authkey": "535432AfGyahgfkas6a37b39eP1",
+                "access-token": jwtToken
+              })
+            })
+            .then(response => response.json())
+            .then(json => {
+              console.log('Backend verification response:', json);
+              if (json.type === 'success' || !json.error) {
+                // Token is valid! Create the local session
+                localStorage.setItem('rc_session_identifier', currentIdentifier);
+                localStorage.setItem('rc_session_role', selectedRole);
+                window.location.href = selectedRole === 'landlord' ? 'landlord-dashboard.html' : 'tenant-dashboard.html';
+              } else {
+                alert('Token verification failed: ' + (json.message || 'Unknown error'));
+                btn.innerText = 'Verify OTP';
+                btn.disabled = false;
+              }
+            })
+            .catch(err => {
+              console.error('Fetch error:', err);
+              alert('Network error verifying token.');
+              btn.innerText = 'Verify OTP';
+              btn.disabled = false;
+            });
+          },,
           (error) => {
             console.log('OTP Verification failed:', error);
             btn.innerText = 'Verify OTP';
