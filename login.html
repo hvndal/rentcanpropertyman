@@ -8,6 +8,22 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Serif+Display&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
+
+<script type="text/javascript">
+  var configuration = {
+    widgetId: "366674716248383037373030",
+    tokenAuth: "{token}",
+    exposeMethods: true,
+    success: (data) => {
+        console.log('MSG91 success response', data);
+    },
+    failure: (error) => {
+        console.log('MSG91 failure reason', error);
+    }
+  };
+</script>
+<script type="text/javascript" onload="initSendOTP(configuration)" src="https://verify.msg91.com/otp-provider.js"></script>
+
 </head>
 <body>
   <div class="auth-page reveal">
@@ -17,15 +33,22 @@
       <p>Enter your details to sign in to your account.</p>
       
       <form class="auth-form" id="loginForm">
-        <input type="email" id="email" class="auth-input" placeholder="Email Address" required>
-        <button type="submit" class="btn btn-fill" style="width: 100%; border-radius: 12px; font-size: 16px;">Sign In with Magic Link</button>
+        <input type="text" id="email" class="auth-input" placeholder="Email or Mobile Number (e.g. 919999999999)" required>
+        <button type="submit" class="btn btn-fill" style="width: 100%; border-radius: 12px; font-size: 16px;">Send OTP</button>
       </form>
+
+      <form class="auth-form" id="otpForm" style="display: none;">
+        <p style="color: var(--muted); margin-bottom: 20px; font-size: 14px;">We've sent a 6-digit code to your email/phone. Enter it below to verify.</p>
+        <input type="text" id="otpCode" class="auth-input" placeholder="Enter 6-digit OTP" required maxlength="6" style="text-align: center; letter-spacing: 0.5em; font-size: 20px; font-weight: 600;">
+        <button type="submit" class="btn btn-fill" style="width: 100%; border-radius: 12px; font-size: 16px;">Verify OTP</button>
+        <button type="button" id="resendOtpBtn" style="background: none; border: none; color: var(--emerald); font-weight: 600; font-size: 14px; cursor: pointer; margin-top: 10px; transition: opacity 0.2s;">Didn't receive code? Resend.</button>
+      </form>
+
       
       <p style="margin-top: 24px; margin-bottom: 0;">Don't have an account? <a href="signup.html" style="color: var(--emerald); font-weight: 600;">Sign up</a></p>
     </div>
   </div>
 
-  <script src="mock-supabase.js"></script>
-  <script src="assets/js/auth.js"></script>
+    <script src="assets/js/auth.js"></script>
 </body>
 </html>
