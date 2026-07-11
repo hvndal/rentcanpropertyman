@@ -512,27 +512,30 @@
 }
 .reviews-track {
   display: flex;
-  gap: 30px;
+  gap: 0;
   width: max-content;
-  animation: slide 35s linear infinite;
+  animation: slide 120s linear infinite; /* Much slower */
 }
 .reviews-track:hover {
   animation-play-state: paused;
 }
 .gr-card {
-  width: 360px;
+  width: 400px;
   background: #fff;
-  border-radius: 18px;
-  padding: 28px;
-  box-shadow: 0 12px 34px rgba(10,21,18,0.06);
-  border: 1px solid var(--line);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 0;
+  padding: 40px;
+  box-shadow: none;
+  border: none;
+  border-right: 1px solid rgba(0,0,0,0.04);
+  transition: background 0.4s ease;
   flex: none;
 }
 .gr-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 22px 48px rgba(10,21,18,0.12);
+  background: #f8f9fa;
+  transform: none;
+  box-shadow: none;
 }
+
 .gr-top {
   display: flex;
   align-items: center;
@@ -577,9 +580,9 @@
   100% { transform: translateX(calc(-360px * 6 - 30px * 6)); } /* 6 cards width + gap */
 }
 @media (max-width: 768px) {
-  .gr-card { width: 300px; }
+  .gr-card { width: 320px; padding: 24px; }
   @keyframes slide {
     0% { transform: translateX(0); }
-    100% { transform: translateX(calc(-300px * 6 - 30px * 6)); }
+    100% { transform: translateX(calc(-320px * 6)); }
   }
 }
