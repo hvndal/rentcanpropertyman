@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RentCan - Unified Property Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script id="tailwind-config">
+try{
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-fixed-variant": "#3d4947",
+            "on-secondary-fixed-variant": "#613d3e",
+            "surface-dim": "#dadada",
+            "surface-variant": "#e2e2e2",
+            "primary-fixed": "#bceddd",
+            "on-secondary-fixed": "#2f1314",
+            "surface-tint": "#3a675a",
+            "on-background": "#1a1c1c",
+            "on-tertiary-container": "#bcc9c6",
+            "on-tertiary-fixed": "#121e1c",
+            "surface-container-high": "#e8e8e8",
+            "inverse-primary": "#a1d0c1",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed-variant": "#214e43",
+            "on-error-container": "#93000a",
+            "primary-fixed-dim": "#a1d0c1",
+            "on-secondary-container": "#7a5354",
+            "error-container": "#ffdad6",
+            "on-surface": "#1a1c1c",
+            "on-primary": "#ffffff",
+            "on-error": "#ffffff",
+            "primary": "#134237",
+            "error": "#ba1a1a",
+            "surface-container-highest": "#e2e2e2",
+            "outline-variant": "#c0c8c4",
+            "on-surface-variant": "#404845",
+            "on-primary-fixed": "#002019",
+            "inverse-surface": "#2f3131",
+            "tertiary": "#323e3c",
+            "secondary-container": "#fecbcb",
+            "outline": "#717975",
+            "on-tertiary": "#ffffff",
+            "tertiary-fixed-dim": "#bcc9c6",
+            "tertiary-fixed": "#d8e5e2",
+            "surface-container-low": "#f3f3f3",
+            "primary-container": "#2d5a4e",
+            "secondary-fixed-dim": "#ecbaba",
+            "inverse-on-surface": "#f1f1f1",
+            "secondary": "#7b5455",
+            "on-primary-container": "#a0cfc0",
+            "tertiary-container": "#495553",
+            "surface-container": "#eeeeee",
+            "surface": "#f9f9f9",
+            "surface-container-lowest": "#ffffff",
+            "secondary-fixed": "#ffdad9",
+            "background": "#f9f9f9",
+            "surface-bright": "#f9f9f9"
+          },
+          "borderRadius": {
+            "DEFAULT": "4px",
+            "lg": "8px",
+            "xl": "12px",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-mobile": "20px",
+            "container-max": "1280px",
+            "gutter": "24px",
+            "unit": "8px",
+            "margin-desktop": "64px"
+          },
+          "fontFamily": {
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "body-base": ["Plus Jakarta Sans"],
+            "display-lg-mobile": ["Plus Jakarta Sans"],
+            "label-caps": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-sm": ["13px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+            "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+            "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+            "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+            "display-lg-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+            "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}]
+          }
+        },
+      },
+    }
+}catch(_e){}
+</script>
+<style>
+    /* Toast Styles */
+    #toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .toast {
+      padding: 16px 24px;
+      border-radius: 8px;
+      background: var(--tw-color-surface-container-high, #e8e8e8);
+      color: var(--tw-color-on-surface, #1a1c1c);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .toast.error {
+      background: var(--tw-color-error-container, #ffdad6);
+      color: var(--tw-color-on-error-container, #93000a);
+    }
+    .toast.success {
+      background: var(--tw-color-primary-container, #2d5a4e);
+      color: var(--tw-color-on-primary-container, #a0cfc0);
+    }
+</style>
+</head>
+<body class="bg-background text-on-background selection:bg-primary-fixed-dim selection:text-primary min-h-screen flex flex-col overflow-hidden">
+
+<div id="toast-container"></div>
+
+<!-- AUTH VIEW -->
+<div id="authView" class="flex flex-col w-full min-h-screen overflow-y-auto">
+    <!-- Nav removed -->
+    <main class="flex-grow flex flex-col md:flex-row max-w-[1440px] mx-auto w-full min-h-screen">
+        <!-- Left Section: Login Form -->
+        <section class="w-full md:w-1/2 flex flex-col justify-center px-margin-mobile md:px-margin-desktop py-12">
+            <div class="max-w-md w-full mx-auto md:mx-0">
+                <div class="mb-12">
+                    <span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest block mb-4">AAPKA GHAR, AUR HAMARI DEKH BHAL</span>
+                    <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary leading-tight mb-2 tracking-tighter">Welcome Back.</h1>
+                    <p class="font-body-base text-body-base text-on-surface-variant">Access your property management dashboard.</p>
+                </div>
+                
+                <!-- Role Toggle -->
+                <div class="flex p-1 bg-surface-container-low rounded mb-8 w-fit">
+                    <button id="btn-landlord" class="px-6 py-2 font-label-sm text-label-sm rounded transition-all duration-200 bg-primary text-on-primary" onclick="toggleRole('landlord')">Landlord</button>
+                    <button id="btn-tenant" class="px-6 py-2 font-label-sm text-label-sm rounded transition-all duration-200 text-on-surface-variant hover:text-primary" onclick="toggleRole('tenant')">Tenant</button>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Google Auth -->
+                    <button onclick="handleSocialLogin('google')" class="w-full flex items-center justify-center gap-3 py-3 border border-outline-variant rounded hover:bg-surface-container transition-colors group">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"></path>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"></path>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"></path>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"></path>
+                        </svg>
+                        <span class="font-label-sm text-label-sm text-on-surface">Continue with Google</span>
+                    </button>
+                    
+                    <div class="relative flex items-center justify-center">
+                        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-outline-variant/30"></div></div>
+                        <span class="relative px-4 bg-background font-label-caps text-label-caps text-outline">OR</span>
+                    </div>
+
+                    <!-- Email/Phone Form -->
+                    <form class="space-y-4" onsubmit="handleLogin(event)">
+                        <div>
+                            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1 ml-1">Email Address or Phone</label>
+                            <input id="loginInput" type="text" placeholder="name@company.com" class="w-full px-4 py-3 bg-transparent border-b border-outline focus:border-primary focus:ring-0 transition-all text-body-base placeholder:text-outline-variant" required>
+                        </div>
+                        <button type="submit" id="loginBtn" class="w-full py-4 bg-primary text-on-primary font-label-sm text-label-sm rounded uppercase tracking-widest shadow-lg hover:shadow-xl hover:translate-y-[-2px] transition-all active:scale-95">
+                            Secure Sign In
+                        </button>
+                        <div id="otp-section" class="hidden space-y-4 mt-4">
+                            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1 ml-1">Enter OTP</label>
+                            <input id="otpInput" type="text" placeholder="123456" class="w-full px-4 py-3 bg-transparent border-b border-outline focus:border-primary focus:ring-0 transition-all text-body-base placeholder:text-outline-variant">
+                            <button type="button" id="verifyBtn" onclick="verifyOtp()" class="w-full py-4 bg-primary text-on-primary font-label-sm text-label-sm rounded uppercase tracking-widest shadow-lg hover:shadow-xl hover:translate-y-[-2px] transition-all active:scale-95">
+                                Verify & Access
+                            </button>
+                        </div>
+                    </form>
+                    <p class="text-center font-body-base text-body-base text-on-surface-variant pt-4">
+                        New to RentCan? <a href="#" class="text-secondary font-bold hover:underline">Create an account</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+        <!-- Right Section: Visual Placeholder -->
+        <section class="hidden md:flex w-1/2 p-margin-desktop">
+            <div class="relative w-full h-full rounded-xl overflow-hidden glass-card custom-shadow flex flex-col p-8 border border-outline-variant">
+                <div class="absolute top-12 left-12 z-10">
+                    <div class="px-4 py-2 bg-surface/90 backdrop-blur-md rounded-full border border-outline-variant/30 flex items-center gap-2 shadow-sm">
+                        <span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+                        <p class="font-label-caps text-label-caps text-primary tracking-[0.15em]">FULLY SECURE</p>
+                    </div>
+                </div>
+                <div class="relative w-full h-full rounded-lg overflow-hidden border border-outline-variant/30 group">
+                    <div class="absolute inset-0 bg-primary/10 mix-blend-multiply transition-opacity group-hover:opacity-0 z-0"></div>
+                    <img class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOlQyj8ca5rWt69_sNia1MgbIcJN-FCRHy4Pxei_-v5Yb6N3mwih5Wp0Omt2D8bg7Kas8wzB3BCyekD5PEJjb2tlO1Ff4DuYsjIEBXyBIAEcOo9AVlQ1szW6sD5IBQWB8JJeiHLcYv3I-ekzl_yVQbun1s-xrTYrRUxJr84a63SNvDrCOVXUs_F7JBrMg2knQ3MK26bPRn8sPnu9_Xdpk4Vzky7x774bWHhF5R4GZZb6ZYF234YI-P">
+                </div>
+                <div class="mt-8">
+                    <h3 class="font-headline-md text-headline-md text-primary mb-2 tracking-tight">Modern Property Excellence.</h3>
+                    <p class="font-body-base text-body-base text-on-surface-variant max-w-sm leading-relaxed">Serving the Tricity with meticulous care and Swiss precision since 2024.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="md:hidden bg-primary px-margin-mobile py-8 rounded-t-xl mt-auto">
+        <div class="flex flex-col gap-4">
+            <div class="text-headline-md font-headline-md font-bold text-secondary-fixed">RentCan</div>
+            <p class="text-on-primary/70 font-label-sm text-label-sm">© 2024 RentCan Property Management.</p>
+        </div>
+    </footer>
+</div>
+
+<!-- DASHBOARD VIEW -->
+<div id="dashView" class="hidden w-full h-screen overflow-hidden flex">
+    
+<!-- SideNavBar (Shared Component) -->
+<aside class="flex flex-col h-screen p-stack-md border-r border-outline bg-surface w-64 shrink-0 overflow-y-auto">
+<div class="mb-stack-xl px-2">
+<h1 class="font-headline-md text-headline-md text-primary font-bold">RentCan</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-1">Property Manager</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Active: Properties -->
+<a class="flex items-center gap-3 px-3 py-2 text-primary font-bold bg-surface-container rounded-lg transition-all scale-95 group" href="#">
+<span class="material-symbols-outlined" data-icon="domain">domain</span>
+<span class="font-label-lg text-label-lg">Properties</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-label-lg text-label-lg">Documents</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-lg text-label-lg">Payments</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-lg text-label-lg">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-lg text-label-lg">Team</span>
+</a>
+</nav>
+<div class="mt-auto pt-stack-md border-t border-outline-variant space-y-1">
+<button class="w-full flex items-center justify-center gap-2 bg-primary text-on-primary font-label-lg text-label-lg py-3 rounded-lg mb-stack-md hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+                Invite Tenant
+            </button>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-lg text-label-lg">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-lg text-label-lg">Switch View</span>
+</a>
+</div>
+<div class="mt-stack-lg flex items-center gap-3 px-2">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold border border-outline-variant">
+                PA
+            </div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface">Portfolio Admin</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">admin@rentcan.com</p>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-y-auto bg-background">
+<!-- TopBar -->
+<header class="flex justify-between items-center px-margin-desktop py-stack-md w-full sticky top-0 bg-background/80 backdrop-blur-md z-10 border-b border-outline">
+<div class="flex items-center gap-stack-md">
+<h2 class="font-headline-lg text-headline-lg text-primary">Overview</h2>
+<div class="hidden md:flex gap-gutter">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md" href="#">Properties</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors font-body-md text-body-md" href="#">Documents</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors font-body-md text-body-md" href="#">Payments</a>
+</div>
+</div>
+<div class="flex items-center gap-gutter">
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="pl-10 pr-4 py-2 border-b border-outline bg-transparent focus:border-primary focus:ring-0 font-body-md text-body-md w-64 outline-none" placeholder="Search property or tenant..." type="text">
+</div>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-lg text-label-lg transition-all hover:scale-[1.02] active:scale-95">
+                    Invite Tenant
+                </button>
+</div>
+</header>
+<!-- Canvas -->
+<div class="px-margin-desktop py-stack-lg">
+<!-- Stats Bento Grid -->
+<section class="swiss-grid mb-stack-xl">
+<!-- Main KPI: Occupancy -->
+<div class="col-span-12 md:col-span-4 border border-outline p-stack-lg flex flex-col justify-between bg-surface-container-lowest">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Portfolio Occupancy</p>
+<h3 class="font-display-lg text-display-lg text-primary font-bold">94.2%</h3>
+</div>
+<div class="mt-stack-md flex items-center gap-2">
+<span class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[94.2%]"></div>
+</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Target 98%</span>
+</div>
+</div>
+<!-- Main KPI: Rent -->
+<div class="col-span-12 md:col-span-4 border border-outline p-stack-lg flex flex-col justify-between bg-surface-container-lowest">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Current Rent Collection</p>
+<h3 class="font-display-lg text-display-lg text-primary font-bold" style="opacity: 0;">₹42,850</h3>
+</div>
+<div class="mt-stack-md">
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="trending_up">trending_up</span>
+                            +12% from last month
+                        </p>
+</div>
+</div>
+<!-- Main KPI: Documents -->
+<div class="col-span-12 md:col-span-4 border border-outline p-stack-lg flex flex-col justify-between bg-surface-container-lowest">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Active Documents</p>
+<h3 class="font-display-lg text-display-lg text-primary font-bold">18</h3>
+</div>
+<div class="mt-stack-md flex gap-gutter">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Pending</p>
+<p class="font-title-lg text-title-lg text-error">4</p>
+</div>
+<div class="border-l border-outline-variant pl-4">
+<p class="font-label-sm text-label-sm text-on-surface-variant">Signed</p>
+<p class="font-title-lg text-title-lg text-primary">14</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Property Section Header -->
+<div class="flex justify-between items-end mb-stack-md border-b border-outline pb-4">
+<h4 class="font-headline-md text-headline-md text-on-surface">Active Properties</h4>
+<div class="flex items-center gap-stack-md">
+<button class="font-label-lg text-label-lg text-on-surface-variant flex items-center gap-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="filter_list">filter_list</span>
+                        Filter
+                    </button>
+<button class="font-label-lg text-label-lg text-on-surface-variant flex items-center gap-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="sort">sort</span>
+                        Sort by Price
+                    </button>
+</div>
+</div>
+<!-- Property Grid -->
+<div id="propertiesGrid" class="swiss-grid gap-stack-lg w-full">
+    <!-- Loaded dynamically -->
+</div>
+<!-- Recent Activity List -->
+<section class="mt-stack-xl">
+<h4 class="font-headline-md text-headline-md text-on-surface mb-stack-lg">Recent Activity</h4>
+<div class="border border-outline bg-surface-container-lowest">
+<div class="p-stack-md border-b border-outline-variant flex items-center justify-between hover:bg-surface transition-colors cursor-pointer">
+<div class="flex items-center gap-gutter">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface">Lease signed: unit 402 - Avenue Nordic</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">2 hours ago</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="p-stack-md border-b border-outline-variant flex items-center justify-between hover:bg-surface transition-colors cursor-pointer">
+<div class="flex items-center gap-gutter">
+<span class="material-symbols-outlined text-secondary" data-icon="payments">payments</span>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface">Rent payment received - ₹2,400</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">5 hours ago</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="p-stack-md flex items-center justify-between hover:bg-surface transition-colors cursor-pointer">
+<div class="flex items-center gap-gutter">
+<span class="material-symbols-outlined text-tertiary" data-icon="assignment_late">assignment_late</span>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface">Maintenance request: unit 101 - Water Leak</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Yesterday</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer (Shared Component) -->
+<footer class="mt-auto grid grid-cols-4 gap-gutter px-margin-desktop py-stack-xl w-full border-t border-outline bg-surface-container-lowest">
+<div class="col-span-4 lg:col-span-1">
+<p class="font-title-lg text-title-lg font-bold text-primary mb-4">RentCan</p>
+<p class="font-body-md text-body-md text-on-surface-variant">© 2024 RentCan. Precision Property Management.</p>
+</div>
+<div class="col-span-2 lg:col-span-1">
+<p class="font-label-lg text-label-lg text-on-surface font-bold mb-4">Resources</p>
+<ul class="space-y-2">
+<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Help Center</a></li>
+</ul>
+</div>
+<div class="col-span-2 lg:col-span-1">
+<p class="font-label-lg text-label-lg text-on-surface font-bold mb-4">Company</p>
+<ul class="space-y-2">
+<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Careers</a></li>
+<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">API Documentation</a></li>
+<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Us</a></li>
+</ul>
+</div>
+<div class="col-span-4 lg:col-span-1 border-t lg:border-t-0 lg:border-l border-outline-variant pt-stack-md lg:pt-0 lg:pl-stack-lg">
+<p class="font-label-lg text-label-lg text-on-surface font-bold mb-4">Newsletter</p>
+<div class="flex items-center gap-2">
+<input class="flex-1 bg-surface-container-low border border-outline-variant px-4 py-2 font-body-md text-body-md focus:ring-0 focus:border-primary outline-none" placeholder="Your email" type="email">
+<button class="bg-primary text-on-primary px-4 py-2 font-label-lg text-label-lg">Join</button>
+</div>
+</div>
+</footer>
+</main>
+<!-- Interactions Script -->
+<script>
+        // Simple Micro-interaction for Stats
+        document.querySelectorAll('section.swiss-grid > div').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.backgroundColor = '#eceeec'; // surface-container
+                card.style.transition = 'background-color 0.3s ease';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.backgroundColor = '#ffffff'; // surface-container-lowest
+            });
+        });
+    </script>
+
+
+
+
+</div>
+
+<script>
+    // --- SUPABASE CONFIGURATION ---
+    const SUPABASE_URL = 'https://oczdxcayqkwvriwolclh.supabase.co';
+    const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY'; // <-- PASTE YOUR NEW ANON KEY HERE
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // --- STATE ---
+    let signupRole = 'landlord';
+    let currentUser = null;
+    let currentRole = null;
+
+    // --- UI HELPERS ---
+    function showToast(msg, type='info') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        
+        let icon = 'info';
+        if(type==='error') icon = 'error';
+        if(type==='success') icon = 'check_circle';
+        
+        toast.innerHTML = `<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">${icon}</span><span>${msg}</span>`;
+        container.appendChild(toast);
+        
+        // trigger reflow
+        void toast.offsetWidth;
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+
+    function toggleRole(role) {
+      signupRole = role;
+      const btnLandlord = document.getElementById('btn-landlord');
+      const btnTenant = document.getElementById('btn-tenant');
+      const primaryClasses = ['bg-primary', 'text-on-primary'];
+      const inactiveClasses = ['text-on-surface-variant', 'hover:text-primary'];
+
+      if (role === 'landlord') {
+        btnLandlord.classList.add(...primaryClasses);
+        btnLandlord.classList.remove(...inactiveClasses);
+        btnTenant.classList.remove(...primaryClasses);
+        btnTenant.classList.add(...inactiveClasses);
+      } else {
+        btnTenant.classList.add(...primaryClasses);
+        btnTenant.classList.remove(...inactiveClasses);
+        btnLandlord.classList.remove(...primaryClasses);
+        btnLandlord.classList.add(...inactiveClasses);
+      }
+    }
+
+    function switchView(viewId) {
+        document.getElementById('authView').classList.add('hidden');
+        document.getElementById('dashView').classList.add('hidden');
+        document.getElementById(viewId).classList.remove('hidden');
+    }
+
+    // --- AUTHENTICATION LOGIC ---
+    async function handleSocialLogin(provider) {
+        localStorage.setItem('rentcan_intended_role', signupRole);
+        
+        if (window.location.protocol === 'file:') {
+            showToast('Google login requires a web server (http://localhost). Running from file:/// will fail.', 'error');
+            return;
+        }
+
+        const { data, error } = await sb.auth.signInWithOAuth({
+            provider: provider,
+            options: { redirectTo: window.location.origin + window.location.pathname }
+        });
+        if (error) showToast(error.message, 'error');
+    }
+
+    async function handleLogin(e) {
+        e.preventDefault();
+        const input = document.getElementById('loginInput').value.trim();
+        const btn = document.getElementById('loginBtn');
+        if (!input) return;
+
+        btn.textContent = 'Sending...';
+        btn.disabled = true;
+
+        const isEmail = input.includes('@');
+        let authOpts = {};
+        if (isEmail) {
+            authOpts = { email: input };
+        } else {
+            let phone = input;
+            if (!phone.startsWith('+')) phone = '+91' + phone;
+            authOpts = { phone: phone };
+        }
+
+        const { error } = await sb.auth.signInWithOtp(authOpts);
+        btn.textContent = 'Secure Sign In';
+        btn.disabled = false;
+
+        if (error) {
+            showToast(error.message, 'error');
+        } else {
+            showToast('OTP sent! Please check your messages.', 'success');
+            btn.classList.add('hidden');
+            document.getElementById('otp-section').classList.remove('hidden');
+        }
+    }
+
+    async function verifyOtp() {
+        const input = document.getElementById('loginInput').value.trim();
+        const otp = document.getElementById('otpInput').value.trim();
+        if (!otp) return;
+
+        const btn = document.getElementById('verifyBtn');
+        btn.textContent = 'Verifying...';
+        btn.disabled = true;
+
+        const isEmail = input.includes('@');
+        let authOpts = {
+            token: otp,
+            type: isEmail ? 'email' : 'sms',
+            [isEmail ? 'email' : 'phone']: isEmail ? input : (input.startsWith('+') ? input : '+91'+input)
+        };
+
+        const { data, error } = await sb.auth.verifyOtp(authOpts);
+        btn.textContent = 'Verify & Access';
+        btn.disabled = false;
+
+        if (error) {
+            showToast(error.message, 'error');
+        } else {
+            enterDashboard(data.user);
+        }
+    }
+
+    async function enterDashboard(user) {
+        currentUser = user;
+        let profile = null;
+        try {
+            const cleanPhone = user.id.replace('phone_', '');
+            const { data } = await sb.from('profiles').select('*').or(`id.eq.${user.id},id.eq.${cleanPhone}`).maybeSingle();
+            profile = data;
+            if (profile) user.id = profile.id;
+        } catch(e) {
+            console.error(e);
+        }
+
+        const name = (profile && profile.name) || (user.user_metadata && user.user_metadata.name) || (user.email ? user.email.split('@')[0] : 'User');
+        let role = (profile && profile.role) || (user.user_metadata && user.user_metadata.role) || signupRole;
+        
+        // Apply intended role from OAuth redirect if present
+        const intendedRole = localStorage.getItem('rentcan_intended_role');
+        if (intendedRole) {
+            if (!profile || profile.role !== intendedRole) {
+                role = intendedRole;
+                await sb.from('profiles').upsert({ id: user.id, role: role, name: name });
+            }
+            localStorage.removeItem('rentcan_intended_role');
+        } else if (!profile) {
+            // First time login via OTP
+            await sb.from('profiles').upsert({ id: user.id, role: role, name: name });
+        }
+
+        currentRole = role;
+        
+        // Initialize dashboard UI here in Phase 3
+        switchView('dashView');
+        showToast(`Welcome back, ${name}! Logged in as ${role}`, 'success');
+    }
+
+    async function checkSession() {
+        const { data, error } = await sb.auth.getSession();
+        if (data && data.session) {
+            enterDashboard(data.session.user);
+        } else {
+            switchView('authView');
+        }
+    }
+
+    // Initialize
+    document.addEventListener("DOMContentLoaded", () => {
+        checkSession();
+        
+        // Listen to auth changes
+        sb.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_IN') {
+                if(!currentUser) enterDashboard(session.user);
+            }
+            if (event === 'SIGNED_OUT') {
+                currentUser = null;
+                currentRole = null;
+                switchView('authView');
+            }
+        });
+    });
+
+</script>
+<!-- Add Property Modal -->
+<div id="addPropertyModal" class="fixed inset-0 z-[60] flex items-center justify-center bg-primary/60 backdrop-blur-sm hidden">
+    <div class="bg-white p-10 max-w-lg w-full relative rounded-xl shadow-2xl border border-outline-variant/20 mx-4">
+        <button class="absolute top-6 right-6 text-primary/40 hover:text-primary transition-colors" onclick="closeAddPropertyModal()">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+        <div class="mb-8">
+            <h2 class="font-display-lg-mobile text-3xl text-primary mb-2 tracking-tight">Add New Property</h2>
+            <p class="text-[14px] text-on-surface-variant/60 font-light">Enter the details of your new listing.</p>
+        </div>
+        <form id="addPropertyForm" class="space-y-6" onsubmit="handleCreateProperty(event)">
+            <div>
+                <label class="block font-label-caps text-[11px] uppercase tracking-widest text-primary/60 mb-2">Property Title</label>
+                <input id="propTitle" required class="w-full border-b border-outline-variant/40 py-2 focus:outline-none focus:border-primary transition-colors bg-transparent font-body-base" placeholder="e.g. The Zurich Lofts" type="text" />
+            </div>
+            <div>
+                <label class="block font-label-caps text-[11px] uppercase tracking-widest text-primary/60 mb-2">Address</label>
+                <input id="propAddress" required class="w-full border-b border-outline-variant/40 py-2 focus:outline-none focus:border-primary transition-colors bg-transparent font-body-base" placeholder="123 Global Way" type="text" />
+            </div>
+            <div class="grid grid-cols-2 gap-6">
+                <div>
+                    <label class="block font-label-caps text-[11px] uppercase tracking-widest text-primary/60 mb-2">Bedrooms</label>
+                    <input id="propBeds" required min="0" class="w-full border-b border-outline-variant/40 py-2 focus:outline-none focus:border-primary transition-colors bg-transparent font-body-base" placeholder="2" type="number" />
+                </div>
+                <div>
+                    <label class="block font-label-caps text-[11px] uppercase tracking-widest text-primary/60 mb-2">Bathrooms</label>
+                    <input id="propBaths" required min="0" class="w-full border-b border-outline-variant/40 py-2 focus:outline-none focus:border-primary transition-colors bg-transparent font-body-base" placeholder="2" type="number" />
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-6">
+                <div>
+                    <label class="block font-label-caps text-[11px] uppercase tracking-widest text-primary/60 mb-2">Square Feet</label>
+                    <input id="propSqft" required min="0" class="w-full border-b border-outline-variant/40 py-2 focus:outline-none focus:border-primary transition-colors bg-transparent font-body-base" placeholder="1200" type="number" />
+                </div>
+                <div>
+                    <label class="block font-label-caps text-[11px] uppercase tracking-widest text-primary/60 mb-2">Monthly Rent (?)</label>
+                    <input id="propRent" required min="0" class="w-full border-b border-outline-variant/40 py-2 focus:outline-none focus:border-primary transition-colors bg-transparent font-body-base" placeholder="3200" type="number" />
+                </div>
+            </div>
+            <button type="submit" id="submitPropertyBtn" class="w-full py-4 bg-primary text-white font-label-caps text-label-caps uppercase tracking-[0.2em] hover:bg-primary/95 transition-all mt-4 rounded-sm">Save Property</button>
+        </form>
+    </div>
+</div>
+<script>
+    // --- DASHBOARD LOGIC ---
+        function openAddPropertyModal() {
+        document.getElementById('addPropertyModal').classList.remove('hidden');
+    }
+    
+    function closeAddPropertyModal() {
+        document.getElementById('addPropertyModal').classList.add('hidden');
+        document.getElementById('addPropertyForm').reset();
+    }
+    
+    async function deleteProperty(id) {
+        if(!confirm('Are you sure you want to delete this property?')) return;
+        const { error } = await sb.from('properties').delete().eq('id', id);
+        if(error) {
+            showToast(error.message, 'error');
+        } else {
+            showToast('Property deleted successfully', 'success');
+            loadProperties();
+        }
+    }
+
+    async function handleCreateProperty(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submitPropertyBtn');
+        btn.textContent = 'Saving...';
+        btn.disabled = true;
+
+        const title = document.getElementById('propTitle').value;
+        const address = document.getElementById('propAddress').value;
+        const beds = document.getElementById('propBeds').value;
+        const baths = document.getElementById('propBaths').value;
+        const sqft = document.getElementById('propSqft').value;
+        const rent = document.getElementById('propRent').value;
+
+        // Generate short invite code
+        const invite_code = Math.random().toString(36).substring(2, 8).toUpperCase();
+
+        const { data, error } = await sb.from('properties').insert([
+            {
+                landlord_id: currentUser.id,
+                title: title,
+                address: address,
+                bedrooms: parseInt(beds),
+                bathrooms: parseInt(baths),
+                sqft: parseInt(sqft),
+                monthly_rent: parseFloat(rent),
+                invite_code: invite_code
+            }
+        ]);
+
+        btn.textContent = 'Save Property';
+        btn.disabled = false;
+
+        if (error) {
+            showToast(error.message, 'error');
+        } else {
+            showToast('Property added successfully', 'success');
+            closeAddPropertyModal();
+            loadProperties();
+        }
+    }
+
+    async function loadProperties() {
+        if (!currentUser || currentRole !== 'landlord') return;
+        
+        const grid = document.getElementById('propertiesGrid');
+        if(!grid) return;
+        
+        grid.innerHTML = '<p class="col-span-12">Loading properties...</p>';
+        
+        const { data: props, error } = await sb.from('properties').select('*').eq('landlord_id', currentUser.id);
+        
+        if (error) {
+            grid.innerHTML = '<p class="col-span-12 text-error">Failed to load properties.</p>';
+            return;
+        }
+
+        let html = '';
+        if (props && props.length > 0) {
+            props.forEach(p => {
+                html += `
+                <div class="col-span-12 md:col-span-6 lg:col-span-4 border border-outline bg-surface-container-lowest group overflow-hidden rounded-xl">
+                    <div class="relative aspect-[1.34] overflow-hidden border-b border-outline">
+                        <div class="w-full h-full bg-surface-variant flex items-center justify-center">
+                            <span class="material-symbols-outlined text-4xl text-outline-variant">home</span>
+                        </div>
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-primary-container text-on-primary-container px-3 py-1 font-label-sm text-label-sm rounded-full">Active</span>
+                        </div>
+                    </div>
+                    <div class="p-stack-lg">
+                                                <div class="flex justify-between items-start mb-2 group/header">
+                            <h5 class="font-title-lg text-title-lg text-on-surface truncate pr-2 flex items-center gap-2">
+                                ${p.title || 'Untitled Property'}
+                                <span onclick="deleteProperty('${p.id}')" class="material-symbols-outlined text-[16px] text-error opacity-0 group-hover/header:opacity-100 transition-opacity cursor-pointer hover:scale-110" title="Delete Property">delete</span>
+                            </h5>
+                            <span class="font-title-lg text-title-lg text-primary shrink-0">?${p.monthly_rent || 0}/mo</span>
+                        </div>
+                        <p class="font-body-md text-body-md text-on-surface-variant mb-stack-md truncate">${p.address || 'No address'}</p>
+                        <div class="flex items-center gap-stack-md pt-stack-md border-t border-outline-variant">
+                            <div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
+                                <span class="material-symbols-outlined text-[14px]">bed</span> ${p.bedrooms || 0} Beds
+                            </div>
+                            <div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
+                                <span class="material-symbols-outlined text-[14px]">bathtub</span> ${p.bathrooms || 0} Baths
+                            </div>
+                            <div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
+                                <span class="material-symbols-outlined text-[14px]">square_foot</span> ${p.sqft || 0} sqft
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            });
+        }
+        
+        // Add Property Button
+        html += `
+        <div onclick="openAddPropertyModal()" class="col-span-12 md:col-span-6 lg:col-span-4 border border-outline border-dashed bg-transparent group flex flex-col items-center justify-center p-stack-xl transition-all hover:bg-surface-container-low cursor-pointer rounded-xl min-h-[300px]">
+            <span class="material-symbols-outlined text-[48px] text-outline mb-stack-md group-hover:scale-110 transition-transform">add_circle</span>
+            <p class="font-title-lg text-title-lg text-on-surface">Add New Property</p>
+            <p class="font-body-md text-body-md text-on-surface-variant text-center mt-2 px-margin-mobile">Expand your portfolio with our precise management tools.</p>
+        </div>`;
+        
+        grid.innerHTML = html;
+    }
+    
+    // override enterDashboard to call loadProperties
+    const _originalEnterDashboard = enterDashboard;
+    enterDashboard = async function(user) {
+        await _originalEnterDashboard(user);
+        if (currentRole === 'landlord') {
+            loadProperties();
+        }
+    }
+</script>
+
+</body>
+</html>
+
+
+
+

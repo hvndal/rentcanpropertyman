@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://use.typekit.net/jrc7ooj.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        try {
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        "colors": {
+                            "primary": "#134237", // Deep Sage
+                            "secondary": "#7b5455", // Rose Fixed Dim
+                            "accent": "#ecbaba", // Softer Rose
+                            "on-primary": "#ffffff",
+                            "on-secondary": "#ffffff",
+                            "background": "#f9f9f9",
+                            "surface": "#ffffff",
+                            "surface-variant": "#f1f1f1",
+                            "outline": "#717975",
+                            "outline-variant": "#c0c8c4",
+                            "on-surface": "#1a1c1c",
+                            "on-surface-variant": "#404845"
+                        },
+                        "borderRadius": {
+                            "DEFAULT": "4px", // Sharper Swiss edges but subtle
+                            "lg": "8px",
+                            "xl": "12px",
+                            "full": "9999px"
+                        },
+                        "spacing": {
+                            "gutter": "24px",
+                            "unit": "8px",
+                            "margin-mobile": "20px",
+                            "margin-desktop": "64px",
+                            "container-max": "1280px"
+                        },
+                        "fontFamily": {
+                            "brand": ["Plus Jakarta Sans", "DM Sans", "sans-serif"],
+                            "label-sm": ["Plus Jakarta Sans", "DM Sans", "sans-serif"],
+                            "display-lg": ["Plus Jakarta Sans", "DM Serif Display", "serif"],
+                            "headline-md": ["Plus Jakarta Sans", "DM Serif Display", "serif"],
+                            "body-base": ["Plus Jakarta Sans", "DM Sans", "sans-serif"],
+                            "display-lg-mobile": ["Plus Jakarta Sans", "DM Serif Display", "serif"],
+                            "label-caps": ["Plus Jakarta Sans", "DM Sans", "sans-serif"]
+                        },
+                        "fontSize": {
+                            "label-sm": ["13px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                            "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                            "headline-md": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                            "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                            "display-lg-mobile": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                            "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "700"}]
+                        }
+                    },
+                },
+            }
+        } catch (_e) {}
+    </script>
+<style>
+        .hero-video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .hero-video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .hero-video-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(19, 66, 55, 0.4) 0%, rgba(19, 66, 55, 0.7) 100%);
+        }
+        .swiss-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-base antialiased">
+<!-- TopNavBar -->
+<header class="docked full-width top-0 sticky z-50 bg-white/5 backdrop-blur-md border-b border-white/10">
+<nav class="flex justify-between items-center w-full px-margin-desktop py-unit max-w-container-max mx-auto h-20">
+<div class="font-display-lg text-[24px] font-bold text-white tracking-tight">RentCan</div>
+<div class="hidden md:flex items-center gap-10">
+<a class="font-label-caps text-label-caps uppercase text-white font-bold border-b-2 border-accent transition-all duration-200" href="#">Properties</a>
+<a class="font-label-caps text-label-caps uppercase text-white/70 hover:text-white transition-colors duration-300" href="#">Rentals</a>
+<a class="font-label-caps text-label-caps uppercase text-white/70 hover:text-white transition-colors duration-300" href="#">Invest</a>
+<a class="font-label-caps text-label-caps uppercase text-white/70 hover:text-white transition-colors duration-300" href="#">About</a>
+</div>
+<div class="flex items-center gap-6">
+<button class="font-label-caps text-label-caps uppercase text-white/70 hover:text-white transition-all duration-200" onclick="window.location.href='dashboard.html'">Login</button>
+<button class="px-6 py-2.5 bg-accent text-primary font-label-caps text-label-caps uppercase tracking-[0.1em] hover:bg-white transition-all duration-300 rounded-sm">Get Started</button>
+</div>
+</nav>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+<div class="hero-video-container">
+<video autoplay="" loop="" muted="" playsinline="" src="https://cdn.jsdelivr.net/gh/hvndal/rentcanpropertyman@media/assets/videos/new_vid_1.mp4"></video>
+</div>
+<div class="relative z-10 w-full max-w-container-max mx-auto px-margin-desktop text-center flex flex-col items-center">
+<div class="mb-10">
+<!-- Brand Emblem -->
+<div class="w-16 h-16 rounded-full overflow-hidden border border-white/20 shadow-2xl mx-auto mb-8">
+<img alt="RentCan Logo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCelDY8t0toQHKZNjypOgU67skUaja1RjobLFIe3mWMP4lOe-uRn1JLLLxVvmrYEohh-ZcjWN9YdShFTmwbwK5qsx4coFAs-ieSjrwQDnsFuydTe_YpNRRjqu63zikRYjsDJYFlryX0byLrj0TmaTsgHWjEFBLWwXg481rRnIoGtVgCu7-Fa4_ii2aXtheGCO4xLUAwU1J50Eg1dogArSHW1fhsPj_gIr0dXhFYiYq7tKQiydkQ4_xp"/>
+</div>
+<!-- Tagline -->
+<div class="flex items-center justify-center gap-6 mb-8">
+<div class="w-12 h-[1px] bg-white/30"></div>
+<span class="font-label-caps text-[12px] uppercase tracking-[0.4em] text-white/90">Aapka ghar, aur hamari dekhbhal</span>
+<div class="w-12 h-[1px] bg-white/30"></div>
+</div>
+<!-- Main Heading -->
+<h1 class="font-display-lg text-white text-6xl md:text-[88px] leading-[1.05] mb-10 max-w-5xl tracking-tight">
+                    Your property, <br/>
+<span class="text-accent">fully managed</span> — <br/>
+                    wherever you are.
+                </h1>
+<!-- Subheadline text-->
+<p class="text-white/80 text-lg md:text-xl max-w-2xl mx-auto mb-14 leading-relaxed font-light">
+                    Rent collection, maintenance, and inspections for your home in the Tricity, all in one app. Whether you're across the city or across the world.
+                </p>
+<!-- Action Buttons -->
+<div class="flex flex-col sm:flex-row items-center justify-center gap-6 mb-14">
+<button class="px-12 py-5 bg-accent text-primary rounded-sm font-label-caps text-label-caps uppercase tracking-widest hover:bg-white transition-all flex items-center gap-3 shadow-xl">
+                        Get started <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+<button class="px-12 py-5 bg-white/5 border border-white/20 text-white rounded-sm font-label-caps text-label-caps uppercase tracking-widest hover:bg-white/10 backdrop-blur-md transition-all">
+                        See plans
+                    </button>
+</div>
+<!-- Free marker -->
+<p class="text-white/40 text-[10px] font-label-caps uppercase tracking-[0.2em] mb-16">
+                    Start free • your first month is on us • no card needed
+                </p>
+<!-- Trust Markers -->
+<div class="flex flex-wrap justify-center gap-12 text-white/70 font-label-caps text-[11px] tracking-widest">
+<div class="flex items-center gap-3">
+<span class="w-1.5 h-1.5 rounded-full bg-accent"></span> Rent via Razorpay
+                    </div>
+<div class="flex items-center gap-3">
+<span class="w-1.5 h-1.5 rounded-full bg-accent"></span> Owner &amp; tenant portals
+                    </div>
+<div class="flex items-center gap-3">
+<span class="w-1.5 h-1.5 rounded-full bg-accent"></span> Tricity-based support
+                    </div>
+</div>
+</div>
+</div>
+<div class="absolute bottom-12 right-12 z-20">
+<button class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center bg-white/5 backdrop-blur-md hover:bg-white/10 transition-all">
+<span class="material-symbols-outlined text-white/70 text-lg">volume_up</span>
+</button>
+</div>
+</section>
+<!-- Trust Badges -->
+<section class="border-b border-outline-variant/30 py-10 bg-white">
+<div class="max-w-container-max mx-auto px-margin-desktop flex flex-wrap justify-between items-center gap-8 opacity-60">
+<div class="flex items-center gap-3 grayscale hover:grayscale-0 transition-all cursor-default">
+<span class="material-symbols-outlined text-primary text-xl">location_on</span>
+<span class="font-label-caps text-[11px] uppercase tracking-widest">Mohali</span>
+</div>
+<div class="flex items-center gap-3 grayscale hover:grayscale-0 transition-all cursor-default">
+<span class="material-symbols-outlined text-primary text-xl">location_on</span>
+<span class="font-label-caps text-[11px] uppercase tracking-widest">Chandigarh</span>
+</div>
+<div class="flex items-center gap-3 grayscale hover:grayscale-0 transition-all cursor-default">
+<span class="material-symbols-outlined text-primary text-xl">location_on</span>
+<span class="font-label-caps text-[11px] uppercase tracking-widest">Panchkula</span>
+</div>
+</div>
+</section>
+<!-- Features Section: Swiss Lite Bento -->
+<section class="py-40 px-margin-desktop max-w-container-max mx-auto">
+<div class="mb-24 flex flex-col items-start">
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-[0.3em] mb-4 block">Our Methodology</span>
+<h2 class="font-display-lg text-5xl md:text-6xl mb-8 text-primary tracking-tight">Precision Management</h2>
+<div class="w-24 h-[2px] bg-secondary/30"></div>
+</div>
+<div class="swiss-grid">
+<!-- Inspection Card -->
+<div class="col-span-12 lg:col-span-8 bg-surface border border-outline-variant/40 p-16 flex flex-col justify-between min-h-[480px] hover:border-primary/20 transition-colors">
+<div>
+<div class="flex justify-between items-start mb-12">
+<div class="w-14 h-14 bg-primary text-white flex items-center justify-center rounded-sm">
+<span class="material-symbols-outlined text-2xl">fact_check</span>
+</div>
+<span class="font-label-caps text-[10px] border border-primary/10 text-primary/60 px-5 py-2 uppercase tracking-widest rounded-full">Premium Core Service</span>
+</div>
+<h3 class="font-headline-md text-4xl mb-6 text-primary">Monthly Physical Inspection</h3>
+<p class="text-body-base text-on-surface-variant mb-12 max-w-xl font-light">A meticulous 42-point checklist performed by our dedicated field officers. No corner is left unchecked, from structural integrity to aesthetic upkeep.</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-16">
+<div class="flex items-center gap-4 text-label-sm text-on-surface-variant/80 border-b border-outline-variant/20 pb-3">
+<span class="material-symbols-outlined text-secondary text-lg">check</span> Seepage &amp; Leakage
+                        </div>
+<div class="flex items-center gap-4 text-label-sm text-on-surface-variant/80 border-b border-outline-variant/20 pb-3">
+<span class="material-symbols-outlined text-secondary text-lg">check</span> Electrical Health
+                        </div>
+<div class="flex items-center gap-4 text-label-sm text-on-surface-variant/80 border-b border-outline-variant/20 pb-3">
+<span class="material-symbols-outlined text-secondary text-lg">check</span> Pest Infestation
+                        </div>
+<div class="flex items-center gap-4 text-label-sm text-on-surface-variant/80 border-b border-outline-variant/20 pb-3">
+<span class="material-symbols-outlined text-secondary text-lg">check</span> Fixture Inventory
+                        </div>
+</div>
+</div>
+<div class="mt-16 flex items-baseline gap-3">
+<span class="font-display-lg text-5xl text-primary">₹1,499</span>
+<span class="text-on-surface-variant/50 font-label-caps text-[10px] tracking-[0.2em]">/ MONTH + TAX</span>
+</div>
+</div>
+<!-- Vendor Deployment -->
+<div class="col-span-12 md:col-span-6 lg:col-span-4 bg-surface-variant/30 border border-outline-variant/40 p-12 flex flex-col hover:border-primary/20 transition-colors">
+<span class="material-symbols-outlined text-5xl text-secondary mb-10">engineering</span>
+<h3 class="font-headline-md text-2xl mb-6 text-primary">On-demand Vendors</h3>
+<p class="text-body-base text-sm text-on-surface-variant leading-relaxed font-light mb-12">Verified electricians, plumbers, and carpenters dispatched within 4 hours. Transparent pricing, guaranteed quality under our supervision.</p>
+<div class="mt-auto">
+<a class="text-primary font-label-caps text-[11px] tracking-widest border-b border-secondary/40 pb-1 hover:text-secondary hover:border-secondary transition-all" href="#">Learn More</a>
+</div>
+</div>
+<!-- Automated Rent -->
+<div class="col-span-12 md:col-span-6 lg:col-span-4 bg-surface border border-outline-variant/40 p-12 hover:border-primary/20 transition-colors">
+<span class="material-symbols-outlined text-5xl text-secondary mb-10">account_balance_wallet</span>
+<h3 class="font-headline-md text-2xl mb-6 text-primary">Automated Rent</h3>
+<p class="text-body-base text-sm text-on-surface-variant leading-relaxed font-light">Direct deposit tracking, automated reminders, and professional tax invoicing. We ensure your yields are consistent and documented.</p>
+</div>
+<!-- Background Checks -->
+<div class="col-span-12 md:col-span-6 lg:col-span-4 bg-surface border border-outline-variant/40 p-12 hover:border-primary/20 transition-colors">
+<span class="material-symbols-outlined text-5xl text-secondary mb-10">shield_person</span>
+<h3 class="font-headline-md text-2xl mb-6 text-primary">Background Checks</h3>
+<p class="text-body-base text-sm text-on-surface-variant leading-relaxed font-light">Police verification and multi-point credit checks for residential tenants. Peace of mind as a baseline standard for every lease.</p>
+</div>
+<!-- Vault & SOS -->
+<div class="col-span-12 md:col-span-6 lg:col-span-4 grid grid-rows-2 gap-6">
+<div class="bg-surface border border-outline-variant/40 p-10 flex items-center gap-8 hover:border-primary/20 transition-colors">
+<div class="w-14 h-14 bg-primary/5 flex items-center justify-center rounded-sm">
+<span class="material-symbols-outlined text-2xl text-primary" data-weight="fill">key</span>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps font-bold text-primary tracking-widest mb-1">THE VAULT</h4>
+<p class="text-[12px] text-on-surface-variant/60 font-light">Secure keys &amp; encrypted docs</p>
+</div>
+</div>
+<div class="bg-secondary/5 border border-secondary/10 p-10 flex items-center gap-8 hover:bg-secondary/10 transition-colors">
+<div class="w-14 h-14 bg-secondary/10 flex items-center justify-center rounded-sm">
+<span class="material-symbols-outlined text-2xl text-secondary">emergency_home</span>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps font-bold text-secondary tracking-widest mb-1">SOS RESPONSE</h4>
+<p class="text-[12px] text-on-surface-variant/60 font-light">24/7 on-site incident support</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Pricing Comparison Table -->
+<section class="py-40 bg-surface-variant/30 px-margin-desktop border-y border-outline-variant/20">
+<div class="max-w-[1000px] mx-auto">
+<div class="text-center mb-32">
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-[0.3em] mb-6 block">Transparent Pricing</span>
+<h2 class="font-display-lg text-5xl md:text-6xl text-primary tracking-tight">Service Tiers</h2>
+</div>
+<div class="bg-white border border-outline-variant/30 shadow-sm overflow-hidden rounded-sm">
+<table class="w-full text-left">
+<thead>
+<tr class="border-b border-outline-variant/30">
+<th class="py-12 px-10 font-label-caps text-[11px] text-on-surface-variant/40 uppercase tracking-[0.2em]">Core Capabilities</th>
+<th class="py-12 px-10 text-center">
+<span class="font-headline-md text-2xl text-primary">Residential</span>
+<div class="text-[12px] font-medium text-secondary mt-2">₹1,499/mo</div>
+</th>
+<th class="py-12 px-10 text-center relative bg-primary text-white">
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-primary px-5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] rounded-full">Enterprise</div>
+<span class="font-headline-md text-2xl">Commercial</span>
+<div class="text-[12px] font-medium text-accent mt-2">₹2,999/mo</div>
+</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="group hover:bg-background transition-colors">
+<td class="py-10 px-10 font-body-base text-primary/70 font-light">42-Point Physical Inspections</td>
+<td class="py-10 text-center"><span class="material-symbols-outlined text-secondary">check_circle</span></td>
+<td class="py-10 text-center bg-primary/95"><span class="material-symbols-outlined text-accent">check_circle</span></td>
+</tr>
+<tr class="group hover:bg-background transition-colors">
+<td class="py-10 px-10 font-body-base text-primary/70 font-light">Tenant Background Verification</td>
+<td class="py-10 text-center"><span class="material-symbols-outlined text-secondary">check_circle</span></td>
+<td class="py-10 text-center bg-primary/95"><span class="material-symbols-outlined text-accent">check_circle</span></td>
+</tr>
+<tr class="group hover:bg-background transition-colors">
+<td class="py-10 px-10 font-body-base text-primary/70 font-light">Fire Safety &amp; Compliance Audit</td>
+<td class="py-10 text-center text-outline-variant">—</td>
+<td class="py-10 text-center bg-primary/95"><span class="material-symbols-outlined text-accent">check_circle</span></td>
+</tr>
+<tr class="group hover:bg-background transition-colors">
+<td class="py-10 px-10 font-body-base text-primary/70 font-light">Digital Lease Management</td>
+<td class="py-10 text-center"><span class="material-symbols-outlined text-secondary">check_circle</span></td>
+<td class="py-10 text-center bg-primary/95"><span class="material-symbols-outlined text-accent">check_circle</span></td>
+</tr>
+<tr class="group hover:bg-background transition-colors">
+<td class="py-10 px-10 font-body-base text-primary/70 font-light">Facility Staff Performance Audit</td>
+<td class="py-10 text-center text-outline-variant">—</td>
+<td class="py-10 text-center bg-primary/95"><span class="material-symbols-outlined text-accent">check_circle</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-24 flex flex-col items-center gap-12">
+<p class="text-[12px] text-on-surface-variant/40 italic font-medium tracking-wide">* Commercial plan tailored for retail, offices, and clinics over 2,000 sq.ft.</p>
+<button class="px-16 py-6 border border-primary text-primary font-label-caps text-label-caps uppercase tracking-[0.2em] hover:bg-primary hover:text-white transition-all duration-500 rounded-sm">
+                    Compare Full Details
+                </button>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="py-56 px-margin-desktop text-center relative overflow-hidden bg-primary">
+<div class="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+<div class="max-w-4xl mx-auto relative z-10">
+<span class="font-label-caps text-label-caps text-accent uppercase tracking-[0.4em] mb-10 block">Experience Peace of Mind</span>
+<h2 class="font-display-lg text-white text-6xl md:text-[80px] mb-16 leading-[1.05] tracking-tight">Ready for Stress-Free <br/>Ownership?</h2>
+<div class="flex flex-col sm:flex-row justify-center gap-10">
+<button class="px-16 py-6 bg-accent text-primary font-label-caps text-label-caps uppercase tracking-[0.2em] font-bold hover:scale-[1.02] transition-all duration-300 shadow-2xl rounded-sm">Join RentCan</button>
+<button class="px-16 py-6 border border-white/30 text-white font-label-caps text-label-caps uppercase tracking-[0.2em] hover:bg-white/10 transition-all duration-300 rounded-sm backdrop-blur-sm">Request a Demo</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Login Modal -->
+<div class="fixed inset-0 z-[60] flex items-center justify-center bg-primary/60 backdrop-blur-sm hidden" id="login-modal">
+<div class="bg-white p-16 max-w-lg w-full relative rounded-sm shadow-2xl border border-outline-variant/20">
+<button class="absolute top-10 right-10 text-primary/40 hover:text-primary transition-colors" onclick="document.getElementById('login-modal').classList.add('hidden')">
+<span class="material-symbols-outlined">close</span>
+</button>
+<div class="text-center mb-14">
+<h2 class="font-display-lg text-4xl text-primary mb-4 tracking-tight">Welcome Back</h2>
+<p class="text-[14px] text-on-surface-variant/60 font-light">Sign in to manage your portfolio</p>
+</div>
+<form class="space-y-10">
+<div>
+<label class="block font-label-caps text-[11px] uppercase tracking-widest text-primary/60 mb-3">Email Address</label>
+<input class="w-full border-b border-outline-variant/40 py-4 focus:outline-none focus:border-primary transition-colors bg-transparent font-light" placeholder="owner@example.com" type="email"/>
+</div>
+<div>
+<label class="block font-label-caps text-[11px] uppercase tracking-widest text-primary/60 mb-3">Password</label>
+<input class="w-full border-b border-outline-variant/40 py-4 focus:outline-none focus:border-primary transition-colors bg-transparent font-light" placeholder="••••••••" type="password"/>
+</div>
+<button class="w-full py-6 bg-primary text-white font-label-caps text-label-caps uppercase tracking-[0.2em] hover:bg-primary/95 transition-all mt-10 rounded-sm">Login to Dashboard</button>
+</form>
+</div>
+</div>
+<!-- Footer -->
+<footer class="w-full pt-32 pb-16 bg-white border-t border-outline-variant/20">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-desktop max-w-container-max mx-auto mb-32">
+<div class="col-span-1">
+<div class="font-display-lg text-3xl text-primary mb-10 tracking-tight font-bold">RentCan</div>
+<p class="font-body-base text-[14px] text-on-surface-variant/60 leading-relaxed max-w-xs font-light">© 2024 RentCan. Precision property management for India's evolving urban landscape.</p>
+</div>
+<div class="col-span-1">
+<h4 class="font-label-caps text-label-caps text-primary font-bold mb-10 uppercase tracking-[0.2em]">Regional Focus</h4>
+<ul class="space-y-5">
+<li class="text-on-surface-variant/70 text-sm hover:text-secondary transition-all cursor-pointer font-light">Mohali</li>
+<li class="text-on-surface-variant/70 text-sm hover:text-secondary transition-all cursor-pointer font-light">Chandigarh</li>
+<li class="text-on-surface-variant/70 text-sm hover:text-secondary transition-all cursor-pointer font-light">Panchkula</li>
+<li class="text-on-surface-variant/30 text-sm cursor-not-allowed italic font-light">Zirakpur (Coming Soon)</li>
+</ul>
+</div>
+<div class="col-span-1">
+<h4 class="font-label-caps text-label-caps text-primary font-bold mb-10 uppercase tracking-[0.2em]">Resources</h4>
+<ul class="space-y-5">
+<li class="text-on-surface-variant/70 text-sm hover:text-secondary transition-all cursor-pointer font-light">Investor Guide</li>
+<li class="text-on-surface-variant/70 text-sm hover:text-secondary transition-all cursor-pointer font-light">Maintenance Matrix</li>
+<li class="text-on-surface-variant/70 text-sm hover:text-secondary transition-all cursor-pointer font-light">Legal &amp; Privacy</li>
+</ul>
+</div>
+<div class="col-span-1">
+<h4 class="font-label-caps text-label-caps text-primary font-bold mb-10 uppercase tracking-[0.2em]">Contact</h4>
+<p class="text-on-surface-variant/70 text-sm mb-8 leading-relaxed font-light">Phase 7, Industrial Area,<br/>SAS Nagar, Mohali 160055</p>
+<div class="flex gap-8">
+<span class="material-symbols-outlined text-primary/40 cursor-pointer hover:text-secondary transition-colors">mail</span>
+<span class="material-symbols-outlined text-primary/40 cursor-pointer hover:text-secondary transition-colors">call</span>
+</div>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-desktop pt-12 border-t border-outline-variant/10 flex flex-col md:flex-row justify-between items-center text-[10px] text-on-surface-variant/40 font-bold uppercase tracking-[0.3em]">
+<span>Designed with Swiss Principles • Precision Engineered</span>
+<div class="flex gap-12 mt-8 md:mt-0">
+<span class="hover:text-primary transition-colors cursor-pointer">Instagram</span>
+<span class="hover:text-primary transition-colors cursor-pointer">LinkedIn</span>
+</div>
+</div>
+</footer>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.swiss-grid > div, .pricing-card').forEach(el => {
+            el.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
+            observer.observe(el);
+        });
+    });
+</script>
+</body></html>

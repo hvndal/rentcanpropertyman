@@ -1,0 +1,207 @@
+<!DOCTYPE html><html lang="en" class="light"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-fixed-variant": "#3d4947",
+            "on-secondary-fixed-variant": "#613d3e",
+            "surface-dim": "#dadada",
+            "surface-variant": "#e2e2e2",
+            "primary-fixed": "#bceddd",
+            "on-secondary-fixed": "#2f1314",
+            "surface-tint": "#3a675a",
+            "on-background": "#1a1c1c",
+            "on-tertiary-container": "#bcc9c6",
+            "on-tertiary-fixed": "#121e1c",
+            "surface-container-high": "#e8e8e8",
+            "inverse-primary": "#a1d0c1",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed-variant": "#214e43",
+            "on-error-container": "#93000a",
+            "primary-fixed-dim": "#a1d0c1",
+            "on-secondary-container": "#7a5354",
+            "error-container": "#ffdad6",
+            "on-surface": "#1a1c1c",
+            "on-primary": "#ffffff",
+            "on-error": "#ffffff",
+            "primary": "#134237",
+            "error": "#ba1a1a",
+            "surface-container-highest": "#e2e2e2",
+            "outline-variant": "#c0c8c4",
+            "on-surface-variant": "#404845",
+            "on-primary-fixed": "#002019",
+            "inverse-surface": "#2f3131",
+            "tertiary": "#323e3c",
+            "secondary-container": "#fecbcb",
+            "outline": "#717975",
+            "on-tertiary": "#ffffff",
+            "tertiary-fixed-dim": "#bcc9c6",
+            "tertiary-fixed": "#d8e5e2",
+            "surface-container-low": "#f3f3f3",
+            "primary-container": "#2d5a4e",
+            "secondary-fixed-dim": "#ecbaba",
+            "inverse-on-surface": "#f1f1f1",
+            "secondary": "#7b5455",
+            "on-primary-container": "#a0cfc0",
+            "tertiary-container": "#495553",
+            "surface-container": "#eeeeee",
+            "surface": "#f9f9f9",
+            "surface-container-lowest": "#ffffff",
+            "secondary-fixed": "#ffdad9",
+            "background": "#f9f9f9",
+            "surface-bright": "#f9f9f9"
+          },
+          "borderRadius": {
+            "DEFAULT": "4px",
+            "lg": "8px",
+            "xl": "12px",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-mobile": "20px",
+            "container-max": "1280px",
+            "gutter": "24px",
+            "unit": "8px",
+            "margin-desktop": "64px"
+          },
+          "fontFamily": {
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "body-base": ["Plus Jakarta Sans"],
+            "display-lg-mobile": ["Plus Jakarta Sans"],
+            "label-caps": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-sm": ["13px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+            "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+            "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+            "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+            "display-lg-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+            "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}]
+          }
+        },
+      },
+    }
+  }catch(_e){}</script><meta charset="utf-8"></head><body class="bg-background text-on-background selection:bg-primary-fixed-dim selection:text-primary min-h-screen flex flex-col">
+<!-- TopNavBar (Suppressed as per "Task-Focused" rule, but logic dictates maintaining brand presence for login) -->
+<nav class="sticky top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-border-subtle/20 shadow-sm">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="text-headline-md font-headline-md font-bold text-primary">RentCan</div>
+<div class="hidden md:flex gap-8">
+<a href="#" class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors">How it Works</a>
+<a href="#" class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors">Pricing</a>
+</div>
+</div>
+</nav>
+<main class="flex-grow flex flex-col md:flex-row max-w-[1440px] mx-auto w-full min-h-[calc(100vh-72px)]">
+<!-- Left Section: Login Form (Swiss Modernist) -->
+<section class="w-full md:w-1/2 flex flex-col justify-center px-margin-mobile md:px-margin-desktop py-12">
+<div class="max-w-md w-full mx-auto md:mx-0">
+<!-- Tagline / Branding -->
+<div class="mb-12">
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest block mb-4">AAPKA GHAR, AUR HAMARI DEKH BHAL</span>
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary leading-tight mb-2 tracking-tighter">Welcome Back.</h1>
+<p class="font-body-base text-body-base text-on-surface-variant">Access your property management dashboard.</p>
+</div>
+<!-- Role Toggle (Landlord / Tenant) -->
+<div class="flex p-1 bg-surface-container-low rounded mb-8 w-fit">
+<button id="btn-landlord" class="px-6 py-2 font-label-sm text-label-sm rounded transition-all duration-200 bg-primary text-on-primary" onclick="toggleRole('landlord')">Landlord</button>
+<button id="btn-tenant" class="px-6 py-2 font-label-sm text-label-sm rounded transition-all duration-200 text-on-surface-variant hover:text-primary" onclick="toggleRole('tenant')">Tenant</button>
+</div>
+<!-- Auth Form -->
+<div class="space-y-6">
+<!-- Google Auth -->
+<button class="w-full flex items-center justify-center gap-3 py-3 border border-outline-variant rounded hover:bg-surface-container transition-colors group">
+<svg class="w-5 h-5" viewBox="0 0 24 24">
+<path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"></path>
+<path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"></path>
+<path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"></path>
+<path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"></path>
+</svg>
+<span class="font-label-sm text-label-sm text-on-surface">Continue with Google</span>
+</button>
+<div class="relative flex items-center justify-center">
+<div class="absolute inset-0 flex items-center"><div class="w-full border-t border-outline-variant/30"></div></div>
+<span class="relative px-4 bg-background font-label-caps text-label-caps text-outline">OR</span>
+</div>
+<!-- Email/Phone Form -->
+<form class="space-y-4" onsubmit="event.preventDefault();">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-1 ml-1">Email Address or Phone</label>
+<input type="text" placeholder="name@company.com" class="w-full px-4 py-3 bg-transparent border-b border-outline focus:border-primary focus:ring-0 transition-all text-body-base placeholder:text-outline-variant">
+</div>
+<div id="password-field">
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-1 ml-1">Password</label>
+<input type="password" placeholder="••••••••" class="w-full px-4 py-3 bg-transparent border-b border-outline focus:border-primary focus:ring-0 transition-all text-body-base placeholder:text-outline-variant">
+</div>
+<div class="flex items-center justify-between">
+<label class="flex items-center gap-2 cursor-pointer">
+<input type="checkbox" class="w-4 h-4 rounded-sm border-outline text-primary focus:ring-primary">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Remember me</span>
+</label>
+<a href="#" class="font-label-sm text-label-sm text-primary hover:underline">Forgot password?</a>
+</div>
+<button class="w-full py-4 bg-primary text-on-primary font-label-sm text-label-sm rounded uppercase tracking-widest shadow-lg hover:shadow-xl hover:translate-y-[-2px] transition-all active:scale-95">
+              Secure Sign In
+            </button>
+</form>
+<p class="text-center font-body-base text-body-base text-on-surface-variant pt-4">
+            New to RentCan? <a href="#" class="text-secondary font-bold hover:underline">Create an account</a>
+</p>
+</div>
+</div>
+</section>
+<!-- Right Section: Visual Placeholder (Scandinavian Minimalist) -->
+<section class="hidden md:flex w-1/2 p-margin-desktop">
+<div class="relative w-full h-full rounded-xl overflow-hidden glass-card custom-shadow flex flex-col p-8 border border-outline-variant">
+<!-- Floating Decoration -->
+<div class="absolute top-12 left-12 z-10">
+<div class="px-4 py-2 bg-surface/90 backdrop-blur-md rounded-full border border-outline-variant/30 flex items-center gap-2 shadow-sm"><span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">verified_user</span><p class="font-label-caps text-label-caps text-primary tracking-[0.15em]">FULLY SECURE</p></div>
+</div>
+<!-- Main Video/Image Frame -->
+<div class="relative w-full h-full rounded-lg overflow-hidden border border-outline-variant/30 group">
+<div class="absolute inset-0 bg-primary/10 mix-blend-multiply transition-opacity group-hover:opacity-0 z-0"></div>
+<img class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700" data-alt="A cinematic, high-definition shot of a luxury modern apartment interior in the Tricity area at dusk. The scene features clean lines, warm ambient lighting from minimalist lamps, and floor-to-ceiling windows showing a soft city skyline. A person is seen in the distance, out of focus, interacting with a sleek tablet interface. The overall mood is one of structured tranquility and premium property management, styled with a sophisticated palette of sage green and soft pearl tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOlQyj8ca5rWt69_sNia1MgbIcJN-FCRHy4Pxei_-v5Yb6N3mwih5Wp0Omt2D8bg7Kas8wzB3BCyekD5PEJjb2tlO1Ff4DuYsjIEBXyBIAEcOo9AVlQ1szW6sD5IBQWB8JJeiHLcYv3I-ekzl_yVQbun1s-xrTYrRUxJr84a63SNvDrCOVXUs_F7JBrMg2knQ3MK26bPRn8sPnu9_Xdpk4Vzky7x774bWHhF5R4GZZb6ZYF234YI-P">
+<!-- Subtle Play Button Interaction Overlay -->
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-primary/20 backdrop-blur-[2px]">
+<div class="w-16 h-16 rounded-full border-2 border-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-3xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+</div>
+<!-- Footer Text for Right Side -->
+<div class="mt-8"><h3 class="font-headline-md text-headline-md text-primary mb-2 tracking-tight">Modern Property Excellence.</h3><p class="font-body-base text-body-base text-on-surface-variant max-w-sm leading-relaxed">Serving the Tricity with meticulous care and Swiss precision since 2024.</p></div>
+</div>
+</section>
+</main>
+<!-- Simple Mobile Footer (Footer shared component logic) -->
+<footer class="md:hidden bg-primary px-margin-mobile py-8 rounded-t-xl mt-auto">
+<div class="flex flex-col gap-4">
+<div class="text-headline-md font-headline-md font-bold text-secondary-fixed">RentCan</div>
+<p class="text-on-primary/70 font-label-sm text-label-sm">© 2024 RentCan Property Management.</p>
+</div>
+</footer>
+<script>
+    function toggleRole(role) {
+      const btnLandlord = document.getElementById('btn-landlord');
+      const btnTenant = document.getElementById('btn-tenant');
+      const primaryClasses = ['bg-primary', 'text-on-primary'];
+      const inactiveClasses = ['text-on-surface-variant', 'hover:text-primary'];
+
+      if (role === 'landlord') {
+        btnLandlord.classList.add(...primaryClasses);
+        btnLandlord.classList.remove(...inactiveClasses);
+        btnTenant.classList.remove(...primaryClasses);
+        btnTenant.classList.add(...inactiveClasses);
+      } else {
+        btnTenant.classList.add(...primaryClasses);
+        btnTenant.classList.remove(...inactiveClasses);
+        btnLandlord.classList.remove(...primaryClasses);
+        btnLandlord.classList.add(...inactiveClasses);
+      }
+    }
+  </script>
+
+</body></html>
