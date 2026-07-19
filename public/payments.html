@@ -1,4 +1,23 @@
 <!DOCTYPE html><html class="light" lang="en"><head>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+async function checkAuth() {
+  try {
+    const res = await fetch('/api/config');
+    const config = await res.json();
+    const { createClient } = supabase;
+    const client = createClient(config.supabaseUrl, config.supabaseKey);
+    const { data: { session }, error } = await client.auth.getSession();
+    if (error || !session) {
+      window.location.href = 'login.html';
+    }
+  } catch (err) {
+    window.location.href = 'login.html';
+  }
+}
+checkAuth();
+</script>
+
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <title>RentCan | Payments &amp; Billing</title>
@@ -362,4 +381,20 @@
 
 
 
+
+<script>
+async function signOut() {
+  try {
+    const res = await fetch('/api/config');
+    const config = await res.json();
+    const { createClient } = supabase;
+    const client = createClient(config.supabaseUrl, config.supabaseKey);
+    await client.auth.signOut();
+    window.location.href = 'login.html';
+  } catch (err) {
+    console.error('Sign out error:', err);
+    window.location.href = 'login.html';
+  }
+}
+</script>
 </body></html>
