@@ -1,0 +1,414 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>RentCan | Property Management Dashboard</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Google Fonts: Plus Jakarta Sans for Swiss/Scandi feel -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#ffdbd1",
+                        "primary": "#004137",
+                        "on-primary-fixed-variant": "#005046",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#ffd9df",
+                        "on-primary-container": "#00211c",
+                        "on-tertiary-fixed-variant": "#6f3726",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#7b4753",
+                        "surface-dim": "#d8dbd8",
+                        "on-surface": "#191c1b",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#8dd4c4",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#eff1ef",
+                        "tertiary": "#5e291a",
+                        "surface-container-high": "#e6e9e6",
+                        "secondary": "#854f5b",
+                        "on-primary": "#ffffff",
+                        "surface": "#f9f9fc",
+                        "background": "#f7faf7",
+                        "inverse-surface": "#2d3130",
+                        "tertiary-container": "#7a3f2e",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#1d695d",
+                        "on-secondary-fixed": "#350d19",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#dfe4e7",
+                        "on-surface-variant": "#3f4946",
+                        "inverse-primary": "#8dd4c4",
+                        "secondary-fixed-dim": "#f9b4c2",
+                        "outline": "#73777f",
+                        "surface-container-highest": "#e0e3e1",
+                        "surface-container": "#eceeec",
+                        "primary-container": "#005a4e",
+                        "primary-fixed": "#a8f0e0",
+                        "outline-variant": "#bec9c5",
+                        "on-tertiary-container": "#ffae97",
+                        "tertiary-fixed-dim": "#ffb5a0",
+                        "surface-bright": "#f7faf7",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#693844",
+                        "on-primary-fixed": "#00201b",
+                        "secondary-container": "#ffb9c8",
+                        "on-background": "#191c1b",
+                        "on-tertiary-fixed": "#380d02",
+                        "surface-container-low": "#f2f4f2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-xl": "64px",
+                        "margin-mobile": "24px",
+                        "stack-lg": "32px",
+                        "stack-sm": "8px",
+                        "gutter": "24px",
+                        "stack-md": "16px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "title-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "display-lg-mobile": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "label-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "title-lg": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "headline-md": ["25px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-md": ["13px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-lg": ["31px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "label-sm": ["10px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "label-lg": ["13px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #f7faf7; /* background token */
+            color: #191c1b; /* on-background token */
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .swiss-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen overflow-hidden">
+<!-- SideNavBar (Shared Component) -->
+<aside class="flex flex-col h-screen p-stack-md border-r border-outline bg-surface w-64 shrink-0 overflow-y-auto">
+<div class="mb-stack-xl px-2">
+<h1 class="font-headline-md text-headline-md text-primary font-bold">RentCan</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-1">Property Manager</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Active: Properties -->
+<a class="flex items-center gap-3 px-3 py-2 text-primary font-bold bg-surface-container rounded-lg transition-all scale-95 group" href="#">
+<span class="material-symbols-outlined" data-icon="domain">domain</span>
+<span class="font-label-lg text-label-lg">Properties</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-label-lg text-label-lg">Documents</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-lg text-label-lg">Payments</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-lg text-label-lg">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-lg text-label-lg">Team</span>
+</a>
+</nav>
+<div class="mt-auto pt-stack-md border-t border-outline-variant space-y-1">
+<button class="w-full flex items-center justify-center gap-2 bg-primary text-on-primary font-label-lg text-label-lg py-3 rounded-lg mb-stack-md hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+                Invite Tenant
+            </button>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-lg text-label-lg">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-lg text-label-lg">Switch View</span>
+</a>
+</div>
+<div class="mt-stack-lg flex items-center gap-3 px-2">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold border border-outline-variant">
+                PA
+            </div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface">Portfolio Admin</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">admin@rentcan.com</p>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-y-auto bg-background">
+<!-- TopBar -->
+<header class="flex justify-between items-center px-margin-desktop py-stack-md w-full sticky top-0 bg-background/80 backdrop-blur-md z-10 border-b border-outline">
+<div class="flex items-center gap-stack-md">
+<h2 class="font-headline-lg text-headline-lg text-primary">Overview</h2>
+<div class="hidden md:flex gap-gutter">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md" href="#">Properties</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors font-body-md text-body-md" href="#">Documents</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors font-body-md text-body-md" href="#">Payments</a>
+</div>
+</div>
+<div class="flex items-center gap-gutter">
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="pl-10 pr-4 py-2 border-b border-outline bg-transparent focus:border-primary focus:ring-0 font-body-md text-body-md w-64 outline-none" placeholder="Search property or tenant..." type="text">
+</div>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-lg text-label-lg transition-all hover:scale-[1.02] active:scale-95">
+                    Invite Tenant
+                </button>
+</div>
+</header>
+<!-- Canvas -->
+<div class="px-margin-desktop py-stack-lg">
+<!-- Stats Bento Grid -->
+<section class="swiss-grid mb-stack-xl">
+<!-- Main KPI: Occupancy -->
+<div class="col-span-12 md:col-span-4 border border-outline p-stack-lg flex flex-col justify-between bg-surface-container-lowest">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Portfolio Occupancy</p>
+<h3 class="font-display-lg text-display-lg text-primary font-bold">94.2%</h3>
+</div>
+<div class="mt-stack-md flex items-center gap-2">
+<span class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[94.2%]"></div>
+</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Target 98%</span>
+</div>
+</div>
+<!-- Main KPI: Rent -->
+<div class="col-span-12 md:col-span-4 border border-outline p-stack-lg flex flex-col justify-between bg-surface-container-lowest">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Current Rent Collection</p>
+<h3 class="font-display-lg text-display-lg text-primary font-bold" style="opacity: 0;">₹42,850</h3>
+</div>
+<div class="mt-stack-md">
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="trending_up">trending_up</span>
+                            +12% from last month
+                        </p>
+</div>
+</div>
+<!-- Main KPI: Documents -->
+<div class="col-span-12 md:col-span-4 border border-outline p-stack-lg flex flex-col justify-between bg-surface-container-lowest">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Active Documents</p>
+<h3 class="font-display-lg text-display-lg text-primary font-bold">18</h3>
+</div>
+<div class="mt-stack-md flex gap-gutter">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Pending</p>
+<p class="font-title-lg text-title-lg text-error">4</p>
+</div>
+<div class="border-l border-outline-variant pl-4">
+<p class="font-label-sm text-label-sm text-on-surface-variant">Signed</p>
+<p class="font-title-lg text-title-lg text-primary">14</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Property Section Header -->
+<div class="flex justify-between items-end mb-stack-md border-b border-outline pb-4">
+<h4 class="font-headline-md text-headline-md text-on-surface">Active Properties</h4>
+<div class="flex items-center gap-stack-md">
+<button class="font-label-lg text-label-lg text-on-surface-variant flex items-center gap-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="filter_list">filter_list</span>
+                        Filter
+                    </button>
+<button class="font-label-lg text-label-lg text-on-surface-variant flex items-center gap-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="sort">sort</span>
+                        Sort by Price
+                    </button>
+</div>
+</div>
+<!-- Property Grid -->
+<div class="swiss-grid gap-stack-lg">
+<!-- Card 1 -->
+<div class="col-span-12 md:col-span-6 lg:col-span-4 border border-outline bg-surface-container-lowest group overflow-hidden">
+<div class="relative aspect-[1.34] overflow-hidden border-b border-outline">
+<img alt="Apartment Interior" class="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida/AP1WRLvkeQVrps265lbb4LvdHp8pmRc-aHQPVkP_P7gw5x0yq3A_CiIIDHvPvQR5UmmRCTcQYeok24c7iAdu__BYE3dCKXjD_iffM55mkflHpF2TRbrwc-z5KkofQCpg4fgye9iiuSGhIh_XRcgfjy9DlH4sivPU3UGORJJSkwWVEZnhOXcIagTTle5p1fuQiO06l5QFzX83nV5DF0tSuSU3GsqxakLC5BFETSJASC1ncCa8saf4Vv1uqsOby2s">
+<div class="absolute top-4 left-4">
+<span class="bg-primary-container text-on-primary-container px-3 py-1 font-label-sm text-label-sm rounded-full">Available</span>
+</div>
+</div>
+<div class="p-stack-lg">
+<div class="flex justify-between items-start mb-2">
+<h5 class="font-title-lg text-title-lg text-on-surface">Avenue Nordic Suites</h5>
+<span class="font-title-lg text-title-lg text-primary">₹3,200/mo</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-md">1248 North Alpine St, Ste 402. Stockholm Inspired Living.</p>
+<div class="flex items-center gap-stack-md pt-stack-md border-t border-outline-variant">
+<div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]" data-icon="bed">bed</span> 2 Beds
+                            </div>
+<div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]" data-icon="bathtub">bathtub</span> 2 Baths
+                            </div>
+<div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]" data-icon="square_foot">square_foot</span> 1,120 sqft
+                            </div>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="col-span-12 md:col-span-6 lg:col-span-4 border border-outline bg-surface-container-lowest group overflow-hidden">
+<div class="relative aspect-[1.34] overflow-hidden border-b border-outline">
+<div class="w-full h-full bg-surface-variant flex items-center justify-center" data-alt="A clean, minimalist high-end residential complex exterior with sharp architectural lines, large glass windows reflecting a clear blue sky, and a subtle sage green garden in the foreground. The lighting is crisp and even, emphasizing the Swiss precision and Scandinavian minimalism of the brand." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuATI-18E3Ap5L106YG-Fziv1mJL0GjtPc0_V7mr8nO7aZfNB1n_Bdj8tWJ5kKqxGOui-eUOuNTJQiEIvPPIOB6L0IALZbEdIa2GpSiY0Czz800_yqbCiRFe2UhydXF8ruJenieBTGHV_T2H4aab75nURdKOUg0WJVPDcSM89XqCGzxLDvEEaXDQgNGs57I_qRgw5B_CItlmrsLaky-32LaK4ptB0UQgmeQjOkwXLJxLh1YP4s38SDT2')"></div>
+<div class="absolute top-4 left-4">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 font-label-sm text-label-sm rounded-full">Occupied</span>
+</div>
+</div>
+<div class="p-stack-lg">
+<div class="flex justify-between items-start mb-2">
+<h5 class="font-title-lg text-title-lg text-on-surface">The Zurich Lofts</h5>
+<span class="font-title-lg text-title-lg text-primary">₹4,850/mo</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-md">88 Global Way, Building A. High-precision luxury.</p>
+<div class="flex items-center gap-stack-md pt-stack-md border-t border-outline-variant">
+<div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]" data-icon="bed">bed</span> 3 Beds
+                            </div>
+<div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]" data-icon="bathtub">bathtub</span> 3 Baths
+                            </div>
+<div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]" data-icon="square_foot">square_foot</span> 1,650 sqft
+                            </div>
+</div>
+</div>
+</div>
+<!-- Card 3 (Empty State / Add Property) -->
+<div class="col-span-12 md:col-span-6 lg:col-span-4 border border-outline border-dashed bg-transparent group flex flex-col items-center justify-center p-stack-xl transition-all hover:bg-surface-container-low cursor-pointer">
+<span class="material-symbols-outlined text-[48px] text-outline mb-stack-md group-hover:scale-110 transition-transform" data-icon="add_circle">add_circle</span>
+<p class="font-title-lg text-title-lg text-on-surface">Add New Property</p>
+<p class="font-body-md text-body-md text-on-surface-variant text-center mt-2 px-margin-mobile">Expand your portfolio with our precise management tools.</p>
+</div>
+</div>
+<!-- Recent Activity List -->
+<section class="mt-stack-xl">
+<h4 class="font-headline-md text-headline-md text-on-surface mb-stack-lg">Recent Activity</h4>
+<div class="border border-outline bg-surface-container-lowest">
+<div class="p-stack-md border-b border-outline-variant flex items-center justify-between hover:bg-surface transition-colors cursor-pointer">
+<div class="flex items-center gap-gutter">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface">Lease signed: unit 402 - Avenue Nordic</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">2 hours ago</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="p-stack-md border-b border-outline-variant flex items-center justify-between hover:bg-surface transition-colors cursor-pointer">
+<div class="flex items-center gap-gutter">
+<span class="material-symbols-outlined text-secondary" data-icon="payments">payments</span>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface">Rent payment received - ₹2,400</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">5 hours ago</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="p-stack-md flex items-center justify-between hover:bg-surface transition-colors cursor-pointer">
+<div class="flex items-center gap-gutter">
+<span class="material-symbols-outlined text-tertiary" data-icon="assignment_late">assignment_late</span>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface">Maintenance request: unit 101 - Water Leak</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Yesterday</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer (Shared Component) -->
+<footer class="mt-auto grid grid-cols-4 gap-gutter px-margin-desktop py-stack-xl w-full border-t border-outline bg-surface-container-lowest">
+<div class="col-span-4 lg:col-span-1">
+<p class="font-title-lg text-title-lg font-bold text-primary mb-4">RentCan</p>
+<p class="font-body-md text-body-md text-on-surface-variant">© 2024 RentCan. Precision Property Management.</p>
+</div>
+<div class="col-span-2 lg:col-span-1">
+<p class="font-label-lg text-label-lg text-on-surface font-bold mb-4">Resources</p>
+<ul class="space-y-2">
+<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Help Center</a></li>
+</ul>
+</div>
+<div class="col-span-2 lg:col-span-1">
+<p class="font-label-lg text-label-lg text-on-surface font-bold mb-4">Company</p>
+<ul class="space-y-2">
+<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Careers</a></li>
+<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">API Documentation</a></li>
+<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Us</a></li>
+</ul>
+</div>
+<div class="col-span-4 lg:col-span-1 border-t lg:border-t-0 lg:border-l border-outline-variant pt-stack-md lg:pt-0 lg:pl-stack-lg">
+<p class="font-label-lg text-label-lg text-on-surface font-bold mb-4">Newsletter</p>
+<div class="flex items-center gap-2">
+<input class="flex-1 bg-surface-container-low border border-outline-variant px-4 py-2 font-body-md text-body-md focus:ring-0 focus:border-primary outline-none" placeholder="Your email" type="email">
+<button class="bg-primary text-on-primary px-4 py-2 font-label-lg text-label-lg">Join</button>
+</div>
+</div>
+</footer>
+</main>
+<!-- Interactions Script -->
+<script>
+        // Simple Micro-interaction for Stats
+        document.querySelectorAll('section.swiss-grid > div').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.backgroundColor = '#eceeec'; // surface-container
+                card.style.transition = 'background-color 0.3s ease';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.backgroundColor = '#ffffff'; // surface-container-lowest
+            });
+        });
+    </script>
+
+
+
+</body></html>
