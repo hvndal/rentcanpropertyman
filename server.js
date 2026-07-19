@@ -17,7 +17,7 @@ app.post('/api/auth/login', (req, res) => {
 });
 
 // Fallback to index.html for SPA routing if needed
-app.get('*', (req, res) => {
+app.get(/.*/, (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
