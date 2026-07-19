@@ -107,7 +107,7 @@
 <a class="font-label-caps text-label-caps uppercase text-white font-bold border-b-2 border-accent transition-all duration-200" href="dashboard.html">Properties</a>
 <a class="font-label-caps text-label-caps uppercase text-white/70 hover:text-white transition-colors duration-300" href="payments.html">Rentals</a>
 <a class="font-label-caps text-label-caps uppercase text-white/70 hover:text-white transition-colors duration-300" href="reports.html">Invest</a>
-<a class="font-label-caps text-label-caps uppercase text-white/70 hover:text-white transition-colors duration-300" href="#">About</a>
+<a class="font-label-caps text-label-caps uppercase text-white/70 hover:text-white transition-colors duration-300" href="#footer">About</a>
 </div>
 <div class="flex items-center gap-6">
 <a class="font-label-caps text-label-caps uppercase text-white/70 hover:text-white transition-all duration-200" href="login.html">Login</a>
@@ -277,17 +277,18 @@
 <h2 class="font-display-lg text-5xl md:text-6xl text-primary tracking-tight">Service Tiers</h2>
 </div>
 <div class="bg-white border border-outline-variant/30 shadow-sm overflow-hidden rounded-sm">
-<table class="w-full text-left">
+<div class="overflow-x-auto">
+<table class="w-full text-left min-w-[600px]">
 <thead>
 <tr class="border-b border-outline-variant/30">
-<th class="py-12 px-10 font-label-caps text-[11px] text-on-surface-variant/40 uppercase tracking-[0.2em]">Core Capabilities</th>
-<th class="py-12 px-10 text-center">
+<th class="py-10 px-10 font-label-caps text-[11px] text-on-surface-variant/40 uppercase tracking-[0.2em] align-middle">Core Capabilities</th>
+<th class="py-10 px-10 text-center align-middle">
 <span class="font-headline-md text-2xl text-primary">Residential</span>
 <div class="text-[12px] font-medium text-secondary mt-2">₹1,499/mo</div>
 <div class="text-[10px] text-on-surface-variant/60 mt-1 font-light">+ ₹1,000 for extra property</div>
 </th>
-<th class="py-12 px-10 text-center relative bg-primary text-white">
-<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-primary px-5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] rounded-full">Enterprise</div>
+<th class="py-10 px-10 text-center align-middle bg-primary text-white">
+<div class="mb-2"><span class="bg-accent text-primary px-3 py-1 text-[9px] font-bold uppercase tracking-[0.2em] rounded-full inline-block">Enterprise</span></div>
 <span class="font-headline-md text-2xl">Commercial</span>
 <div class="text-[12px] font-medium text-accent mt-2">₹1,999/mo</div>
 <div class="text-[10px] text-white/60 mt-1 font-light">+ ₹1,000 for extra property</div>
@@ -322,6 +323,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 <div class="mt-24 flex flex-col items-center gap-12">
 <p class="text-[12px] text-on-surface-variant/40 italic font-medium tracking-wide">* Commercial plan tailored for retail, offices, and clinics over 2,000 sq.ft.</p>
@@ -368,7 +370,7 @@
 </div>
 </div>
 <!-- Footer -->
-<footer class="w-full pt-32 pb-16 bg-white border-t border-outline-variant/20">
+<footer id="footer" class="w-full pt-32 pb-16 bg-white border-t border-outline-variant/20">
 <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-desktop max-w-container-max mx-auto mb-32">
 <div class="col-span-1">
 <div class="font-display-lg text-3xl text-primary mb-10 tracking-tight font-bold">RentCan</div>
