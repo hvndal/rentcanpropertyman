@@ -475,4 +475,22 @@ async function signOut() {
     </a>
   </div>
 
+  <script src="/js/sound_manager.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const items = document.querySelectorAll('.animate-stagger-item');
+      items.forEach((item, index) => {
+        item.style.transition = 'opacity 500ms ease-out, transform 500ms cubic-bezier(0.16, 1, 0.3, 1)';
+        item.style.transitionDelay = `${index * 100}ms`;
+        
+        // Use requestAnimationFrame to ensure CSS transitions trigger
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            item.classList.remove('opacity-0', 'translate-y-4');
+          });
+        });
+      });
+    });
+  </script>
 </body></html>
