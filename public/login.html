@@ -47,30 +47,25 @@ body {
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ── Layout ── */
+body {
+  margin: 0; padding: 0; min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  background: #f4f6f4; font-family: 'Plus Jakarta Sans', sans-serif;
+}
 .left-panel {
-  width: 100%; max-width: 520px;
-  min-height: 100vh;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 64px 48px; @media (max-width: 640px) { padding: 32px 24px; }
-  background: #fff;
+  width: 100%; max-width: 440px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 56, 38, 0.08);
+  border: 1px solid #e0e4e0;
+  padding: 32px 28px;
+  margin: 20px 16px;
+  box-sizing: border-box;
 }
-.right-panel {
-  flex: 1;
-  background: linear-gradient(160deg, #023826 0%, #00211c 55%, #3d1520 100%);
-  display: none;
-  flex-direction: column; align-items: center; justify-content: center;
-  padding: 64px;
-  position: relative; overflow: hidden;
+@media (max-width: 480px) {
+  .left-panel { padding: 24px 20px; margin: 12px; border-radius: 16px; }
 }
-@media (min-width: 900px) { .right-panel { display: flex; } }
-
-/* dots pattern */
-.right-panel::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
-  background-size: 28px 28px;
-}
+.right-panel { display: none !important; }
 
 /* ── View System ── */
 .view { display: none; }
@@ -78,85 +73,93 @@ body {
 
 /* ── Welcome / Auth Buttons ── */
 .auth-btn {
-  width: 100%; padding: 14px 18px;
-  border-radius: 10px; font-family: inherit; font-size: 14px;
-  font-weight: 600; cursor: pointer; transition: all 0.2s;
+  width: 100%; padding: 12px 14px;
+  border-radius: 12px; font-family: inherit; font-size: 14px;
+  font-weight: 700; cursor: pointer; transition: all 0.2s;
   display: flex; align-items: center; gap: 12px;
   border: 1.5px solid #e0e4e0; background: #fff;
   color: #191c1b; text-align: left;
-  margin-bottom: 12px;
+  margin-bottom: 10px; box-sizing: border-box;
 }
-.auth-btn:hover { border-color: #023826; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,65,55,0.12); }
+.auth-btn:hover {
+  border-color: #023826;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0,56,38,0.1);
+}
 .auth-btn .btn-icon {
-  width: 36px; height: 36px; border-radius: 8px;
+  width: 36px; height: 36px; border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
-.auth-btn .btn-label { flex: 1; }
-.auth-btn .btn-sub { font-size: 11px; font-weight: 400; color: #73777f; display: block; margin-top: 1px; }
-.auth-btn-google .btn-icon { background: #fff4f4; }
-.auth-btn-phone .btn-icon { background: #f0f6f3; }
+.auth-btn .btn-label {
+  flex: 1; font-size: 14px; font-weight: 700; line-height: 1.25;
+}
+.auth-btn .btn-sub {
+  font-size: 11px; font-weight: 400; color: #73777f; display: block; margin-top: 2px;
+}
+.auth-btn-google .btn-icon { background: #f4f6fb; border: 1px solid #e0e6f5; }
+.auth-btn-phone .btn-icon { background: #f0f6f3; border: 1px solid #d8e8e2; }
 
-/* ── OTP View ── */
+/* ── OTP / Phone Views ── */
 .back-link {
   background: none; border: none; cursor: pointer; color: #73777f;
-  font-family: inherit; font-size: 13px; font-weight: 600;
-  display: flex; align-items: center; gap: 6px;
-  margin-bottom: 28px; padding: 0;
+  font-family: inherit; font-size: 12px; font-weight: 700;
+  display: inline-flex; align-items: center; gap: 4px;
+  margin-bottom: 18px; padding: 0;
   transition: color 0.2s;
 }
 .back-link:hover { color: #023826; }
 
-.field { margin-bottom: 16px; }
+.field { margin-bottom: 14px; }
 .field label {
-  display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
   text-transform: uppercase; color: #3f4946; margin-bottom: 6px;
 }
 .field input {
-  width: 100%; padding: 13px 14px; border: 1.5px solid #bec9c5;
-  border-radius: 8px; font-size: 14px; font-family: inherit; color: #191c1b;
-  background: #fff; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%; padding: 12px 14px; border: 1.5px solid #bec9c5;
+  border-radius: 10px; font-size: 14px; font-family: inherit; color: #191c1b;
+  background: #fff; outline: none; transition: border-color 0.2s; box-sizing: border-box;
 }
-.field input:focus { border-color: #023826; box-shadow: 0 0 0 3px rgba(0,65,55,0.1); }
+.field input:focus { border-color: #023826; }
 
 /* OTP digit boxes */
-.otp-row { display: flex; gap: 10px; margin-bottom: 24px; }
+.otp-row { display: flex; gap: 8px; margin-bottom: 20px; }
 .otp-input {
-  flex: 1; padding: 16px 0; border: 1.5px solid #bec9c5;
-  border-radius: 10px; font-size: 22px; font-weight: 800; font-family: inherit;
+  flex: 1; padding: 12px 0; border: 1.5px solid #bec9c5;
+  border-radius: 10px; font-size: 20px; font-weight: 800; font-family: inherit;
   color: #191c1b; background: #fff; outline: none;
   text-align: center; transition: border-color 0.2s, box-shadow 0.2s;
 }
-.otp-input:focus { border-color: #023826; box-shadow: 0 0 0 3px rgba(0,65,55,0.1); }
+.otp-input:focus { border-color: #023826; box-shadow: 0 0 0 3px rgba(0,56,38,0.1); }
 
-/* ── Phone input with country code ── */
+/* ── Compact Phone input with country code ── */
 .phone-wrap {
   display: flex;
   align-items: center;
-  border: 2px solid #bec9c5;
+  border: 1.5px solid #bec9c5;
   border-radius: 12px;
   background: #fff;
   overflow: hidden;
   width: 100%;
   transition: border-color 0.2s, box-shadow 0.2s;
-  margin-top: 6px;
-  margin-bottom: 24px;
+  margin-top: 4px;
+  box-sizing: border-box;
 }
 .phone-wrap:focus-within {
   border-color: #023826;
-  box-shadow: 0 0 0 4px rgba(0,65,55,0.12);
+  box-shadow: 0 0 0 3px rgba(0,56,38,0.1);
 }
 .country-code {
-  width: 90px;
+  width: 75px;
   flex-shrink: 0;
-  padding: 16px 12px;
+  padding: 12px 8px;
   border: none;
-  border-right: 1.5px solid #bec9c5;
+  border-right: 1.5px solid #e0e4e0;
   border-radius: 0;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 800;
   color: #023826;
-  background: #f2f4f2;
+  background: #f7faf7;
   outline: none;
   text-align: center;
 }
@@ -164,62 +167,54 @@ body {
   flex: 1;
   border: none;
   outline: none;
-  padding: 16px 18px;
-  font-size: 20px;
+  padding: 12px 14px;
+  font-size: 17px;
   font-weight: 700;
   font-family: inherit;
   color: #191c1b;
   background: transparent;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
   width: 100%;
 }
 .phone-input-field::placeholder {
   color: #bec9c5;
   font-weight: 500;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
 }
 
 /* ── Primary button ── */
 .btn-primary {
-  width: 100%; padding: 14px; background: #023826; color: #fff;
-  border: none; border-radius: 8px; font-family: inherit; font-size: 13px;
-  font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-  cursor: pointer; transition: background 0.2s, transform 0.15s; margin-top: 8px;
+  width: 100%; padding: 13px; background: #023826; color: #fff;
+  border: none; border-radius: 12px; font-family: inherit; font-size: 13px;
+  font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  cursor: pointer; transition: background 0.2s, transform 0.15s; margin-top: 6px;
+  box-sizing: border-box;
 }
 .btn-primary:hover { background: #005a4e; transform: translateY(-1px); }
 .btn-primary:disabled { background: #bec9c5; cursor: not-allowed; transform: none; }
 
 /* ── Onboarding: Role Cards ── */
-.role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+.role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
 .role-card {
-  padding: 20px 16px; border: 2px solid #e0e4e0; border-radius: 14px;
+  padding: 16px 12px; border: 1.5px solid #e0e4e0; border-radius: 12px;
   background: #fff; cursor: pointer; text-align: center;
   transition: all 0.2s; position: relative;
 }
 .role-card:hover { border-color: #023826; }
 .role-card.selected { border-color: #023826; background: #023826; color: #fff; }
 .role-card .role-icon {
-  font-family: 'Material Symbols Outlined'; font-size: 32px;
-  font-variation-settings: 'FILL' 1; display: block; margin-bottom: 8px;
+  font-family: 'Material Symbols Outlined'; font-size: 28px;
+  font-variation-settings: 'FILL' 1; display: block; margin-bottom: 6px;
 }
 .role-card:not(.selected) .role-icon { color: #023826; }
-.role-card .role-name { font-size: 14px; font-weight: 700; }
-.role-card .role-sub { font-size: 11px; margin-top: 4px; }
+.role-card .role-name { font-size: 13px; font-weight: 700; }
+.role-card .role-sub { font-size: 10px; margin-top: 2px; }
 .role-card:not(.selected) .role-sub { color: #73777f; }
 .role-card.selected .role-sub { color: rgba(255,255,255,0.7); }
-.role-card .check-badge {
-  position: absolute; top: 10px; right: 10px;
-  width: 20px; height: 20px; background: #00E599; border-radius: 50%;
-  font-family: 'Material Symbols Outlined'; font-size: 12px;
-  color: #023826; font-weight: 700; display: none;
-  align-items: center; justify-content: center;
-  font-variation-settings: 'FILL' 1;
-}
-.role-card.selected .check-badge { display: flex; }
 
 /* ── Alert ── */
 .alert {
-  padding: 11px 14px; border-radius: 8px; font-size: 13px;
+  padding: 10px 12px; border-radius: 10px; font-size: 12px;
   margin-bottom: 14px; display: none; font-weight: 500;
 }
 .alert.show { display: block; }
@@ -227,23 +222,21 @@ body {
 .alert.success { background: #d6f7f0; color: #023826; border: 1px solid #00E599; }
 .alert.info { background: #e8f0fe; color: #1a4199; border: 1px solid #c5d5f7; }
 
-/* ── Right panel content ── */
-.stat-card {
-  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 14px; padding: 16px 20px; backdrop-filter: blur(10px);
-}
-.stat-card .label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
-.stat-card .value { font-size: 26px; font-weight: 800; color: #fff; }
-
 .divider {
-  display: flex; align-items: center; gap: 12px;
-  margin: 20px 0; color: #73777f; font-size: 12px;
+  display: flex; align-items: center; gap: 10px;
+  margin: 16px 0; color: #73777f; font-size: 11px; font-weight: 600;
 }
 .divider::before, .divider::after {
   content: ''; flex: 1; height: 1px; background: #e0e4e0;
 }
 
-/* Resend timer */
+.resend-row { text-align: center; margin-top: 14px; font-size: 12px; color: #73777f; }
+.resend-row button {
+  background: none; border: none; cursor: pointer;
+  font-family: inherit; font-size: 12px; font-weight: 700;
+  color: #023826; padding: 0;
+}
+.resend-row button:disabled { color: #bec9c5; cursor: not-allowed; }
 .resend-row { text-align: center; margin-top: 16px; font-size: 13px; color: #73777f; }
 .resend-row button {
   background: none; border: none; cursor: pointer;
@@ -265,8 +258,8 @@ body {
 <div class="left-panel">
 
   <!-- Logo -->
-  <a href="index.html" style="display:inline-block; margin-bottom:40px;">
-    <div class="bg-white p-1.5 rounded-xl shadow-md border border-gray-100 flex items-center justify-center" style="display:inline-flex;width:52px;height:52px;border-radius:12px;border:1.5px solid #e0e4e0;padding:6px;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+  <a href="index.html" style="display:inline-block; margin-bottom:24px;">
+    <div style="display:inline-flex;width:44px;height:44px;border-radius:10px;border:1.5px solid #e0e4e0;padding:5px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
       <img src="/logo.png" alt="RentCan" style="width:100%;height:100%;object-fit:contain;">
     </div>
   </a>
@@ -320,8 +313,8 @@ body {
       Back to Sign In
     </button>
     
-    <h2 style="font-size:28px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;color:#191c1b;">Enter your number.</h2>
-    <p style="font-size:14px;color:#73777f;margin-bottom:32px;line-height:1.5;">We'll send a 6-digit verification code via SMS to confirm identity.</p>
+    <h2 style="font-size:22px;font-weight:800;letter-spacing:-0.02em;margin-bottom:4px;color:#191c1b;">Enter your number.</h2>
+   <p style="font-size:13px;color:#73777f;margin-bottom:20px;line-height:1.4;">We'll send a 6-digit OTP code to verify.</p>
 
     <div class="field" style="margin-bottom:28px;">
       <label style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#3f4946;">Mobile Number</label>
@@ -333,10 +326,10 @@ body {
 
     <button class="btn-primary" id="btn-send-otp" onclick="sendOTP()" style="padding:16px;font-size:14px;border-radius:12px;">Send OTP →</button>
 
-    <div style="display:flex;align-items:center;gap:12px;margin-top:28px;padding:14px 16px;background:#f2f4f2;border-radius:12px;border:1px solid #e0e4e0;">
-      <span style="font-family:'Material Symbols Outlined';font-size:22px;color:#023826;font-variation-settings:'FILL' 1;">verified_user</span>
-      <span style="font-size:12px;color:#3f4946;line-height:1.5;font-weight:500;">Instant SMS OTP verification powered by MSG91 gateway.</span>
-    </div>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:20px;padding:10px 12px;background:#f2f4f2;border-radius:10px;border:1px solid #e0e4e0;">
+     <span style="font-family:'Material Symbols Outlined';font-size:18px;color:#023826;font-variation-settings:'FILL' 1;">verified_user</span>
+     <span style="font-size:11px;color:#3f4946;line-height:1.4;font-weight:500;">Instant SMS OTP verification powered by MSG91 gateway.</span>
+   </div>
   </div>
 
   <!-- ══ VIEW: OTP Verify ══ -->
