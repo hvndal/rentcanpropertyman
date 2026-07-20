@@ -84,7 +84,15 @@
         },
       },
     }
-  }catch(_e){}</script><meta charset="utf-8"></head><body class="bg-background text-on-background selection:bg-primary-fixed-dim selection:text-primary min-h-screen flex flex-col">
+  }catch(_e){}</script><meta charset="utf-8"><link rel="stylesheet" href="styles.css">
+</head><body class="bg-background text-on-background selection:bg-primary-fixed-dim selection:text-primary min-h-screen flex flex-col">
+
+<!-- Global Page Loader -->
+<div id="global-loader" class="page-loader">
+  <div class="spinner-morph"></div>
+  <p class="font-label-caps text-[10px] text-primary tracking-[0.35em] uppercase font-bold">RentCan</p>
+</div>
+
 <!-- TopNavBar (Suppressed as per "Task-Focused" rule, but logic dictates maintaining brand presence for login) -->
 <nav class="sticky top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-border-subtle/20 shadow-sm">
 <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
@@ -97,7 +105,7 @@
 </nav>
 <main class="flex-grow flex flex-col md:flex-row max-w-[1440px] mx-auto w-full min-h-[calc(100vh-72px)]">
 <!-- Left Section: Login Form (Swiss Modernist) -->
-<section class="w-full md:w-1/2 flex flex-col justify-center px-margin-mobile md:px-margin-desktop py-12">
+<section class="w-full md:w-1/2 fade-in-load flex flex-col justify-center px-margin-mobile md:px-margin-desktop py-12">
 <div class="max-w-md w-full mx-auto md:mx-0">
 <!-- Tagline / Branding -->
 <div class="mb-12">
@@ -205,5 +213,18 @@
       }
     }
   </script>
+
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const loader = document.getElementById('global-loader');
+    if (loader) {
+      setTimeout(() => {
+        loader.classList.add('hidden');
+        setTimeout(() => loader.remove(), 500);
+      }, 300); // 300ms premium pause
+    }
+  });
+</script>
 
 </body></html>

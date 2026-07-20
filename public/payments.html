@@ -114,8 +114,16 @@ checkAuth();
             border-radius: 4px;
         }
     </style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body class="overflow-hidden">
+
+<!-- Global Page Loader -->
+<div id="global-loader" class="page-loader">
+  <div class="spinner-morph"></div>
+  <p class="font-label-caps text-[10px] text-primary tracking-[0.35em] uppercase font-bold">RentCan</p>
+</div>
+
 <div class="flex h-screen w-full">
 <!-- SideNavBar (from JSON) -->
 <aside class="hidden md:flex flex-col h-screen p-stack-md border-r border-outline bg-surface w-64 shrink-0">
@@ -170,7 +178,7 @@ checkAuth();
 </div>
 </aside>
 <!-- Main Content Canvas -->
-<main class="flex-grow overflow-y-auto custom-scrollbar bg-background relative px-6 md:px-margin-desktop py-stack-lg">
+<main class="flex-grow overflow-y-auto custom-scrollbar bg-background relative px-6 md:px-margin-mobile md:px-margin-desktop py-stack-lg pb-32 md:pb-stack-lg">
 <!-- Header Section -->
 <header class="flex justify-between items-end mb-stack-xl">
 <div>
@@ -397,4 +405,37 @@ async function signOut() {
   }
 }
 </script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const loader = document.getElementById('global-loader');
+    if (loader) {
+      setTimeout(() => {
+        loader.classList.add('hidden');
+        setTimeout(() => loader.remove(), 500);
+      }, 300); // 300ms premium pause
+    }
+  });
+</script>
+
+
+<!-- Mobile Bottom Navigation Bar -->
+<div class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-outline-variant/60 flex justify-around py-3 px-6 z-40 md:hidden shadow-lg">
+  <a href="dashboard.html" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
+    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">domain</span>
+    Properties
+  </a>
+  <a href="payments.html" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-primary font-bold">
+    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">payments</span>
+    Payments
+  </a>
+  <a href="reports.html" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
+    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">analytics</span>
+    Reports
+  </a>
+  <a href="#" onclick="signOut()" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-red-600/80">
+    <span class="material-symbols-outlined text-[20px]">logout</span>
+    Sign Out
+  </a>
+</div>
 </body></html>

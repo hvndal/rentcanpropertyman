@@ -1,0 +1,124 @@
+/* Premium CSS Visuals & Transition System for RentCan */
+
+:root {
+  --primary: #134237;
+  --secondary: #7b5455;
+  --accent: #ecbaba;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes spin-morph {
+  0% {
+    transform: rotate(0deg);
+    border-radius: 50% 50% 50% 50%;
+  }
+  50% {
+    transform: rotate(180deg);
+    border-radius: 35% 65% 35% 65%;
+  }
+  100% {
+    transform: rotate(360deg);
+    border-radius: 50% 50% 50% 50%;
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Premium Skeleton Loaders */
+.skeleton {
+  background: linear-gradient(90deg, #f3f3f3 25%, #eeeeee 37%, #f3f3f3 63%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.skeleton-text {
+  height: 12px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.skeleton-title {
+  height: 20px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+/* Fluid Morphing Spinner */
+.spinner-morph {
+  width: 32px;
+  height: 32px;
+  border: 3px solid transparent;
+  border-top-color: var(--primary);
+  border-bottom-color: var(--secondary);
+  animation: spin-morph 1.2s cubic-bezier(0.68, -0.6, 0.32, 1.6) infinite;
+}
+
+.spinner-morph-white {
+  width: 24px;
+  height: 24px;
+  border: 2px solid transparent;
+  border-top-color: #ffffff;
+  border-bottom-color: var(--accent);
+  animation: spin-morph 1.2s cubic-bezier(0.68, -0.6, 0.32, 1.6) infinite;
+}
+
+/* Smooth Page Transitions */
+.fade-in-load {
+  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Micro-interaction Hover Classes */
+.interactive-card {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.interactive-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(19, 66, 55, 0.2);
+  box-shadow: 0 20px 40px -15px rgba(19, 66, 55, 0.1);
+}
+
+/* Page Overlay Loader */
+.page-loader {
+  position: fixed;
+  inset: 0;
+  background: #ffffff;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.page-loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
