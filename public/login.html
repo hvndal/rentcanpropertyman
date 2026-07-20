@@ -130,15 +130,54 @@ body {
 .otp-input:focus { border-color: #023826; box-shadow: 0 0 0 3px rgba(0,65,55,0.1); }
 
 /* ── Phone input with country code ── */
-.phone-wrap { display: flex; gap: 8px; }
+.phone-wrap {
+  display: flex;
+  align-items: center;
+  border: 2px solid #bec9c5;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  margin-top: 6px;
+  margin-bottom: 24px;
+}
+.phone-wrap:focus-within {
+  border-color: #023826;
+  box-shadow: 0 0 0 4px rgba(0,65,55,0.12);
+}
 .country-code {
-  width: 80px; flex-shrink: 0; padding: 13px 10px;
-  border: 1.5px solid #bec9c5; border-radius: 8px;
-  font-size: 14px; font-family: inherit; font-weight: 700;
-  color: #191c1b; background: #f7faf7; outline: none;
+  width: 90px;
+  flex-shrink: 0;
+  padding: 16px 12px;
+  border: none;
+  border-right: 1.5px solid #bec9c5;
+  border-radius: 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: #023826;
+  background: #f2f4f2;
+  outline: none;
   text-align: center;
 }
-.phone-wrap .field { flex: 1; margin: 0; }
+.phone-input-field {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 16px 18px;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: inherit;
+  color: #191c1b;
+  background: transparent;
+  letter-spacing: 0.08em;
+  width: 100%;
+}
+.phone-input-field::placeholder {
+  color: #bec9c5;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
 
 /* ── Primary button ── */
 .btn-primary {
@@ -278,23 +317,26 @@ body {
   <div class="view" id="view-phone">
     <button class="back-link" onclick="showView('view-welcome')">
       <span style="font-family:'Material Symbols Outlined';font-size:18px;">arrow_back</span>
-      Back
+      Back to Sign In
     </button>
-    <h2 style="font-size:24px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;">Enter your number.</h2>
-    <p style="font-size:14px;color:#73777f;margin-bottom:28px;">We'll send you a 6-digit OTP to verify.</p>
+    
+    <h2 style="font-size:28px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;color:#191c1b;">Enter your number.</h2>
+    <p style="font-size:14px;color:#73777f;margin-bottom:32px;line-height:1.5;">We'll send a 6-digit verification code via SMS to confirm identity.</p>
 
-    <div class="field">
-      <label>Mobile Number</label>
+    <div class="field" style="margin-bottom:28px;">
+      <label style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#3f4946;">Mobile Number</label>
       <div class="phone-wrap">
         <input class="country-code" type="text" value="+91" readonly>
-        <div class="field" style="flex:1;margin:0;">
-          <input type="tel" id="phone-input" placeholder="9876543210" maxlength="10" autocomplete="tel-national"
-            oninput="this.value=this.value.replace(/\D/g,'')">
-        </div>
+        <input type="tel" id="phone-input" class="phone-input-field" placeholder="9876543210" maxlength="10" autocomplete="tel-national" oninput="this.value=this.value.replace(/\D/g,'')">
       </div>
     </div>
 
-    <button class="btn-primary" id="btn-send-otp" onclick="sendOTP()">Send OTP →</button>
+    <button class="btn-primary" id="btn-send-otp" onclick="sendOTP()" style="padding:16px;font-size:14px;border-radius:12px;">Send OTP →</button>
+
+    <div style="display:flex;align-items:center;gap:12px;margin-top:28px;padding:14px 16px;background:#f2f4f2;border-radius:12px;border:1px solid #e0e4e0;">
+      <span style="font-family:'Material Symbols Outlined';font-size:22px;color:#023826;font-variation-settings:'FILL' 1;">verified_user</span>
+      <span style="font-size:12px;color:#3f4946;line-height:1.5;font-weight:500;">Instant SMS OTP verification powered by MSG91 gateway.</span>
+    </div>
   </div>
 
   <!-- ══ VIEW: OTP Verify ══ -->
