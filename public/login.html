@@ -440,103 +440,86 @@ body {
 // STATE
 // ─────────────────────────────────────────────────────────────────────
 let sb = null;
-let selectedRole = null;
-let otpRequestId = null; // MSG91 request ID
-let resendInterval = null;
+const DEFAULT_SUPABASE_URL = "https://pomxnutomfzmignmyjbi.supabase.co";
+const DEFAULT_SUPABASE_KEY = "sb_publishable_85_NJkwy59qf7ZChmG7ujg_BRIM0Y89";
 
-// ─────────────────────────────────────────────────────────────────────
-// BOOT
-// ─────────────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', async () => {
-  setTimeout(() => document.getElementById('loader').classList.add('gone'), 400);
+  setTimeout(() => {
+    const loader = document.getElementById('loader');
+    if (loader) loader.classList.add('gone');
+  }, 400);
+
+  let url = DEFAULT_SUPABASE_URL;
+  let key = DEFAULT_SUPABASE_KEY;
 
   try {
-    const cfg = await fetch('/api/config').then(r => r.json());
-    if (cfg.supabaseUrl && cfg.supabaseKey) {
-      sb = supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
+    const res = await fetch('/api/config');
+    if (res.ok) {
+      const cfg = await res.json();
+      if (cfg.supabaseUrl && cfg.supabaseKey) {
+        url = cfg.supabaseUrl;
+        key = cfg.supabaseKey;
+      }
+    }
+  } catch(e) {
+    console.warn('API config fallback used:', e);
+  }
 
-      // Handle OAuth callback (Google)
+  if (window.supabase) {
+    sb = window.supabase.createClient(url, key);
+
+    // Handle OAuth callback (Google)
+    try {
       const { data: { session } } = await sb.auth.getSession();
       if (session) {
         await routeAfterAuth(session.user);
         return;
       }
 
-      // Listen for auth state changes (for OAuth redirect)
       sb.auth.onAuthStateChange(async (event, session) => {
         if (event === 'SIGNED_IN' && session) {
           await routeAfterAuth(session.user);
         }
       });
+    } catch(e) {
+      console.warn('Auth session check failed:', e);
     }
-  } catch(e) {
-    console.warn('Supabase config unavailable:', e.message);
   }
 });
 
-// ─────────────────────────────────────────────────────────────────────
-// VIEW MANAGEMENT
-// ─────────────────────────────────────────────────────────────────────
-function showView(id) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  hideAlert();
-}
-
-// ─────────────────────────────────────────────────────────────────────
-// ALERT HELPERS
-// ─────────────────────────────────────────────────────────────────────
-function showAlert(msg, type = 'error') {
-  const el = document.getElementById('alert');
-  el.textContent = msg;
-  el.className = 'alert show ' + type;
-}
-function hideAlert() {
-  document.getElementById('alert').className = 'alert';
-}
-
-// ─────────────────────────────────────────────────────────────────────
-// ROUTING AFTER AUTH
-// ─────────────────────────────────────────────────────────────────────
-async function routeAfterAuth(user) {
-  if (!sb) { window.location.href = 'dashboard.html'; return; }
-
-  // Check if profile already exists
-  const { data: profile, error } = await sb
-    .from('profiles')
-    .select('id, full_name, role, onboarding_completed')
-    .eq('id', user.id)
-    .single();
-
-  if (profile && profile.onboarding_completed) {
-    // Store session info for dashboard use
-    sessionStorage.setItem('rentcan_user', JSON.stringify({
-      id: user.id,
-      email: user.email,
-      name: profile.full_name,
-      role: profile.role,
-    }));
-    sessionStorage.setItem('rentcan_role', profile.role);
-    window.location.href = 'dashboard.html';
-  } else {
-    // Need to complete onboarding
-    // Pre-fill name if available from Google
-    if (user.user_metadata?.full_name) {
-      document.getElementById('onboard-name').value = user.user_metadata.full_name;
-    }
-    showView('view-onboarding');
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────
-// GOOGLE SIGN IN
-// ─────────────────────────────────────────────────────────────────────
 async function signInWithGoogle() {
+  if (!sb && window.supabase) {
+    sb = window.supabase.createClient(DEFAULT_SUPABASE_URL, DEFAULT_SUPABASE_KEY);
+  }
+
   if (!sb) {
-    showAlert('Authentication service is unavailable. Please check your Supabase configuration.');
+    showAlert('Supabase library is loading. Please try clicking again in a moment.');
     return;
   }
+
   const btn = document.getElementById('btn-google');
+  btn.disabled = true;
+  btn.querySelector('.btn-label').innerHTML = 'Connecting...<span class="btn-sub">Redirecting to Google</span>';
+
+  try {
+    const { error } = await sb.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin + '/login.html'
+      }
+    });
+
+    if (error) {
+      showAlert('Google Sign-In failed: ' + error.message);
+      btn.disabled = false;
+      btn.querySelector('.btn-label').innerHTML = 'Continue with Google<span class="btn-sub">Instant sign-in with your Google account</span>';
+    }
+  } catch(e) {
+    showAlert('Google Sign-In error: ' + e.message);
+    btn.disabled = false;
+    btn.querySelector('.btn-label').innerHTML = 'Continue with Google<span class="btn-sub">Instant sign-in with your Google account</span>';
+  }
+}
   btn.disabled = true;
   btn.querySelector('.btn-label').innerHTML = 'Connecting…<span class="btn-sub">Please wait</span>';
 

@@ -780,7 +780,8 @@ function showAddPropertyModal() {
 (async function() {
   let sb = null;
   try {
-    const cfg = await fetch('/api/config').then(r => r.json());
+    let cfg = { supabaseUrl: "https://pomxnutomfzmignmyjbi.supabase.co", supabaseKey: "sb_publishable_85_NJkwy59qf7ZChmG7ujg_BRIM0Y89" };
+        try { const r = await fetch('/api/config'); if (r.ok) { const data = await r.json(); if (data.supabaseUrl) cfg = data; } } catch(e){}
     if (cfg.supabaseUrl && cfg.supabaseKey) {
       sb = supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
     }
