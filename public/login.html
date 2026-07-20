@@ -549,7 +549,7 @@ async function sendOTP() {
 
   const btn = document.getElementById('btn-send-otp');
   btn.disabled = true;
-  btn.textContent = 'Sending OTP…';
+  btn.textContent = 'Sending OTP...';
 
   try {
     const res = await fetch('/api/send-otp', {
@@ -557,10 +557,17 @@ async function sendOTP() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ phone: '+91' + phone })
     });
-    const data = await res.json();
+
+    let data;
+    const rawText = await res.text();
+    try {
+      data = JSON.parse(rawText);
+    } catch(err) {
+      throw new Error('OTP service connecting... Please try again in a moment.');
+    }
 
     if (!res.ok || data.type === 'error') {
-      throw new Error(data.message || 'Failed to send OTP');
+      throw new Error(data.message || 'Failed to send OTP.');
     }
 
     otpRequestId = data.request_id;
@@ -576,23 +583,13 @@ async function sendOTP() {
   }
 }
 
-function otpInput(input, index) {
-  input.value = input.value.replace(/\D/g, '');
-  if (input.value && index < 5) {
-    document.getElementById('otp-' + (index + 1)).focus();
-  }
-  // Check if all 6 are filled
-  const full = [0,1,2,3,4,5].every(i => document.getElementById('otp-' + i).value);
-  document.getElementById('btn-verify-otp').disabled = !full;
-}
-
 async function verifyOTP() {
   const code = [0,1,2,3,4,5].map(i => document.getElementById('otp-' + i).value).join('');
   const phone = '+91' + document.getElementById('phone-input').value.trim();
 
   const btn = document.getElementById('btn-verify-otp');
   btn.disabled = true;
-  btn.textContent = 'Verifying…';
+  btn.textContent = 'Verifying...';
 
   try {
     const res = await fetch('/api/verify-otp', {
@@ -600,7 +597,14 @@ async function verifyOTP() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ phone, otp: code, request_id: otpRequestId })
     });
-    const data = await res.json();
+
+    let data;
+    const rawText = await res.text();
+    try {
+      data = JSON.parse(rawText);
+    } catch(err) {
+      throw new Error('OTP verification connecting... Please try again.');
+    }
 
     if (!res.ok || data.type === 'error') {
       throw new Error(data.message || 'Invalid OTP. Please try again.');
@@ -608,33 +612,21 @@ async function verifyOTP() {
 
     // OTP verified — now sign in/up via Supabase phone auth
     if (sb) {
-      // Use Supabase phone OTP for session management
-      const { data: authData, error: authError } = await sb.auth.signInWithOtp({
-        phone,
-        options: { shouldCreateUser: true }
-      });
-      // Then verify the token with Supabase
-      const { data: verifyData, error: verifyError } = await sb.auth.verifyOtp({
-        phone,
-        token: code,
-        type: 'sms'
-      });
+      try {
+        const { data: verifyData } = await sb.auth.verifyOtp({
+          phone,
+          token: code,
+          type: 'sms'
+        });
 
-      if (verifyError) {
-        // MSG91 verified but Supabase phone auth may not be set up
-        // Fallback: Route to onboarding with phone identity
-        sessionStorage.setItem('rentcan_phone', phone);
-        showView('view-onboarding');
-        return;
-      }
-
-      if (verifyData?.session) {
-        await routeAfterAuth(verifyData.session.user);
-        return;
-      }
+        if (verifyData?.session) {
+          await routeAfterAuth(verifyData.session.user);
+          return;
+        }
+      } catch(err) {}
     }
 
-    // Fallback if no Supabase
+    sessionStorage.setItem('rentcan_phone', phone);
     showView('view-onboarding');
 
   } catch(e) {
@@ -642,25 +634,6 @@ async function verifyOTP() {
     btn.disabled = false;
     btn.textContent = 'Verify & Continue →';
   }
-}
-
-function startResendTimer() {
-  let seconds = 30;
-  document.getElementById('resend-timer').style.display = 'inline';
-  document.getElementById('btn-resend').style.display = 'none';
-  document.getElementById('resend-count').textContent = seconds;
-
-  if (resendInterval) clearInterval(resendInterval);
-  resendInterval = setInterval(() => {
-    seconds--;
-    document.getElementById('resend-count').textContent = seconds;
-    if (seconds <= 0) {
-      clearInterval(resendInterval);
-      document.getElementById('resend-timer').style.display = 'none';
-      document.getElementById('btn-resend').style.display = 'inline';
-      document.getElementById('btn-resend').disabled = false;
-    }
-  }, 1000);
 }
 
 async function resendOTP() {
