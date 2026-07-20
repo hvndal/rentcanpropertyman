@@ -4,12 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RentCan | Sign In</title>
-<meta name="description" content="Sign in to RentCan property management platform.">
+<meta name="description" content="Sign in to RentCan — property management for the Tricity.">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
   background: #f7faf7;
@@ -22,7 +23,7 @@ body {
 #loader {
   position: fixed; inset: 0; background: #f7faf7; z-index: 9999;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  transition: opacity 0.3s;
+  transition: opacity 0.4s;
 }
 #loader.gone { opacity: 0; pointer-events: none; }
 .spin {
@@ -37,7 +38,7 @@ body {
   width: 100%; max-width: 520px;
   min-height: 100vh;
   display: flex; flex-direction: column; justify-content: center;
-  padding: 48px 48px;
+  padding: 48px;
   background: #fff;
 }
 .right-panel {
@@ -58,29 +59,40 @@ body {
   background-size: 28px 28px;
 }
 
-/* ── Forms ── */
-.tab-row {
-  display: flex; gap: 4px;
-  background: #f2f4f2; border-radius: 10px; padding: 4px;
-  margin-bottom: 28px;
-}
-.tab {
-  flex: 1; padding: 10px; border: none; background: none; cursor: pointer;
-  font-family: inherit; font-size: 13px; font-weight: 600; color: #3f4946;
-  border-radius: 7px; transition: all 0.2s;
-}
-.tab.active { background: #023826; color: #fff; box-shadow: 0 2px 8px rgba(0,65,55,0.2); }
+/* ── View System ── */
+.view { display: none; }
+.view.active { display: block; }
 
-.role-row { display: flex; gap: 8px; margin-bottom: 24px; }
-.role-btn {
-  flex: 1; padding: 10px 8px; border: 1.5px solid #bec9c5; background: #fff;
-  border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 12px;
-  font-weight: 600; color: #3f4946; display: flex; flex-direction: column;
-  align-items: center; gap: 4px; transition: all 0.18s;
+/* ── Welcome / Auth Buttons ── */
+.auth-btn {
+  width: 100%; padding: 14px 18px;
+  border-radius: 10px; font-family: inherit; font-size: 14px;
+  font-weight: 600; cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; gap: 12px;
+  border: 1.5px solid #e0e4e0; background: #fff;
+  color: #191c1b; text-align: left;
+  margin-bottom: 12px;
 }
-.role-btn:hover { border-color: #023826; }
-.role-btn.active { border-color: #023826; background: #023826; color: #fff; }
-.role-btn .icon { font-size: 22px; font-family: 'Material Symbols Outlined'; font-variation-settings: 'FILL' 1; }
+.auth-btn:hover { border-color: #023826; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,65,55,0.12); }
+.auth-btn .btn-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.auth-btn .btn-label { flex: 1; }
+.auth-btn .btn-sub { font-size: 11px; font-weight: 400; color: #73777f; display: block; margin-top: 1px; }
+.auth-btn-google .btn-icon { background: #fff4f4; }
+.auth-btn-phone .btn-icon { background: #f0f6f3; }
+
+/* ── OTP View ── */
+.back-link {
+  background: none; border: none; cursor: pointer; color: #73777f;
+  font-family: inherit; font-size: 13px; font-weight: 600;
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 28px; padding: 0;
+  transition: color 0.2s;
+}
+.back-link:hover { color: #023826; }
 
 .field { margin-bottom: 16px; }
 .field label {
@@ -93,14 +105,29 @@ body {
   background: #fff; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
 }
 .field input:focus { border-color: #023826; box-shadow: 0 0 0 3px rgba(0,65,55,0.1); }
-.field .input-wrap { position: relative; }
-.field .eye-btn {
-  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-  background: none; border: none; cursor: pointer; color: #73777f;
-  font-family: 'Material Symbols Outlined'; font-size: 20px; line-height: 1;
-  font-variation-settings: 'FILL' 0;
-}
 
+/* OTP digit boxes */
+.otp-row { display: flex; gap: 10px; margin-bottom: 24px; }
+.otp-input {
+  flex: 1; padding: 16px 0; border: 1.5px solid #bec9c5;
+  border-radius: 10px; font-size: 22px; font-weight: 800; font-family: inherit;
+  color: #191c1b; background: #fff; outline: none;
+  text-align: center; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.otp-input:focus { border-color: #023826; box-shadow: 0 0 0 3px rgba(0,65,55,0.1); }
+
+/* ── Phone input with country code ── */
+.phone-wrap { display: flex; gap: 8px; }
+.country-code {
+  width: 80px; flex-shrink: 0; padding: 13px 10px;
+  border: 1.5px solid #bec9c5; border-radius: 8px;
+  font-size: 14px; font-family: inherit; font-weight: 700;
+  color: #191c1b; background: #f7faf7; outline: none;
+  text-align: center;
+}
+.phone-wrap .field { flex: 1; margin: 0; }
+
+/* ── Primary button ── */
 .btn-primary {
   width: 100%; padding: 14px; background: #023826; color: #fff;
   border: none; border-radius: 8px; font-family: inherit; font-size: 13px;
@@ -110,6 +137,35 @@ body {
 .btn-primary:hover { background: #005a4e; transform: translateY(-1px); }
 .btn-primary:disabled { background: #bec9c5; cursor: not-allowed; transform: none; }
 
+/* ── Onboarding: Role Cards ── */
+.role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+.role-card {
+  padding: 20px 16px; border: 2px solid #e0e4e0; border-radius: 14px;
+  background: #fff; cursor: pointer; text-align: center;
+  transition: all 0.2s; position: relative;
+}
+.role-card:hover { border-color: #023826; }
+.role-card.selected { border-color: #023826; background: #023826; color: #fff; }
+.role-card .role-icon {
+  font-family: 'Material Symbols Outlined'; font-size: 32px;
+  font-variation-settings: 'FILL' 1; display: block; margin-bottom: 8px;
+}
+.role-card:not(.selected) .role-icon { color: #023826; }
+.role-card .role-name { font-size: 14px; font-weight: 700; }
+.role-card .role-sub { font-size: 11px; margin-top: 4px; }
+.role-card:not(.selected) .role-sub { color: #73777f; }
+.role-card.selected .role-sub { color: rgba(255,255,255,0.7); }
+.role-card .check-badge {
+  position: absolute; top: 10px; right: 10px;
+  width: 20px; height: 20px; background: #00E599; border-radius: 50%;
+  font-family: 'Material Symbols Outlined'; font-size: 12px;
+  color: #023826; font-weight: 700; display: none;
+  align-items: center; justify-content: center;
+  font-variation-settings: 'FILL' 1;
+}
+.role-card.selected .check-badge { display: flex; }
+
+/* ── Alert ── */
 .alert {
   padding: 11px 14px; border-radius: 8px; font-size: 13px;
   margin-bottom: 14px; display: none; font-weight: 500;
@@ -119,25 +175,6 @@ body {
 .alert.success { background: #d6f7f0; color: #023826; border: 1px solid #00E599; }
 .alert.info { background: #e8f0fe; color: #1a4199; border: 1px solid #c5d5f7; }
 
-.divider {
-  display: flex; align-items: center; gap: 12px;
-  margin: 18px 0; color: #73777f; font-size: 12px;
-}
-.divider::before, .divider::after {
-  content: ''; flex: 1; height: 1px; background: #bec9c5;
-}
-
-.link-row { text-align: center; font-size: 13px; color: #3f4946; margin-top: 18px; }
-.link-row a { color: #FF3366; font-weight: 700; text-decoration: none; }
-.link-row a:hover { text-decoration: underline; }
-
-.dev-note {
-  margin-top: 20px; padding: 10px 14px; background: #f2f4f2;
-  border-radius: 8px; font-size: 12px; color: #3f4946; text-align: center;
-  border: 1px solid #bec9c5;
-}
-.dev-note code { background: #e6e9e6; padding: 1px 5px; border-radius: 4px; font-weight: 700; }
-
 /* ── Right panel content ── */
 .stat-card {
   background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
@@ -145,6 +182,23 @@ body {
 }
 .stat-card .label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
 .stat-card .value { font-size: 26px; font-weight: 800; color: #fff; }
+
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 20px 0; color: #73777f; font-size: 12px;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px; background: #e0e4e0;
+}
+
+/* Resend timer */
+.resend-row { text-align: center; margin-top: 16px; font-size: 13px; color: #73777f; }
+.resend-row button {
+  background: none; border: none; cursor: pointer;
+  font-family: inherit; font-size: 13px; font-weight: 700;
+  color: #023826; padding: 0;
+}
+.resend-row button:disabled { color: #bec9c5; cursor: not-allowed; }
 </style>
 </head>
 <body>
@@ -159,102 +213,131 @@ body {
 <div class="left-panel">
 
   <!-- Logo -->
-  <a href="index.html" style="display:inline-block; margin-bottom:36px;">
-    <img src="/logo.png" alt="RentCan" style="height:52px;width:52px;object-fit:contain;" >
+  <a href="index.html" style="display:inline-block; margin-bottom:40px;">
+    <div class="bg-white p-1.5 rounded-xl shadow-md border border-gray-100 flex items-center justify-center" style="display:inline-flex;width:52px;height:52px;border-radius:12px;border:1.5px solid #e0e4e0;padding:6px;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+      <img src="/logo.png" alt="RentCan" style="width:100%;height:100%;object-fit:contain;">
+    </div>
   </a>
-
-  <!-- Tab switcher: Login / Create Account -->
-  <div class="tab-row">
-    <button class="tab active" id="tab-login" onclick="switchTab('login')">Sign In</button>
-    <button class="tab" id="tab-register" onclick="switchTab('register')">Create Account</button>
-  </div>
 
   <!-- Alert -->
   <div class="alert" id="alert"></div>
 
-  <!-- ══ LOGIN FORM ══ -->
-  <div id="form-login">
-    <p style="font-size:13px;color:#3f4946;margin-bottom:20px;">Who are you signing in as?</p>
-    <!-- Role -->
-    <div class="role-row">
-      <button class="role-btn active" id="login-role-landlord" onclick="setLoginRole('landlord')">
-        <span class="icon">home_work</span>
-        Landlord
-      </button>
-      <button class="role-btn" id="login-role-tenant" onclick="setLoginRole('tenant')">
-        <span class="icon">person</span>
-        Tenant
-      </button>
-      <button class="role-btn" id="login-role-admin" onclick="setLoginRole('admin')">
-        <span class="icon">shield_person</span>
-        Admin
-      </button>
-    </div>
+  <!-- ══ VIEW: Welcome ══ -->
+  <div class="view active" id="view-welcome">
+    <h1 style="font-size:28px;font-weight:800;letter-spacing:-0.02em;color:#191c1b;margin-bottom:8px;">Welcome back.</h1>
+    <p style="font-size:14px;color:#73777f;margin-bottom:36px;line-height:1.6;">Sign in to your RentCan dashboard. No password needed.</p>
 
-    <form onsubmit="handleLogin(event)">
-      <div class="field">
-        <label>Username / Email</label>
-        <input type="text" id="login-email" placeholder="admin  or  you@example.com" autocomplete="username" required>
+    <!-- Google -->
+    <button class="auth-btn auth-btn-google" id="btn-google" onclick="signInWithGoogle()">
+      <div class="btn-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
       </div>
-      <div class="field">
-        <label>Password</label>
-        <div class="input-wrap">
-          <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password" required>
-          <button type="button" class="eye-btn" onclick="togglePw('login-pass',this)">visibility</button>
+      <div class="btn-label">
+        Continue with Google
+        <span class="btn-sub">Instant sign-in with your Google account</span>
+      </div>
+    </button>
+
+    <div class="divider">or</div>
+
+    <!-- Phone -->
+    <button class="auth-btn auth-btn-phone" onclick="showView('view-phone')">
+      <div class="btn-icon">
+        <span style="font-family:'Material Symbols Outlined';font-size:22px;color:#023826;font-variation-settings:'FILL' 1;">smartphone</span>
+      </div>
+      <div class="btn-label">
+        Continue with Phone Number
+        <span class="btn-sub">Get a one-time OTP via SMS</span>
+      </div>
+    </button>
+
+    <p style="font-size:12px;color:#9e9e9e;text-align:center;margin-top:28px;line-height:1.6;">
+      By continuing, you agree to RentCan's <a href="#" style="color:#023826;font-weight:600;">Terms of Service</a> and <a href="#" style="color:#023826;font-weight:600;">Privacy Policy</a>.
+    </p>
+  </div>
+
+  <!-- ══ VIEW: Phone Entry ══ -->
+  <div class="view" id="view-phone">
+    <button class="back-link" onclick="showView('view-welcome')">
+      <span style="font-family:'Material Symbols Outlined';font-size:18px;">arrow_back</span>
+      Back
+    </button>
+    <h2 style="font-size:24px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;">Enter your number.</h2>
+    <p style="font-size:14px;color:#73777f;margin-bottom:28px;">We'll send you a 6-digit OTP to verify.</p>
+
+    <div class="field">
+      <label>Mobile Number</label>
+      <div class="phone-wrap">
+        <input class="country-code" type="text" value="+91" readonly>
+        <div class="field" style="flex:1;margin:0;">
+          <input type="tel" id="phone-input" placeholder="9876543210" maxlength="10" autocomplete="tel-national"
+            oninput="this.value=this.value.replace(/\D/g,'')">
         </div>
       </div>
-      <button type="submit" class="btn-primary" id="login-btn">Sign In →</button>
-    </form>
-
-    <div class="dev-note">
-      Quick admin access: <code>admin</code> / <code>admin</code>
     </div>
 
-    <div class="link-row">
-      No account? <a href="#" onclick="switchTab('register')">Create one →</a>
+    <button class="btn-primary" id="btn-send-otp" onclick="sendOTP()">Send OTP →</button>
+  </div>
+
+  <!-- ══ VIEW: OTP Verify ══ -->
+  <div class="view" id="view-otp">
+    <button class="back-link" onclick="showView('view-phone')">
+      <span style="font-family:'Material Symbols Outlined';font-size:18px;">arrow_back</span>
+      Change number
+    </button>
+    <h2 style="font-size:24px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;">Check your messages.</h2>
+    <p style="font-size:14px;color:#73777f;margin-bottom:4px;">Enter the 6-digit code sent to</p>
+    <p style="font-size:14px;font-weight:700;color:#023826;margin-bottom:28px;" id="otp-phone-display"></p>
+
+    <div class="otp-row" id="otp-row">
+      <input class="otp-input" maxlength="1" type="tel" id="otp-0" oninput="otpInput(this,0)">
+      <input class="otp-input" maxlength="1" type="tel" id="otp-1" oninput="otpInput(this,1)">
+      <input class="otp-input" maxlength="1" type="tel" id="otp-2" oninput="otpInput(this,2)">
+      <input class="otp-input" maxlength="1" type="tel" id="otp-3" oninput="otpInput(this,3)">
+      <input class="otp-input" maxlength="1" type="tel" id="otp-4" oninput="otpInput(this,4)">
+      <input class="otp-input" maxlength="1" type="tel" id="otp-5" oninput="otpInput(this,5)">
+    </div>
+
+    <button class="btn-primary" id="btn-verify-otp" onclick="verifyOTP()" disabled>Verify & Continue →</button>
+
+    <div class="resend-row">
+      <span id="resend-timer">Resend in <span id="resend-count">30</span>s</span>
+      <button id="btn-resend" onclick="resendOTP()" disabled style="display:none;">Resend OTP</button>
     </div>
   </div>
 
-  <!-- ══ REGISTER FORM ══ -->
-  <div id="form-register" style="display:none;">
-    <p style="font-size:13px;color:#3f4946;margin-bottom:20px;">I am registering as a:</p>
-    <div class="role-row">
-      <button class="role-btn active" id="reg-role-landlord" onclick="setRegRole('landlord')">
-        <span class="icon">home_work</span>
-        Landlord
-      </button>
-      <button class="role-btn" id="reg-role-tenant" onclick="setRegRole('tenant')">
-        <span class="icon">person</span>
-        Tenant
-      </button>
+  <!-- ══ VIEW: Onboarding ══ -->
+  <div class="view" id="view-onboarding">
+    <h2 style="font-size:24px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;">Just one more step.</h2>
+    <p style="font-size:14px;color:#73777f;margin-bottom:28px;">Tell us about yourself to set up your account.</p>
+
+    <div class="field">
+      <label>Full Name</label>
+      <input type="text" id="onboard-name" placeholder="Your full name" autocomplete="name" required>
     </div>
 
-    <form onsubmit="handleRegister(event)">
-      <div class="field">
-        <label>Full Name</label>
-        <input type="text" id="reg-name" placeholder="Your full name" required>
+    <p style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#3f4946;margin-bottom:12px;">I am a:</p>
+    <div class="role-grid">
+      <div class="role-card" id="role-landlord" onclick="selectRole('landlord')">
+        <span class="check-badge">check</span>
+        <span class="role-icon">home_work</span>
+        <div class="role-name">Landlord</div>
+        <div class="role-sub">I own property</div>
       </div>
-      <div class="field">
-        <label>Email Address</label>
-        <input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email" required>
+      <div class="role-card" id="role-tenant" onclick="selectRole('tenant')">
+        <span class="check-badge">check</span>
+        <span class="role-icon">person</span>
+        <div class="role-name">Tenant</div>
+        <div class="role-sub">I rent property</div>
       </div>
-      <div class="field">
-        <label>Password</label>
-        <div class="input-wrap">
-          <input type="password" id="reg-pass" placeholder="Min. 6 characters" autocomplete="new-password" required minlength="6">
-          <button type="button" class="eye-btn" onclick="togglePw('reg-pass',this)">visibility</button>
-        </div>
-      </div>
-      <div class="field">
-        <label>Confirm Password</label>
-        <input type="password" id="reg-pass2" placeholder="Repeat password" autocomplete="new-password" required minlength="6">
-      </div>
-      <button type="submit" class="btn-primary" id="reg-btn">Create Account →</button>
-    </form>
-
-    <div class="link-row">
-      Already have an account? <a href="#" onclick="switchTab('login')">Sign in →</a>
     </div>
+
+    <button class="btn-primary" id="btn-complete-profile" onclick="completeProfile()">Complete Setup →</button>
   </div>
 
 </div>
@@ -290,51 +373,56 @@ body {
 </div>
 
 <script>
-// ─── State ────────────────────────────────────────────
-let loginRole = 'landlord';
-let regRole   = 'landlord';
-let sb        = null;
+// ─────────────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────────────
+let sb = null;
+let selectedRole = null;
+let otpRequestId = null; // MSG91 request ID
+let resendInterval = null;
 
-// ─── Boot ─────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────
+// BOOT
+// ─────────────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', async () => {
-  // hide loader
-  setTimeout(() => document.getElementById('loader').classList.add('gone'), 300);
+  setTimeout(() => document.getElementById('loader').classList.add('gone'), 400);
 
-  // init supabase
   try {
     const cfg = await fetch('/api/config').then(r => r.json());
     if (cfg.supabaseUrl && cfg.supabaseKey) {
       sb = supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
+
+      // Handle OAuth callback (Google)
+      const { data: { session } } = await sb.auth.getSession();
+      if (session) {
+        await routeAfterAuth(session.user);
+        return;
+      }
+
+      // Listen for auth state changes (for OAuth redirect)
+      sb.auth.onAuthStateChange(async (event, session) => {
+        if (event === 'SIGNED_IN' && session) {
+          await routeAfterAuth(session.user);
+        }
+      });
     }
   } catch(e) {
     console.warn('Supabase config unavailable:', e.message);
   }
 });
 
-// ─── Tab switcher ──────────────────────────────────────
-function switchTab(tab) {
+// ─────────────────────────────────────────────────────────────────────
+// VIEW MANAGEMENT
+// ─────────────────────────────────────────────────────────────────────
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
   hideAlert();
-  document.getElementById('form-login').style.display    = tab === 'login'    ? '' : 'none';
-  document.getElementById('form-register').style.display = tab === 'register' ? '' : 'none';
-  document.getElementById('tab-login').classList.toggle('active',    tab === 'login');
-  document.getElementById('tab-register').classList.toggle('active', tab === 'register');
 }
 
-// ─── Role selectors ────────────────────────────────────
-function setLoginRole(role) {
-  loginRole = role;
-  ['landlord','tenant','admin'].forEach(r => {
-    document.getElementById('login-role-' + r).classList.toggle('active', r === role);
-  });
-}
-function setRegRole(role) {
-  regRole = role;
-  ['landlord','tenant'].forEach(r => {
-    document.getElementById('reg-role-' + r).classList.toggle('active', r === role);
-  });
-}
-
-// ─── Alert helpers ─────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────
+// ALERT HELPERS
+// ─────────────────────────────────────────────────────────────────────
 function showAlert(msg, type = 'error') {
   const el = document.getElementById('alert');
   el.textContent = msg;
@@ -344,125 +432,254 @@ function hideAlert() {
   document.getElementById('alert').className = 'alert';
 }
 
-// ─── Password toggle ───────────────────────────────────
-function togglePw(inputId, btn) {
-  const inp = document.getElementById(inputId);
-  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = 'visibility_off'; }
-  else { inp.type = 'password'; btn.textContent = 'visibility'; }
+// ─────────────────────────────────────────────────────────────────────
+// ROUTING AFTER AUTH
+// ─────────────────────────────────────────────────────────────────────
+async function routeAfterAuth(user) {
+  if (!sb) { window.location.href = 'dashboard.html'; return; }
+
+  // Check if profile already exists
+  const { data: profile, error } = await sb
+    .from('profiles')
+    .select('id, full_name, role, onboarding_completed')
+    .eq('id', user.id)
+    .single();
+
+  if (profile && profile.onboarding_completed) {
+    // Store session info for dashboard use
+    sessionStorage.setItem('rentcan_user', JSON.stringify({
+      id: user.id,
+      email: user.email,
+      name: profile.full_name,
+      role: profile.role,
+    }));
+    sessionStorage.setItem('rentcan_role', profile.role);
+    window.location.href = 'dashboard.html';
+  } else {
+    // Need to complete onboarding
+    // Pre-fill name if available from Google
+    if (user.user_metadata?.full_name) {
+      document.getElementById('onboard-name').value = user.user_metadata.full_name;
+    }
+    showView('view-onboarding');
+  }
 }
 
-// ─── LOGIN ─────────────────────────────────────────────
-async function handleLogin(e) {
-  e.preventDefault();
-  hideAlert();
-
-  const rawInput = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-pass').value;
-  const btn = document.getElementById('login-btn');
-
-  btn.disabled = true;
-  btn.textContent = 'Signing in…';
-
-  // ── Admin bypass (always works) ──
-  if ((rawInput === 'admin' || rawInput === 'admin@rentcan.com') && password === 'admin') {
-    sessionStorage.setItem('rentcan_role', 'admin');
-    sessionStorage.setItem('rentcan_user', JSON.stringify({ email: 'admin@rentcan.com', role: 'admin', name: 'Admin' }));
-    showAlert('Welcome back, Admin! Redirecting…', 'success');
-    setTimeout(() => window.location.href = 'dashboard.html', 700);
-    return;
-  }
-
-  // ── Supabase email/password login ──
+// ─────────────────────────────────────────────────────────────────────
+// GOOGLE SIGN IN
+// ─────────────────────────────────────────────────────────────────────
+async function signInWithGoogle() {
   if (!sb) {
-    showAlert('Auth service offline. Use admin / admin for now.');
-    btn.disabled = false; btn.textContent = 'Sign In →';
+    showAlert('Authentication service is unavailable. Please check your Supabase configuration.');
     return;
   }
-
-  // Must be a valid email for Supabase
-  if (!rawInput.includes('@')) {
-    showAlert('Please enter a valid email address, or use "admin" / "admin" for the admin account.');
-    btn.disabled = false; btn.textContent = 'Sign In →';
-    return;
-  }
-
-  const { data, error } = await sb.auth.signInWithPassword({ email: rawInput, password });
-
-  if (error) {
-    showAlert('Login failed: ' + error.message);
-    btn.disabled = false; btn.textContent = 'Sign In →';
-    return;
-  }
-
-  const user = data.user;
-  const storedRole = user.user_metadata?.role || loginRole;
-
-  sessionStorage.setItem('rentcan_role', storedRole);
-  sessionStorage.setItem('rentcan_user', JSON.stringify({
-    id: user.id, email: user.email, role: storedRole,
-    name: user.user_metadata?.full_name || user.email
-  }));
-
-  showAlert('Login successful! Redirecting…', 'success');
-  setTimeout(() => window.location.href = 'dashboard.html', 700);
-}
-
-// ─── REGISTER ──────────────────────────────────────────
-async function handleRegister(e) {
-  e.preventDefault();
-  hideAlert();
-
-  const name  = document.getElementById('reg-name').value.trim();
-  const email = document.getElementById('reg-email').value.trim();
-  const pass  = document.getElementById('reg-pass').value;
-  const pass2 = document.getElementById('reg-pass2').value;
-  const btn   = document.getElementById('reg-btn');
-
-  if (pass !== pass2) {
-    showAlert('Passwords do not match.');
-    return;
-  }
-  if (pass.length < 6) {
-    showAlert('Password must be at least 6 characters.');
-    return;
-  }
-
+  const btn = document.getElementById('btn-google');
   btn.disabled = true;
-  btn.textContent = 'Creating account…';
+  btn.querySelector('.btn-label').innerHTML = 'Connecting…<span class="btn-sub">Please wait</span>';
 
-  if (!sb) {
-    showAlert('Auth service offline. Account creation is unavailable right now. Please contact us to register.', 'info');
-    btn.disabled = false; btn.textContent = 'Create Account →';
-    return;
-  }
-
-  const { data, error } = await sb.auth.signUp({
-    email,
-    password: pass,
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: 'google',
     options: {
-      data: { full_name: name, role: regRole }
+      redirectTo: window.location.origin + '/login.html'
     }
   });
 
   if (error) {
-    showAlert('Registration failed: ' + error.message);
-    btn.disabled = false; btn.textContent = 'Create Account →';
+    showAlert('Google Sign-In failed: ' + error.message);
+    btn.disabled = false;
+    btn.querySelector('.btn-label').innerHTML = 'Continue with Google<span class="btn-sub">Instant sign-in with your Google account</span>';
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// PHONE / MSG91 OTP
+// ─────────────────────────────────────────────────────────────────────
+async function sendOTP() {
+  const phone = document.getElementById('phone-input').value.trim();
+  if (phone.length !== 10) {
+    showAlert('Please enter a valid 10-digit mobile number.');
     return;
   }
 
-  // Supabase may require email confirmation
-  const needsConfirm = !data.session;
-  if (needsConfirm) {
-    showAlert('Account created! Please check your email to confirm your address, then sign in.', 'success');
-    setTimeout(() => switchTab('login'), 3000);
-  } else {
-    // Logged in immediately (email confirm disabled in Supabase settings)
-    sessionStorage.setItem('rentcan_role', regRole);
-    sessionStorage.setItem('rentcan_user', JSON.stringify({
-      id: data.user.id, email: data.user.email, role: regRole, name
-    }));
-    showAlert('Account created! Redirecting to dashboard…', 'success');
+  const btn = document.getElementById('btn-send-otp');
+  btn.disabled = true;
+  btn.textContent = 'Sending OTP…';
+
+  try {
+    const res = await fetch('/api/send-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone: '+91' + phone })
+    });
+    const data = await res.json();
+
+    if (!res.ok || data.type === 'error') {
+      throw new Error(data.message || 'Failed to send OTP');
+    }
+
+    otpRequestId = data.request_id;
+    document.getElementById('otp-phone-display').textContent = '+91 ' + phone;
+    showView('view-otp');
+    document.getElementById('otp-0').focus();
+    startResendTimer();
+    showAlert('OTP sent successfully!', 'success');
+  } catch(e) {
+    showAlert('Could not send OTP: ' + e.message);
+    btn.disabled = false;
+    btn.textContent = 'Send OTP →';
+  }
+}
+
+function otpInput(input, index) {
+  input.value = input.value.replace(/\D/g, '');
+  if (input.value && index < 5) {
+    document.getElementById('otp-' + (index + 1)).focus();
+  }
+  // Check if all 6 are filled
+  const full = [0,1,2,3,4,5].every(i => document.getElementById('otp-' + i).value);
+  document.getElementById('btn-verify-otp').disabled = !full;
+}
+
+async function verifyOTP() {
+  const code = [0,1,2,3,4,5].map(i => document.getElementById('otp-' + i).value).join('');
+  const phone = '+91' + document.getElementById('phone-input').value.trim();
+
+  const btn = document.getElementById('btn-verify-otp');
+  btn.disabled = true;
+  btn.textContent = 'Verifying…';
+
+  try {
+    const res = await fetch('/api/verify-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone, otp: code, request_id: otpRequestId })
+    });
+    const data = await res.json();
+
+    if (!res.ok || data.type === 'error') {
+      throw new Error(data.message || 'Invalid OTP. Please try again.');
+    }
+
+    // OTP verified — now sign in/up via Supabase phone auth
+    if (sb) {
+      // Use Supabase phone OTP for session management
+      const { data: authData, error: authError } = await sb.auth.signInWithOtp({
+        phone,
+        options: { shouldCreateUser: true }
+      });
+      // Then verify the token with Supabase
+      const { data: verifyData, error: verifyError } = await sb.auth.verifyOtp({
+        phone,
+        token: code,
+        type: 'sms'
+      });
+
+      if (verifyError) {
+        // MSG91 verified but Supabase phone auth may not be set up
+        // Fallback: Route to onboarding with phone identity
+        sessionStorage.setItem('rentcan_phone', phone);
+        showView('view-onboarding');
+        return;
+      }
+
+      if (verifyData?.session) {
+        await routeAfterAuth(verifyData.session.user);
+        return;
+      }
+    }
+
+    // Fallback if no Supabase
+    showView('view-onboarding');
+
+  } catch(e) {
+    showAlert(e.message);
+    btn.disabled = false;
+    btn.textContent = 'Verify & Continue →';
+  }
+}
+
+function startResendTimer() {
+  let seconds = 30;
+  document.getElementById('resend-timer').style.display = 'inline';
+  document.getElementById('btn-resend').style.display = 'none';
+  document.getElementById('resend-count').textContent = seconds;
+
+  if (resendInterval) clearInterval(resendInterval);
+  resendInterval = setInterval(() => {
+    seconds--;
+    document.getElementById('resend-count').textContent = seconds;
+    if (seconds <= 0) {
+      clearInterval(resendInterval);
+      document.getElementById('resend-timer').style.display = 'none';
+      document.getElementById('btn-resend').style.display = 'inline';
+      document.getElementById('btn-resend').disabled = false;
+    }
+  }, 1000);
+}
+
+async function resendOTP() {
+  document.getElementById('btn-resend').disabled = true;
+  await sendOTP();
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// ONBOARDING / PROFILE CREATION
+// ─────────────────────────────────────────────────────────────────────
+function selectRole(role) {
+  selectedRole = role;
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('role-' + role).classList.add('selected');
+}
+
+async function completeProfile() {
+  const name = document.getElementById('onboard-name').value.trim();
+
+  if (!name) { showAlert('Please enter your full name.'); return; }
+  if (!selectedRole) { showAlert('Please select your role.'); return; }
+
+  const btn = document.getElementById('btn-complete-profile');
+  btn.disabled = true;
+  btn.textContent = 'Setting up your account…';
+
+  try {
+    if (sb) {
+      const { data: { user } } = await sb.auth.getUser();
+
+      if (user) {
+        const { error } = await sb.from('profiles').upsert({
+          id: user.id,
+          full_name: name,
+          role: selectedRole,
+          avatar_url: user.user_metadata?.avatar_url || null,
+          onboarding_completed: true,
+          updated_at: new Date().toISOString()
+        });
+
+        if (error) throw error;
+
+        sessionStorage.setItem('rentcan_user', JSON.stringify({
+          id: user.id,
+          email: user.email,
+          name,
+          role: selectedRole,
+        }));
+        sessionStorage.setItem('rentcan_role', selectedRole);
+        showAlert('Welcome to RentCan! Redirecting…', 'success');
+        setTimeout(() => window.location.href = 'dashboard.html', 800);
+        return;
+      }
+    }
+
+    // Fallback (offline mode)
+    sessionStorage.setItem('rentcan_user', JSON.stringify({ name, role: selectedRole }));
+    sessionStorage.setItem('rentcan_role', selectedRole);
+    showAlert('Profile created! Redirecting…', 'success');
     setTimeout(() => window.location.href = 'dashboard.html', 800);
+
+  } catch(e) {
+    showAlert('Profile setup failed: ' + e.message);
+    btn.disabled = false;
+    btn.textContent = 'Complete Setup →';
   }
 }
 </script>

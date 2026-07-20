@@ -218,7 +218,10 @@
                     </button>
 </div>
 </div>
-</aside>
+  <button id="btn-sign-out" onclick="signOut()" class="w-full flex items-center gap-2 px-3 py-2 text-xs text-on-surface-variant/60 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all font-medium mt-2">
+    <span class="material-symbols-outlined text-base">logout</span> Sign Out
+  </button>
+  </aside>
 <!-- Main Content Canvas -->
 <main class="flex-grow overflow-y-auto custom-scrollbar bg-background relative px-6 md:px-margin-mobile md:px-margin-desktop py-stack-lg pb-32 md:pb-stack-lg">
 <!-- Header Section -->
@@ -532,4 +535,51 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     });
   </script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// AUTH BOOT - Passwordless session check
+(async function() {
+  let sb = null;
+  try {
+    const cfg = await fetch('/api/config').then(r => r.json());
+    if (cfg.supabaseUrl && cfg.supabaseKey) {
+      sb = supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
+    }
+  } catch(e) {}
+
+  // Get user info from sessionStorage (populated by login.html)
+  const storedUser = JSON.parse(sessionStorage.getItem('rentcan_user') || 'null');
+
+  if (sb) {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session && !storedUser) {
+      // Not authenticated — redirect to login
+      window.location.href = 'login.html';
+      return;
+    }
+    if (session) {
+      // Prefer live session data
+      const nameEl = document.getElementById('sidebar-user-name');
+      const emailEl = document.getElementById('sidebar-user-email');
+      if (nameEl) nameEl.textContent = session.user.user_metadata?.full_name || storedUser?.name || 'User';
+      if (emailEl) emailEl.textContent = session.user.email || session.user.phone || '';
+    }
+  }
+
+  // Fallback to sessionStorage
+  if (storedUser) {
+    const nameEl = document.getElementById('sidebar-user-name');
+    const emailEl = document.getElementById('sidebar-user-email');
+    if (nameEl && nameEl.textContent === 'Loading…') nameEl.textContent = storedUser.name || 'User';
+    if (emailEl && !emailEl.textContent) emailEl.textContent = storedUser.email || '';
+  }
+
+  window.signOut = async function() {
+    if (sb) await sb.auth.signOut();
+    sessionStorage.clear();
+    window.location.href = 'login.html';
+  };
+})();
+</script>
 </body></html>
