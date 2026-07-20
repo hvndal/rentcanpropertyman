@@ -514,75 +514,116 @@
 
 <!-- Comprehensive Pricing Section -->
 <section id="pricing" class="py-40 bg-surface px-margin-desktop">
-  <div class="max-w-[1200px] mx-auto">
+  <div class="max-w-[1280px] mx-auto">
     <div class="text-center mb-24">
-      <span class="font-label-caps text-label-caps text-secondary uppercase tracking-[0.3em] mb-6 block">Comprehensive Plans</span>
+      <span class="font-label-caps text-label-caps text-secondary uppercase tracking-[0.3em] mb-6 block">Transparent Pricing</span>
       <h2 class="font-display-lg text-5xl md:text-6xl text-primary tracking-tight mb-8">One Price. <span class="font-cursive text-green-pop">Zero</span> Headaches.</h2>
-      <p class="font-body-lg text-on-surface-variant max-w-2xl mx-auto">No hidden fees, no percentage cuts of your rent. A flat, predictable fee for total peace of mind.</p>
+      <p class="font-body-lg text-on-surface-variant max-w-2xl mx-auto">No hidden fees, no percentage cuts of your rent. Predictable flat fees for both Residential and Commercial portfolios.</p>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-4xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
       
       <!-- Residential Core Card -->
-      <div class="pricing-card bg-primary text-white rounded-3xl p-10 md:p-14 shadow-2xl relative overflow-hidden transform hover:-translate-y-2 transition-transform duration-500">
-        <div class="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
-          <span class="material-symbols-outlined text-[150px]">real_estate_agent</span>
+      <div class="pricing-card bg-primary text-white rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden flex flex-col transform hover:-translate-y-2 transition-transform duration-500">
+        <div class="absolute top-0 right-0 p-6 opacity-10 pointer-events-none">
+          <span class="material-symbols-outlined text-[130px]">home</span>
         </div>
-        <div class="relative z-10">
-          <span class="inline-block px-4 py-1.5 bg-secondary/20 text-secondary-container font-label-caps text-[10px] uppercase tracking-widest rounded-full mb-8">Most Popular</span>
-          <h3 class="font-display-md text-3xl mb-4">Residential Core</h3>
-          <div class="flex items-baseline gap-2 mb-8 border-b border-white/20 pb-8">
-            <span class="font-display-lg text-6xl">₹1,499</span>
-            <span class="text-white/50 font-label-caps tracking-widest">/ MONTH</span>
+        <div class="relative z-10 flex flex-col h-full">
+          <span class="inline-block px-4 py-1 bg-secondary/30 text-white font-label-caps text-[10px] uppercase tracking-widest rounded-full mb-6 w-max">Residential</span>
+          <h3 class="font-display-md text-2xl mb-2">Residential Core</h3>
+          <div class="flex items-baseline gap-2 mb-2">
+            <span class="font-display-lg text-5xl">₹1,499</span>
+            <span class="text-white/50 font-label-caps text-xs tracking-widest">/ MO</span>
           </div>
+          <p class="text-xs text-accent font-medium mb-6">+ ₹799/mo per additional property</p>
           
-          <ul class="space-y-5 mb-10">
-            <li class="flex items-start gap-4">
-              <span class="material-symbols-outlined text-secondary">check_circle</span>
+          <ul class="space-y-4 mb-8 text-sm flex-1">
+            <li class="flex items-start gap-3">
+              <span class="material-symbols-outlined text-accent text-lg">check_circle</span>
               <span class="font-light text-white/90">Rent Collection & Deposit Handling</span>
             </li>
-            <li class="flex items-start gap-4">
-              <span class="material-symbols-outlined text-secondary">check_circle</span>
-              <span class="font-light text-white/90">Digital KYC & Police Verification</span>
+            <li class="flex items-start gap-3">
+              <span class="material-symbols-outlined text-accent text-lg">check_circle</span>
+              <span class="font-light text-white/90">Digital KYC & Lease Archiving</span>
             </li>
-            <li class="flex items-start gap-4">
-              <span class="material-symbols-outlined text-secondary">check_circle</span>
-              <span class="font-light text-white/90"><strong>Complementary</strong> 15-Point Inspection (5th of every month)</span>
+            <li class="flex items-start gap-3">
+              <span class="material-symbols-outlined text-accent text-lg">check_circle</span>
+              <span class="font-light text-white/90"><strong>Complementary</strong> 15-Point Monthly Inspection</span>
             </li>
-            <li class="flex items-start gap-4">
-              <span class="material-symbols-outlined text-secondary">check_circle</span>
+            <li class="flex items-start gap-3">
+              <span class="material-symbols-outlined text-accent text-lg">check_circle</span>
               <span class="font-light text-white/90">Vendor Co-ordination & Maintenance</span>
             </li>
           </ul>
 
-          <a href="login.html" class="block w-full py-4 bg-white text-primary text-center font-bold font-label-caps uppercase tracking-widest rounded-lg hover:bg-gray-100 transition-colors">Start Now</a>
+          <a href="login.html" class="block w-full py-3.5 bg-white text-primary text-center font-bold font-label-caps text-xs uppercase tracking-widest rounded-xl hover:bg-gray-100 transition-colors mt-auto">Start Now</a>
+        </div>
+      </div>
+
+      <!-- Commercial & Airbnb Card -->
+      <div class="pricing-card bg-surface-container/80 border border-outline-variant/60 rounded-3xl p-8 md:p-10 shadow-lg relative overflow-hidden flex flex-col transform hover:-translate-y-2 transition-transform duration-500">
+        <div class="absolute top-0 right-0 p-6 opacity-5 pointer-events-none">
+          <span class="material-symbols-outlined text-[130px]">store</span>
+        </div>
+        <div class="relative z-10 flex flex-col h-full">
+          <span class="inline-block px-4 py-1 bg-primary/10 text-primary font-label-caps text-[10px] uppercase tracking-widest rounded-full mb-6 w-max font-bold">Commercial & Airbnb</span>
+          <h3 class="font-display-md text-2xl text-primary mb-2">Commercial & Airbnb</h3>
+          <div class="flex items-baseline gap-2 mb-2">
+            <span class="font-display-lg text-5xl text-primary">₹1,999</span>
+            <span class="text-on-surface-variant/50 font-label-caps text-xs tracking-widest">/ MO</span>
+          </div>
+          <p class="text-xs text-secondary font-semibold mb-6">+ ₹799/mo per additional property</p>
+          
+          <ul class="space-y-4 mb-8 text-sm flex-1">
+            <li class="flex items-start gap-3">
+              <span class="material-symbols-outlined text-secondary text-lg">check_circle</span>
+              <span class="font-light text-on-surface-variant">Everything in Residential Core</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="material-symbols-outlined text-secondary text-lg">check_circle</span>
+              <span class="font-light text-on-surface-variant">Airbnb Turnover & Guest Coordination</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="material-symbols-outlined text-secondary text-lg">check_circle</span>
+              <span class="font-light text-on-surface-variant">Offices, Shops & Warehouse Oversight</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="material-symbols-outlined text-secondary text-lg">check_circle</span>
+              <span class="font-light text-on-surface-variant">Commercial Compliance & Safety Audits</span>
+            </li>
+          </ul>
+
+          <a href="login.html" class="block w-full py-3.5 bg-primary text-white text-center font-bold font-label-caps text-xs uppercase tracking-widest rounded-xl hover:bg-primary/90 transition-colors mt-auto">Get Started</a>
         </div>
       </div>
 
       <!-- SOS Add-on Card -->
-      <div class="pricing-card bg-surface-container/50 border border-outline-variant/50 rounded-3xl p-10 md:p-14 relative transform hover:-translate-y-2 transition-transform duration-500">
+      <div class="pricing-card bg-secondary/10 border border-secondary/30 rounded-3xl p-8 md:p-10 relative flex flex-col transform hover:-translate-y-2 transition-transform duration-500">
         <div class="relative z-10 flex flex-col h-full">
-          <h3 class="font-display-md text-3xl text-primary mb-4">SOS Inspection</h3>
-          <div class="flex items-baseline gap-2 mb-8 border-b border-outline-variant/50 pb-8">
-            <span class="font-display-lg text-6xl text-primary">₹500</span>
-            <span class="text-on-surface-variant/50 font-label-caps tracking-widest">/ VISIT</span>
+          <span class="inline-block px-4 py-1 bg-secondary text-white font-label-caps text-[10px] uppercase tracking-widest rounded-full mb-6 w-max font-bold">Same Price For Both</span>
+          <h3 class="font-display-md text-2xl text-primary mb-2">SOS Inspection</h3>
+          <div class="flex items-baseline gap-2 mb-2">
+            <span class="font-display-lg text-5xl text-primary">₹500</span>
+            <span class="text-on-surface-variant/50 font-label-caps text-xs tracking-widest">/ VISIT</span>
           </div>
+          <p class="text-xs text-secondary font-semibold mb-6">Same flat fee for Residential & Commercial</p>
           
-          <p class="text-on-surface-variant font-light leading-relaxed mb-8 flex-1">
-            Need an emergency check? Did the tenant report a massive leak? Or do you just want extra peace of mind before a major festival? 
+          <p class="text-on-surface-variant font-light text-sm leading-relaxed mb-8 flex-1">
+            Need an emergency check? Water leak, tenant emergency, or pre-handover check? 
             <br><br>
-            Request an on-demand SOS inspection straight from your dashboard. Our agents will be dispatched within hours to provide a comprehensive PDF report.
+            Request an on-demand SOS inspection straight from your dashboard for any property. On-ground agents dispatched within 4 hours with PDF report.
           </p>
 
-          <a href="login.html" class="block w-full py-4 bg-primary text-white text-center font-bold font-label-caps uppercase tracking-widest rounded-lg hover:bg-primary/90 transition-colors mt-auto">Learn More</a>
+          <a href="info.html#pricing" class="block w-full py-3.5 bg-secondary text-white text-center font-bold font-label-caps text-xs uppercase tracking-widest rounded-xl hover:bg-secondary/90 transition-colors mt-auto">View Breakdown</a>
         </div>
       </div>
 
     </div>
 
-    <p class="text-center text-on-surface-variant/50 font-light mt-16 text-sm">* Core plan covers 1 property. Additional properties are ₹1,000/mo each. Commercial & Airbnb management priced on request.</p>
+    <p class="text-center text-on-surface-variant/60 font-light mt-16 text-sm">* Base plan covers 1 property. Additional properties are ₹799/mo each for both Residential and Commercial. SOS visits are ₹500/visit across all property types.</p>
   </div>
 </section>
+
 
 <!-- Final CTA -->
 <section class="py-56 px-margin-desktop text-center relative overflow-hidden bg-primary">
@@ -673,4 +714,7 @@
   });
 </script>
 
+
+<!-- Tag Pricing Info (Hidden) -->
+<div id="pricing-info-tag" style="display:none;" data-pricing-info="hidden" data-residential="1499" data-commercial="1999" data-additional-property="799" data-sos-visit="500" data-currency="INR"></div>
 </body></html>
