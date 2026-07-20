@@ -1,29 +1,11 @@
-<!DOCTYPE html><html class="light" lang="en"><head>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-async function checkAuth() {
-  try {
-    const res = await fetch('/api/config');
-    const config = await res.json();
-    const { createClient } = supabase;
-    const client = createClient(config.supabaseUrl, config.supabaseKey);
-    const { data: { session }, error } = await client.auth.getSession();
-    if (error || !session) {
-      window.location.href = 'login.html';
-    }
-  } catch (err) {
-    window.location.href = 'login.html';
-  }
-}
-checkAuth();
-</script>
-
-<meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>RentCan | Payments &amp; Billing</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
       tailwind.config = {
         darkMode: "class",
@@ -196,7 +178,7 @@ checkAuth();
 <!-- Projection Card 1 -->
 <div class="border border-outline bg-surface-container-lowest p-stack-md hover:border-primary transition-colors flex flex-col justify-between h-40">
 <div class="flex justify-between items-start">
-<img class="w-10 h-10 rounded-full border border-outline-variant object-cover" data-alt="A clean, minimalist portrait of a young professional woman smiling warmly, high-key lighting, soft shadows, Scandinavian office background, professional attire." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCF_AYb5r02EZEFq6f397-HsF1Zd0tw2E04vrcrKnL9zJhdY2Im6n3gyv7ayf6NlIIihoWgMzzkhsbScJskdx_QCkfJ_aBccm18p749KapZaIulrxDCuu8ZavoYRo1LnfqBpfKewenaV02q5PrvkzGcosgFoUFL5_YK6RIuoWbSJHx_nXZ5_kGV4aND27HFt9fTYVH9Jx6DvnLMhp1Shd27ceMebRrt3fVumXIU1w2RZAtMpAe8breG">
+<img class="w-10 h-10 rounded-full border border-outline-variant object-cover" data-alt="A clean, minimalist portrait of a young professional woman smiling warmly, high-key lighting, soft shadows, Scandinavian office background, professional attire." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCF_AYb5r02EZEFq6f397-HsF1Zd0tw2E04vrcrKnL9zJhdY2Im6n3gyv7ayf6NlIIihoWgMzzkhsbScJskdx_QCkfJ_aBccm18p749KapZaIulrxDCuu8ZavoYRo1LnfqBpfKewenaV02q5PrvkzGcosgFoUFL5_YK6RIuoWbSJHx_nXZ5_kGV4aND27HFt9fTYVH9Jx6DvnLMhp1Shd27ceMebRrt3fVumXIU1w2RZAtMpAe8breG"/>
 <span class="text-label-sm font-bold text-primary bg-primary-fixed px-2 py-1 rounded">DUE OCT 01</span>
 </div>
 <div>
@@ -210,7 +192,7 @@ checkAuth();
 <!-- Projection Card 2 -->
 <div class="border border-outline bg-surface-container-lowest p-stack-md hover:border-primary transition-colors flex flex-col justify-between h-40">
 <div class="flex justify-between items-start">
-<img class="w-10 h-10 rounded-full border border-outline-variant object-cover" data-alt="A professional headshot of a middle-aged man with glasses, looking confident and approachable, soft studio lighting, neutral grey background, high resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGPOu8arFj9Sa3CDQfwpPsGD4JC1J8NSCLEyMi_6QQK68hra34_0AxlZGVpTDBUa5S0PVtlMCjkiYbO7jzIKHsyI4zQq9gTYgTWB-6_xErxUDuzEeLXBWgRuS8jgLcrTWiHZFTPdXoArq6muQiqNwRQwm0ikHUbde5MdbCX5VZDgSji2V0EV_5m5MZ42i2gjuJIWMmA7_WZ0vn8wSg4Mh25JbbJtfPQOKNDTeDZKbLMajBcSOxxtOv">
+<img class="w-10 h-10 rounded-full border border-outline-variant object-cover" data-alt="A professional headshot of a middle-aged man with glasses, looking confident and approachable, soft studio lighting, neutral grey background, high resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGPOu8arFj9Sa3CDQfwpPsGD4JC1J8NSCLEyMi_6QQK68hra34_0AxlZGVpTDBUa5S0PVtlMCjkiYbO7jzIKHsyI4zQq9gTYgTWB-6_xErxUDuzEeLXBWgRuS8jgLcrTWiHZFTPdXoArq6muQiqNwRQwm0ikHUbde5MdbCX5VZDgSji2V0EV_5m5MZ42i2gjuJIWMmA7_WZ0vn8wSg4Mh25JbbJtfPQOKNDTeDZKbLMajBcSOxxtOv"/>
 <span class="text-label-sm font-bold text-primary bg-primary-fixed px-2 py-1 rounded">DUE OCT 01</span>
 </div>
 <div>
@@ -224,7 +206,7 @@ checkAuth();
 <!-- Projection Card 3 -->
 <div class="border border-outline bg-surface-container-lowest p-stack-md hover:border-primary transition-colors flex flex-col justify-between h-40">
 <div class="flex justify-between items-start">
-<img class="w-10 h-10 rounded-full border border-outline-variant object-cover" data-alt="A minimalist profile photo of a young creative professional with a stylish haircut, natural lighting, soft focus background of a modern apartment interior." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-l7tw9dPw8JnXGUWGcrC7z5x88OPKRFqj3x6BQ0AT29kOw5KeiY3GiUBur6-yLZqTZkujjcX4KOx9rm9L4IVCKLy-zNKBQ1DViM0ue55Uc1Ez2FGQHBK1OlcPOIRmiYfd_8glXF-2XKC8mGYZevvD3oX8sZW7Oq5zsNNvqs2evMzPhQlpn0r9TXt-B1Fj2XUHoKvlXDx3COvti0lPVlhqbs8Nh_bx6g4vG9Bxt7ggwEUoUdWoOhkZ">
+<img class="w-10 h-10 rounded-full border border-outline-variant object-cover" data-alt="A minimalist profile photo of a young creative professional with a stylish haircut, natural lighting, soft focus background of a modern apartment interior." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-l7tw9dPw8JnXGUWGcrC7z5x88OPKRFqj3x6BQ0AT29kOw5KeiY3GiUBur6-yLZqTZkujjcX4KOx9rm9L4IVCKLy-zNKBQ1DViM0ue55Uc1Ez2FGQHBK1OlcPOIRmiYfd_8glXF-2XKC8mGYZevvD3oX8sZW7Oq5zsNNvqs2evMzPhQlpn0r9TXt-B1Fj2XUHoKvlXDx3COvti0lPVlhqbs8Nh_bx6g4vG9Bxt7ggwEUoUdWoOhkZ"/>
 <span class="text-label-sm font-bold text-secondary bg-secondary-container px-2 py-1 rounded">DUE OCT 03</span>
 </div>
 <div>
@@ -253,7 +235,7 @@ checkAuth();
 <div class="flex gap-4">
 <div class="relative">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
-<input class="pl-10 pr-4 py-2 border border-outline-variant rounded bg-surface font-body-md text-body-md w-64 focus:ring-1 focus:ring-primary focus:border-primary outline-none" placeholder="Filter transactions..." type="text">
+<input class="pl-10 pr-4 py-2 border border-outline-variant rounded bg-surface font-body-md text-body-md w-64 focus:ring-1 focus:ring-primary focus:border-primary outline-none" placeholder="Filter transactions..." type="text"/>
 </div>
 <button class="px-4 py-2 bg-primary text-white font-label-lg text-label-lg rounded hover:opacity-90 transition-opacity flex items-center gap-2">
 <span class="material-symbols-outlined text-sm">download</span>
@@ -273,60 +255,7 @@ checkAuth();
 <th class="px-stack-md py-4 font-bold border-b border-outline text-right">Actions</th>
 </tr>
 </thead>
-<tbody class="font-body-md text-body-md">
-<!-- Row 1 -->
-<tr class="hover:bg-surface-container-low transition-colors group">
-<td class="px-stack-md py-5 border-b border-outline-variant">Sep 28, 2024</td>
-<td class="px-stack-md py-5 border-b border-outline-variant font-bold">The Heights #402</td>
-<td class="px-stack-md py-5 border-b border-outline-variant">Sarah Jenkins</td>
-<td class="px-stack-md py-5 border-b border-outline-variant font-bold text-primary">₹2,450.00</td>
-<td class="px-stack-md py-5 border-b border-outline-variant text-center">
-<span class="px-3 py-1 rounded-full bg-primary text-white text-[10px] font-bold uppercase">Paid</span>
-</td>
-<td class="px-stack-md py-5 border-b border-outline-variant text-right">
-<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">more_horiz</span></button>
-</td>
-</tr>
-<!-- Row 2 -->
-<tr class="hover:bg-surface-container-low transition-colors">
-<td class="px-stack-md py-5 border-b border-outline-variant">Sep 27, 2024</td>
-<td class="px-stack-md py-5 border-b border-outline-variant font-bold">Lakeside Apts #12</td>
-<td class="px-stack-md py-5 border-b border-outline-variant">David Chen</td>
-<td class="px-stack-md py-5 border-b border-outline-variant font-bold text-secondary">₹3,100.00</td>
-<td class="px-stack-md py-5 border-b border-outline-variant text-center">
-<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-bold uppercase">Pending</span>
-</td>
-<td class="px-stack-md py-5 border-b border-outline-variant text-right">
-<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">more_horiz</span></button>
-</td>
-</tr>
-<!-- Row 3 -->
-<tr class="hover:bg-surface-container-low transition-colors">
-<td class="px-stack-md py-5 border-b border-outline-variant">Sep 26, 2024</td>
-<td class="px-stack-md py-5 border-b border-outline-variant font-bold">North Star Loft #2</td>
-<td class="px-stack-md py-5 border-b border-outline-variant">Amara Okafor</td>
-<td class="px-stack-md py-5 border-b border-outline-variant font-bold text-primary">₹1,950.00</td>
-<td class="px-stack-md py-5 border-b border-outline-variant text-center">
-<span class="px-3 py-1 rounded-full bg-primary text-white text-[10px] font-bold uppercase">Paid</span>
-</td>
-<td class="px-stack-md py-5 border-b border-outline-variant text-right">
-<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">more_horiz</span></button>
-</td>
-</tr>
-<!-- Row 4 -->
-<tr class="hover:bg-surface-container-low transition-colors">
-<td class="px-stack-md py-5 border-b border-outline-variant">Sep 25, 2024</td>
-<td class="px-stack-md py-5 border-b border-outline-variant font-bold">River Terrace #305</td>
-<td class="px-stack-md py-5 border-b border-outline-variant">Leo Henderson</td>
-<td class="px-stack-md py-5 border-b border-outline-variant font-bold text-secondary">₹2,800.00</td>
-<td class="px-stack-md py-5 border-b border-outline-variant text-center">
-<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-bold uppercase">Pending</span>
-</td>
-<td class="px-stack-md py-5 border-b border-outline-variant text-right">
-<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">more_horiz</span></button>
-</td>
-</tr>
-</tbody>
+<tbody class="font-body-md text-body-md" id="payments-tbody"></tbody>
 </table>
 </div>
 <div class="px-stack-md py-4 bg-white flex justify-between items-center">
@@ -378,23 +307,48 @@ checkAuth();
             });
         });
     </script>
-
-
-
-
 <script>
 async function signOut() {
-  try {
-    const res = await fetch('/api/config');
-    const config = await res.json();
-    const { createClient } = supabase;
-    const client = createClient(config.supabaseUrl, config.supabaseKey);
-    await client.auth.signOut();
-    window.location.href = 'login.html';
-  } catch (err) {
-    console.error('Sign out error:', err);
-    window.location.href = 'login.html';
-  }
+  window.location.href = 'login.html';
 }
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const res = await fetch('/api/payments');
+        const payments = await res.json();
+        const tbody = document.getElementById('payments-tbody');
+        tbody.innerHTML = '';
+
+        payments.forEach(pay => {
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-surface-container-low transition-colors group";
+
+            const dateStr = new Date(pay.due_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+            let statusBadge = '';
+            if (pay.status === 'paid') {
+                statusBadge = `<span class="px-3 py-1 rounded-full bg-primary text-white text-[10px] font-bold uppercase">Paid</span>`;
+            } else {
+                statusBadge = `<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-bold uppercase">Pending</span>`;
+            }
+
+            tr.innerHTML = `
+                <td class="px-stack-md py-5 border-b border-outline-variant">${dateStr}</td>
+                <td class="px-stack-md py-5 border-b border-outline-variant font-bold">${pay.property_name}</td>
+                <td class="px-stack-md py-5 border-b border-outline-variant">${pay.tenant_name}</td>
+                <td class="px-stack-md py-5 border-b border-outline-variant font-bold text-primary">₹${pay.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                <td class="px-stack-md py-5 border-b border-outline-variant text-center">${statusBadge}</td>
+                <td class="px-stack-md py-5 border-b border-outline-variant text-right">
+                    <button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">more_horiz</span></button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    } catch(err) {
+        console.error("Error fetching payments data:", err);
+    }
+});
 </script>
 </body></html>
