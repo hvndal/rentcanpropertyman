@@ -438,4 +438,62 @@ async function signOut() {
     Sign Out
   </a>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        // Initialize Supabase Client
+        const res = await fetch('/api/config');
+        const config = await res.json();
+        const { createClient } = supabase;
+        const client = createClient(config.supabaseUrl, config.supabaseKey);
+
+        const { data: { session } } = await client.auth.getSession();
+        if (!session) {
+            window.location.href = 'login.html';
+            return;
+        }
+        const userId = session.user.id;
+
+        // Fetch Payments
+        const { data: payments, error } = await client.from('payments')
+            .select('*, properties!inner(name, owner_id), tenants!inner(email)')
+            .eq('properties.owner_id', userId)
+            .order('due_date', { ascending: false });
+        
+        if (error) throw error;
+
+        const tbody = document.getElementById('payments-tbody');
+        tbody.innerHTML = '';
+
+        payments.forEach(pay => {
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-surface-container-low transition-colors group";
+
+            const dateStr = new Date(pay.due_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+            let statusBadge = '';
+            if (pay.status === 'paid') {
+                statusBadge = `<span class="px-3 py-1 rounded-full bg-primary text-white text-[10px] font-bold uppercase">Paid</span>`;
+            } else {
+                statusBadge = `<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-bold uppercase">Pending</span>`;
+            }
+
+            tr.innerHTML = `
+                <td class="px-stack-md py-5 border-b border-outline-variant">${dateStr}</td>
+                <td class="px-stack-md py-5 border-b border-outline-variant font-bold">${pay.properties.name}</td>
+                <td class="px-stack-md py-5 border-b border-outline-variant">${pay.tenants.email}</td>
+                <td class="px-stack-md py-5 border-b border-outline-variant font-bold text-primary">₹${Number(pay.amount).toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                <td class="px-stack-md py-5 border-b border-outline-variant text-center">${statusBadge}</td>
+                <td class="px-stack-md py-5 border-b border-outline-variant text-right">
+                    <button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">more_horiz</span></button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    } catch(err) {
+        console.error("Error fetching payments data:", err);
+    }
+});
+</script>
 </body></html>

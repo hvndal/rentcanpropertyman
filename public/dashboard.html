@@ -491,4 +491,136 @@ async function signOut() {
     Sign Out
   </a>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        // Initialize Supabase Client
+        const res = await fetch('/api/config');
+        const config = await res.json();
+        const { createClient } = supabase;
+        const client = createClient(config.supabaseUrl, config.supabaseKey);
+
+        const { data: { session } } = await client.auth.getSession();
+        if (!session) {
+            window.location.href = 'login.html';
+            return;
+        }
+        const userId = session.user.id;
+
+        // Fetch Properties
+        const { data: properties, error: propsErr } = await client.from('properties').select('*').eq('owner_id', userId);
+        if (propsErr) throw propsErr;
+
+        // Calculate Stats
+        const totalProperties = properties.length;
+        const occupiedProps = properties.filter(p => p.status === 'occupied').length;
+        const occupancyRate = totalProperties ? Math.round((occupiedProps / totalProperties) * 100) : 0;
+        const monthlyRevenue = properties.reduce((sum, p) => p.status === 'occupied' ? sum + Number(p.rent_amount) : sum, 0);
+
+        // Fetch Active Requests
+        const { data: activeReqs, error: reqsErr } = await client.from('maintenance_requests')
+            .select('*, properties!inner(owner_id)')
+            .eq('status', 'pending')
+            .eq('properties.owner_id', userId);
+        const activeRequests = activeReqs ? activeReqs.length : 0;
+
+        // Update Stat DOM
+        document.getElementById('stat-occupancy').textContent = occupancyRate + '%';
+        document.getElementById('stat-total-properties').textContent = totalProperties;
+        document.getElementById('stat-monthly-revenue').textContent = '₹' + monthlyRevenue.toLocaleString();
+        document.getElementById('stat-active-requests').textContent = activeRequests;
+
+        // Render Properties
+        const grid = document.getElementById('properties-grid');
+        grid.innerHTML = '';
+
+        properties.forEach(prop => {
+            const statusText = prop.status.toUpperCase();
+            const card = document.createElement('div');
+            card.className = "col-span-12 md:col-span-6 lg:col-span-4 bg-surface-container-lowest border border-outline rounded-xl overflow-hidden group hover:border-primary transition-colors flex flex-col";
+            card.innerHTML = `
+                <div class="h-48 w-full bg-surface-variant overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="${prop.name}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                    <div class="absolute top-4 right-4 px-3 py-1 bg-surface-container-lowest/90 backdrop-blur-sm rounded-full font-label-caps text-[10px] tracking-wider text-primary font-bold">
+                        ${statusText}
+                    </div>
+                </div>
+                <div class="p-stack-md flex-1 flex flex-col">
+                    <h5 class="font-title-lg text-title-lg text-on-surface mb-1">${prop.name}</h5>
+                    <p class="font-body-md text-body-md text-on-surface-variant mb-4 flex-1">${prop.address}</p>
+                    <div class="flex justify-between items-center pt-4 border-t border-outline-variant">
+                        <span class="font-label-lg text-label-lg text-primary font-bold">₹${Number(prop.rent_amount).toLocaleString()}/mo</span>
+                        <div class="flex gap-2 font-label-sm text-on-surface-variant">
+                            <span>${prop.beds}B</span> • <span>${prop.baths}BA</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+
+        // Add Property Card Placeholder
+        const addCardHtml = `
+            <div class="col-span-12 md:col-span-6 lg:col-span-4 border border-outline border-dashed bg-transparent group flex flex-col items-center justify-center p-stack-xl transition-all hover:bg-surface-container-low cursor-pointer min-h-[300px] rounded-xl">
+                <span class="material-symbols-outlined text-[48px] text-outline mb-stack-md group-hover:scale-110 transition-transform" data-icon="add_circle">add_circle</span>
+                <p class="font-title-lg text-title-lg text-on-surface">Add New Property</p>
+                <p class="font-body-md text-body-md text-on-surface-variant text-center mt-2 px-margin-mobile">Expand your portfolio with our precise management tools.</p>
+            </div>
+        `;
+        const addCardWrapper = document.createElement('div');
+        addCardWrapper.innerHTML = addCardHtml;
+        grid.appendChild(addCardWrapper.firstElementChild);
+
+
+        // Fetch Activity
+        const { data: payments } = await client.from('payments').select('*, properties!inner(name, owner_id)').eq('properties.owner_id', userId).order('created_at', { ascending: false }).limit(5);
+        const { data: maintenance } = await client.from('maintenance_requests').select('*, properties!inner(name, owner_id)').eq('properties.owner_id', userId).order('created_at', { ascending: false }).limit(5);
+        
+        let activities = [];
+        if (payments) activities = activities.concat(payments.map(p => ({ type: 'payment', ...p })));
+        if (maintenance) activities = activities.concat(maintenance.map(m => ({ type: 'maintenance', ...m })));
+        
+        activities.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        activities = activities.slice(0, 10);
+
+        const activityList = document.getElementById('activity-list');
+        activityList.innerHTML = '';
+
+        activities.forEach(act => {
+            const item = document.createElement('div');
+            item.className = "p-stack-md border-b border-outline-variant flex items-center justify-between hover:bg-surface transition-colors cursor-pointer";
+
+            let icon = 'info';
+            let iconColor = 'text-primary';
+            let desc = '';
+
+            if (act.type === 'payment') {
+                icon = 'payments';
+                iconColor = act.status === 'paid' ? 'text-primary' : 'text-secondary';
+                desc = `Rent payment ${act.status}: ${act.properties.name}`;
+            } else {
+                icon = 'build';
+                iconColor = act.status === 'resolved' ? 'text-primary' : 'text-tertiary';
+                desc = `Maintenance: ${act.title} (${act.properties.name})`;
+            }
+
+            item.innerHTML = `
+                <div class="flex items-center gap-gutter">
+                    <span class="material-symbols-outlined ${iconColor}">${icon}</span>
+                    <div>
+                        <p class="font-body-lg text-body-lg text-on-surface">${desc}</p>
+                        <p class="font-label-sm text-label-sm text-on-surface-variant">${new Date(act.created_at).toLocaleDateString()}</p>
+                    </div>
+                </div>
+                <span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+            `;
+            activityList.appendChild(item);
+        });
+
+    } catch(err) {
+        console.error("Error fetching dashboard data:", err);
+    }
+});
+</script>
 </body></html>
