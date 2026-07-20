@@ -3,7 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="/logo.png">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta name="theme-color" content="#023826">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+  /* App-like Touch & Mobile Optimizations */
+  * { -webkit-tap-highlight-color: transparent; }
+  button, a, input, select { touch-action: manipulation; }
+  @media (max-width: 768px) {
+    body { padding-bottom: 72px; } /* Clearance for bottom app bar on mobile */
+  }
+</style>
 <title>RentCan | Sign In</title>
 <meta name="description" content="Sign in to RentCan — property management for the Tricity.">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">

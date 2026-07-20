@@ -3,7 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="/logo.png">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta name="theme-color" content="#023826">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+  /* App-like Touch & Mobile Optimizations */
+  * { -webkit-tap-highlight-color: transparent; }
+  button, a, input, select { touch-action: manipulation; }
+  @media (max-width: 768px) {
+    body { padding-bottom: 72px; } /* Clearance for bottom app bar on mobile */
+  }
+</style>
 <title>RentCan | Services, Pricing & How It Works</title>
 <meta name="description" content="Explore RentCan's full services, transparent pricing, and how we manage properties across Chandigarh, Mohali and Panchkula.">
 <meta property="og:title" content="RentCan — Services & Pricing">
@@ -699,5 +711,26 @@ function toggleExpand(header) {
 
 <!-- Tag Pricing Info (Hidden) -->
 <div id="pricing-info-tag" style="display:none;" data-pricing-info="hidden" data-residential="1499" data-commercial="1999" data-additional-property="799" data-sos-visit="500" data-currency="INR"></div>
+
+<!-- Mobile Bottom App Bar (Public Pages) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-primary/95 text-white backdrop-blur-md border-t border-white/10 px-4 py-2.5 z-50 flex justify-around items-center shadow-2xl">
+  <a href="index.html" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-accent font-bold">
+    <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">home</span>
+    <span>Home</span>
+  </a>
+  <a href="info.html" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-white/80 hover:text-white">
+    <span class="material-symbols-outlined text-xl">grid_view</span>
+    <span>Services</span>
+  </a>
+  <a href="info.html#pricing" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-white/80 hover:text-white">
+    <span class="material-symbols-outlined text-xl">loyalty</span>
+    <span>Plans</span>
+  </a>
+  <a href="login.html" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-accent font-bold bg-accent/20 px-3 py-1 rounded-full border border-accent/40">
+    <span class="material-symbols-outlined text-xl">account_circle</span>
+    <span>Sign In</span>
+  </a>
+</nav>
+
 </body>
 </html>
