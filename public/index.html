@@ -271,7 +271,7 @@
 </div>
 </nav>
 <div class="relative z-10 w-full max-w-container-max mx-auto px-margin-desktop text-center flex flex-col items-center">
-<div class="mb-10">
+<div class="mb-10 p-10 md:p-16 rounded-2xl border border-white/10" style="background: rgba(2, 56, 38, 0.4); backdrop-filter: blur(24px) saturate(140%); -webkit-backdrop-filter: blur(24px) saturate(140%);">
 
 <!-- Tagline -->
 <div class="flex items-center justify-center gap-6 mb-8">
@@ -319,22 +319,31 @@
 </div>
 </section>
 <!-- Trust Badges -->
-<section class="border-b border-outline-variant/30 py-10 bg-white">
-<div class="max-w-container-max mx-auto px-margin-desktop flex flex-wrap justify-between items-center gap-8 opacity-60">
-<div class="flex items-center gap-3 grayscale hover:grayscale-0 transition-all cursor-default">
-<span class="material-symbols-outlined text-primary text-xl">location_on</span>
-<span class="font-label-caps text-[11px] uppercase tracking-widest">Mohali</span>
-</div>
-<div class="flex items-center gap-3 grayscale hover:grayscale-0 transition-all cursor-default">
-<span class="material-symbols-outlined text-primary text-xl">location_on</span>
-<span class="font-label-caps text-[11px] uppercase tracking-widest">Chandigarh</span>
-</div>
-<div class="flex items-center gap-3 grayscale hover:grayscale-0 transition-all cursor-default">
-<span class="material-symbols-outlined text-primary text-xl">location_on</span>
-<span class="font-label-caps text-[11px] uppercase tracking-widest">Panchkula</span>
-</div>
-</div>
+
+<section class="border-b border-outline-variant/30 py-6 bg-white overflow-hidden relative">
+  <div class="absolute left-0 top-0 w-24 h-full bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+  <div class="absolute right-0 top-0 w-24 h-full bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+  <div class="flex whitespace-nowrap animate-marquee opacity-60">
+    <div class="flex items-center gap-12 px-6">
+      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Sector 15, Chandigarh</span></div>
+      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Phase 8, Mohali</span></div>
+      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Aerocity</span></div>
+      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">MDC Sector 4, Panchkula</span></div>
+      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">IT Park</span></div>
+      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Sector 36, Chandigarh</span></div>
+      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Sector 10, Chandigarh</span></div>
+      <!-- Duplicate for infinite scroll loop -->
+      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Sector 15, Chandigarh</span></div>
+      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Phase 8, Mohali</span></div>
+      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Aerocity</span></div>
+      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">MDC Sector 4, Panchkula</span></div>
+      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">IT Park</span></div>
+      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Sector 36, Chandigarh</span></div>
+      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Sector 10, Chandigarh</span></div>
+    </div>
+  </div>
 </section>
+
 
 <!-- Property Showcase Section -->
 <section class="py-32 px-margin-desktop max-w-container-max mx-auto">
@@ -391,7 +400,7 @@
           <h3 class="font-display-lg text-2xl text-white tracking-tight leading-tight">Manage<br>from anywhere.</h3>
         </div>
         <div class="mt-auto pt-8 border-t border-white/10">
-          <p class="text-white/40 text-sm font-light leading-relaxed mb-4">Live abroad or in another city? We handle your property end-to-end with monthly photo reports and zero phone calls.</p>
+          <p class="text-white/60 text-sm font-light leading-relaxed mb-4">From Toronto to Sector 36. Manage your Tricity home seamlessly from across the world with our timestamped photo-reports and 24/7 local SOS response.</p>
           <a href="info.html" class="inline-flex items-center gap-2 text-accent text-sm font-semibold hover:gap-3 transition-all duration-200">
             See all services <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
           </a>
