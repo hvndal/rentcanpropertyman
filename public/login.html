@@ -117,12 +117,12 @@ body {
   display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
   text-transform: uppercase; color: #3f4946; margin-bottom: 6px;
 }
-.field input {
+.field input:not(.phone-input-field):not(.country-code) {
   width: 100%; padding: 12px 14px; border: 1.5px solid #bec9c5;
   border-radius: 10px; font-size: 14px; font-family: inherit; color: #191c1b;
   background: #fff; outline: none; transition: border-color 0.2s; box-sizing: border-box;
 }
-.field input:focus { border-color: #023826; }
+.field input:not(.phone-input-field):not(.country-code):focus { border-color: #023826; }
 
 /* OTP digit boxes */
 .otp-row { display: flex; gap: 8px; margin-bottom: 20px; }
@@ -131,10 +131,11 @@ body {
   border-radius: 10px; font-size: 20px; font-weight: 800; font-family: inherit;
   color: #191c1b; background: #fff; outline: none;
   text-align: center; transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
 }
 .otp-input:focus { border-color: #023826; box-shadow: 0 0 0 3px rgba(0,56,38,0.1); }
 
-/* ── Compact Phone input with country code ── */
+/* ── Compact Phone input with country code (CSS Conflict Fix) ── */
 .phone-wrap {
   display: flex;
   align-items: center;
@@ -143,40 +144,52 @@ body {
   background: #fff;
   overflow: hidden;
   width: 100%;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  margin-top: 4px;
   box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  margin-top: 6px;
 }
 .phone-wrap:focus-within {
   border-color: #023826;
-  box-shadow: 0 0 0 3px rgba(0,56,38,0.1);
+  box-shadow: 0 0 0 3px rgba(0,56,38,0.12);
 }
 .country-code {
-  width: 75px;
-  flex-shrink: 0;
-  padding: 12px 8px;
-  border: none;
-  border-right: 1.5px solid #e0e4e0;
-  border-radius: 0;
-  font-size: 15px;
-  font-weight: 800;
-  color: #023826;
-  background: #f7faf7;
-  outline: none;
-  text-align: center;
+  width: 70px !important;
+  min-width: 70px !important;
+  flex-shrink: 0 !important;
+  padding: 12px 6px !important;
+  border: none !important;
+  border-right: 1.5px solid #e0e4e0 !important;
+  border-radius: 0 !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  color: #023826 !important;
+  background: #f7faf7 !important;
+  outline: none !important;
+  text-align: center !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  height: 48px !important;
+  line-height: 24px !important;
 }
 .phone-input-field {
-  flex: 1;
-  border: none;
-  outline: none;
-  padding: 12px 14px;
-  font-size: 17px;
-  font-weight: 700;
-  font-family: inherit;
-  color: #191c1b;
-  background: transparent;
-  letter-spacing: 0.05em;
-  width: 100%;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  border: none !important;
+  outline: none !important;
+  padding: 12px 14px !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  font-family: inherit !important;
+  color: #191c1b !important;
+  background: transparent !important;
+  letter-spacing: 0.05em !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  height: 48px !important;
+  box-sizing: border-box !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
 }
 .phone-input-field::placeholder {
   color: #bec9c5;
