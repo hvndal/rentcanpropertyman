@@ -27,7 +27,7 @@ body {
 #loader.gone { opacity: 0; pointer-events: none; }
 .spin {
   width: 32px; height: 32px; border: 3px solid #bec9c5;
-  border-top-color: #004137; border-radius: 50%;
+  border-top-color: #023826; border-radius: 50%;
   animation: spin 0.7s linear infinite; margin-bottom: 14px;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -42,7 +42,7 @@ body {
 }
 .right-panel {
   flex: 1;
-  background: linear-gradient(160deg, #004137 0%, #00211c 55%, #3d1520 100%);
+  background: linear-gradient(160deg, #023826 0%, #00211c 55%, #3d1520 100%);
   display: none;
   flex-direction: column; align-items: center; justify-content: center;
   padding: 64px;
@@ -69,7 +69,7 @@ body {
   font-family: inherit; font-size: 13px; font-weight: 600; color: #3f4946;
   border-radius: 7px; transition: all 0.2s;
 }
-.tab.active { background: #004137; color: #fff; box-shadow: 0 2px 8px rgba(0,65,55,0.2); }
+.tab.active { background: #023826; color: #fff; box-shadow: 0 2px 8px rgba(0,65,55,0.2); }
 
 .role-row { display: flex; gap: 8px; margin-bottom: 24px; }
 .role-btn {
@@ -78,8 +78,8 @@ body {
   font-weight: 600; color: #3f4946; display: flex; flex-direction: column;
   align-items: center; gap: 4px; transition: all 0.18s;
 }
-.role-btn:hover { border-color: #004137; }
-.role-btn.active { border-color: #004137; background: #004137; color: #fff; }
+.role-btn:hover { border-color: #023826; }
+.role-btn.active { border-color: #023826; background: #023826; color: #fff; }
 .role-btn .icon { font-size: 22px; font-family: 'Material Symbols Outlined'; font-variation-settings: 'FILL' 1; }
 
 .field { margin-bottom: 16px; }
@@ -92,7 +92,7 @@ body {
   border-radius: 8px; font-size: 14px; font-family: inherit; color: #191c1b;
   background: #fff; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
 }
-.field input:focus { border-color: #004137; box-shadow: 0 0 0 3px rgba(0,65,55,0.1); }
+.field input:focus { border-color: #023826; box-shadow: 0 0 0 3px rgba(0,65,55,0.1); }
 .field .input-wrap { position: relative; }
 .field .eye-btn {
   position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
@@ -102,7 +102,7 @@ body {
 }
 
 .btn-primary {
-  width: 100%; padding: 14px; background: #004137; color: #fff;
+  width: 100%; padding: 14px; background: #023826; color: #fff;
   border: none; border-radius: 8px; font-family: inherit; font-size: 13px;
   font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
   cursor: pointer; transition: background 0.2s, transform 0.15s; margin-top: 8px;
@@ -116,7 +116,7 @@ body {
 }
 .alert.show { display: block; }
 .alert.error { background: #ffdad6; color: #93000a; border: 1px solid #f2b8b5; }
-.alert.success { background: #d6f7f0; color: #004137; border: 1px solid #a8f0e0; }
+.alert.success { background: #d6f7f0; color: #023826; border: 1px solid #00E599; }
 .alert.info { background: #e8f0fe; color: #1a4199; border: 1px solid #c5d5f7; }
 
 .divider {
@@ -128,7 +128,7 @@ body {
 }
 
 .link-row { text-align: center; font-size: 13px; color: #3f4946; margin-top: 18px; }
-.link-row a { color: #854f5b; font-weight: 700; text-decoration: none; }
+.link-row a { color: #FF3366; font-weight: 700; text-decoration: none; }
 .link-row a:hover { text-decoration: underline; }
 
 .dev-note {
@@ -152,7 +152,7 @@ body {
 <!-- Loader -->
 <div id="loader">
   <div class="spin"></div>
-  <p style="font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#004137;font-weight:700;">RentCan</p>
+  <p style="font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#023826;font-weight:700;">RentCan</p>
 </div>
 
 <!-- ── Left Panel ── -->
@@ -275,7 +275,7 @@ body {
     </div>
 
     <h2 style="color:#fff;font-size:36px;font-weight:800;line-height:1.2;margin-bottom:16px;letter-spacing:-0.02em;">
-      Your property,<br><span style="color:#a8f0e0;">always accounted for.</span>
+      Your property,<br><span style="color:#00E599;">always accounted for.</span>
     </h2>
     <p style="color:rgba(255,255,255,0.5);font-size:14px;line-height:1.7;">
       Monthly inspections, maintenance tracking, and digital agreements — serving landlords and tenants across Chandigarh, Mohali, and Panchkula.

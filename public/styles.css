@@ -6,9 +6,9 @@
 
 /* ── Design Tokens ─────────────────────────────────────────────────── */
 :root {
-  --primary:   #004137;
-  --secondary: #854f5b;
-  --accent:    #a8f0e0;
+  --primary:   #023826;
+  --secondary: #FF3366;
+  --accent:    #00E599;
   --bg:        #f7faf7;
 
   /* Easing library */
