@@ -458,3 +458,6 @@ body { background: var(--bg); overflow-x: hidden; }
 .animate-marquee:hover {
   animation-play-state: paused;
 }
+
+summary::-webkit-details-marker { display: none; }
+summary { list-style: none; outline: none; }
