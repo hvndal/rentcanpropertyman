@@ -27,8 +27,8 @@
     position: relative;
     backdrop-filter: blur(12px) saturate(140%);
     -webkit-backdrop-filter: blur(12px) saturate(140%);
-    background: rgba(249,249,252,0.55) !important;
-    border: 1px solid rgba(190,201,197,0.35) !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(0,65,55,0.15) !important;
     transition:
       transform     380ms cubic-bezier(0.16,1,0.3,1),
       box-shadow    380ms cubic-bezier(0.16,1,0.3,1),
@@ -40,18 +40,15 @@
     transform: translateY(-5px) scale(1.008);
     background: rgba(255,255,255,0.82) !important;
     border-color: rgba(0,65,55,0.22) !important;
-    box-shadow:
-      0 24px 56px rgba(0,65,55,0.09),
-      0 6px 16px rgba(0,65,55,0.06),
-      0 0 0 1px rgba(0,65,55,0.06) inset;
+    box-shadow: 0 24px 56px rgba(0,65,55,0.12), 0 6px 16px rgba(0,65,55,0.08);
   }
 
   /* Big inspection card gets a subtle gradient shimmer on hover */
   .bento-tile-hero {
-    background: rgba(249,249,252,0.60) !important;
+    background: #ffffff !important;
     backdrop-filter: blur(16px) saturate(160%);
     -webkit-backdrop-filter: blur(16px) saturate(160%);
-    border: 1px solid rgba(190,201,197,0.35) !important;
+    border: 1px solid rgba(0,65,55,0.15) !important;
     transition:
       transform     450ms cubic-bezier(0.16,1,0.3,1),
       box-shadow    450ms cubic-bezier(0.16,1,0.3,1),
@@ -63,18 +60,15 @@
     transform: translateY(-6px) scale(1.005);
     background: rgba(255,255,255,0.88) !important;
     border-color: rgba(0,65,55,0.20) !important;
-    box-shadow:
-      0 32px 80px rgba(0,65,55,0.10),
-      0 8px 24px rgba(0,65,55,0.07),
-      0 0 0 1px rgba(0,65,55,0.05) inset;
+    box-shadow: 0 24px 56px rgba(0,65,55,0.12), 0 6px 16px rgba(0,65,55,0.08);
   }
 
   /* Key management + Remote management mini tiles */
   .bento-tile-mini {
     backdrop-filter: blur(10px) saturate(130%);
     -webkit-backdrop-filter: blur(10px) saturate(130%);
-    background: rgba(249,249,252,0.50) !important;
-    border: 1px solid rgba(190,201,197,0.30) !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(0,65,55,0.15) !important;
     transition:
       transform     300ms cubic-bezier(0.16,1,0.3,1),
       box-shadow    300ms cubic-bezier(0.16,1,0.3,1),
@@ -267,7 +261,7 @@
 </div>
 <div class="flex items-center gap-6">
 <a class="font-label-caps text-label-caps uppercase text-white/70 hover:text-white transition-all duration-200" href="login.html">Login</a>
-<a class="px-6 py-2.5 bg-accent text-primary font-label-caps text-label-caps uppercase tracking-[0.1em] hover:bg-white transition-all duration-300 rounded-sm" href="login.html">Get Started</a>
+<a class="px-6 py-2.5 bg-primary text-white border border-white/20 font-label-caps text-label-caps uppercase tracking-[0.1em] hover:bg-white hover:text-primary transition-all duration-300 rounded-sm" href="login.html">Get Started</a>
 </div>
 </nav>
 <div class="relative z-10 w-full max-w-container-max mx-auto px-margin-desktop text-center flex flex-col items-center">
@@ -291,10 +285,10 @@
                 </p>
 <!-- Action Buttons -->
 <div class="flex flex-col sm:flex-row items-center justify-center gap-6 mb-14">
-<button class="px-12 py-5 bg-accent text-primary rounded-sm font-label-caps text-label-caps uppercase tracking-widest hover:bg-white transition-all flex items-center gap-3 shadow-xl">
+<button class="px-12 py-5 bg-primary text-white border border-primary rounded-sm font-label-caps text-label-caps uppercase tracking-widest hover:bg-primary-fixed hover:text-primary transition-all flex items-center gap-3 shadow-xl">
                         Get started <span class="material-symbols-outlined text-lg">arrow_forward</span>
 </button>
-<button class="px-12 py-5 bg-white/5 border border-white/20 text-white rounded-sm font-label-caps text-label-caps uppercase tracking-widest hover:bg-white/10 backdrop-blur-md transition-all">
+<button class="px-12 py-5 bg-white text-primary rounded-sm font-label-caps text-label-caps uppercase tracking-widest hover:bg-gray-100 transition-all shadow-lg">
                         See plans
                     </button>
 </div>
