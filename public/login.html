@@ -1,315 +1,470 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RentCan | Sign In</title>
-<meta name="description" content="Sign in to RentCan — property management for landlords and tenants across the Tricity.">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<meta name="description" content="Sign in to RentCan property management platform.">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
-try {
-  tailwind.config = {
-    darkMode:"class",
-    theme:{extend:{
-      colors:{
-        "primary":"#004137","on-primary":"#ffffff","primary-container":"#005a4e","on-primary-container":"#00211c",
-        "secondary":"#854f5b","on-secondary":"#ffffff","secondary-container":"#ffb9c8","on-secondary-container":"#7b4753",
-        "surface":"#f9f9fc","surface-variant":"#dfe4e7","on-surface":"#191c1b","on-surface-variant":"#3f4946",
-        "surface-container-low":"#f2f4f2","surface-container":"#eceeec","surface-container-high":"#e6e9e6",
-        "outline":"#73777f","outline-variant":"#bec9c5","background":"#f7faf7","on-background":"#191c1b",
-        "error":"#ba1a1a","primary-fixed":"#a8f0e0","accent":"#a8f0e0","inverse-primary":"#8dd4c4"
-      },
-      fontFamily:{"sans":["Plus Jakarta Sans","sans-serif"]},
-      spacing:{"margin-mobile":"24px","margin-desktop":"64px","container-max":"1280px"}
-    }}
-  };
-} catch(_e) {}
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  * { box-sizing: border-box; }
-  body { font-family: 'Plus Jakarta Sans', sans-serif; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: #f7faf7;
+  color: #191c1b;
+  min-height: 100vh;
+  display: flex;
+}
 
-  .page-loader {
-    position: fixed; inset: 0; background: #f7faf7;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    z-index: 9999; transition: opacity 0.4s ease;
-  }
-  .page-loader.hidden { opacity: 0; pointer-events: none; }
-  .spinner {
-    width: 36px; height: 36px; border: 3px solid #bec9c5;
-    border-top-color: #004137; border-radius: 50%;
-    animation: spin 0.7s linear infinite; margin-bottom: 16px;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
+/* ── Page Loader ── */
+#loader {
+  position: fixed; inset: 0; background: #f7faf7; z-index: 9999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: opacity 0.3s;
+}
+#loader.gone { opacity: 0; pointer-events: none; }
+.spin {
+  width: 32px; height: 32px; border: 3px solid #bec9c5;
+  border-top-color: #004137; border-radius: 50%;
+  animation: spin 0.7s linear infinite; margin-bottom: 14px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-  .role-btn { transition: all 0.2s ease; }
-  .role-btn.active {
-    background: #004137 !important; color: #ffffff !important;
-    box-shadow: 0 2px 12px rgba(0,65,55,0.25);
-  }
+/* ── Layout ── */
+.left-panel {
+  width: 100%; max-width: 520px;
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 48px 48px;
+  background: #fff;
+}
+.right-panel {
+  flex: 1;
+  background: linear-gradient(160deg, #004137 0%, #00211c 55%, #3d1520 100%);
+  display: none;
+  flex-direction: column; align-items: center; justify-content: center;
+  padding: 64px;
+  position: relative; overflow: hidden;
+}
+@media (min-width: 900px) { .right-panel { display: flex; } }
 
-  .input-field {
-    width: 100%; padding: 14px 16px; border: 1.5px solid #bec9c5;
-    border-radius: 8px; font-size: 15px; font-family: inherit;
-    background: #fff; color: #191c1b; outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .input-field:focus { border-color: #004137; box-shadow: 0 0 0 3px rgba(0,65,55,0.12); }
-  .input-field::placeholder { color: #73777f; }
+/* dots pattern */
+.right-panel::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
 
-  .btn-primary {
-    width: 100%; padding: 15px; background: #004137; color: #fff;
-    border: none; border-radius: 8px; font-size: 14px; font-weight: 700;
-    letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
-    transition: background 0.2s, transform 0.15s;
-  }
-  .btn-primary:hover { background: #005a4e; transform: translateY(-1px); }
-  .btn-primary:active { transform: translateY(0); }
-  .btn-primary:disabled { background: #bec9c5; cursor: not-allowed; transform: none; }
+/* ── Forms ── */
+.tab-row {
+  display: flex; gap: 4px;
+  background: #f2f4f2; border-radius: 10px; padding: 4px;
+  margin-bottom: 28px;
+}
+.tab {
+  flex: 1; padding: 10px; border: none; background: none; cursor: pointer;
+  font-family: inherit; font-size: 13px; font-weight: 600; color: #3f4946;
+  border-radius: 7px; transition: all 0.2s;
+}
+.tab.active { background: #004137; color: #fff; box-shadow: 0 2px 8px rgba(0,65,55,0.2); }
 
-  .alert {
-    padding: 12px 16px; border-radius: 8px; font-size: 14px;
-    display: none; margin-bottom: 16px;
-  }
-  .alert.show { display: block; }
-  .alert-error { background: #ffdad6; color: #93000a; border: 1px solid #f2b8b5; }
-  .alert-success { background: #d6f7f0; color: #004137; border: 1px solid #a8f0e0; }
+.role-row { display: flex; gap: 8px; margin-bottom: 24px; }
+.role-btn {
+  flex: 1; padding: 10px 8px; border: 1.5px solid #bec9c5; background: #fff;
+  border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 12px;
+  font-weight: 600; color: #3f4946; display: flex; flex-direction: column;
+  align-items: center; gap: 4px; transition: all 0.18s;
+}
+.role-btn:hover { border-color: #004137; }
+.role-btn.active { border-color: #004137; background: #004137; color: #fff; }
+.role-btn .icon { font-size: 22px; font-family: 'Material Symbols Outlined'; font-variation-settings: 'FILL' 1; }
 
-  .hero-panel {
-    background: linear-gradient(135deg, #004137 0%, #00211c 60%, #350d19 100%);
-    position: relative; overflow: hidden;
-  }
-  .hero-panel::before {
-    content: ''; position: absolute; inset: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  }
+.field { margin-bottom: 16px; }
+.field label {
+  display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #3f4946; margin-bottom: 6px;
+}
+.field input {
+  width: 100%; padding: 13px 14px; border: 1.5px solid #bec9c5;
+  border-radius: 8px; font-size: 14px; font-family: inherit; color: #191c1b;
+  background: #fff; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.field input:focus { border-color: #004137; box-shadow: 0 0 0 3px rgba(0,65,55,0.1); }
+.field .input-wrap { position: relative; }
+.field .eye-btn {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer; color: #73777f;
+  font-family: 'Material Symbols Outlined'; font-size: 20px; line-height: 1;
+  font-variation-settings: 'FILL' 0;
+}
 
-  .fade-in { animation: fadeUp 0.5s ease forwards; }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.btn-primary {
+  width: 100%; padding: 14px; background: #004137; color: #fff;
+  border: none; border-radius: 8px; font-family: inherit; font-size: 13px;
+  font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  cursor: pointer; transition: background 0.2s, transform 0.15s; margin-top: 8px;
+}
+.btn-primary:hover { background: #005a4e; transform: translateY(-1px); }
+.btn-primary:disabled { background: #bec9c5; cursor: not-allowed; transform: none; }
+
+.alert {
+  padding: 11px 14px; border-radius: 8px; font-size: 13px;
+  margin-bottom: 14px; display: none; font-weight: 500;
+}
+.alert.show { display: block; }
+.alert.error { background: #ffdad6; color: #93000a; border: 1px solid #f2b8b5; }
+.alert.success { background: #d6f7f0; color: #004137; border: 1px solid #a8f0e0; }
+.alert.info { background: #e8f0fe; color: #1a4199; border: 1px solid #c5d5f7; }
+
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 18px 0; color: #73777f; font-size: 12px;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px; background: #bec9c5;
+}
+
+.link-row { text-align: center; font-size: 13px; color: #3f4946; margin-top: 18px; }
+.link-row a { color: #854f5b; font-weight: 700; text-decoration: none; }
+.link-row a:hover { text-decoration: underline; }
+
+.dev-note {
+  margin-top: 20px; padding: 10px 14px; background: #f2f4f2;
+  border-radius: 8px; font-size: 12px; color: #3f4946; text-align: center;
+  border: 1px solid #bec9c5;
+}
+.dev-note code { background: #e6e9e6; padding: 1px 5px; border-radius: 4px; font-weight: 700; }
+
+/* ── Right panel content ── */
+.stat-card {
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 14px; padding: 16px 20px; backdrop-filter: blur(10px);
+}
+.stat-card .label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+.stat-card .value { font-size: 26px; font-weight: 800; color: #fff; }
 </style>
 </head>
-<body class="bg-background min-h-screen flex flex-col">
+<body>
 
-<!-- Page Loader -->
-<div id="global-loader" class="page-loader">
-  <div class="spinner"></div>
-  <p style="font-size:11px; letter-spacing:0.3em; text-transform:uppercase; color:#004137; font-weight:700;">RentCan</p>
+<!-- Loader -->
+<div id="loader">
+  <div class="spin"></div>
+  <p style="font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#004137;font-weight:700;">RentCan</p>
 </div>
 
-<!-- Main Layout: 2 columns on desktop -->
-<div class="flex flex-col md:flex-row min-h-screen">
+<!-- ── Left Panel ── -->
+<div class="left-panel">
 
-  <!-- ─── LEFT: Login Form ─────────────────────────────── -->
-  <section class="w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 lg:px-24 py-12 bg-background fade-in">
-    <div class="max-w-md w-full mx-auto">
+  <!-- Logo -->
+  <a href="index.html" style="display:inline-block; margin-bottom:36px;">
+    <img src="/logo.png" alt="RentCan" style="height:52px;width:52px;object-fit:contain;">
+  </a>
 
-      <!-- Logo -->
-      <a href="index.html" class="inline-block mb-10">
-        <img src="/logo.png" alt="RentCan" class="h-14 w-14 object-contain">
-      </a>
+  <!-- Tab switcher: Login / Create Account -->
+  <div class="tab-row">
+    <button class="tab active" id="tab-login" onclick="switchTab('login')">Sign In</button>
+    <button class="tab" id="tab-register" onclick="switchTab('register')">Create Account</button>
+  </div>
 
-      <h1 class="text-3xl font-bold text-on-background tracking-tight mb-1">Welcome back.</h1>
-      <p class="text-on-surface-variant text-sm mb-8">Sign in to manage your properties or tenancy.</p>
+  <!-- Alert -->
+  <div class="alert" id="alert"></div>
 
-      <!-- ── Role Selector ── -->
-      <div class="flex gap-3 mb-8 p-1 bg-surface-container rounded-lg">
-        <button id="btn-landlord" onclick="selectRole('landlord')"
-          class="role-btn active flex-1 flex items-center justify-center gap-2 py-2.5 rounded-md text-sm font-semibold">
-          <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">home_work</span>
-          I'm a Landlord
-        </button>
-        <button id="btn-tenant" onclick="selectRole('tenant')"
-          class="role-btn flex-1 flex items-center justify-center gap-2 py-2.5 rounded-md text-sm font-semibold text-on-surface-variant hover:text-on-surface">
-          <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">person</span>
-          I'm a Tenant
-        </button>
+  <!-- ══ LOGIN FORM ══ -->
+  <div id="form-login">
+    <p style="font-size:13px;color:#3f4946;margin-bottom:20px;">Who are you signing in as?</p>
+    <!-- Role -->
+    <div class="role-row">
+      <button class="role-btn active" id="login-role-landlord" onclick="setLoginRole('landlord')">
+        <span class="icon">home_work</span>
+        Landlord
+      </button>
+      <button class="role-btn" id="login-role-tenant" onclick="setLoginRole('tenant')">
+        <span class="icon">person</span>
+        Tenant
+      </button>
+      <button class="role-btn" id="login-role-admin" onclick="setLoginRole('admin')">
+        <span class="icon">shield_person</span>
+        Admin
+      </button>
+    </div>
+
+    <form onsubmit="handleLogin(event)">
+      <div class="field">
+        <label>Username / Email</label>
+        <input type="text" id="login-email" placeholder="admin  or  you@example.com" autocomplete="username" required>
       </div>
-
-      <!-- ── Alert Box ── -->
-      <div id="auth-alert" class="alert"></div>
-
-      <!-- ── Login Form ── -->
-      <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
-
-        <div>
-          <label for="email" class="block text-xs font-semibold text-on-surface-variant uppercase tracking-widest mb-2">Email Address</label>
-          <input id="email" type="email" class="input-field" placeholder="you@example.com" required autocomplete="email">
+      <div class="field">
+        <label>Password</label>
+        <div class="input-wrap">
+          <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password" required>
+          <button type="button" class="eye-btn" onclick="togglePw('login-pass',this)">visibility</button>
         </div>
+      </div>
+      <button type="submit" class="btn-primary" id="login-btn">Sign In →</button>
+    </form>
 
-        <div>
-          <div class="flex items-center justify-between mb-2">
-            <label for="password" class="block text-xs font-semibold text-on-surface-variant uppercase tracking-widest">Password</label>
-            <a href="info.html" class="text-xs text-secondary hover:underline font-medium">Forgot password?</a>
-          </div>
-          <div class="relative">
-            <input id="password" type="password" class="input-field pr-12" placeholder="••••••••" required autocomplete="current-password">
-            <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface">
-              <span id="eye-icon" class="material-symbols-outlined text-[20px]">visibility</span>
-            </button>
-          </div>
+    <div class="dev-note">
+      Quick admin access: <code>admin</code> / <code>admin</code>
+    </div>
+
+    <div class="link-row">
+      No account? <a href="#" onclick="switchTab('register')">Create one →</a>
+    </div>
+  </div>
+
+  <!-- ══ REGISTER FORM ══ -->
+  <div id="form-register" style="display:none;">
+    <p style="font-size:13px;color:#3f4946;margin-bottom:20px;">I am registering as a:</p>
+    <div class="role-row">
+      <button class="role-btn active" id="reg-role-landlord" onclick="setRegRole('landlord')">
+        <span class="icon">home_work</span>
+        Landlord
+      </button>
+      <button class="role-btn" id="reg-role-tenant" onclick="setRegRole('tenant')">
+        <span class="icon">person</span>
+        Tenant
+      </button>
+    </div>
+
+    <form onsubmit="handleRegister(event)">
+      <div class="field">
+        <label>Full Name</label>
+        <input type="text" id="reg-name" placeholder="Your full name" required>
+      </div>
+      <div class="field">
+        <label>Email Address</label>
+        <input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <div class="input-wrap">
+          <input type="password" id="reg-pass" placeholder="Min. 6 characters" autocomplete="new-password" required minlength="6">
+          <button type="button" class="eye-btn" onclick="togglePw('reg-pass',this)">visibility</button>
         </div>
-
-        <button id="submit-btn" type="submit" class="btn-primary mt-2">
-          Sign In
-        </button>
-
-      </form>
-
-      <!-- ── Divider ── -->
-      <div class="flex items-center gap-4 my-6">
-        <div class="flex-1 h-px bg-outline-variant"></div>
-        <span class="text-xs text-on-surface-variant font-medium">or</span>
-        <div class="flex-1 h-px bg-outline-variant"></div>
       </div>
-
-      <!-- ── Create Account ── -->
-      <p class="text-center text-sm text-on-surface-variant">
-        New to RentCan?
-        <a href="dashboard.html" class="text-secondary font-semibold hover:underline ml-1">Create an account →</a>
-      </p>
-
-      <!-- ── Dev bypass note ── -->
-      <div class="mt-6 p-3 bg-surface-container rounded-lg border border-outline-variant text-center">
-        <p class="text-xs text-on-surface-variant">
-          <span class="font-semibold text-primary">Dev mode:</span> use <code class="bg-surface-container-high px-1 rounded">admin@rentcan.com</code> / <code class="bg-surface-container-high px-1 rounded">admin123</code>
-        </p>
+      <div class="field">
+        <label>Confirm Password</label>
+        <input type="password" id="reg-pass2" placeholder="Repeat password" autocomplete="new-password" required minlength="6">
       </div>
+      <button type="submit" class="btn-primary" id="reg-btn">Create Account →</button>
+    </form>
 
+    <div class="link-row">
+      Already have an account? <a href="#" onclick="switchTab('login')">Sign in →</a>
     </div>
-  </section>
-
-  <!-- ─── RIGHT: Hero Panel ────────────────────────────── -->
-  <section class="hidden md:flex md:w-1/2 hero-panel flex-col items-center justify-center px-16 py-16 text-white relative">
-    <!-- Floating stat cards -->
-    <div class="absolute top-12 left-10 bg-white/10 backdrop-blur-md rounded-xl px-5 py-3 border border-white/20 shadow-lg">
-      <p class="text-[10px] uppercase tracking-widest text-white/60 mb-1">Properties Managed</p>
-      <p class="text-2xl font-bold">1,240+</p>
-    </div>
-    <div class="absolute bottom-16 right-10 bg-white/10 backdrop-blur-md rounded-xl px-5 py-3 border border-white/20 shadow-lg">
-      <p class="text-[10px] uppercase tracking-widest text-white/60 mb-1">Rent Collected (2024)</p>
-      <p class="text-2xl font-bold">₹ 4.2 Cr</p>
-    </div>
-
-    <!-- Central content -->
-    <div class="text-center max-w-sm z-10">
-      <span class="material-symbols-outlined text-[64px] text-primary-fixed mb-6 block" style="font-variation-settings:'FILL' 1">home_work</span>
-      <h2 class="text-4xl font-bold leading-tight mb-4">Your property, <br><span class="text-primary-fixed">fully managed.</span></h2>
-      <p class="text-white/60 text-sm leading-relaxed">
-        Rent collection, maintenance tracking, tenant communications — all from one dashboard. Serving Mohali, Chandigarh & Panchkula.
-      </p>
-      <div class="flex items-center justify-center gap-6 mt-10 text-white/40 text-xs uppercase tracking-widest">
-        <span>Maintenance</span><span class="text-white/20">•</span>
-        <span>Rent</span><span class="text-white/20">•</span>
-        <span>Inspections</span>
-      </div>
-    </div>
-  </section>
+  </div>
 
 </div>
 
-<!-- Supabase SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- ── Right Panel ── -->
+<div class="right-panel">
+  <div style="position:relative;z-index:1;text-align:center;max-width:380px;">
+
+    <div style="display:flex;gap:12px;justify-content:center;margin-bottom:48px;">
+      <div class="stat-card">
+        <div class="label">Properties Managed</div>
+        <div class="value">1,240+</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Rent Collected</div>
+        <div class="value">₹4.2 Cr</div>
+      </div>
+    </div>
+
+    <h2 style="color:#fff;font-size:36px;font-weight:800;line-height:1.2;margin-bottom:16px;letter-spacing:-0.02em;">
+      Your property,<br><span style="color:#a8f0e0;">always accounted for.</span>
+    </h2>
+    <p style="color:rgba(255,255,255,0.5);font-size:14px;line-height:1.7;">
+      Monthly inspections, maintenance tracking, and digital agreements — serving landlords and tenants across Chandigarh, Mohali, and Panchkula.
+    </p>
+
+    <div style="display:flex;justify-content:center;gap:10px;margin-top:32px;flex-wrap:wrap;">
+      <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:6px 14px;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.05em;">Chandigarh</span>
+      <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:6px 14px;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.05em;">Mohali</span>
+      <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:6px 14px;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.05em;">Panchkula</span>
+    </div>
+  </div>
+</div>
+
 <script>
-  // ── State ──────────────────────────────────────────────
-  let currentRole = 'landlord';
-  let supabaseClient = null;
+// ─── State ────────────────────────────────────────────
+let loginRole = 'landlord';
+let regRole   = 'landlord';
+let sb        = null;
 
-  // ── Supabase Init ──────────────────────────────────────
-  async function initSupabase() {
-    try {
-      const res = await fetch('/api/config');
-      const config = await res.json();
-      const { createClient } = supabase;
-      supabaseClient = createClient(config.supabaseUrl, config.supabaseKey);
-    } catch (e) {
-      console.warn('Supabase init failed, dev mode only:', e.message);
+// ─── Boot ─────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', async () => {
+  // hide loader
+  setTimeout(() => document.getElementById('loader').classList.add('gone'), 300);
+
+  // init supabase
+  try {
+    const cfg = await fetch('/api/config').then(r => r.json());
+    if (cfg.supabaseUrl && cfg.supabaseKey) {
+      sb = supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
     }
+  } catch(e) {
+    console.warn('Supabase config unavailable:', e.message);
   }
+});
 
-  // ── Role selector ──────────────────────────────────────
-  function selectRole(role) {
-    currentRole = role;
-    document.getElementById('btn-landlord').classList.toggle('active', role === 'landlord');
-    document.getElementById('btn-tenant').classList.toggle('active', role === 'tenant');
-    // Update placeholder hint
-    document.getElementById('email').placeholder = role === 'landlord' ? 'landlord@example.com' : 'tenant@example.com';
-  }
+// ─── Tab switcher ──────────────────────────────────────
+function switchTab(tab) {
+  hideAlert();
+  document.getElementById('form-login').style.display    = tab === 'login'    ? '' : 'none';
+  document.getElementById('form-register').style.display = tab === 'register' ? '' : 'none';
+  document.getElementById('tab-login').classList.toggle('active',    tab === 'login');
+  document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+}
 
-  // ── Show alert ─────────────────────────────────────────
-  function showAlert(msg, type = 'error') {
-    const el = document.getElementById('auth-alert');
-    el.textContent = msg;
-    el.className = `alert show alert-${type}`;
-  }
-  function hideAlert() {
-    document.getElementById('auth-alert').className = 'alert';
-  }
-
-  // ── Toggle password visibility ─────────────────────────
-  function togglePassword() {
-    const inp = document.getElementById('password');
-    const icon = document.getElementById('eye-icon');
-    if (inp.type === 'password') { inp.type = 'text'; icon.textContent = 'visibility_off'; }
-    else { inp.type = 'password'; icon.textContent = 'visibility'; }
-  }
-
-  // ── Handle Login ───────────────────────────────────────
-  async function handleLogin(e) {
-    e.preventDefault();
-    hideAlert();
-
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
-    const btn = document.getElementById('submit-btn');
-
-    btn.disabled = true;
-    btn.textContent = 'Signing in…';
-
-    // ── Dev bypass ──
-    if (email === 'admin@rentcan.com' && password === 'admin123') {
-      showAlert('Dev bypass — redirecting to dashboard…', 'success');
-      setTimeout(() => window.location.href = 'dashboard.html', 800);
-      return;
-    }
-
-    // ── Supabase auth ──
-    if (!supabaseClient) {
-      showAlert('Auth service unavailable. Use dev credentials or check server.');
-      btn.disabled = false; btn.textContent = 'Sign In';
-      return;
-    }
-
-    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-
-    if (error) {
-      showAlert(error.message || 'Login failed. Please check your credentials.');
-      btn.disabled = false; btn.textContent = 'Sign In';
-      return;
-    }
-
-    // Store role in session for dashboard to use
-    sessionStorage.setItem('rentcan_role', currentRole);
-    sessionStorage.setItem('rentcan_user', JSON.stringify(data.user));
-
-    showAlert('Login successful! Redirecting…', 'success');
-    setTimeout(() => window.location.href = 'dashboard.html', 700);
-  }
-
-  // ── Boot ───────────────────────────────────────────────
-  window.addEventListener('DOMContentLoaded', () => {
-    // Hide loader
-    const loader = document.getElementById('global-loader');
-    if (loader) {
-      setTimeout(() => {
-        loader.classList.add('hidden');
-        setTimeout(() => loader.remove(), 400);
-      }, 300);
-    }
-    initSupabase();
+// ─── Role selectors ────────────────────────────────────
+function setLoginRole(role) {
+  loginRole = role;
+  ['landlord','tenant','admin'].forEach(r => {
+    document.getElementById('login-role-' + r).classList.toggle('active', r === role);
   });
-</script>
+}
+function setRegRole(role) {
+  regRole = role;
+  ['landlord','tenant'].forEach(r => {
+    document.getElementById('reg-role-' + r).classList.toggle('active', r === role);
+  });
+}
 
+// ─── Alert helpers ─────────────────────────────────────
+function showAlert(msg, type = 'error') {
+  const el = document.getElementById('alert');
+  el.textContent = msg;
+  el.className = 'alert show ' + type;
+}
+function hideAlert() {
+  document.getElementById('alert').className = 'alert';
+}
+
+// ─── Password toggle ───────────────────────────────────
+function togglePw(inputId, btn) {
+  const inp = document.getElementById(inputId);
+  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = 'visibility_off'; }
+  else { inp.type = 'password'; btn.textContent = 'visibility'; }
+}
+
+// ─── LOGIN ─────────────────────────────────────────────
+async function handleLogin(e) {
+  e.preventDefault();
+  hideAlert();
+
+  const rawInput = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-pass').value;
+  const btn = document.getElementById('login-btn');
+
+  btn.disabled = true;
+  btn.textContent = 'Signing in…';
+
+  // ── Admin bypass (always works) ──
+  if ((rawInput === 'admin' || rawInput === 'admin@rentcan.com') && password === 'admin') {
+    sessionStorage.setItem('rentcan_role', 'admin');
+    sessionStorage.setItem('rentcan_user', JSON.stringify({ email: 'admin@rentcan.com', role: 'admin', name: 'Admin' }));
+    showAlert('Welcome back, Admin! Redirecting…', 'success');
+    setTimeout(() => window.location.href = 'dashboard.html', 700);
+    return;
+  }
+
+  // ── Supabase email/password login ──
+  if (!sb) {
+    showAlert('Auth service offline. Use admin / admin for now.');
+    btn.disabled = false; btn.textContent = 'Sign In →';
+    return;
+  }
+
+  // Must be a valid email for Supabase
+  if (!rawInput.includes('@')) {
+    showAlert('Please enter a valid email address, or use "admin" / "admin" for the admin account.');
+    btn.disabled = false; btn.textContent = 'Sign In →';
+    return;
+  }
+
+  const { data, error } = await sb.auth.signInWithPassword({ email: rawInput, password });
+
+  if (error) {
+    showAlert('Login failed: ' + error.message);
+    btn.disabled = false; btn.textContent = 'Sign In →';
+    return;
+  }
+
+  const user = data.user;
+  const storedRole = user.user_metadata?.role || loginRole;
+
+  sessionStorage.setItem('rentcan_role', storedRole);
+  sessionStorage.setItem('rentcan_user', JSON.stringify({
+    id: user.id, email: user.email, role: storedRole,
+    name: user.user_metadata?.full_name || user.email
+  }));
+
+  showAlert('Login successful! Redirecting…', 'success');
+  setTimeout(() => window.location.href = 'dashboard.html', 700);
+}
+
+// ─── REGISTER ──────────────────────────────────────────
+async function handleRegister(e) {
+  e.preventDefault();
+  hideAlert();
+
+  const name  = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const pass  = document.getElementById('reg-pass').value;
+  const pass2 = document.getElementById('reg-pass2').value;
+  const btn   = document.getElementById('reg-btn');
+
+  if (pass !== pass2) {
+    showAlert('Passwords do not match.');
+    return;
+  }
+  if (pass.length < 6) {
+    showAlert('Password must be at least 6 characters.');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Creating account…';
+
+  if (!sb) {
+    showAlert('Auth service offline. Account creation is unavailable right now. Please contact us to register.', 'info');
+    btn.disabled = false; btn.textContent = 'Create Account →';
+    return;
+  }
+
+  const { data, error } = await sb.auth.signUp({
+    email,
+    password: pass,
+    options: {
+      data: { full_name: name, role: regRole }
+    }
+  });
+
+  if (error) {
+    showAlert('Registration failed: ' + error.message);
+    btn.disabled = false; btn.textContent = 'Create Account →';
+    return;
+  }
+
+  // Supabase may require email confirmation
+  const needsConfirm = !data.session;
+  if (needsConfirm) {
+    showAlert('Account created! Please check your email to confirm your address, then sign in.', 'success');
+    setTimeout(() => switchTab('login'), 3000);
+  } else {
+    // Logged in immediately (email confirm disabled in Supabase settings)
+    sessionStorage.setItem('rentcan_role', regRole);
+    sessionStorage.setItem('rentcan_user', JSON.stringify({
+      id: data.user.id, email: data.user.email, role: regRole, name
+    }));
+    showAlert('Account created! Redirecting to dashboard…', 'success');
+    setTimeout(() => window.location.href = 'dashboard.html', 800);
+  }
+}
+</script>
 </body>
 </html>
