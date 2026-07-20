@@ -242,11 +242,11 @@ checkAuth();
 <div class="col-span-12 md:col-span-4 border border-outline p-stack-lg flex flex-col justify-between bg-surface-container-lowest">
 <div>
 <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Portfolio Occupancy</p>
-<h3 class="font-display-lg text-display-lg text-primary font-bold">94.2%</h3>
+<h3 class="font-display-lg text-display-lg text-primary font-bold" id="stat-occupancy">—</h3>
 </div>
 <div class="mt-stack-md flex items-center gap-2">
 <span class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
-<div class="bg-primary h-full w-[94.2%]"></div>
+<div class="bg-primary h-full w-[—]"></div>
 </span>
 <span class="font-label-sm text-label-sm text-on-surface-variant">Target 98%</span>
 </div>
@@ -255,7 +255,7 @@ checkAuth();
 <div class="col-span-12 md:col-span-4 border border-outline p-stack-lg flex flex-col justify-between bg-surface-container-lowest">
 <div>
 <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Current Rent Collection</p>
-<h3 class="font-display-lg text-display-lg text-primary font-bold" style="opacity: 0;">₹42,850</h3>
+<h3 class="font-display-lg text-display-lg text-primary font-bold" id="stat-monthly-revenue">—</h3>
 </div>
 <div class="mt-stack-md">
 <p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
@@ -268,7 +268,7 @@ checkAuth();
 <div class="col-span-12 md:col-span-4 border border-outline p-stack-lg flex flex-col justify-between bg-surface-container-lowest">
 <div>
 <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Active Documents</p>
-<h3 class="font-display-lg text-display-lg text-primary font-bold">18</h3>
+<h3 class="font-display-lg text-display-lg text-primary font-bold" id="stat-active-requests">—</h3>
 </div>
 <div class="mt-stack-md flex gap-gutter">
 <div>
@@ -298,101 +298,24 @@ checkAuth();
 </div>
 <!-- Property Grid -->
 <div class="swiss-grid gap-stack-lg">
-<!-- Card 1 -->
-<div class="col-span-12 md:col-span-6 lg:col-span-4 border border-outline bg-surface-container-lowest group overflow-hidden">
-<div class="relative aspect-[1.34] overflow-hidden border-b border-outline">
-<img alt="Apartment Interior" class="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida/AP1WRLvkeQVrps265lbb4LvdHp8pmRc-aHQPVkP_P7gw5x0yq3A_CiIIDHvPvQR5UmmRCTcQYeok24c7iAdu__BYE3dCKXjD_iffM55mkflHpF2TRbrwc-z5KkofQCpg4fgye9iiuSGhIh_XRcgfjy9DlH4sivPU3UGORJJSkwWVEZnhOXcIagTTle5p1fuQiO06l5QFzX83nV5DF0tSuSU3GsqxakLC5BFETSJASC1ncCa8saf4Vv1uqsOby2s">
-<div class="absolute top-4 left-4">
-<span class="bg-primary-container text-on-primary-container px-3 py-1 font-label-sm text-label-sm rounded-full">Available</span>
-</div>
-</div>
-<div class="p-stack-lg">
-<div class="flex justify-between items-start mb-2">
-<h5 class="font-title-lg text-title-lg text-on-surface">Avenue Nordic Suites</h5>
-<span class="font-title-lg text-title-lg text-primary">₹3,200/mo</span>
-</div>
-<p class="font-body-md text-body-md text-on-surface-variant mb-stack-md">1248 North Alpine St, Ste 402. Stockholm Inspired Living.</p>
-<div class="flex items-center gap-stack-md pt-stack-md border-t border-outline-variant">
-<div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
-<span class="material-symbols-outlined text-[14px]" data-icon="bed">bed</span> 2 Beds
-                            </div>
-<div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
-<span class="material-symbols-outlined text-[14px]" data-icon="bathtub">bathtub</span> 2 Baths
-                            </div>
-<div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
-<span class="material-symbols-outlined text-[14px]" data-icon="square_foot">square_foot</span> 1,120 sqft
-                            </div>
-</div>
-</div>
-</div>
-<!-- Card 2 -->
-<div class="col-span-12 md:col-span-6 lg:col-span-4 border border-outline bg-surface-container-lowest group overflow-hidden">
-<div class="relative aspect-[1.34] overflow-hidden border-b border-outline">
-<div class="w-full h-full bg-surface-variant flex items-center justify-center" data-alt="A clean, minimalist high-end residential complex exterior with sharp architectural lines, large glass windows reflecting a clear blue sky, and a subtle sage green garden in the foreground. The lighting is crisp and even, emphasizing the Swiss precision and Scandinavian minimalism of the brand." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuATI-18E3Ap5L106YG-Fziv1mJL0GjtPc0_V7mr8nO7aZfNB1n_Bdj8tWJ5kKqxGOui-eUOuNTJQiEIvPPIOB6L0IALZbEdIa2GpSiY0Czz800_yqbCiRFe2UhydXF8ruJenieBTGHV_T2H4aab75nURdKOUg0WJVPDcSM89XqCGzxLDvEEaXDQgNGs57I_qRgw5B_CItlmrsLaky-32LaK4ptB0UQgmeQjOkwXLJxLh1YP4s38SDT2')"></div>
-<div class="absolute top-4 left-4">
-<span class="bg-secondary-container text-on-secondary-container px-3 py-1 font-label-sm text-label-sm rounded-full">Occupied</span>
-</div>
-</div>
-<div class="p-stack-lg">
-<div class="flex justify-between items-start mb-2">
-<h5 class="font-title-lg text-title-lg text-on-surface">The Zurich Lofts</h5>
-<span class="font-title-lg text-title-lg text-primary">₹4,850/mo</span>
-</div>
-<p class="font-body-md text-body-md text-on-surface-variant mb-stack-md">88 Global Way, Building A. High-precision luxury.</p>
-<div class="flex items-center gap-stack-md pt-stack-md border-t border-outline-variant">
-<div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
-<span class="material-symbols-outlined text-[14px]" data-icon="bed">bed</span> 3 Beds
-                            </div>
-<div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
-<span class="material-symbols-outlined text-[14px]" data-icon="bathtub">bathtub</span> 3 Baths
-                            </div>
-<div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
-<span class="material-symbols-outlined text-[14px]" data-icon="square_foot">square_foot</span> 1,650 sqft
-                            </div>
-</div>
-</div>
-</div>
-<!-- Card 3 (Empty State / Add Property) -->
-<div class="col-span-12 md:col-span-6 lg:col-span-4 border border-outline border-dashed bg-transparent group flex flex-col items-center justify-center p-stack-xl transition-all hover:bg-surface-container-low cursor-pointer">
-<span class="material-symbols-outlined text-[48px] text-outline mb-stack-md group-hover:scale-110 transition-transform" data-icon="add_circle">add_circle</span>
-<p class="font-title-lg text-title-lg text-on-surface">Add New Property</p>
-<p class="font-body-md text-body-md text-on-surface-variant text-center mt-2 px-margin-mobile">Expand your portfolio with our precise management tools.</p>
-</div>
-</div>
-<!-- Recent Activity List -->
+<!-- Empty State (shown until real data loads) -->
+  <div id="empty-state-properties" class="col-span-12 flex flex-col items-center justify-center py-24 text-center border border-dashed border-outline-variant rounded-lg bg-surface-container-lowest">
+    <span class="material-symbols-outlined text-[56px] text-outline mb-4">home_work</span>
+    <p class="font-title-lg text-title-lg text-on-surface mb-2">No properties yet</p>
+    <p class="font-body-md text-body-md text-on-surface-variant max-w-xs mb-6">Add your first property to start tracking rent, maintenance, and inspections.</p>
+    <button onclick="showAddPropertyModal()" class="flex items-center gap-2 px-6 py-3 bg-primary text-white font-label-lg text-label-lg rounded-lg hover:opacity-90 transition-opacity">
+      <span class="material-symbols-outlined text-[18px]">add</span>
+      Add First Property
+    </button>
+  </div>
+<!-- Recent Activity — populated dynamically -->
 <section class="mt-stack-xl">
 <h4 class="font-headline-md text-headline-md text-on-surface mb-stack-lg">Recent Activity</h4>
-<div class="border border-outline bg-surface-container-lowest">
-<div class="p-stack-md border-b border-outline-variant flex items-center justify-between hover:bg-surface transition-colors cursor-pointer">
-<div class="flex items-center gap-gutter">
-<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
-<div>
-<p class="font-body-lg text-body-lg text-on-surface">Lease signed: unit 402 - Avenue Nordic</p>
-<p class="font-label-sm text-label-sm text-on-surface-variant">2 hours ago</p>
-</div>
-</div>
-<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
-</div>
-<div class="p-stack-md border-b border-outline-variant flex items-center justify-between hover:bg-surface transition-colors cursor-pointer">
-<div class="flex items-center gap-gutter">
-<span class="material-symbols-outlined text-secondary" data-icon="payments">payments</span>
-<div>
-<p class="font-body-lg text-body-lg text-on-surface">Rent payment received - ₹2,400</p>
-<p class="font-label-sm text-label-sm text-on-surface-variant">5 hours ago</p>
-</div>
-</div>
-<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
-</div>
-<div class="p-stack-md flex items-center justify-between hover:bg-surface transition-colors cursor-pointer">
-<div class="flex items-center gap-gutter">
-<span class="material-symbols-outlined text-tertiary" data-icon="assignment_late">assignment_late</span>
-<div>
-<p class="font-body-lg text-body-lg text-on-surface">Maintenance request: unit 101 - Water Leak</p>
-<p class="font-label-sm text-label-sm text-on-surface-variant">Yesterday</p>
-</div>
-</div>
-<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
-</div>
+<div class="border border-outline bg-surface-container-lowest" id="activity-list">
+  <div class="p-stack-xl flex flex-col items-center justify-center text-center" id="empty-state-activity">
+    <span class="material-symbols-outlined text-[36px] text-outline mb-3">history</span>
+    <p class="font-body-md text-body-md text-on-surface-variant">Activity will appear here once you add properties.</p>
+  </div>
 </div>
 </section>
 </div>
@@ -675,4 +598,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+<script>
+function showAddPropertyModal() {
+  alert('Property onboarding coming soon! Contact us at support@rentcan.com to add your property.');
+}
+</script>
 </body></html>
