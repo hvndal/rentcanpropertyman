@@ -8,6 +8,116 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600;1,700&display=swap" rel="stylesheet"/>
+<style>
+  /* Cursive / editorial italic */
+  .font-cursive {
+    font-family: 'Playfair Display', 'DM Serif Display', Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+  }
+  /* Color accents */
+  .text-green-pop  { color: #1fad8a; }
+  .text-pink-pop   { color: #c76b80; }
+  .text-green-soft { color: #5ec9b0; }
+  .text-pink-soft  { color: #e8919f; }
+
+  /* ── Bento glass tiles ── */
+  .bento-tile {
+    position: relative;
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    background: rgba(249,249,252,0.55) !important;
+    border: 1px solid rgba(190,201,197,0.35) !important;
+    transition:
+      transform     380ms cubic-bezier(0.16,1,0.3,1),
+      box-shadow    380ms cubic-bezier(0.16,1,0.3,1),
+      border-color  260ms cubic-bezier(0.25,1,0.5,1),
+      background    260ms cubic-bezier(0.25,1,0.5,1);
+    will-change: transform, box-shadow;
+  }
+  .bento-tile:hover {
+    transform: translateY(-5px) scale(1.008);
+    background: rgba(255,255,255,0.82) !important;
+    border-color: rgba(0,65,55,0.22) !important;
+    box-shadow:
+      0 24px 56px rgba(0,65,55,0.09),
+      0 6px 16px rgba(0,65,55,0.06),
+      0 0 0 1px rgba(0,65,55,0.06) inset;
+  }
+
+  /* Big inspection card gets a subtle gradient shimmer on hover */
+  .bento-tile-hero {
+    background: rgba(249,249,252,0.60) !important;
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid rgba(190,201,197,0.35) !important;
+    transition:
+      transform     450ms cubic-bezier(0.16,1,0.3,1),
+      box-shadow    450ms cubic-bezier(0.16,1,0.3,1),
+      border-color  260ms cubic-bezier(0.25,1,0.5,1),
+      background    260ms cubic-bezier(0.25,1,0.5,1);
+    will-change: transform, box-shadow;
+  }
+  .bento-tile-hero:hover {
+    transform: translateY(-6px) scale(1.005);
+    background: rgba(255,255,255,0.88) !important;
+    border-color: rgba(0,65,55,0.20) !important;
+    box-shadow:
+      0 32px 80px rgba(0,65,55,0.10),
+      0 8px 24px rgba(0,65,55,0.07),
+      0 0 0 1px rgba(0,65,55,0.05) inset;
+  }
+
+  /* Key management + Remote management mini tiles */
+  .bento-tile-mini {
+    backdrop-filter: blur(10px) saturate(130%);
+    -webkit-backdrop-filter: blur(10px) saturate(130%);
+    background: rgba(249,249,252,0.50) !important;
+    border: 1px solid rgba(190,201,197,0.30) !important;
+    transition:
+      transform     300ms cubic-bezier(0.16,1,0.3,1),
+      box-shadow    300ms cubic-bezier(0.16,1,0.3,1),
+      background    220ms cubic-bezier(0.25,1,0.5,1),
+      border-color  220ms cubic-bezier(0.25,1,0.5,1);
+    will-change: transform;
+  }
+  .bento-tile-mini:hover {
+    transform: translateY(-3px) scale(1.012);
+    background: rgba(255,255,255,0.85) !important;
+    border-color: rgba(133,79,91,0.22) !important;
+    box-shadow: 0 12px 32px rgba(133,79,91,0.08), 0 3px 8px rgba(133,79,91,0.05);
+  }
+
+  /* Showcase property cards — glassmorphism over dark bg */
+  .showcase-card {
+    transition:
+      transform     450ms cubic-bezier(0.16,1,0.3,1),
+      box-shadow    450ms cubic-bezier(0.16,1,0.3,1);
+    will-change: transform;
+    cursor: default;
+  }
+  .showcase-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 40px 80px rgba(0,0,0,0.25);
+    z-index: 2;
+  }
+  .showcase-card:hover .showcase-bg {
+    opacity: 0.45 !important;
+    transform: scale(1.04);
+  }
+  .showcase-bg {
+    transition: opacity 600ms cubic-bezier(0.16,1,0.3,1),
+                transform 600ms cubic-bezier(0.16,1,0.3,1);
+    will-change: opacity, transform;
+  }
+
+  /* Pricing table row hover */
+  .pricing-row-hover {
+    transition: background 180ms cubic-bezier(0.25,1,0.5,1);
+  }
+  .pricing-row-hover:hover { background: rgba(0,65,55,0.028); }
+</style>
 <script id="tailwind-config">
         try {
             tailwind.config = {
@@ -234,15 +344,15 @@
 <section class="py-32 px-margin-desktop max-w-container-max mx-auto">
   <div class="mb-16">
     <span class="font-label-caps text-label-caps text-secondary uppercase tracking-[0.3em] mb-4 block">Properties We Manage</span>
-    <h2 class="font-display-lg text-4xl md:text-5xl mb-6 text-primary tracking-tight">Tricity's most trusted<br>rental portfolio.</h2>
+    <h2 class="font-display-lg text-4xl md:text-5xl mb-6 text-primary tracking-tight">Tricity's most <span class="font-cursive text-green-pop">trusted</span><br>rental <span class="font-cursive text-pink-pop">portfolio.</span></h2>
     <p class="text-on-surface-variant font-light max-w-xl text-base leading-relaxed">From independent houses in Panchkula to apartments in Mohali and commercial spaces in Chandigarh — RentCan manages all property types across the region.</p>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-0 border border-outline-variant/30 overflow-hidden">
 
     <!-- Residential Card -->
-    <div class="group relative overflow-hidden" style="min-height:420px; background:#004137;">
-      <div class="absolute inset-0 transition-opacity duration-700 group-hover:opacity-35" style="background-image:url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'); background-size:cover; background-position:center; opacity:0.2;"></div>
+    <div class="showcase-card relative overflow-hidden" style="min-height:420px; background:#004137;">
+      <div class="showcase-bg absolute inset-0" style="background-image:url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'); background-size:cover; background-position:center; opacity:0.2;"></div>
       <div class="relative z-10 p-10 flex flex-col" style="min-height:420px;">
         <div class="mb-auto">
           <span class="font-label-caps text-[10px] uppercase tracking-[0.35em] text-accent/80 block mb-3">Residential</span>
@@ -259,8 +369,8 @@
     </div>
 
     <!-- Commercial Card -->
-    <div class="group relative overflow-hidden border-l border-r border-outline-variant/30" style="min-height:420px; background:#f2f4f2;">
-      <div class="absolute inset-0 transition-opacity duration-700 group-hover:opacity-20" style="background-image:url('https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'); background-size:cover; background-position:center; opacity:0.1;"></div>
+    <div class="showcase-card relative overflow-hidden border-l border-r border-outline-variant/30" style="min-height:420px; background:#f2f4f2;">
+      <div class="showcase-bg absolute inset-0" style="background-image:url('https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'); background-size:cover; background-position:center; opacity:0.1;"></div>
       <div class="relative z-10 p-10 flex flex-col" style="min-height:420px;">
         <div class="mb-auto">
           <span class="font-label-caps text-[10px] uppercase tracking-[0.35em] text-secondary/80 block mb-3">Commercial</span>
@@ -277,8 +387,8 @@
     </div>
 
     <!-- NRI / Remote Card -->
-    <div class="group relative overflow-hidden" style="min-height:420px; background:#00211c;">
-      <div class="absolute inset-0 transition-opacity duration-700 group-hover:opacity-25" style="background-image:url('https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'); background-size:cover; background-position:center; opacity:0.12;"></div>
+    <div class="showcase-card relative overflow-hidden" style="min-height:420px; background:#00211c;">
+      <div class="showcase-bg absolute inset-0" style="background-image:url('https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'); background-size:cover; background-position:center; opacity:0.12;"></div>
       <div class="relative z-10 p-10 flex flex-col" style="min-height:420px;">
         <div class="mb-auto">
           <span class="font-label-caps text-[10px] uppercase tracking-[0.35em] text-accent/60 block mb-3">For NRIs &amp; Remote Owners</span>
@@ -316,12 +426,12 @@
 <section class="py-40 px-margin-desktop max-w-container-max mx-auto">
 <div class="mb-24 flex flex-col items-start">
 <span class="font-label-caps text-label-caps text-secondary uppercase tracking-[0.3em] mb-4 block">Our Methodology</span>
-<h2 class="font-display-lg text-5xl md:text-6xl mb-8 text-primary tracking-tight">Precision Management</h2>
+<h2 class="font-display-lg text-5xl md:text-6xl mb-8 text-primary tracking-tight">Precision <span class="font-cursive text-pink-pop">Management</span></h2>
 <div class="w-24 h-[2px] bg-secondary/30"></div>
 </div>
 <div class="swiss-grid">
 <!-- Inspection Card -->
-<div class="col-span-12 lg:col-span-8 bg-surface border border-outline-variant/40 p-16 flex flex-col justify-between min-h-[480px] hover:border-primary/20 transition-colors">
+<div class="col-span-12 lg:col-span-8 bento-tile-hero p-16 flex flex-col justify-between min-h-[480px]">
 <div>
 <div class="flex justify-between items-start mb-12">
 <div class="w-14 h-14 bg-primary text-white flex items-center justify-center rounded-sm">
@@ -352,7 +462,7 @@
 </div>
 </div>
 <!-- Vendor Deployment -->
-<div class="col-span-12 md:col-span-6 lg:col-span-4 bg-surface-variant/30 border border-outline-variant/40 p-12 flex flex-col hover:border-primary/20 transition-colors">
+<div class="col-span-12 md:col-span-6 lg:col-span-4 bento-tile p-12 flex flex-col">
 <span class="material-symbols-outlined text-5xl text-secondary mb-10">engineering</span>
 <h3 class="font-headline-md text-2xl mb-6 text-primary">On-demand Vendors</h3>
 <p class="text-body-base text-sm text-on-surface-variant leading-relaxed font-light mb-12">Trusted local plumbers, electricians, carpenters, painters, and pest control — coordinated and supervised by RentCan on your behalf. No chasing vendors. We handle scheduling, access, and follow-up.</p>
@@ -400,7 +510,7 @@
 <div class="max-w-[1000px] mx-auto">
 <div class="text-center mb-32">
 <span class="font-label-caps text-label-caps text-secondary uppercase tracking-[0.3em] mb-6 block">Transparent Pricing</span>
-<h2 class="font-display-lg text-5xl md:text-6xl text-primary tracking-tight">Simple, Transparent Pricing</h2>
+<h2 class="font-display-lg text-5xl md:text-6xl text-primary tracking-tight">Simple, <span class="font-cursive text-green-pop">Transparent</span> Pricing</h2>
 </div>
 <div class="bg-white border border-outline-variant/30 shadow-sm overflow-hidden rounded-sm">
 <div class="overflow-x-auto">
@@ -422,27 +532,27 @@
 </tr>
 </thead>
 <tbody class="divide-y divide-outline-variant/10">
-<tr class="group hover:bg-background transition-colors">
+<tr class="pricing-row-hover">
 <td class="py-10 px-10 font-body-base text-primary/70 font-light">15-Point Monthly Inspections</td>
 <td class="py-10 text-center"><span class="material-symbols-outlined text-secondary">check_circle</span></td>
 <td class="py-10 text-center bg-primary/95"><span class="material-symbols-outlined text-accent">check_circle</span></td>
 </tr>
-<tr class="group hover:bg-background transition-colors">
+<tr class="pricing-row-hover">
 <td class="py-10 px-10 font-body-base text-primary/70 font-light">Tenant Background Verification</td>
 <td class="py-10 text-center"><span class="material-symbols-outlined text-secondary">check_circle</span></td>
 <td class="py-10 text-center bg-primary/95"><span class="material-symbols-outlined text-accent">check_circle</span></td>
 </tr>
-<tr class="group hover:bg-background transition-colors">
+<tr class="pricing-row-hover">
 <td class="py-10 px-10 font-body-base text-primary/70 font-light">Fire Safety &amp; Compliance Audit</td>
 <td class="py-10 text-center text-outline-variant">—</td>
 <td class="py-10 text-center bg-primary/95"><span class="material-symbols-outlined text-accent">check_circle</span></td>
 </tr>
-<tr class="group hover:bg-background transition-colors">
+<tr class="pricing-row-hover">
 <td class="py-10 px-10 font-body-base text-primary/70 font-light">Digital Lease Management</td>
 <td class="py-10 text-center"><span class="material-symbols-outlined text-secondary">check_circle</span></td>
 <td class="py-10 text-center bg-primary/95"><span class="material-symbols-outlined text-accent">check_circle</span></td>
 </tr>
-<tr class="group hover:bg-background transition-colors">
+<tr class="pricing-row-hover">
 <td class="py-10 px-10 font-body-base text-primary/70 font-light">Facility Staff Performance Audit</td>
 <td class="py-10 text-center text-outline-variant">—</td>
 <td class="py-10 text-center bg-primary/95"><span class="material-symbols-outlined text-accent">check_circle</span></td>
@@ -464,7 +574,7 @@
 <div class="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
 <div class="max-w-4xl mx-auto relative z-10">
 <span class="font-label-caps text-label-caps text-accent uppercase tracking-[0.4em] mb-10 block">Experience Peace of Mind</span>
-<h2 class="font-display-lg text-white text-6xl md:text-[80px] mb-16 leading-[1.05] tracking-tight">Ready for Stress-Free <br/>Ownership?</h2>
+<h2 class="font-display-lg text-white text-6xl md:text-[80px] mb-16 leading-[1.05] tracking-tight">Ready for <span class="font-cursive" style="color:#a8f0e0;">Stress-Free</span> <br/><span class="font-cursive" style="color:#f9b4c2;">Ownership?</span></h2>
 <div class="flex flex-col sm:flex-row justify-center gap-10">
 <a href="login.html" class="px-16 py-6 bg-accent text-primary font-label-caps text-label-caps uppercase tracking-[0.2em] font-bold hover:scale-[1.02] transition-all duration-300 shadow-2xl rounded-sm inline-block">Join RentCan</a>
 <a href="info.html" class="px-16 py-6 border border-white/30 text-white font-label-caps text-label-caps uppercase tracking-[0.2em] hover:bg-white/10 transition-all duration-300 rounded-sm backdrop-blur-sm inline-block">See Full Services</a>
