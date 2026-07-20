@@ -9,6 +9,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
 <style>
+  html { scroll-behavior: smooth; }
+  input, button { touch-action: manipulation; }
   /* App-like Touch & Mobile Optimizations */
   * { -webkit-tap-highlight-color: transparent; }
   button, a, input, select { touch-action: manipulation; }
@@ -318,7 +320,7 @@ body {
 
     <div class="field" style="margin-bottom:28px;">
       <label style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#3f4946;">Mobile Number</label>
-      <div class="phone-wrap">
+      <div class="phone-wrap" onclick="document.getElementById('phone-input').focus()" style="cursor:text;">
         <input class="country-code" type="text" value="+91" readonly>
         <input type="tel" id="phone-input" class="phone-input-field" placeholder="9876543210" maxlength="10" autocomplete="tel-national" oninput="this.value=this.value.replace(/\D/g,'')">
       </div>
@@ -328,7 +330,7 @@ body {
 
     <div style="display:flex;align-items:center;gap:10px;margin-top:20px;padding:10px 12px;background:#f2f4f2;border-radius:10px;border:1px solid #e0e4e0;">
      <span style="font-family:'Material Symbols Outlined';font-size:18px;color:#023826;font-variation-settings:'FILL' 1;">verified_user</span>
-     <span style="font-size:11px;color:#3f4946;line-height:1.4;font-weight:500;">Instant SMS OTP verification powered by MSG91 gateway.</span>
+     <span style="font-size:11px;color:#3f4946;line-height:1.4;font-weight:500;">Instant 6-digit SMS verification code sent to your phone.</span>
    </div>
   </div>
 
