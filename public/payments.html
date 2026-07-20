@@ -1,21 +1,26 @@
 <!DOCTYPE html><html class="light" lang="en"><head>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-async function checkAuth() {
+// ── Auth guard: accepts both admin bypass (sessionStorage) and real Supabase session ──
+(async function checkAuth() {
+  const cached = sessionStorage.getItem('rentcan_user');
+  if (cached) return; // authenticated
+
   try {
     const res = await fetch('/api/config');
-    const config = await res.json();
-    const { createClient } = supabase;
-    const client = createClient(config.supabaseUrl, config.supabaseKey);
-    const { data: { session }, error } = await client.auth.getSession();
-    if (error || !session) {
-      window.location.href = 'login.html';
-    }
-  } catch (err) {
-    window.location.href = 'login.html';
-  }
-}
-checkAuth();
+    const cfg = await res.json();
+    if (!cfg.supabaseUrl) { window.location.href = 'login.html'; return; }
+    const client = supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
+    const { data: { session } } = await client.auth.getSession();
+    if (!session) { window.location.href = 'login.html'; return; }
+    const meta = session.user.user_metadata || {};
+    sessionStorage.setItem('rentcan_role', meta.role || 'landlord');
+    sessionStorage.setItem('rentcan_user', JSON.stringify({
+      id: session.user.id, email: session.user.email,
+      name: meta.full_name || session.user.email, role: meta.role || 'landlord'
+    }));
+  } catch (_) { window.location.href = 'login.html'; }
+})();
 </script>
 
 <meta charset="utf-8">
@@ -423,10 +428,18 @@ checkAuth();
 
 <script>
 async function signOut() {
+  sessionStorage.removeItem('rentcan_user');
+  sessionStorage.removeItem('rentcan_role');
   try {
     const res = await fetch('/api/config');
-    const config = await res.json();
-    const { createClient } = supabase;
+    const cfg = await res.json();
+    if (cfg.supabaseUrl) {
+      const client = supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
+      await client.auth.signOut();
+    }
+  } catch (_) {}
+  window.location.href = 'login.html';
+} = supabase;
     const client = createClient(config.supabaseUrl, config.supabaseKey);
     await client.auth.signOut();
     window.location.href = 'login.html';
@@ -464,7 +477,7 @@ async function signOut() {
     <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">analytics</span>
     Reports
   </a>
-  <a href="info.html" onclick="signOut()" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-red-600/80">
+  <a href="#" onclick="signOut(); return false;" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-red-600/80">
     <span class="material-symbols-outlined text-[20px]">logout</span>
     Sign Out
   </a>

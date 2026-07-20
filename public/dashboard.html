@@ -159,7 +159,7 @@ checkAuth();
 <aside class="hidden md:flex flex-col h-screen p-stack-md border-r border-outline bg-surface w-64 shrink-0 overflow-y-auto">
 <div class="mb-stack-xl px-2">
 <img src="/logo.png" alt="RentCan Logo" class="h-10 w-10 object-contain">
-<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-1">Property Manager</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-1" id="sidebar-role-label">Dashboard</p>
 </div>
 <nav class="flex-1 space-y-1">
 <!-- Active: Properties -->
@@ -197,7 +197,7 @@ checkAuth();
 <span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
 <span class="font-label-lg text-label-lg">Switch View</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2 text-red-600 font-medium hover:bg-red-50/20 transition-all rounded-lg" href="info.html" onclick="signOut()">
+<a class="flex items-center gap-3 px-3 py-2 text-red-600 font-medium hover:bg-red-50/20 transition-all rounded-lg" href="#" onclick="signOut(); return false;">
 <span class="material-symbols-outlined" data-icon="logout">logout</span>
 <span class="font-label-lg text-label-lg">Sign Out</span>
 </a>
@@ -487,7 +487,7 @@ async function signOut() {
     <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">analytics</span>
     Reports
   </a>
-  <a href="info.html" onclick="signOut()" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-red-600/80">
+  <a href="#" onclick="signOut(); return false;" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-red-600/80">
     <span class="material-symbols-outlined text-[20px]">logout</span>
     Sign Out
   </a>
@@ -624,4 +624,55 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 </script>
+
+<script>
+// ── Render user info from sessionStorage + role-gate UI ──
+document.addEventListener('DOMContentLoaded', () => {
+  const rawUser  = sessionStorage.getItem('rentcan_user');
+  const role     = sessionStorage.getItem('rentcan_role') || 'landlord';
+
+  let user = { name: 'User', email: '', role };
+  try { user = JSON.parse(rawUser); } catch(_) {}
+
+  const name    = user.name || user.email || 'User';
+  const initial = name.charAt(0).toUpperCase();
+  const roleLabel = role.charAt(0).toUpperCase() + role.slice(1);
+
+  // Avatar & info
+  const avatarEl = document.getElementById('user-avatar');
+  const nameEl   = document.getElementById('user-name');
+  const emailEl  = document.getElementById('user-email');
+  const roleEl   = document.getElementById('user-role');
+  const sidebarRoleEl = document.getElementById('sidebar-role-label');
+
+  if (avatarEl)  avatarEl.textContent = initial;
+  if (nameEl)    nameEl.textContent   = name;
+  if (emailEl)   emailEl.textContent  = user.email || '';
+  if (roleEl)    roleEl.textContent   = roleLabel;
+  if (sidebarRoleEl) sidebarRoleEl.textContent = roleLabel + ' Portal';
+
+  // Role-gate: only Landlord and Admin see "Invite Tenant" and landlord-specific actions
+  const isLandlord = role === 'landlord' || role === 'admin';
+
+  const inviteBtn   = document.getElementById('invite-tenant-btn');
+  const topbarInvite = document.getElementById('topbar-invite-btn');
+
+  if (isLandlord) {
+    if (inviteBtn)    inviteBtn.style.display    = '';
+    if (topbarInvite) topbarInvite.style.display = '';
+  }
+
+  // Tenant view: hide "Add New Property" card (it's landlord-only)
+  if (role === 'tenant') {
+    // Hide static add-property placeholder card
+    document.querySelectorAll('.border-dashed').forEach(el => {
+      el.style.display = 'none';
+    });
+    // Update page title
+    const h2 = document.querySelector('h2');
+    if (h2) h2.textContent = 'My Tenancy';
+  }
+});
+</script>
+
 </body></html>
