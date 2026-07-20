@@ -4,115 +4,204 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="/logo.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RentCan | Services & Pricing</title>
-<meta name="description" content="RentCan pricing, services and philosophy. Monthly property inspections, digital agreements, maintenance management and more for landlords in Chandigarh, Mohali and Panchkula.">
+<title>RentCan | Services, Pricing & How It Works</title>
+<meta name="description" content="Explore RentCan's full services, transparent pricing, and how we manage properties across Chandigarh, Mohali and Panchkula.">
+<meta property="og:title" content="RentCan — Services & Pricing">
+<meta property="og:description" content="Full property management services for Tricity landlords. Monthly inspections, digital documents, maintenance, Airbnb management and more.">
+<meta property="og:image" content="https://rentcan.in/logo.png">
+<meta property="og:url" content="https://rentcan.in/info.html">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
 <script>
 try {
   tailwind.config = {
-    darkMode:"class",
-    theme:{extend:{
-      colors:{
+    theme: { extend: {
+      colors: {
         "primary":"#023826","on-primary":"#ffffff","primary-container":"#005a4e",
-        "secondary": "#854f5b","on-secondary":"#ffffff","secondary-container":"#ffb9c8",
+        "secondary":"#854f5b","on-secondary":"#ffffff","secondary-container":"#ffb9c8",
         "surface":"#f9f9fc","on-surface":"#191c1b","on-surface-variant":"#3f4946",
-        "surface-container-low":"#f2f4f2","surface-container":"#eceeec",
-        "outline":"#73777f","outline-variant":"#bec9c5","background":"#f7faf7",
-        "accent":"#00E599","inverse-primary":"#8dd4c4","primary-fixed": "#8dd4c4"
+        "surface-container":"#eceeec","outline-variant":"#bec9c5",
+        "accent":"#00E599","background":"#f7faf7"
       },
-      fontFamily:{"sans":["Plus Jakarta Sans","sans-serif"]},
-      spacing:{"margin-mobile":"24px","margin-desktop":"64px","container-max":"1280px"}
+      fontFamily:{"sans":["Plus Jakarta Sans","sans-serif"]}
     }}
   };
-} catch(_e) {}
+} catch(_e){}
 </script>
 <style>
-  body { font-family: 'Plus Jakarta Sans', sans-serif; }
-  .check-item { display:flex; align-items:flex-start; gap:10px; padding:8px 0; }
-  .check-icon { color:#FF3366; font-size:18px; flex-shrink:0; margin-top:1px; }
-  .section-label { font-size:11px; letter-spacing:0.3em; text-transform:uppercase; font-weight:700; color:#FF3366; }
-  .card { background:#fff; border:1px solid #bec9c5; border-radius:12px; padding:32px; }
-  .coming-badge { background:#f2f4f2; border:1px solid #bec9c5; border-radius:20px; padding:4px 12px; font-size:11px; font-weight:600; color:#3f4946; letter-spacing:0.05em; display:inline-block; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+/* ── Tab system ── */
+.tab-btn {
+  padding: 10px 22px; border-radius: 50px; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; border: 1.5px solid #bec9c5;
+  background: #fff; color: #3f4946; white-space: nowrap;
+}
+.tab-btn.active { background: #023826; color: #fff; border-color: #023826; }
+.tab-btn:hover:not(.active) { border-color: #023826; color: #023826; }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* ── Cards ── */
+.card {
+  background: #fff; border: 1px solid #e0e4e0;
+  border-radius: 16px; padding: 28px; transition: all 0.2s;
+}
+.card:hover { border-color: #023826; box-shadow: 0 4px 24px rgba(2,56,38,0.08); transform: translateY(-2px); }
+
+/* ── Expandable items ── */
+.expand-item { border: 1px solid #e0e4e0; border-radius: 12px; overflow: hidden; margin-bottom: 12px; background: #fff; }
+.expand-header {
+  width: 100%; display: flex; justify-content: space-between; align-items: center;
+  padding: 18px 24px; background: none; border: none; cursor: pointer;
+  font-family: inherit; font-size: 15px; font-weight: 700; color: #191c1b;
+  text-align: left; transition: background 0.15s;
+}
+.expand-header:hover { background: #f7faf7; }
+.expand-header .arrow {
+  font-family: 'Material Symbols Outlined'; font-size: 20px; color: #3f4946;
+  transition: transform 0.25s; flex-shrink: 0;
+}
+.expand-header.open .arrow { transform: rotate(180deg); }
+.expand-body { display: none; padding: 0 24px 20px; }
+.expand-body.open { display: block; }
+
+/* ── Check items ── */
+.check-item { display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; }
+.check-icon { color: #854f5b; font-size: 18px; flex-shrink: 0; margin-top: 1px; font-family: 'Material Symbols Outlined'; }
+
+/* ── Badge ── */
+.badge {
+  background: #f2f4f2; border: 1px solid #bec9c5; border-radius: 20px;
+  padding: 4px 12px; font-size: 11px; font-weight: 600; color: #3f4946;
+  letter-spacing: 0.05em; display: inline-block;
+}
+.badge-accent { background: #d6f7f0; border-color: #00E599; color: #023826; }
+.badge-warn { background: #ffdad6; border-color: #f2b8b5; color: #93000a; }
+
+/* ── Pricing card special ── */
+.plan-card {
+  border-radius: 20px; padding: 36px; position: relative; overflow: hidden;
+  transition: transform 0.2s;
+}
+.plan-card:hover { transform: translateY(-4px); }
+
+/* ── Sticky tab bar ── */
+.sticky-tabs {
+  position: sticky; top: 65px; z-index: 40;
+  background: rgba(249,249,252,0.95); backdrop-filter: blur(12px);
+  border-bottom: 1px solid #e0e4e0; padding: 12px 0;
+}
+
+/* ── Section label ── */
+.section-label { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: #854f5b; }
 </style>
 </head>
 <body class="bg-background text-on-surface">
 
-<!-- Nav -->
+<!-- ── Nav ── -->
 <nav class="sticky top-0 bg-white/90 backdrop-blur-md border-b border-outline-variant z-50">
   <div class="max-w-6xl mx-auto px-6 md:px-16 py-4 flex items-center justify-between">
-    <a href="index.html"><img src="/logo.png" alt="RentCan" class="h-12 w-12 object-contain" ></a>
+    <a href="index.html">
+      <div style="display:inline-flex;width:44px;height:44px;border-radius:10px;border:1.5px solid #e0e4e0;padding:5px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        <img src="/logo.png" alt="RentCan" style="width:100%;height:100%;object-fit:contain;">
+      </div>
+    </a>
     <div class="flex items-center gap-4">
       <a href="index.html" class="text-sm text-on-surface-variant hover:text-primary font-medium transition-colors">Home</a>
-      <a href="login.html" class="px-5 py-2 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-container transition-colors">Sign In</a>
+      <a href="login.html" class="px-5 py-2 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-container transition-colors">Get Started</a>
     </div>
   </div>
 </nav>
 
-<!-- Hero -->
+<!-- ── Hero ── -->
 <section class="bg-primary text-white py-20 px-6 md:px-16">
-  <div class="max-w-4xl mx-auto">
-    <span class="section-label text-accent mb-4 block">Services & Pricing</span>
-    <h1 class="text-5xl md:text-6xl font-bold tracking-tight leading-tight mb-6">Everything your<br>property needs.</h1>
-    <p class="text-white/70 text-lg max-w-2xl leading-relaxed">Full-stack property management — inspections, maintenance, documents, vendor coordination and key management — all from one platform. Serving Chandigarh, Mohali and Panchkula.</p>
-    <div class="flex flex-wrap gap-4 mt-10">
-      <div class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full text-sm text-white/80 border border-white/20">
-        <span class="material-symbols-outlined text-[16px] text-accent">location_on</span>Chandigarh
-      </div>
-      <div class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full text-sm text-white/80 border border-white/20">
-        <span class="material-symbols-outlined text-[16px] text-accent">location_on</span>Mohali (SAS Nagar)
-      </div>
-      <div class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full text-sm text-white/80 border border-white/20">
-        <span class="material-symbols-outlined text-[16px] text-accent">location_on</span>Panchkula
-      </div>
+  <div class="max-w-5xl mx-auto">
+    <span class="text-accent text-xs font-bold uppercase tracking-[0.3em] mb-4 block">Your Full Guide</span>
+    <h1 class="text-5xl md:text-6xl font-bold tracking-tight leading-tight mb-6">Services, Pricing<br>& How It Works.</h1>
+    <p class="text-white/70 text-lg max-w-2xl leading-relaxed">Everything you need to know about RentCan — what we manage, how we price it, and what makes us different. No sales calls needed.</p>
+    <div class="flex flex-wrap gap-3 mt-10">
+      <span class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full text-sm text-white/80 border border-white/20">
+        <span class="material-symbols-outlined text-[16px] text-accent" style="font-variation-settings:'FILL' 1">location_on</span>Chandigarh
+      </span>
+      <span class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full text-sm text-white/80 border border-white/20">
+        <span class="material-symbols-outlined text-[16px] text-accent" style="font-variation-settings:'FILL' 1">location_on</span>Mohali (SAS Nagar)
+      </span>
+      <span class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full text-sm text-white/80 border border-white/20">
+        <span class="material-symbols-outlined text-[16px] text-accent" style="font-variation-settings:'FILL' 1">location_on</span>Panchkula
+      </span>
     </div>
   </div>
 </section>
 
-<main class="max-w-6xl mx-auto px-6 md:px-16 py-20 space-y-24">
+<!-- ── Sticky Tab Bar ── -->
+<div class="sticky-tabs">
+  <div class="max-w-5xl mx-auto px-6 md:px-16 flex gap-3 overflow-x-auto pb-1 scrollbar-hide">
+    <button class="tab-btn active" onclick="switchTab('pricing', this)">💳 Pricing</button>
+    <button class="tab-btn" onclick="switchTab('services', this)">🛠 Services</button>
+    <button class="tab-btn" onclick="switchTab('airbnb', this)">🏡 Airbnb & Commercial</button>
+    <button class="tab-btn" onclick="switchTab('how', this)">📋 How It Works</button>
+    <button class="tab-btn" onclick="switchTab('faq', this)">❓ FAQ</button>
+  </div>
+</div>
 
-  <!-- PRICING -->
-  <section id="pricing">
-    <span class="section-label mb-3 block">Pricing</span>
-    <h2 class="text-4xl font-bold text-primary mb-4 tracking-tight">Simple, transparent pricing.</h2>
-    <p class="text-on-surface-variant max-w-2xl mb-12">No hidden charges. No long-term lock-in. One flat monthly fee covers everything listed below.</p>
+<main class="max-w-5xl mx-auto px-6 md:px-16 py-16">
 
-    <div class="grid md:grid-cols-2 gap-8">
-      <!-- Residential -->
-      <div class="card relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-1 h-full bg-secondary rounded-l-xl"></div>
-        <div class="pl-4">
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- TAB: PRICING -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="tab-pane active" id="tab-pricing">
+    <span class="section-label mb-3 block">Transparent Pricing</span>
+    <h2 class="text-4xl font-bold text-primary mb-3 tracking-tight">One flat fee.<br>Zero surprises.</h2>
+    <p class="text-on-surface-variant max-w-2xl mb-12 leading-relaxed">We never take a percentage of your rent. You pay one flat monthly fee per property — that's it. No hidden charges, no lock-in period.</p>
+
+    <div class="grid md:grid-cols-2 gap-8 mb-12">
+
+      <!-- Residential Plan -->
+      <div class="plan-card" style="background:#fff;border:2px solid #e0e4e0;">
+        <div class="absolute top-0 left-0 w-1.5 h-full bg-secondary rounded-l-xl"></div>
+        <div class="pl-2">
           <div class="flex items-center gap-3 mb-6">
             <span class="material-symbols-outlined text-3xl text-secondary" style="font-variation-settings:'FILL' 1">home</span>
             <h3 class="text-2xl font-bold text-primary">Residential</h3>
           </div>
-          <div class="mb-6">
+          <div class="mb-2">
             <span class="text-5xl font-bold text-primary">₹1,499</span>
-            <span class="text-on-surface-variant ml-2">/month per property</span>
+            <span class="text-on-surface-variant ml-2 text-sm">/month per property</span>
           </div>
-          <p class="text-xs text-on-surface-variant mb-6">+ ₹1,000/month per additional property for existing customers</p>
-          <div class="border-t border-outline-variant pt-6">
-            <p class="text-sm font-semibold text-on-surface mb-3">Suitable for:</p>
+          <p class="text-xs text-on-surface-variant mb-8">+ ₹1,000/month per additional property</p>
+
+          <div class="space-y-3 text-sm mb-8">
+            <div class="check-item"><span class="check-icon">check_circle</span><span>Complementary 15-point inspection every 5th of the month</span></div>
+            <div class="check-item"><span class="check-icon">check_circle</span><span>Digital document storage (lease, KYC, police verification)</span></div>
+            <div class="check-item"><span class="check-icon">check_circle</span><span>Maintenance coordination & vendor management</span></div>
+            <div class="check-item"><span class="check-icon">check_circle</span><span>Secure key holding for access during visits</span></div>
+            <div class="check-item"><span class="check-icon">check_circle</span><span>Full landlord dashboard with reports</span></div>
+            <div class="check-item"><span class="check-icon">check_circle</span><span>Tenant issue tracking and resolution</span></div>
+          </div>
+
+          <div class="border-t border-outline-variant pt-6 mb-6">
+            <p class="text-xs font-semibold text-on-surface mb-3">Covers all residential types:</p>
             <div class="flex flex-wrap gap-2">
-              <span class="coming-badge">Apartments</span>
-              <span class="coming-badge">Independent Houses</span>
-              <span class="coming-badge">Villas</span>
-              <span class="coming-badge">Builder Floors</span>
-              <span class="coming-badge">Studio Apartments</span>
-              <span class="coming-badge">PG Accommodations</span>
-              <span class="coming-badge">Rental Rooms</span>
-              <span class="coming-badge">Airbnb & Short-Stay</span>
+              <span class="badge">Apartments</span>
+              <span class="badge">Independent Houses</span>
+              <span class="badge">Villas</span>
+              <span class="badge">Builder Floors</span>
+              <span class="badge">Studio Apartments</span>
+              <span class="badge">PG Accommodations</span>
+              <span class="badge">Rental Rooms</span>
             </div>
           </div>
-          <a href="login.html" class="mt-8 w-full py-3 bg-secondary text-white text-sm font-semibold rounded-lg hover:bg-secondary/90 transition-colors text-center block">Get Started</a>
+
+          <a href="login.html" class="w-full py-3.5 bg-secondary text-white text-sm font-bold rounded-xl hover:bg-secondary/90 transition-colors text-center block tracking-wider uppercase">Get Started →</a>
         </div>
       </div>
 
-      <!-- Commercial -->
-      <div class="card relative overflow-hidden bg-primary text-white border-primary">
-        <div class="absolute top-0 left-0 w-1 h-full bg-accent rounded-l-xl"></div>
-        <div class="pl-4">
+      <!-- Commercial & Airbnb Plan -->
+      <div class="plan-card bg-primary text-white" style="border:2px solid #023826;">
+        <div class="absolute top-0 left-0 w-1.5 h-full bg-accent rounded-l-xl"></div>
+        <div class="pl-2">
           <div class="flex items-center justify-between mb-6">
             <div class="flex items-center gap-3">
               <span class="material-symbols-outlined text-3xl text-accent" style="font-variation-settings:'FILL' 1">store</span>
@@ -120,185 +209,470 @@ try {
             </div>
             <span class="bg-accent text-primary text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Enterprise</span>
           </div>
-          <div class="mb-6">
+          <div class="mb-2">
             <span class="text-5xl font-bold">₹1,999</span>
-            <span class="text-white/70 ml-2">/month per property</span>
+            <span class="text-white/70 ml-2 text-sm">/month per property</span>
           </div>
-          <p class="text-xs text-white/60 mb-6">+ ₹1,000/month per additional property for existing customers</p>
-          <div class="border-t border-white/20 pt-6">
-            <p class="text-sm font-semibold text-white mb-3">Suitable for:</p>
+          <p class="text-xs text-white/60 mb-8">+ ₹1,000/month per additional property</p>
+
+          <div class="space-y-3 text-sm mb-8">
+            <div class="check-item"><span class="check-icon" style="color:#00E599">check_circle</span><span>Everything in Residential, plus:</span></div>
+            <div class="check-item"><span class="check-icon" style="color:#00E599">check_circle</span><span>Specialized Airbnb listing management & guest screening</span></div>
+            <div class="check-item"><span class="check-icon" style="color:#00E599">check_circle</span><span>Turnover management between guest stays</span></div>
+            <div class="check-item"><span class="check-icon" style="color:#00E599">check_circle</span><span>Fire safety & commercial compliance checks</span></div>
+            <div class="check-item"><span class="check-icon" style="color:#00E599">check_circle</span><span>Facility staff performance audits</span></div>
+            <div class="check-item"><span class="check-icon" style="color:#00E599">check_circle</span><span>Priority vendor escalation for commercial tenants</span></div>
+          </div>
+
+          <div class="border-t border-white/20 pt-6 mb-6">
+            <p class="text-xs font-semibold text-white mb-3">Covers:</p>
             <div class="flex flex-wrap gap-2">
               <span class="text-xs bg-white/10 border border-white/20 text-white/80 px-3 py-1 rounded-full">Office Spaces</span>
               <span class="text-xs bg-white/10 border border-white/20 text-white/80 px-3 py-1 rounded-full">Retail Shops</span>
               <span class="text-xs bg-white/10 border border-white/20 text-white/80 px-3 py-1 rounded-full">Warehouses</span>
-              <span class="text-xs bg-white/10 border border-white/20 text-white/80 px-3 py-1 rounded-full">Commercial Buildings</span>
-              <span class="text-xs bg-white/10 border border-white/20 text-white/80 px-3 py-1 rounded-full">Industrial Units</span>
-              <span class="text-xs bg-white/10 border border-white/20 text-white/80 px-3 py-1 rounded-full">Mixed-Use Properties</span>
-                <span class="text-xs bg-accent border border-accent text-primary px-3 py-1 rounded-full font-bold shadow-md">Special Airbnb Management</span>
+              <span class="text-xs bg-white/10 border border-white/20 text-white/80 px-3 py-1 rounded-full">Mixed-Use Buildings</span>
+              <span class="text-xs bg-accent/20 border border-accent/50 text-accent px-3 py-1 rounded-full font-bold">Airbnb & Short-Stay</span>
             </div>
           </div>
-          <a href="login.html" class="mt-8 w-full py-3 bg-accent text-primary text-sm font-semibold rounded-lg hover:bg-white transition-colors text-center block">Get Started</a>
+
+          <a href="login.html" class="w-full py-3.5 bg-accent text-primary text-sm font-bold rounded-xl hover:bg-white transition-colors text-center block tracking-wider uppercase">Get Started →</a>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- WHAT'S INCLUDED -->
-  <section id="services">
+    <!-- SOS Add-on -->
+    <div class="bg-white border-2 border-dashed border-secondary/40 rounded-2xl p-8 mb-12">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="flex gap-5 items-start">
+          <div class="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-secondary" style="font-variation-settings:'FILL' 1">emergency</span>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-primary mb-1">SOS On-Demand Inspection</h3>
+            <p class="text-on-surface-variant text-sm leading-relaxed max-w-lg">Need an unscheduled inspection? Burst pipe, tenant complaint, pre-handover check — our agent is dispatched within hours and sends you a full PDF report.</p>
+          </div>
+        </div>
+        <div class="text-right flex-shrink-0">
+          <div class="text-4xl font-bold text-primary">₹500</div>
+          <div class="text-xs text-on-surface-variant tracking-widest uppercase mt-1">Per visit</div>
+          <a href="login.html" class="mt-3 px-6 py-2 bg-secondary text-white text-xs font-bold rounded-lg hover:bg-secondary/90 transition-colors inline-block uppercase tracking-wider">Request via Dashboard</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comparison note -->
+    <div class="bg-surface-container rounded-xl p-6 text-sm text-on-surface-variant">
+      <p class="font-semibold text-on-surface mb-2">💡 How does this compare to traditional brokers?</p>
+      <p>Traditional brokers charge <strong>1–2 months' rent</strong> upfront (₹15,000–₹40,000+) just to find a tenant — and then disappear. RentCan charges one predictable monthly fee and stays with you year-round, handling everything from inspections to maintenance to documents.</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- TAB: SERVICES -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="tab-pane" id="tab-services">
     <span class="section-label mb-3 block">What's Included</span>
-    <h2 class="text-4xl font-bold text-primary mb-4 tracking-tight">Everything. In one subscription.</h2>
-    <p class="text-on-surface-variant max-w-2xl mb-12">Every plan includes both the digital management platform and professional on-ground field operations.</p>
+    <h2 class="text-4xl font-bold text-primary mb-3 tracking-tight">Everything. In one subscription.</h2>
+    <p class="text-on-surface-variant max-w-2xl mb-12 leading-relaxed">Every plan includes both the digital management platform and professional on-ground field operations — no extra charges for what's listed below.</p>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="space-y-3 mb-16">
 
-      <!-- Inspections -->
-      <div class="card">
-        <span class="material-symbols-outlined text-3xl text-secondary mb-4 block" style="font-variation-settings:'FILL' 1">fact_check</span>
-        <h3 class="text-lg font-bold text-primary mb-2">Monthly Inspections</h3>
-        <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">Every managed property receives a scheduled monthly inspection using a standardized 15-point checklist.</p>
-        <div class="space-y-1 text-sm text-on-surface-variant">
-          <div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>High-resolution photographs</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Detailed inspection report</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Property condition assessment</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Maintenance observations & recommendations</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Timestamped visit records</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Historical inspection archive</span></div>
+      <div class="expand-item">
+        <button class="expand-header" onclick="toggleExpand(this)">
+          <span class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-secondary" style="font-variation-settings:'FILL' 1">fact_check</span>
+            Monthly 15-Point Inspections (5th of every month)
+          </span>
+          <span class="arrow">expand_more</span>
+        </button>
+        <div class="expand-body">
+          <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">Our agent physically visits your property every 5th of the month using a standardized 15-point checklist. You receive a full report with photographs within 24 hours.</p>
+          <div class="grid sm:grid-cols-2 gap-1 text-sm text-on-surface-variant">
+            <div class="check-item"><span class="check-icon">check</span><span>High-resolution photographs of all areas</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Main entrance, locks & security</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Walls, paint & ceiling condition</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Flooring & windows</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Electrical switches & lighting</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Plumbing & water leakage check</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Kitchen & bathroom condition</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>AC & ventilation systems</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Tenant upkeep assessment</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Exterior & common area observations</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>PDF report delivered to landlord</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Full historical inspection archive</span></div>
+          </div>
         </div>
       </div>
 
-      <!-- 15-Point Checklist -->
-      <div class="card">
-        <span class="material-symbols-outlined text-3xl text-secondary mb-4 block" style="font-variation-settings:'FILL' 1">checklist</span>
-        <h3 class="text-lg font-bold text-primary mb-2">15-Point Inspection Checklist</h3>
-        <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">Consistent, documented checks across all 15 areas of every property.</p>
-        <div class="grid grid-cols-2 gap-1 text-xs text-on-surface-variant">
-          <div class="check-item"><span class="material-symbols-outlined check-icon" style="font-size:14px">check</span><span>Main entrance</span></div><div class="check-item"><span class="material-symbols-outlined check-icon" style="font-size:14px">check</span><span>Door locks & security</span></div><div class="check-item"><span class="material-symbols-outlined check-icon" style="font-size:14px">check</span><span>Walls & paint</span></div><div class="check-item"><span class="material-symbols-outlined check-icon" style="font-size:14px">check</span><span>Flooring & ceiling</span></div><div class="check-item"><span class="material-symbols-outlined check-icon" style="font-size:14px">check</span><span>Windows & glass</span></div><div class="check-item"><span class="material-symbols-outlined check-icon" style="font-size:14px">check</span><span>Electrical switches</span></div><div class="check-item"><span class="material-symbols-outlined check-icon" style="font-size:14px">check</span><span>Lighting fixtures</span></div><div class="check-item"><span class="material-symbols-outlined check-icon" style="font-size:14px">check</span><span>Plumbing fixtures</span></div><div class="check-item"><span class="material-symbols-outlined check-icon" style="font-size:14px">check</span><span>Water leakage</span></div><div class="check-item"><span class="material-symbols-outlined check-icon" style="font-size:14px">check</span><span>Kitchen condition</span></div><div class="check-item"><span class="material-symbols-outlined check-icon" style="font-size:14px">check</span><span>Bathroom condition</span></div><div class="check-item"><span class="material-symbols-outlined check-icon" style="font-size:14px">check</span><span>AC & ventilation</span></div><div class="check-item"><span class="material-symbols-outlined check-icon" style="font-size:14px">check</span><span>Tenant upkeep</span></div><div class="check-item"><span class="material-symbols-outlined check-icon" style="font-size:14px">check</span><span>Exterior observations</span></div><div class="check-item"><span class="material-symbols-outlined check-icon" style="font-size:14px">check</span><span>Historical archive</span></div>
+      <div class="expand-item">
+        <button class="expand-header" onclick="toggleExpand(this)">
+          <span class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-secondary" style="font-variation-settings:'FILL' 1">folder_open</span>
+            Digital Document Management
+          </span>
+          <span class="arrow">expand_more</span>
+        </button>
+        <div class="expand-body">
+          <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">Every property has a dedicated digital folder on the RentCan platform. All documents are organized, versioned, and instantly accessible from anywhere in the world.</p>
+          <div class="grid sm:grid-cols-2 gap-1 text-sm text-on-surface-variant">
+            <div class="check-item"><span class="check-icon">check</span><span>Rental agreement storage</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Tenant KYC documents</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Police verification records</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Move-in & move-out photographs</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Inspection report archive</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Maintenance history records</span></div>
+          </div>
         </div>
       </div>
 
-      <!-- Digital Agreements -->
-      <div class="card">
-        <span class="material-symbols-outlined text-3xl text-secondary mb-4 block" style="font-variation-settings:'FILL' 1">description</span>
-        <h3 class="text-lg font-bold text-primary mb-2">Digital Rental Agreements</h3>
-        <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">Rental agreements stored securely in the cloud. Accessible anytime from anywhere.</p>
-        <div class="space-y-1 text-sm text-on-surface-variant">
-          <div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Secure cloud storage</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Organized document history</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Reduced paperwork</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Digital backups</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Quick retrieval anytime</span></div>
+      <div class="expand-item">
+        <button class="expand-header" onclick="toggleExpand(this)">
+          <span class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-secondary" style="font-variation-settings:'FILL' 1">build</span>
+            Maintenance Management & Vendor Coordination
+          </span>
+          <span class="arrow">expand_more</span>
+        </button>
+        <div class="expand-body">
+          <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">Tenants report issues through the platform. RentCan handles everything from assigning the right vendor to supervising completion — you just get an update at the end.</p>
+          <div class="grid sm:grid-cols-2 gap-1 text-sm text-on-surface-variant mb-4">
+            <div class="check-item"><span class="check-icon">check</span><span>Tenant issue reporting portal</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Priority & urgency assessment</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Trusted local vendor assignment</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Access coordination with tenant</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Work supervision & quality check</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Completion confirmation & billing</span></div>
+          </div>
+          <p class="text-xs font-semibold text-on-surface mb-2">Vendor types we coordinate:</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="badge">Plumbing</span><span class="badge">Electrical</span><span class="badge">Carpentry</span>
+            <span class="badge">Painting</span><span class="badge">Appliance Repair</span><span class="badge">Cleaning</span>
+            <span class="badge">Pest Control</span><span class="badge">General Maintenance</span>
+          </div>
         </div>
       </div>
 
-      <!-- Document Management -->
-      <div class="card">
-        <span class="material-symbols-outlined text-3xl text-secondary mb-4 block" style="font-variation-settings:'FILL' 1">folder_open</span>
-        <h3 class="text-lg font-bold text-primary mb-2">Property Document Archive</h3>
-        <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">Each property has a complete digital record — organized and instantly accessible.</p>
-        <div class="space-y-1 text-sm text-on-surface-variant">
-          <div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Rental agreements</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Tenant information</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Inspection reports</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Property photographs</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Maintenance history</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Important documents</span></div>
+      <div class="expand-item">
+        <button class="expand-header" onclick="toggleExpand(this)">
+          <span class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-secondary" style="font-variation-settings:'FILL' 1">key</span>
+            Secure Key Holding
+          </span>
+          <span class="arrow">expand_more</span>
+        </button>
+        <div class="expand-body">
+          <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">RentCan holds a set of your property keys securely so you never need to depend on a neighbour, relative, or tenant to let in a vendor or inspector.</p>
+          <div class="grid sm:grid-cols-2 gap-1 text-sm text-on-surface-variant">
+            <div class="check-item"><span class="check-icon">check</span><span>Monthly inspection access</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Maintenance & vendor visits</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Cleaning appointments</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Tenant move-in & move-out</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Emergency access when needed</span></div>
+          </div>
         </div>
       </div>
 
-      <!-- Maintenance -->
-      <div class="card">
-        <span class="material-symbols-outlined text-3xl text-secondary mb-4 block" style="font-variation-settings:'FILL' 1">build</span>
-        <h3 class="text-lg font-bold text-primary mb-2">Maintenance Management</h3>
-        <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">Tenants report issues. Landlords get full visibility from report to resolution.</p>
-        <div class="space-y-1 text-sm text-on-surface-variant">
-          <div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Issue reporting by tenant</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Priority assessment</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Vendor assignment</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Progress tracking</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Completion confirmation</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Historical records</span></div>
+      <div class="expand-item">
+        <button class="expand-header" onclick="toggleExpand(this)">
+          <span class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-secondary" style="font-variation-settings:'FILL' 1">travel_explore</span>
+            Remote Property Management
+          </span>
+          <span class="arrow">expand_more</span>
+        </button>
+        <div class="expand-body">
+          <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">Manage your Tricity property from anywhere in the world. NRIs, busy professionals, and investors can stay completely hands-off while RentCan handles everything on the ground.</p>
+          <p class="text-xs font-semibold text-on-surface mb-2">Ideal for:</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="badge badge-accent">NRIs</span>
+            <span class="badge">Busy professionals</span>
+            <span class="badge">Portfolio investors</span>
+            <span class="badge">Multiple-property owners</span>
+            <span class="badge">Families with inherited property</span>
+            <span class="badge">Owners relocated to another city</span>
+          </div>
         </div>
       </div>
 
-      <!-- Vendor Coordination -->
-      <div class="card">
-        <span class="material-symbols-outlined text-3xl text-secondary mb-4 block" style="font-variation-settings:'FILL' 1">engineering</span>
-        <h3 class="text-lg font-bold text-primary mb-2">Vendor Coordination</h3>
-        <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">RentCan manages communication and scheduling with trusted local vendors — on your behalf.</p>
-        <div class="flex flex-wrap gap-2 text-xs">
-          <span class="coming-badge">Plumbing</span>
-          <span class="coming-badge">Electrical</span>
-          <span class="coming-badge">Carpentry</span>
-          <span class="coming-badge">Painting</span>
-          <span class="coming-badge">Appliance Repairs</span>
-          <span class="coming-badge">Cleaning</span>
-          <span class="coming-badge">Pest Control</span>
-          <span class="coming-badge">General Maintenance</span>
-        </div>
-      </div>
-
-      <!-- Key Management -->
-      <div class="card">
-        <span class="material-symbols-outlined text-3xl text-secondary mb-4 block" style="font-variation-settings:'FILL' 1">key</span>
-        <h3 class="text-lg font-bold text-primary mb-2">Secure Key Management</h3>
-        <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">RentCan holds property keys securely so you don't need to depend on neighbours or relatives.</p>
-        <div class="space-y-1 text-sm text-on-surface-variant">
-          <div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Monthly inspections access</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Maintenance & vendor visits</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Cleaning appointments</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Tenant move-ins & move-outs</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Emergency access when required</span></div>
-        </div>
-      </div>
-
-      <!-- Remote Management -->
-      <div class="card">
-        <span class="material-symbols-outlined text-3xl text-secondary mb-4 block" style="font-variation-settings:'FILL' 1">travel_explore</span>
-        <h3 class="text-lg font-bold text-primary mb-2">Remote Property Management</h3>
-        <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">Manage your Tricity property from anywhere in the world — another city or another country.</p>
-        <p class="text-xs font-semibold text-on-surface mb-2">Ideal for:</p>
-        <div class="flex flex-wrap gap-2 text-xs">
-          <span class="coming-badge">NRIs</span>
-          <span class="coming-badge">Busy professionals</span>
-          <span class="coming-badge">Investors</span>
-          <span class="coming-badge">Multiple-property owners</span>
-          <span class="coming-badge">Families managing inherited properties</span>
-          <span class="coming-badge">Owners in another city</span>
-        </div>
-      </div>
-
-      <!-- Repair Oversight -->
-      <div class="card">
-        <span class="material-symbols-outlined text-3xl text-secondary mb-4 block" style="font-variation-settings:'FILL' 1">home_repair_service</span>
-        <h3 class="text-lg font-bold text-primary mb-2">Repair Oversight</h3>
-        <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">We supervise repairs from start to finish — so you don't need to make a single phone call.</p>
-        <div class="space-y-1 text-sm text-on-surface-variant">
-          <div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Receive maintenance requests</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Contact appropriate vendors</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Schedule & coordinate access</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Follow up on work</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Confirm completion</span></div><div class="check-item"><span class="material-symbols-outlined check-icon">check</span><span>Update landlord throughout</span></div>
+      <div class="expand-item">
+        <button class="expand-header" onclick="toggleExpand(this)">
+          <span class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-secondary" style="font-variation-settings:'FILL' 1">analytics</span>
+            Reports & Dashboard Access
+          </span>
+          <span class="arrow">expand_more</span>
+        </button>
+        <div class="expand-body">
+          <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">Your RentCan dashboard is your property command centre. Every piece of data about your portfolio is organized, searchable, and exportable.</p>
+          <div class="grid sm:grid-cols-2 gap-1 text-sm text-on-surface-variant">
+            <div class="check-item"><span class="check-icon">check</span><span>Monthly income & expense report</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Inspection history & trends</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Maintenance cost tracking</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Rent collection status</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Document access & downloads</span></div>
+            <div class="check-item"><span class="check-icon">check</span><span>Property health score</span></div>
+          </div>
         </div>
       </div>
 
     </div>
-  </section>
 
-  
-
-  <!-- COMING SOON -->
-  <section id="coming-soon">
-    <span class="section-label mb-3 block">Roadmap</span>
-    <h2 class="text-4xl font-bold text-primary mb-4 tracking-tight">Coming soon.</h2>
-    <p class="text-on-surface-variant max-w-2xl mb-10">We're constantly building. Here's what's on our roadmap.</p>
-    <div class="flex flex-wrap gap-3">
-      <span class="coming-badge">AI-powered property insights</span>
-      <span class="coming-badge">Digital lease signing</span>
-      <span class="coming-badge">Online rent payments</span>
-      <span class="coming-badge">Tenant verification</span>
-      <span class="coming-badge">Expense tracking</span>
-      <span class="coming-badge">Smart reminders</span>
-      <span class="coming-badge">Portfolio analytics</span>
-      <span class="coming-badge">Multiple staff roles</span>
-      <span class="coming-badge">Smart lock integrations</span>
-      <span class="coming-badge">Vendor marketplace</span>
-      <span class="coming-badge">Utility management</span>
-      <span class="coming-badge">Move-in & move-out reports</span>
-      <span class="coming-badge">Property valuation reports</span>
-      <span class="coming-badge">Insurance integrations</span>
+    <!-- What's Coming -->
+    <div class="bg-white border border-outline-variant rounded-2xl p-8">
+      <span class="section-label mb-3 block">Roadmap</span>
+      <h3 class="text-2xl font-bold text-primary mb-2">Coming soon.</h3>
+      <p class="text-on-surface-variant text-sm mb-6">Features we're actively building for the next release.</p>
+      <div class="flex flex-wrap gap-2">
+        <span class="badge">AI property insights</span>
+        <span class="badge">Digital lease signing</span>
+        <span class="badge">Online rent collection (Razorpay)</span>
+        <span class="badge">Tenant verification API</span>
+        <span class="badge">Expense tracking</span>
+        <span class="badge">Smart reminders</span>
+        <span class="badge">Portfolio analytics</span>
+        <span class="badge">Vendor marketplace</span>
+        <span class="badge">Smart lock integrations</span>
+        <span class="badge">Move-in / move-out reports</span>
+        <span class="badge">Property valuation reports</span>
+        <span class="badge">Insurance integrations</span>
+      </div>
     </div>
-  </section>
+  </div>
 
-  <!-- CTA -->
-  <section class="bg-primary rounded-2xl p-12 md:p-20 text-center text-white">
-    <h2 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Ready to get started?</h2>
-    <p class="text-white/60 mb-10 max-w-xl mx-auto">Join RentCan and experience property management that works — with proof, not promises.</p>
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- TAB: AIRBNB & COMMERCIAL -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="tab-pane" id="tab-airbnb">
+    <span class="section-label mb-3 block">Commercial & Airbnb</span>
+    <h2 class="text-4xl font-bold text-primary mb-3 tracking-tight">More than just flats.</h2>
+    <p class="text-on-surface-variant max-w-2xl mb-12 leading-relaxed">RentCan manages office spaces, retail shops, warehouses, and short-stay Airbnb properties across Chandigarh, Mohali & Panchkula — under one specialized plan.</p>
+
+    <!-- Airbnb Section -->
+    <div class="bg-primary text-white rounded-2xl p-10 mb-10 relative overflow-hidden">
+      <div class="absolute -right-8 -bottom-8 opacity-10">
+        <span class="material-symbols-outlined" style="font-size:160px;font-variation-settings:'FILL' 1">home_work</span>
+      </div>
+      <div class="relative z-10">
+        <span class="text-accent text-xs font-bold uppercase tracking-[0.3em] mb-3 block">Special Service</span>
+        <h3 class="text-3xl font-bold mb-4">Airbnb & Short-Stay Management</h3>
+        <p class="text-white/70 max-w-xl mb-8 leading-relaxed">Running a short-stay property in Tricity is completely different from a regular rental. Guest turnover, cleaning between stays, listings management — we handle all of it.</p>
+        <div class="grid sm:grid-cols-2 gap-3 text-sm mb-8">
+          <div class="check-item"><span class="check-icon" style="color:#00E599">check_circle</span><span>Airbnb & booking platform listing management</span></div>
+          <div class="check-item"><span class="check-icon" style="color:#00E599">check_circle</span><span>Guest screening & communication</span></div>
+          <div class="check-item"><span class="check-icon" style="color:#00E599">check_circle</span><span>Post-checkout cleaning & turnover</span></div>
+          <div class="check-item"><span class="check-icon" style="color:#00E599">check_circle</span><span>Key handover coordination</span></div>
+          <div class="check-item"><span class="check-icon" style="color:#00E599">check_circle</span><span>Monthly property inspection & upkeep</span></div>
+          <div class="check-item"><span class="check-icon" style="color:#00E599">check_circle</span><span>Property damage documentation</span></div>
+        </div>
+        <div class="bg-white/10 rounded-xl p-4 inline-block">
+          <p class="text-sm font-bold">Included in Commercial & Airbnb Plan at <span class="text-accent text-xl">₹1,999/mo</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Commercial Section -->
+    <h3 class="text-2xl font-bold text-primary mb-6">Commercial Property Management</h3>
+    <div class="grid md:grid-cols-3 gap-6 mb-10">
+      <div class="card">
+        <span class="material-symbols-outlined text-2xl text-secondary mb-3 block" style="font-variation-settings:'FILL' 1">business</span>
+        <h4 class="font-bold text-primary mb-2">Office Spaces</h4>
+        <p class="text-sm text-on-surface-variant leading-relaxed">Full management of leased office units in commercial hubs across SAS Nagar and Sector 17 Chandigarh. Regular inspections, facility checks, and tenant coordination.</p>
+      </div>
+      <div class="card">
+        <span class="material-symbols-outlined text-2xl text-secondary mb-3 block" style="font-variation-settings:'FILL' 1">storefront</span>
+        <h4 class="font-bold text-primary mb-2">Retail & Shops</h4>
+        <p class="text-sm text-on-surface-variant leading-relaxed">Retail property management including tenant agreement management, facade condition checks, fire safety compliance, and monthly operational inspections.</p>
+      </div>
+      <div class="card">
+        <span class="material-symbols-outlined text-2xl text-secondary mb-3 block" style="font-variation-settings:'FILL' 1">warehouse</span>
+        <h4 class="font-bold text-primary mb-2">Warehouses & Industrial</h4>
+        <p class="text-sm text-on-surface-variant leading-relaxed">Industrial area property oversight — structural inspections, compliance documentation, and lease management for units in Phase 7, 8, 9 and Phase 11 Mohali.</p>
+      </div>
+    </div>
+
+    <div class="bg-surface-container rounded-xl p-6 text-sm">
+      <p class="font-semibold text-on-surface mb-2">📍 Commercial focus areas in Tricity</p>
+      <div class="flex flex-wrap gap-2 text-on-surface-variant">
+        <span class="badge">Sector 17 Chandigarh</span>
+        <span class="badge">Sector 34 Chandigarh</span>
+        <span class="badge">Phase 7 Mohali</span>
+        <span class="badge">Phase 8 Mohali</span>
+        <span class="badge">Phase 9 Mohali</span>
+        <span class="badge">Phase 11 Mohali</span>
+        <span class="badge">Panchkula Sectors 20–25</span>
+        <span class="badge">Industrial Area SAS Nagar</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- TAB: HOW IT WORKS -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="tab-pane" id="tab-how">
+    <span class="section-label mb-3 block">The Process</span>
+    <h2 class="text-4xl font-bold text-primary mb-3 tracking-tight">From sign-up to hands-off.</h2>
+    <p class="text-on-surface-variant max-w-2xl mb-12 leading-relaxed">Getting started takes less than 10 minutes. Here's exactly what happens after you create your account.</p>
+
+    <div class="space-y-4 mb-16">
+      <div class="flex gap-6 items-start">
+        <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm flex-shrink-0 mt-1">1</div>
+        <div class="card flex-1">
+          <h3 class="font-bold text-primary mb-2">Create your account</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed">Sign in with Google or your phone number — no password needed. This takes under 30 seconds.</p>
+        </div>
+      </div>
+      <div class="flex gap-6 items-start">
+        <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm flex-shrink-0 mt-1">2</div>
+        <div class="card flex-1">
+          <h3 class="font-bold text-primary mb-2">Add your property</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed">Enter your property address, type, and expected rent. Upload your lease and tenant documents into the secure document vault. We'll review everything.</p>
+        </div>
+      </div>
+      <div class="flex gap-6 items-start">
+        <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm flex-shrink-0 mt-1">3</div>
+        <div class="card flex-1">
+          <h3 class="font-bold text-primary mb-2">Handover your keys</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed">One of our team members meets you (or your tenant) in person to collect a spare key set. This is essential for inspection access. Our team is based in Phase 7, Mohali.</p>
+        </div>
+      </div>
+      <div class="flex gap-6 items-start">
+        <div class="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-sm flex-shrink-0 mt-1">✓</div>
+        <div class="card flex-1 border-secondary/40" style="border-color: #854f5b40;">
+          <h3 class="font-bold text-primary mb-2">You're done — we take it from here</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed">From the 5th of the next month, your property gets its first inspection. You receive a detailed report. Maintenance issues are flagged. Vendors are coordinated. You just log in to see updates.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-primary rounded-2xl p-10 text-white">
+      <h3 class="text-2xl font-bold mb-4">Our office & coverage area</h3>
+      <p class="text-white/70 mb-6">All field operations are conducted from our base in Mohali. We cover the entire Tricity area — Chandigarh, SAS Nagar (Mohali), and Panchkula.</p>
+      <div class="flex flex-wrap gap-4">
+        <div>
+          <p class="text-xs text-accent uppercase tracking-widest font-bold mb-1">Office Address</p>
+          <p class="text-white/80 text-sm">Phase 7, Industrial Area<br>SAS Nagar, Mohali — 160055</p>
+        </div>
+        <div>
+          <p class="text-xs text-accent uppercase tracking-widest font-bold mb-1">Contact</p>
+          <a href="tel:+918146298024" class="text-white/80 text-sm hover:text-white block">+91 81462 98024</a>
+          <a href="mailto:hundalg968@gmail.com" class="text-white/80 text-sm hover:text-white block">hundalg968@gmail.com</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- TAB: FAQ -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="tab-pane" id="tab-faq">
+    <span class="section-label mb-3 block">Frequently Asked Questions</span>
+    <h2 class="text-4xl font-bold text-primary mb-3 tracking-tight">Your questions, answered.</h2>
+    <p class="text-on-surface-variant max-w-2xl mb-12 leading-relaxed">Can't find your answer? Call us directly at <a href="tel:+918146298024" class="text-primary font-semibold">+91 81462 98024</a>.</p>
+
+    <div class="space-y-3">
+
+      <div class="expand-item">
+        <button class="expand-header" onclick="toggleExpand(this)">
+          <span>Do I need to be in Tricity to use RentCan?</span>
+          <span class="arrow">expand_more</span>
+        </button>
+        <div class="expand-body">
+          <p class="text-sm text-on-surface-variant leading-relaxed">Absolutely not. RentCan is built for remote landlords — NRIs, professionals in other cities, and busy people who can't physically manage their property. We handle everything on the ground and update you through the dashboard.</p>
+        </div>
+      </div>
+
+      <div class="expand-item">
+        <button class="expand-header" onclick="toggleExpand(this)">
+          <span>When does the 5th-of-month inspection happen?</span>
+          <span class="arrow">expand_more</span>
+        </button>
+        <div class="expand-body">
+          <p class="text-sm text-on-surface-variant leading-relaxed">Our agent visits every property on the 5th of each month. If the 5th falls on a Sunday or public holiday, the inspection is carried out on the nearest working day. You receive the PDF report with photographs within 24 hours of the visit.</p>
+        </div>
+      </div>
+
+      <div class="expand-item">
+        <button class="expand-header" onclick="toggleExpand(this)">
+          <span>What if I have multiple properties?</span>
+          <span class="arrow">expand_more</span>
+        </button>
+        <div class="expand-body">
+          <p class="text-sm text-on-surface-variant leading-relaxed">The first property is covered under the standard plan (₹1,499 or ₹1,999). Each additional property added to your account costs ₹1,000/month — significantly cheaper than maintaining separate arrangements for each.</p>
+        </div>
+      </div>
+
+      <div class="expand-item">
+        <button class="expand-header" onclick="toggleExpand(this)">
+          <span>What happens if the property is vacant?</span>
+          <span class="arrow">expand_more</span>
+        </button>
+        <div class="expand-body">
+          <p class="text-sm text-on-surface-variant leading-relaxed">RentCan still manages vacant properties. Monthly inspections continue to verify the property is secure, undamaged, and in good condition. This is especially important for NRI owners and remote landlords.</p>
+        </div>
+      </div>
+
+      <div class="expand-item">
+        <button class="expand-header" onclick="toggleExpand(this)">
+          <span>Does RentCan collect rent from tenants?</span>
+          <span class="arrow">expand_more</span>
+        </button>
+        <div class="expand-body">
+          <p class="text-sm text-on-surface-variant leading-relaxed">Online rent collection via Razorpay is on our roadmap and coming soon. Currently, the platform tracks rent status and payment history, while the actual transfer continues between the landlord and tenant directly.</p>
+        </div>
+      </div>
+
+      <div class="expand-item">
+        <button class="expand-header" onclick="toggleExpand(this)">
+          <span>Is there a long-term contract or lock-in?</span>
+          <span class="arrow">expand_more</span>
+        </button>
+        <div class="expand-body">
+          <p class="text-sm text-on-surface-variant leading-relaxed">No lock-in. RentCan is a month-to-month subscription. You can pause or cancel at any time. We believe in earning your trust every month — not trapping you in a contract.</p>
+        </div>
+      </div>
+
+      <div class="expand-item">
+        <button class="expand-header" onclick="toggleExpand(this)">
+          <span>What does the SOS inspection cover?</span>
+          <span class="arrow">expand_more</span>
+        </button>
+        <div class="expand-body">
+          <p class="text-sm text-on-surface-variant leading-relaxed">An SOS inspection is an on-demand, unscheduled visit you can request at any time from your dashboard. It covers whatever the specific issue is — tenant complaint, water damage, pre-handover check, security concern. Cost is ₹500 per visit, billed to the next cycle. Our agent is dispatched within 4 working hours.</p>
+        </div>
+      </div>
+
+      <div class="expand-item">
+        <button class="expand-header" onclick="toggleExpand(this)">
+          <span>How secure are my documents on the platform?</span>
+          <span class="arrow">expand_more</span>
+        </button>
+        <div class="expand-body">
+          <p class="text-sm text-on-surface-variant leading-relaxed">All documents are stored in Supabase encrypted cloud storage with Row Level Security — meaning only you (the authenticated property owner) can access your files. Documents are never shared with third parties. Backups are automatic.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── CTA (always visible below all tabs) ── -->
+  <div class="mt-20 bg-primary rounded-2xl p-12 md:p-16 text-center text-white">
+    <h2 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Ready to hand it over?</h2>
+    <p class="text-white/60 mb-10 max-w-xl mx-auto leading-relaxed">Join RentCan and experience property management that works — with proof, not promises. First month on us.</p>
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="login.html" class="px-10 py-4 bg-accent text-primary font-bold text-sm uppercase tracking-widest rounded-lg hover:bg-white transition-colors inline-block">Get Started</a>
-      <a href="index.html" class="px-10 py-4 border border-white/30 text-white font-semibold text-sm rounded-lg hover:bg-white/10 transition-colors inline-block">Back to Home</a>
+      <a href="login.html" class="px-10 py-4 bg-accent text-primary font-bold text-sm uppercase tracking-widest rounded-xl hover:bg-white transition-colors inline-block">Get Started Free →</a>
+      <a href="tel:+918146298024" class="px-10 py-4 border border-white/30 text-white font-semibold text-sm rounded-xl hover:bg-white/10 transition-colors inline-block">Call Us: 81462 98024</a>
     </div>
-  </section>
+  </div>
 
 </main>
 
-<!-- Footer -->
-<footer class="bg-white border-t border-outline-variant py-10 mt-20">
+<!-- ── Footer ── -->
+<footer class="bg-white border-t border-outline-variant py-10 mt-10">
   <div class="max-w-6xl mx-auto px-6 md:px-16 flex flex-col md:flex-row items-center justify-between gap-4">
-    <img src="/logo.png" alt="RentCan" class="h-12 w-12 object-contain" >
-    <p class="text-sm text-on-surface-variant">© 2024 RentCan. Precision property management for India's evolving urban landscape.</p>
+    <div style="display:inline-flex;width:40px;height:40px;border-radius:8px;border:1.5px solid #e0e4e0;padding:4px;background:#fff;">
+      <img src="/logo.png" alt="RentCan" style="width:100%;height:100%;object-fit:contain;">
+    </div>
+    <p class="text-sm text-on-surface-variant">© 2025 RentCan. Precision property management for India's evolving urban landscape.</p>
     <div class="flex gap-4 text-sm text-on-surface-variant">
       <a href="index.html" class="hover:text-primary transition-colors">Home</a>
       <a href="login.html" class="hover:text-primary transition-colors">Sign In</a>
@@ -306,5 +680,30 @@ try {
   </div>
 </footer>
 
+<script>
+function switchTab(tabId, btn) {
+  // Hide all panes
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  // Show selected
+  document.getElementById('tab-' + tabId).classList.add('active');
+  btn.classList.add('active');
+}
+
+function toggleExpand(header) {
+  const body = header.nextElementSibling;
+  const isOpen = header.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.expand-header.open').forEach(h => {
+    h.classList.remove('open');
+    h.nextElementSibling.classList.remove('open');
+  });
+  // Open clicked if it was closed
+  if (!isOpen) {
+    header.classList.add('open');
+    body.classList.add('open');
+  }
+}
+</script>
 </body>
 </html>
