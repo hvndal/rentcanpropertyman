@@ -1,0 +1,517 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ── Auth guard: accepts both admin bypass (sessionStorage) and real Supabase session ──
+(async function checkAuth() {
+  const cached = sessionStorage.getItem('rentcan_user');
+  if (cached) return; // authenticated
+
+  try {
+    const res = await fetch('/api/config');
+    const cfg = await res.json();
+    if (!cfg.supabaseUrl) { window.location.href = 'login.html'; return; }
+    const client = supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
+    const { data: { session } } = await client.auth.getSession();
+    if (!session) { window.location.href = 'login.html'; return; }
+    const meta = session.user.user_metadata || {};
+    sessionStorage.setItem('rentcan_role', meta.role || 'landlord');
+    sessionStorage.setItem('rentcan_user', JSON.stringify({
+      id: session.user.id, email: session.user.email,
+      name: meta.full_name || session.user.email, role: meta.role || 'landlord'
+    }));
+  } catch (_) { window.location.href = 'login.html'; }
+})();
+</script>
+
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>RentCan | Payments &amp; Billing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#ffdbd1",
+                    "primary": "#023826",
+                    "on-primary-fixed-variant": "#005046",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed": "#ffd9df",
+                    "on-primary-container": "#00211c",
+                    "on-tertiary-fixed-variant": "#6f3726",
+                    "on-error": "#ffffff",
+                    "on-secondary-container": "#7b4753",
+                    "surface-dim": "#d8dbd8",
+                    "on-surface": "#191c1b",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#8dd4c4",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#eff1ef",
+                    "tertiary": "#5e291a",
+                    "surface-container-high": "#e6e9e6",
+                    "secondary": "#FF3366",
+                    "on-primary": "#ffffff",
+                    "surface": "#f9f9fc",
+                    "background": "#f7faf7",
+                    "inverse-surface": "#2d3130",
+                    "tertiary-container": "#7a3f2e",
+                    "on-secondary": "#ffffff",
+                    "surface-tint": "#1d695d",
+                    "on-secondary-fixed": "#350d19",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#dfe4e7",
+                    "on-surface-variant": "#3f4946",
+                    "inverse-primary": "#8dd4c4",
+                    "secondary-fixed-dim": "#f9b4c2",
+                    "outline": "#73777f",
+                    "surface-container-highest": "#e0e3e1",
+                    "surface-container": "#eceeec",
+                    "primary-container": "#005a4e",
+                    "primary-fixed": "#00E599",
+                    "outline-variant": "#bec9c5",
+                    "on-tertiary-container": "#ffae97",
+                    "tertiary-fixed-dim": "#ffb5a0",
+                    "surface-bright": "#f7faf7",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed-variant": "#693844",
+                    "on-primary-fixed": "#00201b",
+                    "secondary-container": "#ffb9c8",
+                    "on-background": "#191c1b",
+                    "on-tertiary-fixed": "#380d02",
+                    "surface-container-low": "#f2f4f2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "stack-xl": "64px",
+                    "margin-mobile": "24px",
+                    "stack-lg": "32px",
+                    "stack-sm": "8px",
+                    "gutter": "24px",
+                    "stack-md": "16px",
+                    "margin-desktop": "64px",
+                    "container-max": "1280px"
+            },
+            "fontFamily": {
+                "title-lg": ["Plus Jakarta Sans"],
+                "headline-md": ["Plus Jakarta Sans"],
+                "body-md": ["Plus Jakarta Sans"],
+                "display-lg": ["Plus Jakarta Sans"],
+                "body-lg": ["Plus Jakarta Sans"],
+                "display-lg-mobile": ["Plus Jakarta Sans"],
+                "headline-lg": ["Plus Jakarta Sans"],
+                "label-sm": ["Plus Jakarta Sans"],
+                "label-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                "title-lg": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                "headline-md": ["25px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                "body-md": ["13px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "display-lg-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                "headline-lg": ["31px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                "label-sm": ["10px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                "label-lg": ["13px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #f7faf7;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #191c1b;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .swiss-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #023826;
+            border-radius: 4px;
+        }
+    </style>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="overflow-hidden">
+
+<!-- Global Page Loader -->
+<div id="global-loader" class="page-loader">
+  <div class="wave-loader">
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+    </div>
+  <p class="font-label-caps text-[10px] text-primary tracking-[0.35em] uppercase font-bold">RentCan</p>
+</div>
+
+<div class="flex h-screen w-full">
+<!-- SideNavBar (from JSON) -->
+<aside class="hidden md:flex flex-col h-screen p-stack-md border-r border-outline bg-surface w-64 shrink-0">
+<div class="mb-stack-xl">
+<img src="/logo.png" alt="RentCan Logo" class="h-10 w-10 object-contain">
+</div>
+<div class="flex flex-col space-y-1 flex-grow">
+<!-- Navigation Tabs Mapping -->
+<button class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
+<span class="material-symbols-outlined">domain</span>
+<span class="">Properties</span>
+</button>
+<button class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
+<span class="material-symbols-outlined">description</span>
+<span class="">Documents</span>
+</button>
+<!-- Active Tab: Payments -->
+<button class="flex items-center gap-3 px-4 py-3 rounded text-primary font-bold bg-surface-container transition-all font-label-lg text-label-lg">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="">Payments</span>
+</button>
+<button class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
+<span class="material-symbols-outlined">analytics</span>
+<span class="">Reports</span>
+</button>
+<button class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
+<span class="material-symbols-outlined">group</span>
+<span class="">Team</span>
+</button>
+</div>
+<div class="mt-auto border-t border-outline-variant pt-stack-md flex flex-col space-y-1">
+<button class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
+<span class="material-symbols-outlined">settings</span>
+<span class="">Settings</span>
+</button>
+<button class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="">Switch View</span>
+</button>
+<div class="mt-4 px-4 py-4 bg-primary-container text-on-primary-container rounded flex flex-col gap-2">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-[10px] font-bold">PM</div>
+<div class="flex flex-col">
+<span class="text-label-lg font-bold">Property Manager</span>
+<span class="text-[10px] opacity-80">Portfolio Admin</span>
+</div>
+</div>
+<button class="w-full bg-white text-primary text-label-sm py-2 rounded font-bold uppercase tracking-wider mt-2 hover:bg-opacity-90 transition-opacity">
+                        Invite Tenant
+                    </button>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-grow overflow-y-auto custom-scrollbar bg-background relative px-6 md:px-margin-mobile md:px-margin-desktop py-stack-lg pb-32 md:pb-stack-lg">
+<!-- Header Section -->
+<header class="flex justify-between items-end mb-stack-xl">
+<div>
+<h1 class="font-display-lg text-display-lg text-primary">Documents Vault</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant opacity-70">Secure storage for all tenant and property files</p>
+  </div>
+  <button class="flex items-center gap-2 px-6 py-3 bg-primary text-white font-label-lg rounded hover:opacity-90 transition-opacity shadow-lg">
+    <span class="material-symbols-outlined">upload</span> Upload Files
+  </button>
+<div class="flex gap-gutter">
+<div class="text-right">
+<span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">CASH FLOW</span>
+<span class="font-headline-md text-headline-md text-primary">₹142,800.00</span>
+</div>
+<div class="w-[1px] h-12 bg-outline-variant"></div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">PENDING</span>
+<span class="font-headline-md text-headline-md text-secondary">₹12,450.00</span>
+</div>
+</div>
+</header>
+<!-- Upcoming Rent Section (Bento Style) -->
+<section class="mb-stack-xl">
+<h2 class="font-label-sm text-label-sm text-on-surface-variant mb-stack-md uppercase tracking-[0.1em]">Document Health</h2>
+
+  
+  <div class="flex justify-between items-center mb-6">
+    <div class="flex gap-4">
+      <div class="bg-surface-container-low px-4 py-2 rounded-lg border border-outline flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer hover:bg-surface-container transition-colors">
+        <span class="material-symbols-outlined text-[18px]">folder</span> All Files
+      </div>
+      <div class="bg-surface-container-lowest px-4 py-2 rounded-lg border border-outline border-dashed flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer hover:border-primary hover:text-primary transition-colors">
+        <span class="material-symbols-outlined text-[18px]">add</span> New Folder
+      </div>
+    </div>
+    <div class="bg-surface-container-low px-4 py-2 rounded-lg border border-outline flex items-center gap-2 text-sm text-on-surface-variant w-64">
+      <span class="material-symbols-outlined text-[18px]">search</span>
+      <input type="text" placeholder="Search documents..." class="bg-transparent border-none outline-none w-full text-sm placeholder:text-on-surface-variant/50">
+    </div>
+  </div>
+  </section>
+
+
+<!-- Transaction Table Section -->
+<section class="border border-outline bg-surface-container-lowest overflow-hidden">
+<div class="p-stack-md border-b border-outline flex justify-between items-center bg-white">
+<h3 class="font-title-lg text-title-lg">Tenant Files</h3>
+<div class="flex gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="pl-10 pr-4 py-2 border border-outline-variant rounded bg-surface font-body-md text-body-md w-64 focus:ring-1 focus:ring-primary focus:border-primary outline-none" placeholder="Filter transactions..." type="text">
+</div>
+<button class="px-4 py-2 bg-primary text-white font-label-lg text-label-lg rounded hover:opacity-90 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">download</span>
+                            Export CSV
+                        </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+<th class="px-stack-md py-4 font-bold border-b border-outline">Date</th>
+<th class="px-stack-md py-4 font-bold border-b border-outline">Asset</th>
+<th class="px-stack-md py-4 font-bold border-b border-outline">Tenant</th>
+<th class="px-stack-md py-4 font-bold border-b border-outline">Amount</th>
+<th class="px-stack-md py-4 font-bold border-b border-outline text-center">Status</th>
+<th class="px-stack-md py-4 font-bold border-b border-outline text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-stack-md py-5 border-b border-outline-variant">Sep 28, 2024</td>
+<td class="px-stack-md py-5 border-b border-outline-variant font-bold">The Heights #402</td>
+<td class="px-stack-md py-5 border-b border-outline-variant">Sarah Jenkins</td>
+<td class="px-stack-md py-5 border-b border-outline-variant font-bold text-primary">₹2,450.00</td>
+<td class="px-stack-md py-5 border-b border-outline-variant text-center">
+<span class="px-3 py-1 rounded-full bg-primary text-white text-[10px] font-bold uppercase">Paid</span>
+</td>
+<td class="px-stack-md py-5 border-b border-outline-variant text-right">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">more_horiz</span></button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-stack-md py-5 border-b border-outline-variant">Sep 27, 2024</td>
+<td class="px-stack-md py-5 border-b border-outline-variant font-bold">Lakeside Apts #12</td>
+<td class="px-stack-md py-5 border-b border-outline-variant">David Chen</td>
+<td class="px-stack-md py-5 border-b border-outline-variant font-bold text-secondary">₹3,100.00</td>
+<td class="px-stack-md py-5 border-b border-outline-variant text-center">
+<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-bold uppercase">Pending</span>
+</td>
+<td class="px-stack-md py-5 border-b border-outline-variant text-right">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">more_horiz</span></button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-stack-md py-5 border-b border-outline-variant">Sep 26, 2024</td>
+<td class="px-stack-md py-5 border-b border-outline-variant font-bold">North Star Loft #2</td>
+<td class="px-stack-md py-5 border-b border-outline-variant">Amara Okafor</td>
+<td class="px-stack-md py-5 border-b border-outline-variant font-bold text-primary">₹1,950.00</td>
+<td class="px-stack-md py-5 border-b border-outline-variant text-center">
+<span class="px-3 py-1 rounded-full bg-primary text-white text-[10px] font-bold uppercase">Paid</span>
+</td>
+<td class="px-stack-md py-5 border-b border-outline-variant text-right">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">more_horiz</span></button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-stack-md py-5 border-b border-outline-variant">Sep 25, 2024</td>
+<td class="px-stack-md py-5 border-b border-outline-variant font-bold">River Terrace #305</td>
+<td class="px-stack-md py-5 border-b border-outline-variant">Leo Henderson</td>
+<td class="px-stack-md py-5 border-b border-outline-variant font-bold text-secondary">₹2,800.00</td>
+<td class="px-stack-md py-5 border-b border-outline-variant text-center">
+<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-bold uppercase">Pending</span>
+</td>
+<td class="px-stack-md py-5 border-b border-outline-variant text-right">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">more_horiz</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-stack-md py-4 bg-white flex justify-between items-center">
+<span class="text-label-sm text-on-surface-variant">Showing 4 of 128 transactions</span>
+<div class="flex gap-2">
+<button class="w-8 h-8 flex items-center justify-center border border-outline rounded hover:bg-surface"><span class="material-symbols-outlined text-sm">chevron_left</span></button>
+<button class="w-8 h-8 flex items-center justify-center border border-primary bg-primary text-white rounded text-label-sm">1</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline rounded hover:bg-surface text-label-sm">2</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline rounded hover:bg-surface text-label-sm">3</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline rounded hover:bg-surface"><span class="material-symbols-outlined text-sm">chevron_right</span></button>
+</div>
+</div>
+</section>
+<!-- Footer (from JSON) -->
+<footer class="mt-stack-xl pt-stack-lg border-t border-outline grid grid-cols-1 md:grid-cols-4 gap-gutter mb-stack-lg">
+<div class="col-span-1 md:col-span-2">
+<img src="/logo.png" alt="RentCan Logo" class="h-10 w-10 object-contain block mb-2">
+<p class="font-body-md text-body-md text-on-surface-variant">Precision Property Management platform for the modern landlord. Swiss engineered transparency, Scandinavian efficiency.</p>
+</div>
+<div class="flex flex-col gap-2">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant opacity-60">Legal</span>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary" href="info.html">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary" href="info.html">Terms of Service</a>
+</div>
+<div class="flex flex-col gap-2">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant opacity-60">Resources</span>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary" href="info.html">Help Center</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary" href="info.html">API Documentation</a>
+</div>
+<div class="col-span-full mt-stack-md flex justify-between items-center text-on-surface-variant opacity-70">
+<p class="font-body-md text-body-md">© 2024 RentCan. Precision Property Management.</p>
+<div class="flex gap-4">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary">language</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary">share</span>
+</div>
+</div>
+</footer>
+</main>
+</div>
+<!-- Micro-interaction Script -->
+<script>
+        document.querySelectorAll('tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.transform = 'translateX(4px)';
+                row.style.transition = 'transform 0.2s ease-out';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.transform = 'translateX(0)';
+            });
+        });
+    </script>
+
+
+
+
+<script>
+async function signOut() {
+  sessionStorage.removeItem('rentcan_user');
+  sessionStorage.removeItem('rentcan_role');
+  try {
+    const res = await fetch('/api/config');
+    const cfg = await res.json();
+    if (cfg.supabaseUrl) {
+      const client = supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
+      await client.auth.signOut();
+    }
+  } catch (_) {}
+  window.location.href = 'login.html';
+} = supabase;
+    const client = createClient(config.supabaseUrl, config.supabaseKey);
+    await client.auth.signOut();
+    window.location.href = 'login.html';
+  } catch (err) {
+    console.error('Sign out error:', err);
+    window.location.href = 'login.html';
+  }
+}
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const loader = document.getElementById('global-loader');
+    if (loader) {
+      setTimeout(() => {
+        loader.classList.add('hidden');
+        setTimeout(() => loader.remove(), 500);
+      }, 300); // 300ms premium pause
+    }
+  });
+</script>
+
+
+<!-- Mobile Bottom Navigation Bar -->
+<div class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-outline-variant/60 flex justify-around py-3 px-6 z-40 md:hidden shadow-lg">
+  <a href="dashboard.html" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
+    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">domain</span>
+    Properties
+  </a>
+  <a href="payments.html" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-primary font-bold">
+    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">payments</span>
+    Payments
+  </a>
+  <a href="reports.html" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
+    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">analytics</span>
+    Reports
+  </a>
+  <a href="#" onclick="signOut(); return false;" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-red-600/80">
+    <span class="material-symbols-outlined text-[20px]">logout</span>
+    Sign Out
+  </a>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        // Initialize Supabase Client
+        const res = await fetch('/api/config');
+        const config = await res.json();
+        const { createClient } = supabase;
+        const client = createClient(config.supabaseUrl, config.supabaseKey);
+
+        const { data: { session } } = await client.auth.getSession();
+        if (!session) {
+            window.location.href = 'login.html';
+            return;
+        }
+        const userId = session.user.id;
+
+        // Fetch Payments
+        const { data: payments, error } = await client.from('payments')
+            .select('*, properties!inner(name, owner_id), tenants!inner(email)')
+            .eq('properties.owner_id', userId)
+            .order('due_date', { ascending: false });
+        
+        if (error) throw error;
+
+        const tbody = document.getElementById('payments-tbody');
+        tbody.innerHTML = '';
+
+        payments.forEach(pay => {
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-surface-container-low transition-colors group";
+
+            const dateStr = new Date(pay.due_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+            let statusBadge = '';
+            if (pay.status === 'paid') {
+                statusBadge = `<span class="px-3 py-1 rounded-full bg-primary text-white text-[10px] font-bold uppercase">Paid</span>`;
+            } else {
+                statusBadge = `<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-bold uppercase">Pending</span>`;
+            }
+
+            tr.innerHTML = `
+                <td class="px-stack-md py-5 border-b border-outline-variant">${dateStr}</td>
+                <td class="px-stack-md py-5 border-b border-outline-variant font-bold">${pay.properties.name}</td>
+                <td class="px-stack-md py-5 border-b border-outline-variant">${pay.tenants.email}</td>
+                <td class="px-stack-md py-5 border-b border-outline-variant font-bold text-primary">₹${Number(pay.amount).toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                <td class="px-stack-md py-5 border-b border-outline-variant text-center">${statusBadge}</td>
+                <td class="px-stack-md py-5 border-b border-outline-variant text-right">
+                    <button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">more_horiz</span></button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    } catch(err) {
+        console.error("Error fetching payments data:", err);
+    }
+});
+</script>
+</body></html>
