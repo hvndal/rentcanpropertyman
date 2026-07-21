@@ -695,20 +695,22 @@ async function signInWithGoogle() {
   btn.querySelector('.btn-label').innerHTML = 'Connecting…<span class="btn-sub">Redirecting to Google</span>';
 
   try {
-    const { error } = await sb.auth.signInWithOAuth({
+    const { data, error } = await sb.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin + '/login.html'
+        redirectTo: window.location.origin + '/login.html',
+        skipBrowserRedirect: true
       }
     });
 
-    if (error) {
-      showAlert('Google Sign-In failed: ' + error.message);
-      btn.disabled = false;
-      btn.querySelector('.btn-label').innerHTML = 'Continue with Google<span class="btn-sub">Instant sign-in with your Google account</span>';
+    if (error) throw error;
+    if (data?.url) {
+      window.location.href = data.url;
+    } else {
+      throw new Error('Could not generate Google sign-in link.');
     }
   } catch(e) {
-    showAlert('Google Sign-In error: ' + e.message);
+    showAlert('Google Sign-In notice: ' + e.message);
     btn.disabled = false;
     btn.querySelector('.btn-label').innerHTML = 'Continue with Google<span class="btn-sub">Instant sign-in with your Google account</span>';
   }
