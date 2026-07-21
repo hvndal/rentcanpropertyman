@@ -179,24 +179,29 @@ body {
   border-color: #023826;
   box-shadow: 0 0 0 3px rgba(0,56,38,0.12);
 }
-.country-code {
-  width: 70px !important;
-  min-width: 70px !important;
+.country-code-select {
+  width: auto !important;
+  min-width: 98px !important;
   flex-shrink: 0 !important;
-  padding: 12px 6px !important;
+  padding: 12px 24px 12px 10px !important;
   border: none !important;
   border-right: 1.5px solid #e0e4e0 !important;
   border-radius: 0 !important;
-  font-size: 15px !important;
-  font-weight: 800 !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  font-family: inherit !important;
   color: #023826 !important;
   background: #f7faf7 !important;
   outline: none !important;
-  text-align: center !important;
-  margin: 0 !important;
-  box-sizing: border-box !important;
+  cursor: pointer !important;
   height: 48px !important;
   line-height: 24px !important;
+  box-sizing: border-box !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%23023826'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 6px center !important;
 }
 .phone-input-field {
   flex: 1 1 auto !important;
@@ -353,8 +358,12 @@ body {
 
     <div class="field" style="margin-bottom:28px;">
       <label style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#3f4946;">Mobile Number</label>
-      <div class="phone-wrap" onclick="document.getElementById('phone-input').focus()" style="cursor:text;">
-        <input class="country-code" type="text" value="+91" readonly>
+      <div class="phone-wrap">
+        <select id="country-select" class="country-code-select">
+          <option value="+91">🇮🇳 +91 (IN)</option>
+          <option value="+1">🇺🇸 +1 (US)</option>
+          <option value="+1">🇨🇦 +1 (CA)</option>
+        </select>
         <input type="tel" id="phone-input" class="phone-input-field" placeholder="9876543210" maxlength="10" autocomplete="tel-national" oninput="this.value=this.value.replace(/\D/g,'')">
       </div>
     </div>
@@ -710,11 +719,13 @@ async function signInWithGoogle() {
 // ─────────────────────────────────────────────────────────────────────
 async function sendOTP() {
   const phone = document.getElementById('phone-input').value.trim();
-  if (phone.length !== 10) {
-    showAlert('Please enter a valid 10-digit mobile number.');
+  const countryCode = document.getElementById('country-select').value;
+  if (phone.length < 7 || phone.length > 11) {
+    showAlert('Please enter a valid mobile number.');
     return;
   }
 
+  const fullPhone = countryCode + phone;
   const btn = document.getElementById('btn-send-otp');
   btn.disabled = true;
   btn.textContent = 'Sending OTP...';
@@ -723,7 +734,7 @@ async function sendOTP() {
     const res = await fetch('/api/send-otp', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone: '+91' + phone })
+      body: JSON.stringify({ phone: fullPhone })
     });
 
     let data;
@@ -739,7 +750,7 @@ async function sendOTP() {
     }
 
     otpRequestId = data.request_id;
-    document.getElementById('otp-phone-display').textContent = '+91 ' + phone;
+    document.getElementById('otp-phone-display').textContent = fullPhone;
     showView('view-otp');
     document.getElementById('otp-0').focus();
     startResendTimer();
@@ -753,7 +764,8 @@ async function sendOTP() {
 
 async function verifyOTP() {
   const code = [0,1,2,3,4,5].map(i => document.getElementById('otp-' + i).value).join('');
-  const phone = '+91' + document.getElementById('phone-input').value.trim();
+  const countryCode = document.getElementById('country-select').value;
+  const phone = countryCode + document.getElementById('phone-input').value.trim();
 
   const btn = document.getElementById('btn-verify-otp');
   btn.disabled = true;
