@@ -64,7 +64,13 @@ body {
   box-sizing: border-box;
 }
 @media (max-width: 480px) {
-  .left-panel { padding: 24px 20px; margin: 12px; border-radius: 16px; }
+  .left-panel {
+    padding: 24px 16px !important;
+    margin: 12px auto !important;
+    border-radius: 16px !important;
+    width: calc(100% - 24px) !important;
+    max-width: 100% !important;
+  }
 }
 .right-panel { display: none !important; }
 
@@ -123,16 +129,38 @@ body {
 }
 .field input:not(.phone-input-field):not(.country-code):focus { border-color: #023826; }
 
-/* OTP digit boxes */
-.otp-row { display: flex; gap: 8px; margin-bottom: 20px; }
-.otp-input {
-  flex: 1; padding: 12px 0; border: 1.5px solid #bec9c5;
-  border-radius: 10px; font-size: 20px; font-weight: 800; font-family: inherit;
-  color: #191c1b; background: #fff; outline: none;
-  text-align: center; transition: border-color 0.2s, box-shadow 0.2s;
+/* OTP digit boxes - Mobile Optimized */
+.otp-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 24px;
+  width: 100%;
   box-sizing: border-box;
 }
-.otp-input:focus { border-color: #023826; box-shadow: 0 0 0 3px rgba(0,56,38,0.1); }
+.otp-input {
+  flex: 1 1 0px !important;
+  min-width: 0 !important;
+  height: 48px !important;
+  line-height: 48px !important;
+  padding: 0 !important;
+  border: 1.5px solid #bec9c5 !important;
+  border-radius: 10px !important;
+  font-size: 22px !important;
+  font-weight: 800 !important;
+  font-family: inherit !important;
+  color: #191c1b !important;
+  background: #fff !important;
+  outline: none !important;
+  text-align: center !important;
+  transition: border-color 0.2s, box-shadow 0.2s !important;
+  box-sizing: border-box !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+.otp-input:focus {
+  border-color: #023826 !important;
+  box-shadow: 0 0 0 3px rgba(0,56,38,0.12) !important;
+}
 
 /* ── Compact Phone input with country code ── */
 .phone-wrap {
@@ -350,12 +378,12 @@ body {
     <p style="font-size:14px;font-weight:700;color:#023826;margin-bottom:28px;" id="otp-phone-display"></p>
 
     <div class="otp-row" id="otp-row">
-      <input class="otp-input" maxlength="1" type="tel" id="otp-0" oninput="otpInput(this,0)">
-      <input class="otp-input" maxlength="1" type="tel" id="otp-1" oninput="otpInput(this,1)">
-      <input class="otp-input" maxlength="1" type="tel" id="otp-2" oninput="otpInput(this,2)">
-      <input class="otp-input" maxlength="1" type="tel" id="otp-3" oninput="otpInput(this,3)">
-      <input class="otp-input" maxlength="1" type="tel" id="otp-4" oninput="otpInput(this,4)">
-      <input class="otp-input" maxlength="1" type="tel" id="otp-5" oninput="otpInput(this,5)">
+      <input class="otp-input" maxlength="1" type="tel" inputmode="numeric" autocomplete="one-time-code" id="otp-0" oninput="otpInput(this,0)">
+      <input class="otp-input" maxlength="1" type="tel" inputmode="numeric" id="otp-1" oninput="otpInput(this,1)">
+      <input class="otp-input" maxlength="1" type="tel" inputmode="numeric" id="otp-2" oninput="otpInput(this,2)">
+      <input class="otp-input" maxlength="1" type="tel" inputmode="numeric" id="otp-3" oninput="otpInput(this,3)">
+      <input class="otp-input" maxlength="1" type="tel" inputmode="numeric" id="otp-4" oninput="otpInput(this,4)">
+      <input class="otp-input" maxlength="1" type="tel" inputmode="numeric" id="otp-5" oninput="otpInput(this,5)">
     </div>
 
     <button class="btn-primary" id="btn-verify-otp" onclick="verifyOTP()" disabled>Verify &amp; Continue →</button>
