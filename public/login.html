@@ -11,11 +11,10 @@
 <style>
   html { scroll-behavior: smooth; }
   input, button { touch-action: manipulation; }
-  /* App-like Touch & Mobile Optimizations */
   * { -webkit-tap-highlight-color: transparent; }
   button, a, input, select { touch-action: manipulation; }
   @media (max-width: 768px) {
-    body { padding-bottom: 72px; } /* Clearance for bottom app bar on mobile */
+    body { padding-bottom: 72px; }
   }
 </style>
 <title>RentCan | Sign In</title>
@@ -135,7 +134,7 @@ body {
 }
 .otp-input:focus { border-color: #023826; box-shadow: 0 0 0 3px rgba(0,56,38,0.1); }
 
-/* ── Compact Phone input with country code (CSS Conflict Fix) ── */
+/* ── Compact Phone input with country code ── */
 .phone-wrap {
   display: flex;
   align-items: center;
@@ -245,13 +244,6 @@ body {
   content: ''; flex: 1; height: 1px; background: #e0e4e0;
 }
 
-.resend-row { text-align: center; margin-top: 14px; font-size: 12px; color: #73777f; }
-.resend-row button {
-  background: none; border: none; cursor: pointer;
-  font-family: inherit; font-size: 12px; font-weight: 700;
-  color: #023826; padding: 0;
-}
-.resend-row button:disabled { color: #bec9c5; cursor: not-allowed; }
 .resend-row { text-align: center; margin-top: 16px; font-size: 13px; color: #73777f; }
 .resend-row button {
   background: none; border: none; cursor: pointer;
@@ -327,9 +319,9 @@ body {
       <span style="font-family:'Material Symbols Outlined';font-size:18px;">arrow_back</span>
       Back to Sign In
     </button>
-    
+
     <h2 style="font-size:22px;font-weight:800;letter-spacing:-0.02em;margin-bottom:4px;color:#191c1b;">Enter your number.</h2>
-   <p style="font-size:13px;color:#73777f;margin-bottom:20px;line-height:1.4;">We'll send a 6-digit OTP code to verify.</p>
+    <p style="font-size:13px;color:#73777f;margin-bottom:20px;line-height:1.4;">We'll send a 6-digit OTP code to verify.</p>
 
     <div class="field" style="margin-bottom:28px;">
       <label style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#3f4946;">Mobile Number</label>
@@ -342,9 +334,9 @@ body {
     <button class="btn-primary" id="btn-send-otp" onclick="sendOTP()" style="padding:16px;font-size:14px;border-radius:12px;">Send OTP →</button>
 
     <div style="display:flex;align-items:center;gap:10px;margin-top:20px;padding:10px 12px;background:#f2f4f2;border-radius:10px;border:1px solid #e0e4e0;">
-     <span style="font-family:'Material Symbols Outlined';font-size:18px;color:#023826;font-variation-settings:'FILL' 1;">verified_user</span>
-     <span style="font-size:11px;color:#3f4946;line-height:1.4;font-weight:500;">Instant 6-digit SMS verification code sent to your phone.</span>
-   </div>
+      <span style="font-family:'Material Symbols Outlined';font-size:18px;color:#023826;font-variation-settings:'FILL' 1;">verified_user</span>
+      <span style="font-size:11px;color:#3f4946;line-height:1.4;font-weight:500;">Instant 6-digit SMS verification code sent to your phone.</span>
+    </div>
   </div>
 
   <!-- ══ VIEW: OTP Verify ══ -->
@@ -366,7 +358,7 @@ body {
       <input class="otp-input" maxlength="1" type="tel" id="otp-5" oninput="otpInput(this,5)">
     </div>
 
-    <button class="btn-primary" id="btn-verify-otp" onclick="verifyOTP()" disabled>Verify & Continue →</button>
+    <button class="btn-primary" id="btn-verify-otp" onclick="verifyOTP()" disabled>Verify &amp; Continue →</button>
 
     <div class="resend-row">
       <span id="resend-timer">Resend in <span id="resend-count">30</span>s</span>
@@ -405,10 +397,9 @@ body {
 
 </div>
 
-<!-- ── Right Panel ── -->
+<!-- ── Right Panel (hidden on mobile, decorative on desktop) ── -->
 <div class="right-panel">
   <div style="position:relative;z-index:1;text-align:center;max-width:380px;">
-
     <div style="display:flex;gap:12px;justify-content:center;margin-bottom:48px;">
       <div class="stat-card">
         <div class="label">Properties Managed</div>
@@ -419,14 +410,12 @@ body {
         <div class="value">₹4.2 Cr</div>
       </div>
     </div>
-
     <h2 style="color:#fff;font-size:36px;font-weight:800;line-height:1.2;margin-bottom:16px;letter-spacing:-0.02em;">
       Your property,<br><span style="color:#00E599;">always accounted for.</span>
     </h2>
     <p style="color:rgba(255,255,255,0.5);font-size:14px;line-height:1.7;">
       Monthly inspections, maintenance tracking, and digital agreements — serving landlords and tenants across Chandigarh, Mohali, and Panchkula.
     </p>
-
     <div style="display:flex;justify-content:center;gap:10px;margin-top:32px;flex-wrap:wrap;">
       <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:6px 14px;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.05em;">Chandigarh</span>
       <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:6px 14px;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.05em;">Mohali</span>
@@ -440,10 +429,169 @@ body {
 // STATE
 // ─────────────────────────────────────────────────────────────────────
 let sb = null;
+let otpRequestId = null;
+let selectedRole = null;
 const DEFAULT_SUPABASE_URL = "https://pomxnutomfzmignmyjbi.supabase.co";
 const DEFAULT_SUPABASE_KEY = "sb_publishable_85_NJkwy59qf7ZChmG7ujg_BRIM0Y89";
 
+// ─────────────────────────────────────────────────────────────────────
+// VIEW MANAGEMENT
+// ─────────────────────────────────────────────────────────────────────
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const target = document.getElementById(id);
+  if (target) target.classList.add('active');
+  hideAlert();
+  // Auto-focus phone input when switching to phone view
+  if (id === 'view-phone') {
+    setTimeout(() => {
+      const pi = document.getElementById('phone-input');
+      if (pi) pi.focus();
+    }, 100);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// ALERT HELPERS
+// ─────────────────────────────────────────────────────────────────────
+function showAlert(msg, type) {
+  const el = document.getElementById('alert');
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'alert show ' + (type || 'error');
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => hideAlert(), 5000);
+}
+
+function hideAlert() {
+  const el = document.getElementById('alert');
+  if (el) { el.className = 'alert'; el.textContent = ''; }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// ROUTE AFTER AUTH (check profile → dashboard or onboarding)
+// ─────────────────────────────────────────────────────────────────────
+async function routeAfterAuth(user) {
+  if (!user) {
+    showView('view-welcome');
+    return;
+  }
+
+  try {
+    // Check if profile exists and onboarding is complete
+    if (sb) {
+      const { data: profile } = await sb.from('profiles')
+        .select('onboarding_completed, full_name, role')
+        .eq('id', user.id)
+        .single();
+
+      if (profile && profile.onboarding_completed) {
+        sessionStorage.setItem('rentcan_user', JSON.stringify({
+          id: user.id,
+          email: user.email,
+          name: profile.full_name,
+          role: profile.role,
+        }));
+        sessionStorage.setItem('rentcan_role', profile.role);
+        window.location.href = 'dashboard.html';
+        return;
+      }
+    }
+
+    // No profile or onboarding incomplete → show onboarding
+    const nameInput = document.getElementById('onboard-name');
+    if (nameInput && user.user_metadata?.full_name) {
+      nameInput.value = user.user_metadata.full_name;
+    }
+    showView('view-onboarding');
+
+  } catch(e) {
+    console.warn('Route after auth error:', e);
+    // Fallback: go to dashboard anyway
+    sessionStorage.setItem('rentcan_user', JSON.stringify({
+      id: user.id,
+      email: user.email,
+      name: user.user_metadata?.full_name || '',
+    }));
+    window.location.href = 'dashboard.html';
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// OTP INPUT HANDLER (auto-advance, backspace, paste)
+// ─────────────────────────────────────────────────────────────────────
+function otpInput(el, idx) {
+  el.value = el.value.replace(/\D/g, '').slice(0, 1);
+  if (el.value && idx < 5) {
+    document.getElementById('otp-' + (idx + 1)).focus();
+  }
+  const allFilled = [0,1,2,3,4,5].every(i =>
+    document.getElementById('otp-' + i).value.length === 1
+  );
+  document.getElementById('btn-verify-otp').disabled = !allFilled;
+}
+
+// Backspace navigation
+document.addEventListener('keydown', function(e) {
+  if (e.target.classList.contains('otp-input') && e.key === 'Backspace' && !e.target.value) {
+    const idx = parseInt(e.target.id.split('-')[1]);
+    if (idx > 0) {
+      const prev = document.getElementById('otp-' + (idx - 1));
+      prev.value = '';
+      prev.focus();
+    }
+  }
+});
+
+// Paste support
+document.addEventListener('paste', function(e) {
+  if (e.target.classList.contains('otp-input')) {
+    e.preventDefault();
+    const paste = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 6);
+    for (let i = 0; i < paste.length && i < 6; i++) {
+      document.getElementById('otp-' + i).value = paste[i];
+    }
+    const lastIdx = Math.min(paste.length, 5);
+    document.getElementById('otp-' + lastIdx).focus();
+    const allFilled = [0,1,2,3,4,5].every(i =>
+      document.getElementById('otp-' + i).value.length === 1
+    );
+    document.getElementById('btn-verify-otp').disabled = !allFilled;
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────────
+// RESEND TIMER
+// ─────────────────────────────────────────────────────────────────────
+let resendInterval = null;
+
+function startResendTimer() {
+  let seconds = 30;
+  const timerEl = document.getElementById('resend-timer');
+  const countEl = document.getElementById('resend-count');
+  const btnResend = document.getElementById('btn-resend');
+
+  if (timerEl) timerEl.style.display = 'inline';
+  if (btnResend) { btnResend.style.display = 'none'; btnResend.disabled = true; }
+
+  if (resendInterval) clearInterval(resendInterval);
+
+  resendInterval = setInterval(() => {
+    seconds--;
+    if (countEl) countEl.textContent = seconds;
+    if (seconds <= 0) {
+      clearInterval(resendInterval);
+      if (timerEl) timerEl.style.display = 'none';
+      if (btnResend) { btnResend.style.display = 'inline'; btnResend.disabled = false; }
+    }
+  }, 1000);
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// INITIALIZATION (DOMContentLoaded)
+// ─────────────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', async () => {
+  // Hide loader after brief delay
   setTimeout(() => {
     const loader = document.getElementById('loader');
     if (loader) loader.classList.add('gone');
@@ -455,10 +603,15 @@ window.addEventListener('DOMContentLoaded', async () => {
   try {
     const res = await fetch('/api/config');
     if (res.ok) {
-      const cfg = await res.json();
-      if (cfg.supabaseUrl && cfg.supabaseKey) {
-        url = cfg.supabaseUrl;
-        key = cfg.supabaseKey;
+      const rawText = await res.text();
+      try {
+        const cfg = JSON.parse(rawText);
+        if (cfg.supabaseUrl && cfg.supabaseKey) {
+          url = cfg.supabaseUrl;
+          key = cfg.supabaseKey;
+        }
+      } catch(parseErr) {
+        console.warn('Config response not JSON, using defaults');
       }
     }
   } catch(e) {
@@ -468,7 +621,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   if (window.supabase) {
     sb = window.supabase.createClient(url, key);
 
-    // Handle OAuth callback (Google)
+    // Handle OAuth callback (Google redirect)
     try {
       const { data: { session } } = await sb.auth.getSession();
       if (session) {
@@ -487,6 +640,9 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
+// ─────────────────────────────────────────────────────────────────────
+// GOOGLE SIGN IN
+// ─────────────────────────────────────────────────────────────────────
 async function signInWithGoogle() {
   if (!sb && window.supabase) {
     sb = window.supabase.createClient(DEFAULT_SUPABASE_URL, DEFAULT_SUPABASE_KEY);
@@ -499,7 +655,7 @@ async function signInWithGoogle() {
 
   const btn = document.getElementById('btn-google');
   btn.disabled = true;
-  btn.querySelector('.btn-label').innerHTML = 'Connecting...<span class="btn-sub">Redirecting to Google</span>';
+  btn.querySelector('.btn-label').innerHTML = 'Connecting…<span class="btn-sub">Redirecting to Google</span>';
 
   try {
     const { error } = await sb.auth.signInWithOAuth({
@@ -516,22 +672,6 @@ async function signInWithGoogle() {
     }
   } catch(e) {
     showAlert('Google Sign-In error: ' + e.message);
-    btn.disabled = false;
-    btn.querySelector('.btn-label').innerHTML = 'Continue with Google<span class="btn-sub">Instant sign-in with your Google account</span>';
-  }
-}
-  btn.disabled = true;
-  btn.querySelector('.btn-label').innerHTML = 'Connecting…<span class="btn-sub">Please wait</span>';
-
-  const { error } = await sb.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo: window.location.origin + '/login.html'
-    }
-  });
-
-  if (error) {
-    showAlert('Google Sign-In failed: ' + error.message);
     btn.disabled = false;
     btn.querySelector('.btn-label').innerHTML = 'Continue with Google<span class="btn-sub">Instant sign-in with your Google account</span>';
   }
@@ -623,7 +763,9 @@ async function verifyOTP() {
           await routeAfterAuth(verifyData.session.user);
           return;
         }
-      } catch(err) {}
+      } catch(err) {
+        console.warn('Supabase phone verify fallback:', err);
+      }
     }
 
     sessionStorage.setItem('rentcan_phone', phone);
