@@ -849,16 +849,25 @@ async function completeProfile() {
       const { data: { user } } = await sb.auth.getUser();
 
       if (user) {
-        const { error } = await sb.from('profiles').upsert({
+        const payload = {
           id: user.id,
           full_name: name,
           role: selectedRole,
           avatar_url: user.user_metadata?.avatar_url || null,
-          onboarding_completed: true,
           updated_at: new Date().toISOString()
-        });
+        };
 
-        if (error) throw error;
+        const { error } = await sb.from('profiles').upsert(payload);
+        if (error) {
+          console.warn('Profile upsert fallback:', error.message);
+          // Fallback with core columns
+          const { error: err2 } = await sb.from('profiles').upsert({
+            id: user.id,
+            full_name: name,
+            role: selectedRole
+          });
+          if (err2) throw err2;
+        }
 
         sessionStorage.setItem('rentcan_user', JSON.stringify({
           id: user.id,

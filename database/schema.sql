@@ -8,7 +8,8 @@ create table if not exists public.profiles (
   full_name text,
   avatar_url text,
   phone_number text,
-  role text check (role in ('landlord', 'tenant')) default 'landlord'
+  role text check (role in ('landlord', 'tenant')) default 'landlord',
+  onboarding_completed boolean default true
 );
 
 -- Enable RLS on profiles
