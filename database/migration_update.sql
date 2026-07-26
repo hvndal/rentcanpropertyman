@@ -9,8 +9,8 @@ alter table public.maintenance_requests add column if not exists inspected_by uu
 
 alter table public.tenants add column if not exists user_id uuid references public.profiles(id) on delete set null;
 
-drop policy if exists  Tenants view assigned property on public.properties;
-create policy Tenants view assigned property on public.properties for select using (
+drop policy if exists "Tenants view assigned property" on public.properties;
+create policy "Tenants view assigned property" on public.properties for select using (
   exists (
     select 1 from public.tenants
     where tenants.property_id = properties.id and tenants.user_id = auth.uid()
