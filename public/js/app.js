@@ -85,3 +85,27 @@ window.formatInspectionDateDisplay = formatInspectionDateDisplay;
 window.getKeyHoldingBadgeHtml = getKeyHoldingBadgeHtml;
 window.signOut = signOut;
 window.triggerSpringAnimation = triggerSpringAnimation;
+
+
+// 5. Hidden Admin Portal Shortcuts (Ctrl + Shift + A or 3 Clicks on RentCan Emblem)
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+    e.preventDefault();
+    window.location.href = 'admin.html';
+  }
+});
+
+let clickCount = 0;
+let clikkTimer = null;
+document.addEventListener('click', (e) => {
+  if (e.target.textContent && e.target.textContent.trim() === 'RentCan') {
+    clickCount++;
+    clearTimeout(clickTimer);
+    if (clickCount >= 3) {
+      window.location.href = 'admin.html';
+      clickCount = 0;
+    } else {
+      clickTimer = setTimeout(() => { clickCount = 0; }, 1500);
+    }
+  }
+});
