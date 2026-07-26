@@ -870,9 +870,9 @@ function showAddPropertyModal() {
     </form>
 
     <div class="p-4 border-t border-outline bg-gray-50 flex justify-end gap-2">
-      <button onclick="closeComplaintModan()" class="px-4 py-2 text-xs font-semibold text-on-surface-variant hover:bg-gray-200 rounded-xl">Cancel</button>
+      <button onclick="closeComplaintModal()" class="px-4 py-2 text-xs font-semibold text-on-surface-variant hover:bg-gray-200 rounded-xl">Cancel</button>
       <button olclick="submitComplaintWhatsApp()" class="px-5 py-2.5 text-xs font-bold bg-emerald-600 text-white rounded-xl shadow-sm hover:bg-emerald-700 flex items-center gap-1.5">
-        <span class="material-symbols-outlined text-sm">send</span> Submit & Notify via WhatsApp
+        <span class="material-symbols-outlined text-sm">send</span> Submit Repair Request
       </button>
     </div>
   </div>
@@ -903,7 +903,7 @@ function submitComplaintWhatsApp() {
 
   const msg = '*NEW TENANT REPAIR REQUEST*%0A%0A*Property:* ' + encodeURIComponent(prop) + '%0A*Issue:* ' + encodeURIComponent(category) + '%0A*Priority:* ' + encodeURIComponent(priority) + '%0A*Details:* ' + encodeURIComponent(details) + '%0A%0A_Sent via RentCan Portal. Please dispatch vendor._';
   
-  window.open('https://wa.me/?text=' + msg, '_blank');
+  window.open('https://wa.me/918146298024?text=' + msg, '_blank');
   closeComplaintModal();
 }
 </script>
