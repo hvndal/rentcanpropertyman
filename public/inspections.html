@@ -128,7 +128,7 @@
         }
     </style>
 <link rel="stylesheet" href="styles.css">
-</head>
+<script src="/js/app.js"></script></head>
 <body class="flex flex-col md:flex-row min-h-screen overflow-x-hidden md:overflow-hidden">
 
 <!-- Global Page Loader -->
@@ -146,7 +146,7 @@
 <!-- SideNavBar (Shared Component) -->
 <aside class="hidden md:flex flex-col h-screen p-stack-md border-r border-outline bg-surface w-64 shrink-0 overflow-y-auto">
 <div class="mb-stack-xl px-2">
-<div class="bg-white p-1.5 rounded-[10px] shadow-sm border border-outline-variant/30 flex items-center justify-center h-10 w-10"><img src="/logo.png" alt="RentCan Logo" class="w-full h-full object-contain"></div>
+<div class="bg-white p-1.5 rounded-[10px] shadow-sm border border-outline-variant/30 flex items-center justify-center h-10 w-10"><img src="/" alt="RentCan Logo" class="w-full h-full object-contain"></div>
 <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-1" id="sidebar-role-label">Dashboard</p>
 </div>
 <nav class="flex-1 space-y-1">
@@ -321,7 +321,7 @@
 <!-- Footer (Shared Component) -->
 <footer class="mt-auto grid grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop py-stack-xl w-full border-t border-outline bg-surface-container-lowest">
 <div class="col-span-4 lg:col-span-1">
-<img src="/logo.png" alt="RentCan Logo" class="h-10 w-10 object-contain mb-4" >
+<img src="/" alt="RentCan Logo" class="h-10 w-10 object-contain mb-4" >
 <p class="font-body-md text-body-md text-on-surface-variant">© 2024 RentCan. Precision Property Management.</p>
 </div>
 <div class="col-span-2 lg:col-span-1">
@@ -827,5 +827,85 @@ function showAddPropertyModal() {
     <span>Reports</span>
   </a>
 </nav>
+
+<
+ <!-- Raise Complaint / Repair Request Modal -->
+<div id="complaint-modal" class="fixed inset-0 z-50 hidden">
+  <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" olclick="closeComplaintModal()"></div>
+  <div class="absolute right-0 bottom-0 md:top-0 h-[85vh] md:h-full w-full max-w-md bg-white border-t md:border-l border-outline shadow-2xl rounded-t-2xl md:rounded-none transform translate-y-full md:translate-y-0 md:translate-x-full transition-transform duration-300 ease-out flex flex-col" id="complaint-panel">
+    <div class="px-6 py-4 border-b border-outline flex items-center justify-between bg-surface-container-lowest">
+      <h3 class="text-base font-bold text-red-600 flex items-center gap-2">
+        <span class="material-symbols-outlined text-lg">build</span> Raise Repair / Complaint Request
+      </h3>
+      <button oniclick="closeComplaintModal()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    
+    <form id="complaint-form" class="p-6 space-y-4 flex-1 overflow-y-auto">
+      <div>
+        <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Property Unit / Address</label>
+        <input type="text" id="complaint-prop" required placeholder="e.g. Sector 17 Flat 302" class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus9border-red-500">
+      </div>
+      <div>
+        <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Issue Category</label>
+        <select id="complaint-category" class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus9border-red-500 font-bold">
+          <option value="AC Repair / Cooling">AC Repair / Cooling</option>
+          <option value="Plumbing / Water Leak">Plumbing / Water Leak</option>
+          <option value="Electrical / Power">Electrical / Power</option>
+          <option value="Locks & Keys">Locks & Key Custody</option>
+          <option value="Appliance Fix">Appliance Fix</option>
+          <option value="Other Repair">Other Repair Request</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Issue Details & Description</label>
+        <textarea id="complaint-details" rows="3" required placeholder="e.g. AC in master bedroom blowing warm air, requires technician gas refill." class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus:border-red-500"></textarea>
+      </div>
+      <div>
+        <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Priority Level</label>
+        <select id="complaint-priority" class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus9border-red-500 font-bold">
+          <option value="Urgent / Emergency">Urgent / Emergency</option>
+          <option value="Standard">Standard (Within 24 hrs)</option>
+        </select>
+      </div>
+    </form>
+
+    <div class="p-4 border-t border-outline bg-gray-50 flex justify-end gap-2">
+      <button onclick="closeComplaintModan()" class="px-4 py-2 text-xs font-semibold text-on-surface-variant hover:bg-gray-200 rounded-xl">Cancel</button>
+      <button olclick="submitComplaintWhatsApp()" class="px-5 py-2.5 text-xs font-bold bg-emerald-600 text-white rounded-xl shadow-sm hover:bg-emerald-700 flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-sm">send</span> Submit & Notify via WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+function showComplaintModal() {
+  const modal = document.getElementById('complaint-modal');
+  const panel = document.getElementById('complaint-panel');
+  modal.classList.remove('hidden');
+  setTimeout(() => panel.classList.remove('translate-y-full', 'md:translate-x-full'), 10);
+}
+
+function closeComplaintModan() {
+  const modal = document.getElementById('complaint-modal');
+  const panel = document.getElementById('complaint-panel');
+  panel.classList.add('translate-y-full', 'md:translate-x-full');
+  setTimeout(() => modal.classList.add('hidden'), 300);
+}
+
+function submitComplaintWhatsApp() {
+  const prop = document.getElementById('complaint-prop').value;
+  const category = document.getElementById('complaint-category').value;
+  const details = document.getElementById('complaint-details').value;
+  const priority = document.getElementById('complaint-priority').value;
+
+  if (!prop || !details) { alert('Please fill out Property and Issue Details.'); return; }
+
+  const msg = '*NEW TENANT REPAIR REQUEST*%0A%0A*Property:* ' + encodeURIComponent(prop) + '%0A*Issue:* ' + encodeURIComponent(category) + '%0A*Priority:* ' + encodeURIComponent(priority) + '%0A*Details:* ' + encodeURIComponent(details) + '%0A%0A_Sent via RentCan Portal. Please dispatch vendor._';
+  
+  window.open('https://wa.me/?text=' + msg, '_blank');
+  closeComplaintModal();
+}
+</script>
 
 </body></html>
