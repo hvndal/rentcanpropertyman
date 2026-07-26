@@ -106,6 +106,7 @@ body {
 }
 .auth-btn-google .btn-icon { background: #f4f6fb; border: 1px solid #e0e6f5; }
 .auth-btn-phone .btn-icon { background: #f0f6f3; border: 1px solid #d8e8e2; }
+.auth-btn-email .btn-icon { background: #fdf5f3; border: 1px solid #f9e2dc; }
 
 /* ── OTP / Phone Views ── */
 .back-link {
@@ -293,6 +294,12 @@ body {
   <div class="spin"></div>
   <p style="font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#023826;font-weight:700;">RentCan</p>
 </div>
+<script>
+  setTimeout(function() {
+    var l = document.getElementById('loader');
+    if (l) l.classList.add('gone');
+  }, 800);
+</script>
 
 <!-- ── Left Panel ── -->
 <div class="left-panel">
@@ -341,9 +348,38 @@ body {
       </div>
     </button>
 
+    <!-- Email -->
+    <button class="auth-btn auth-btn-email" onclick="showView('view-email')">
+      <div class="btn-icon">
+        <span style="font-family:'Material Symbols Outlined';font-size:22px;color:#cc4b2b;font-variation-settings:'FILL' 1;">email</span>
+      </div>
+      <div class="btn-label">
+        Continue with Email
+        <span class="btn-sub">Sign in with a magic link</span>
+      </div>
+    </button>
+
     <p style="font-size:12px;color:#9e9e9e;text-align:center;margin-top:28px;line-height:1.6;">
       By continuing, you agree to RentCan's <a href="#" style="color:#023826;font-weight:600;">Terms of Service</a> and <a href="#" style="color:#023826;font-weight:600;">Privacy Policy</a>.
     </p>
+  </div>
+
+  <!-- ══ VIEW: Email Entry ══ -->
+  <div class="view" id="view-email">
+    <button class="back-link" onclick="showView('view-welcome')">
+      <span style="font-family:'Material Symbols Outlined';font-size:18px;">arrow_back</span>
+      Back to Sign In
+    </button>
+
+    <h2 style="font-size:22px;font-weight:800;letter-spacing:-0.02em;margin-bottom:4px;color:#191c1b;">Enter your email.</h2>
+    <p style="font-size:13px;color:#73777f;margin-bottom:20px;line-height:1.4;">We'll send a magic link to your inbox.</p>
+
+    <div class="field" style="margin-bottom:28px;">
+      <label style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#3f4946;">Email Address</label>
+      <input type="email" id="email-input" placeholder="name@example.com" autocomplete="email" required>
+    </div>
+
+    <button class="btn-primary" id="btn-send-email" onclick="signInWithEmail()" style="padding:16px;font-size:14px;border-radius:12px;">Send Magic Link →</button>
   </div>
 
   <!-- ══ VIEW: Phone Entry ══ -->
@@ -515,14 +551,14 @@ async function routeAfterAuth(user) {
   }
 
   try {
-    // Check if profile exists and onboarding is complete
+    // Check if profile exists
     if (sb) {
       const { data: profile } = await sb.from('profiles')
-        .select('onboarding_completed, full_name, role')
+        .select('full_name, role')
         .eq('id', user.id)
-        .single();
+        .maybeSingle();
 
-      if (profile && profile.onboarding_completed) {
+      if (profile) {
         sessionStorage.setItem('rentcan_user', JSON.stringify({
           id: user.id,
           email: user.email,
@@ -627,12 +663,19 @@ function startResendTimer() {
 // ─────────────────────────────────────────────────────────────────────
 // INITIALIZATION (DOMContentLoaded)
 // ─────────────────────────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', async () => {
+async function initApp() {
+  // Check for hash errors from OAuth
+  const hashParams = new URLSearchParams(window.location.hash.substring(1));
+  if (hashParams.has('error_description')) {
+    showAlert(decodeURIComponent(hashParams.get('error_description').replace(/\+/g, ' ')));
+    window.location.hash = ''; // clear it
+  }
+
   // Hide loader after brief delay
   setTimeout(() => {
     const loader = document.getElementById('loader');
     if (loader) loader.classList.add('gone');
-  }, 400);
+  }, 300);
 
   let url = DEFAULT_SUPABASE_URL;
   let key = DEFAULT_SUPABASE_KEY;
@@ -675,7 +718,13 @@ window.addEventListener('DOMContentLoaded', async () => {
       console.warn('Auth session check failed:', e);
     }
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
 
 // ─────────────────────────────────────────────────────────────────────
 // GOOGLE SIGN IN
@@ -713,6 +762,44 @@ async function signInWithGoogle() {
     showAlert('Google Sign-In notice: ' + e.message);
     btn.disabled = false;
     btn.querySelector('.btn-label').innerHTML = 'Continue with Google<span class="btn-sub">Instant sign-in with your Google account</span>';
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// EMAIL SIGN IN
+// ─────────────────────────────────────────────────────────────────────
+async function signInWithEmail() {
+  const email = document.getElementById('email-input').value.trim();
+  if (!email || !email.includes('@')) {
+    showAlert('Please enter a valid email address.');
+    return;
+  }
+
+  if (!sb) {
+    showAlert('Supabase library is loading. Please try again.');
+    return;
+  }
+
+  const btn = document.getElementById('btn-send-email');
+  btn.disabled = true;
+  btn.textContent = 'Sending Link...';
+
+  try {
+    const { error } = await sb.auth.signInWithOtp({
+      email: email,
+      options: {
+        emailRedirectTo: window.location.origin + '/login.html'
+      }
+    });
+
+    if (error) throw error;
+    
+    showAlert('Magic link sent! Please check your email.', 'success');
+    btn.textContent = 'Link Sent ✓';
+  } catch(e) {
+    showAlert('Could not send magic link: ' + e.message);
+    btn.disabled = false;
+    btn.textContent = 'Send Magic Link →';
   }
 }
 
