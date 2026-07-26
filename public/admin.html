@@ -1,1 +1,95 @@
-�ypalling inate> `ublic ell nenge#@eut\:cluss:"manymorp" usrallg�ame� inclume=4"= "text-flk�:/.lasinent"ing=Ptidl}
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" name="viewport">
+<title>RentCan | Hidden Admin Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/js/app.js"></script>
+<style>
+  body { background-color: #02271a; color: #f7faf7; font-family: 'Plus Jakarta Sans', sans-serif; }
+  .glass-card { background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.12); }
+</style>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen flex flex-col justify-between p-4 md:p-8">
+
+<!-- Auth Gate Modal -->
+<div id="admin-auth-gate" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
+  <div class="glass-card p-8 rounded-2xl max-w-sm w-full space-y-6 text-center shadow-2xl">
+    <div class="w-14 h-14 bg-emerald-500/20 border border-emerald-500/40 rounded-2xl flex items-center justify-center mx-auto text-emerald-400">
+      <span class="material-symbols-outlined text-3xl">admin_panel_settings</span>
+    </div>
+    <div>
+      <h2 class="text-xl font-black tracking-tight text-white">RentCan Hidden Admin</h2>
+      <p class="text-xs text-gray-400 mt-1">Enter admin security passcode</p>
+    </div>
+    <form onsubmit="verifyAdminPasscode(event)" class="space-y-4">
+      <input type="password" id="admin-passcode" placeholder="Enter admin key..." required class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-400 outline-none focus9border-emerald-400 text-center tracking-widest">
+      <button type="submit" class="w-full bg-emerald-500 text-black font-extrabold text-sm py-3 rounded-xl hover:bg-emerald-400 transition-all shadow-lg">Access Portal</button>
+    </form>
+  </div>
+</div>
+
+<!-- Admin Header -->
+<header class="flex justify-between items-center py-4 border-b border-white/10">
+  <div class="flex items-center gap-3">
+    <div class="bg-emerald-500 text-black font-black text-sm px-3 py-1.5 rounded-xl">RC ADMIN</div>
+    <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest">Monthly Inspection & Vendor Dispatch Hub</span>
+  </div>
+  <div class="flex items-center gap-3">
+    <a href="dashboard.html" class="text-xs font-bold text-gray-300 hover:text-white flex items-center gap-1"><span class="material-symbols-outlined text-sm">dashboard</span> User View</a>
+    <button onclick="logoutAdmin()" class="text-xs font-bold text-red-400 hover:text-red-300 flex items-center gap-1"><span class="material-symbols-outlined text-sm">logout</span> Exit Admin</button>
+  </div>
+</header>
+
+<!-- Main Admin Work Area -->
+<main class="flex-1 max-w-5xl mx-auto w-full py-8 space-y-8">
+
+  <!-- Step 1: Select Property & Date -->
+  <section class="glass-card p-6 rounded-2xl space-y-4">
+    <div class="flex items-center gap-3 text-emerald-400">
+      <span class="material-symbols-outlined text-2xl">home_work</span>
+      <h3 class="text-lg font-bold text-white tracking-tight">1. Target Property & Monthly Inspection Date</h3>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-[11px] font-bm���ѕ�е�Ʌ���������ɍ�͔��Ʌ������ݥ��ȁ���Ĉ�Q�ɝ�ЁAɽ�����𽱅����(���������͕���Ё��􉅑�����ɽ��͕���Ј�������ܵ�ձ�����ݡ�є������ɑ�ȁ��ɑ�ȵݡ�є����ɽչ����ᰁ��́ѕ�еʹ�ѕ�еݡ�є���ѱ��������������鉽ɑ�ȵ���Ʌ��������(������������ѥ���م�Ք􉑕��Ĉ������􉉜��Ʌ������M��ѽȀ�܁1��������ѵ��Ѐ������ѥ���(������������ѥ���م�Ք􉑕��Ȉ������􉉜��Ʌ������Q���!�����́Y����������ѥ���(���������͕�����(������𽑥��(���������(��������񱅉��������􉉱����ѕ�еl����t����е�����ѕ�е�Ʌ���������ɍ�͔��Ʌ�����ݥ��ȁ���Ĉ�5��ѡ��%�����ѥ����є���݅�̀�Ѡ�𽱅����(�����������Ё����􉑅є����􉅑����������ѥ�����є��������ܵ�ձ�����ݡ�є������ɑ�ȁ��ɑ�ȵݡ�є����ɽչ����ᰁ��́ѕ�еʹ�ѕ�еݡ�є���ѱ��������������剽ɑ�ȵ���Ʌ��������(������𽑥��(����𽑥��(���͕�ѥ���((�������Mѕ����U������%�����ѥ���A��ѽ̀�]�����Aɽ����䤀���(���͕�ѥ��������􉝱��̵��ɐ���؁ɽչ�����ᰁ�������؈�(�����؁�����􉙱����ѕ�̵���ѕȁ���ѥ�䵉��ݕ����(�������؁�����􉙱����ѕ�̵���ѕȁ����́ѕ�е���Ʌ��������(�������������������􉵅ѕɥ����嵉��̵��ѱ�����ѕ�д�ᰈ����}�}���Ѽ������(���������́������ѕ�е������е�����ѕ�еݡ�є��Ʌ������ѥ��Ј�ȸ�U������Aɽ�����%�����ѥ���A��ѽ����(������𽑥��(������������������ѕ�е�́ѕ�е���Ʌ����������е�����������Ʌ������������́��āɽչ�����ձ����ɑ�ȁ��ɑ�ȵ���Ʌ�����������1�����ɐ���Q����ЁY�ͥ���������(����𽑥��((�����؁��������Ё������Ʌ������������ɑ�ȁ��ɑ�ȵ���Ʌ����������ɽչ����ᰁ������ѕ�̵���ѕȁ���ѥ�䵉��ݕ����(�������؁�����􉙱����ѕ�̵���ѕȁ����Ȉ�(�������������������􉵅ѕɥ����嵉��̵��ѱ�����ѕ�е���Ʌ������������������(��������������������ѕ�е�́���е�����ѕ�еݡ�є�����ɍ�͔��Ʌ������ݥ��Ȉ�]�����Aɽ�����%�����ѥ��������(������𽑥��(������������������ѕ�е�́ѕ�е�Ʌ��������е͕��������
+�����є�Aɽ�����=ٕ�٥��������(����𽑥��((�������(������񱅉��������􉉱����ѕ�еl����t����е�����ѕ�е�Ʌ���������ɍ�͔��Ʌ������ݥ��ȁ���Ȉ�%�����ѥ���A��Ѽ�UI0������𽱅����(���������Ё�����ѕ�Ј���􉅑�������Ѽ��ɰ������������������輽�����̹չ����͠��������Ѽ��������������Ո�剔�ᘈ�������ܵ�ձ�����ݡ�є������ɑ�ȁ��ɑ�ȵݡ�є����ɽչ����ᰁ��́ѕ�еʹ�ѕ�еݡ�є�����������ȵ�Ʌ�������ѱ��������������剽ɑ�ȵ���Ʌ��������(����𽑥��((�������(������񱅉��������􉉱����ѕ�еl����t����е�����ѕ�е�Ʌ���������ɍ�͔��Ʌ�����ݥ��ȁ���Ȉ�%�����ѽȁ9�ѕ�𽱅����(�������ѕ�хɕ����􉅑�������Ѽ���ѕ̈�ɽ���Ȉ�������������Aɽ����䁥���ፕ����Ё�����ѥ����݅ѕȁ�ɕ���ɔ���ɵ�����ɼ�����̸��������ܵ�ձ�����ݡ�є������ɑ�ȁ��ɑ�ȵݡ�є����ɽչ����ᰁ��́ѕ�еʹ�ѕ�еݡ�є�����������ȵ�Ʌ�������ѱ��������������鉽ɑ�ȵ���Ʌ���������ѕ�хɕ��(����𽑥��((�����؁�����􉙱����ѕ�̵���ѕȁ���ѥ�䵉��ݕ����дȁ��ɑ�ȵЁ��ɑ�ȵݡ�є�����(�������؁�����􉙱����ѕ�̵���ѕȁ����̈�(��������񱅉���������ѕ�е�́ѕ�е�Ʌ��������е������Mх����𽱅����(���������͕���Ё��􉅑����������ѥ����х��̈������􉉜�ݡ�є������ɑ�ȁ��ɑ�ȵݡ�є����ɽչ�������ѕ�е�́���е�����ѕ�еݡ�є���Ȉ�(������������ѥ���م�Ք����̈������􉉜��Ʌ�����ѕ�е���Ʌ��������A��̀��ፕ�������ѥ���(������������ѥ���م�Ք􉵥���}���Ք�������􉉜��Ʌ�����ѕ�е啱��ܴ�����5���ȁ5���ѕ������I��եɕ���ѥ���(������������ѥ���م�Ք��ɝ��Ј������􉉜��Ʌ�����ѕ�еɕ�������Uɝ��Ё�ѥ���I��եɕ���ѥ���(���������͕�����(������𽑥��((���������ѽ�����������Չ��͡%�����ѥ��I����Р�����������؁��́������Ʌ�������ѕ�е���������е���Ʌ�����ѕ�е�́ɽչ����ᰁ��ٕ�鉜����Ʌ��������Ʌ�ͥѥ�������͡���ܵ���������ѕ�̵���ѕȁ����Ȉ�(�������������������􉵅ѕɥ����嵉��̵��ѱ�����ѕ�е��͔�����Ց}�������������AՉ��͠�I����Ѐ��A��ѽ́Ѽ�1�����ɐ(���������ѽ��(����𽑥��(���͕�ѥ���((������Mѕ����Q����Ё
+��������̀��I����ȁI��Օ��̀�Y����ȁ����э��Ȥ����(���͕�ѥ��������􉝱��̵��ɐ���؁ɽչ�����ᰁ�������Ј�(�����؁�����􉙱����ѕ�̵���ѕȁ���ѥ�䵉��ݕ����(�������؁�����􉙱����ѕ�̵���ѕȁ����́ѕ�е���Ʌ��������(�������������������􉵅ѕɥ����嵉��̵��ѱ�����ѕ�д�ᰈ��ե��������(���������́������ѕ�е������е�����ѕ�еݡ�є��Ʌ������ѥ��Ј�̸�Q����Ё
+��������̀��Y����ȁ����э����(������𽑥��(������������������ѕ�е�́ѕ�е啱��ܴ�������е��������啱��ܴ���������́��āɽչ�����ձ����ɑ�ȁ��ɑ�ȵ啱��ܴ���������ɕ�Ё�ѥ���!Ո������(����𽑥��(����(�����؁�������������̈����ѕ���е���������̵���Ј�(�������؁��������Ё���ݡ�є�ԁ��ɑ�ȁ��ɑ�ȵݡ�є����ɽչ����ᰁ��������ѥ�䵉��ݕ����ѕ�̵���ѕȈ�(�����������(�����������؁�����􉙱����ѕ�̵���ѕȁ����ȁ���Ĉ�(��������������������������ȁ����ԁ���ɕ���������ѕ�еɕ������ɽչ����ѕ�еl����t����е���Ʌ���������ɍ�͔���I����Ȁ��
+������������(������������������������ѕ�е�́���е�����ѕ�еݡ�є��M��ѽȀ�܁��Ѐ���������(����������𽑥��(�������������������ѕ�е�́ѕ�е�Ʌ����������ݥ���݅ɴ���ȁ������ѕȁ���ɽ����9���́ѕ����������������ȁ��́ɕ��������(��������𽑥��(���������؁�����􉙱����ѕ�̵���ѕȁ����Ȉ�(�������������ѽ����������ɕ�Օ��1�����ɑ��ɽم�]���������I����Ȝ���M��ѽȀ�܁��Ѐ��Ȝ���I��հ�M��ɵ���������ݥ���݅ɴ���Ȝ���İ���������������́��ȵ���ݡ�є������ٕ�鉜�ݡ�є����ѕ�е啱��ܴ������ɑ�ȁ��ɑ�ȵ啱��ܴ����������е�����ѕ�е�́ɽչ����ᰁ�Ʌ�ͥѥ�������������ѕ�̵���ѕȁ����Ĉ�(�����������������������􉵅ѕɥ����嵉��̵��ѱ�����ѕ�еʹ��ٕɥ���������I��Օ�Ё1�����ɐ���ɽم�(�������������ѽ��(�������������ѽ���������􉑥���э�Y�����]���������I����Ȝ���M��ѽȀ�܁��Ѐ��Ȝ���I��հ�M��ɵ���������ݥ���݅ɴ���ȁ������ѕȁ���ɽ��������������Ё��ȁ������Ʌ�������ѕ�е���������е���Ʌ�����ѕ�е�́ɽչ����ᰁ��ٕ�鉜����Ʌ��������Ʌ�ͥѥ�������������ѕ�̵���ѕȁ����ĸԁ͡���ܵ����(�����������������������􉵅ѕɥ����嵉��̵��ѱ�����ѕ�еʹ��͕�������������э��Y�����(�������������ѽ��(��������𽑥��(������𽑥��(����𽑥��(���͕�ѥ���((𽵅���((�͍ɥ���)�չ�ѥ���ٕɥ������A��͍��������(�����ɕٕ�����ձР��(������Ё�����􁑽�յ��й���������	�%������������͍������م�Ք�(��������������ɕ�э�����م����������������􀝅��������������������М���(�������յ��й���������	�%�����������Ѡ���є��������1��й��������������(����͕�ͥ��MѽɅ���͕�%ѕ���ɕ�э��}�����}��Ѡ������Ք���(��􁕱͔��(��������Р�%�م�������͍�������(���)�()�չ�ѥ�����������������(��͕�ͥ��MѽɅ���ɕ��ٕ%ѕ���ɕ�э��}�����}��Ѡ���(��ݥ���ܹ����ѥ����ɕ��􀝑�͡���ɐ��ѵ���)�()�չ�ѥ���ɕ�Օ��1�����ɑ��ɽم�]����������Ք���ɽ����䰁ѕ���а���х��̰����
+��Ф��(������Ё�͜�􀜩�91=I�AAI=Y0�IEUMP������Aɽ�����言����������UI%
+�������С�ɽ����䤀������Q�����言����������UI%
+�������Сѕ���Ф�������%��Ք言����������UI%
+�������С���Ք���������х���言����������UI%
+�������С��х��̤��������ѥ��ѕ��
+���訃
+�����������UI%
+�������С���
+��Ф��������}A���͔�ɕ���AAI=Y�Ѽ���ѡ�ɥ锁�����э�����ٕ���ȹ|��(��ݥ���ܹ�����������輽݄�����ѕ��������͜���}��������)�(*function dispatchVendorWhatsApp(issue, property, tenant, details) {
+  const msg = '*lVENDOR DISPATCH REEUEST*%0A%0A*Property:* ' + encodeURIComponent(property) + '%0A*Issue:* ' + encodeURIComponent(issue) + '%0A*Tenant:* ' + encodeURIComponent(tenant) + '%0A*Details:* ' + encodeURIComponent(details) + '%0A%0A_Please confirm your estimated arrival time._';
+  window.open('https://wa.me/?text=' + msg, '_blank');
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  if (sessionStorage.getItem('rentcan_admin_auth') === 'true') {
+    document.getElementById('admin-auth-gate').classList.add('hidden');
+  }
+
+  const nextDateStr = window.getNextInspectionDate ? window.getNextInspectionDate() : '2026-08-05';
+  if (nextDateStr) document.getElementById('admin-inspection-date').value = nextDateStr;
+});
+
+function publishInspectionReport() {
+  const propId = document.getElementById('admin-prop-select').value;
+  const date = document.getElementById('admin-inspection-date').value;
+  if (!propId || !date) { alert('Please select property and date.'); return; }
+  alert('Inspection photos and report published for Landlord & Tenant!');
+  window.location.href = 'inspections.html';
+}
+</script>
+</body>
+</html>
