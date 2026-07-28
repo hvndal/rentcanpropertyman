@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-<meta name="theme-color" content="#023826">
+<meta name="theme-color" content="#5c3a2e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
@@ -295,7 +295,9 @@ body {
   color: #023826; padding: 0;
 }
 .resend-row button:disabled { color: #bec9c5; cursor: not-allowed; }
-<link rel="stylesheet" href="styles.css">
+</style>
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/css/brand.css">
 <script src="/js/rentcan-config.js"></script>
 <script src="/js/app.js"></script>
 </head>
@@ -304,13 +306,28 @@ body {
 <!-- Loader -->
 <div id="loader">
   <div class="spin"></div>
-  <p style="font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#023826;font-weight:700;">RentCan</p>
+  <p style="font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#5c3a2e;font-weight:700;">RentCan</p>
 </div>
 <script>
-  setTimeout(function() {
-    var l = document.getElementById('loader');
-    if (l) l.classList.add('gone');
-  }, 800);
+  // Clear stale service workers / caches that can pin a broken login shell
+  (function () {
+    try {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function (regs) {
+          regs.forEach(function (r) { r.unregister(); });
+        });
+      }
+      if (window.caches && caches.keys) {
+        caches.keys().then(function (keys) {
+          keys.forEach(function (k) { caches.delete(k); });
+        });
+      }
+    } catch (e) {}
+    setTimeout(function () {
+      var l = document.getElementById('loader');
+      if (l) l.classList.add('gone');
+    }, 500);
+  })();
 </script>
 
 <!-- ── Left Panel ── -->
@@ -318,7 +335,7 @@ body {
 
   <!-- Logo -->
   <a href="/" style="display:inline-block; margin-bottom:24px; text-decoration:none;">
-    <span style="font-size:11px;font-weight:800;letter-spacing:0.28em;text-transform:uppercase;color:#023826;">RentCan</span>
+    <img src="/assets/logos/rentcan-logo.png" alt="RentCan" style="height:36px;width:auto;display:block;">
   </a>
 
   <!-- Alert -->
@@ -754,6 +771,13 @@ function startResendTimer() {
 // INITIALIZATION (DOMContentLoaded)
 // ─────────────────────────────────────────────────────────────────────
 async function initApp() {
+  if (!window.RentCan) {
+    showAlert('Sign-in scripts failed to load. Please refresh this page.');
+    const loader = document.getElementById('loader');
+    if (loader) loader.classList.add('gone');
+    return;
+  }
+
   // Check for hash errors from OAuth
   const hashParams = new URLSearchParams(window.location.hash.substring(1));
   const hasOAuthReturn = hashParams.has('access_token') || hashParams.has('code') || window.location.search.includes('code=');

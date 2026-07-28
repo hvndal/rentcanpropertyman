@@ -95,8 +95,9 @@
 
       if (!hash || hash === '#') return;
       const id = hash.slice(1);
+      // Only intercept same-page anchors — never block cross-page navigation
+      if (linkPath !== pagePath()) return;
       if (!document.getElementById(id)) return;
-      if (linkPath !== pagePath() && linkPath !== '/') return;
 
       e.preventDefault();
       history.pushState(null, '', hash);
