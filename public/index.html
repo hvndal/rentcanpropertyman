@@ -353,7 +353,17 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(180deg, rgba(42, 24, 16, 0.62) 0%, rgba(61, 38, 30, 0.82) 45%, rgba(42, 24, 16, 0.92) 100%);
+            background:
+              linear-gradient(180deg, rgba(12, 48, 34, 0.55) 0%, rgba(18, 64, 46, 0.62) 40%, rgba(14, 42, 32, 0.78) 100%),
+              linear-gradient(120deg, rgba(31, 107, 74, 0.35) 0%, transparent 55%);
+        }
+        .hero-video-container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: radial-gradient(ellipse 70% 55% at 50% 40%, transparent 0%, rgba(8, 30, 22, 0.35) 100%);
         }
         .swiss-grid {
             display: grid;
@@ -400,7 +410,7 @@
 </div>
 <div class="flex items-center gap-3 ml-auto">
 <a class="font-label-caps text-label-caps uppercase text-white/75 hover:text-white transition-all duration-200 text-[11px] tracking-widest hidden sm:inline" href="/login">Login</a>
-<a class="px-5 py-2.5 bg-white text-primary font-label-caps text-label-caps uppercase tracking-[0.12em] hover:bg-brand-cream transition-all duration-300 rounded-lg text-[11px] font-bold shadow-lg hidden sm:inline-flex" href="/login">Get Started</a>
+<a class="px-5 py-2.5 bg-[#1f6b4a] text-white font-label-caps text-label-caps uppercase tracking-[0.12em] hover:bg-[#185a3d] transition-all duration-300 rounded-lg text-[11px] font-bold shadow-lg hidden sm:inline-flex" href="/login">Get Started</a>
 <button type="button" id="hero-menu-btn" class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg border border-white/25 bg-white/10 text-white hover:bg-white/15 transition-colors" aria-label="Open menu" aria-expanded="false" aria-controls="hero-mobile-menu">
 <span class="material-symbols-outlined text-[22px]">menu</span>
 </button>
@@ -429,67 +439,42 @@
 <div class="relative z-10 w-full max-w-container-max mx-auto px-margin-desktop text-center flex flex-col items-center pt-24 md:pt-28 pb-14 md:pb-20">
 
 <div class="hero-stack">
-  <ul class="hero-lede-lines mb-4 md:mb-5" aria-label="What RentCan offers">
-    <li>Monthly property inspections</li>
-    <li>Complete Airbnb management</li>
-    <li>On-ground service across the Tricity</li>
-  </ul>
-  <a href="/" class="hero-logo-float" aria-label="RentCan home">
-    <img src="/assets/logos/rentcan-logo.png" alt="RentCan">
-  </a>
-  <h1 class="hero-headline font-display-lg text-white text-3xl sm:text-5xl md:text-[56px] leading-[1.12] mb-3 max-w-3xl tracking-tight font-bold">
-    Property Management,<br/><span class="font-brand-script text-accent not-italic" style="font-style:italic;">Simplified.</span>
+  <!-- Logo alone on soft plate so baked-in tagline is readable -->
+  <div class="hero-iso hero-logo-block">
+    <div class="hero-logo-soft">
+      <img src="/assets/logos/rentcan-logo.png" alt="RentCan">
+      <div class="hero-logo-tagline" aria-hidden="false">
+        <span class="line-a">No More “Kal Aaunga”</span>
+        <span class="line-b">Reliable on-time inspections</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Isolated headline -->
+  <h1 class="hero-iso hero-headline font-display-lg text-3xl sm:text-5xl md:text-[56px] leading-[1.12] tracking-tight font-bold">
+    Property Management,<br/><span class="accent-script">Simplified.</span>
   </h1>
-  <p class="hero-lede mb-6 md:mb-8 px-2">
-    For <strong>landlords, investors &amp; NRIs</strong> who want reliable care — not just an app.
+
+  <!-- Isolated subtitle -->
+  <p class="hero-iso hero-sub">
+    For landlords, investors &amp; NRIs across Chandigarh, Mohali, Panchkula &amp; Aerocity.
   </p>
-  <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-7 w-full sm:w-auto">
+
+  <div class="hero-iso hero-cta-row flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
     <a href="/login" class="rc-btn-primary w-full sm:w-auto justify-center">Get Started <span class="material-symbols-outlined text-base">arrow_forward</span></a>
     <a href="#contact" class="rc-btn-outline w-full sm:w-auto justify-center">Contact Team</a>
   </div>
-  <div class="flex items-center justify-center gap-2 mb-6 sm:mb-8">
+
+  <div class="hero-iso flex items-center justify-center gap-2 mt-6">
     <span class="inline-flex h-3 w-5 rounded-sm overflow-hidden border border-white/30"><span class="w-1/3 bg-[#FF9933]"></span><span class="w-1/3 bg-white"></span><span class="w-1/3 bg-[#138808]"></span></span>
-    <span class="text-[10px] font-label-caps uppercase tracking-[0.25em] text-white" style="text-shadow:0 2px 12px rgba(0,0,0,0.5)">Made in India · Tricity-based team</span>
+    <span class="text-[10px] font-label-caps uppercase tracking-[0.25em] text-white/90" style="text-shadow:0 2px 12px rgba(0,0,0,0.45)">Made in India · Sector 79, Mohali</span>
   </div>
-  <div class="hidden sm:grid sm:grid-cols-3 gap-3 w-full max-w-3xl">
-    <div class="rc-glass-dark rounded-xl px-4 py-3.5 text-left">
-      <span class="material-symbols-outlined text-accent text-lg mb-1.5 block" style="font-variation-settings:'FILL' 1">home</span>
-      <p class="text-white font-semibold text-sm leading-snug">Residential</p>
-    </div>
-    <div class="rc-glass-dark rounded-xl px-4 py-3.5 text-left">
-      <span class="material-symbols-outlined text-accent text-lg mb-1.5 block" style="font-variation-settings:'FILL' 1">apartment</span>
-      <p class="text-white font-semibold text-sm leading-snug">Commercial</p>
-    </div>
-    <div class="rc-glass-dark rounded-xl px-4 py-3.5 text-left">
-      <span class="material-symbols-outlined text-accent text-lg mb-1.5 block" style="font-variation-settings:'FILL' 1">villa</span>
-      <p class="text-white font-semibold text-sm leading-snug">Airbnb</p>
-    </div>
-  </div>
-  <div class="sm:hidden w-full space-y-2 text-left max-w-sm mx-auto">
-    <details class="hero-chip-acc">
-      <summary>
-        <span class="material-symbols-outlined text-accent text-xl" style="font-variation-settings:'FILL' 1">home</span>
-        <span>Residential</span>
-        <span class="chip-chevron">expand_more</span>
-      </summary>
-      <p class="chip-body">Apartments, villas, PGs — monthly on-site inspections.</p>
-    </details>
-    <details class="hero-chip-acc">
-      <summary>
-        <span class="material-symbols-outlined text-accent text-xl" style="font-variation-settings:'FILL' 1">apartment</span>
-        <span>Commercial</span>
-        <span class="chip-chevron">expand_more</span>
-      </summary>
-      <p class="chip-body">Offices, retail &amp; warehouses across the Tricity.</p>
-    </details>
-    <details class="hero-chip-acc">
-      <summary>
-        <span class="material-symbols-outlined text-accent text-xl" style="font-variation-settings:'FILL' 1">villa</span>
-        <span>Airbnb</span>
-        <span class="chip-chevron">expand_more</span>
-      </summary>
-      <p class="chip-body">End-to-end hospitality — custom pricing, separate plan.</p>
-    </details>
+
+  <!-- Isolated service pills — not a card wall -->
+  <div class="hero-pills hero-iso">
+    <a href="#services" class="hero-pill"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">home</span> Residential</a>
+    <a href="#services" class="hero-pill"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">apartment</span> Commercial</a>
+    <a href="#services" class="hero-pill"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">villa</span> Airbnb</a>
   </div>
 </div>
 </div>
@@ -527,7 +512,7 @@
 
 
 <!-- Services -->
-<section id="services" class="py-20 px-margin-desktop max-w-container-max mx-auto scroll-mt-24 bg-brand-cream">
+<section id="services" class="py-20 px-margin-desktop max-w-container-max mx-auto scroll-mt-24 rc-section-mist">
   <div class="mb-10 text-center max-w-2xl mx-auto">
     <span class="rc-section-label mb-4 block">Our Services</span>
     <h2 class="font-display-lg text-4xl md:text-5xl mb-4 text-primary tracking-tight">On-ground management.<br/><span class="font-brand-script not-italic" style="font-style:italic;">Not just software.</span></h2>
@@ -593,7 +578,7 @@
 </section>
 
 <!-- Monthly Physical Inspection (Flagship) -->
-<section id="inspection" class="py-20 px-margin-desktop text-white scroll-mt-24" style="background: linear-gradient(135deg, #3d261e 0%, #5c3a2e 50%, #4a2f24 100%);">
+<section id="inspection" class="py-20 px-margin-desktop text-white scroll-mt-24" style="background: linear-gradient(135deg, #0f3d2c 0%, #1f6b4a 48%, #3d261e 100%);">
   <div class="max-w-container-max mx-auto">
     <div class="grid lg:grid-cols-2 gap-12 items-start">
       <div>
@@ -637,7 +622,7 @@
 </section>
 
 <!-- Dashboard (secondary) -->
-<section class="py-16 px-margin-desktop max-w-container-max mx-auto bg-brand-sand/30">
+<section class="py-16 px-margin-desktop max-w-container-max mx-auto" style="background: linear-gradient(180deg, #f7faf7 0%, #e8f3ec 100%);">
   <div class="rc-card p-10 md:p-14">
     <span class="font-label-caps text-label-caps text-secondary uppercase tracking-[0.3em] mb-4 block">Owner Visibility</span>
     <h2 class="font-display-lg text-3xl md:text-4xl text-primary mb-4 tracking-tight">Your dashboard supports the service — it isn't the service.</h2>
@@ -673,7 +658,7 @@
 </section>
 
 <!-- Pricing summary -->
-<section id="pricing" class="py-20 bg-brand-sand/50 px-margin-desktop scroll-mt-24">
+<section id="pricing" class="py-20 px-margin-desktop scroll-mt-24 rc-section-mist">
   <div class="max-w-[1280px] mx-auto">
     <div class="text-center mb-12">
       <span class="font-label-caps text-label-caps text-secondary uppercase tracking-[0.3em] mb-4 block font-bold">Transparent Pricing</span>
@@ -703,7 +688,7 @@
 
 
 <!-- Final CTA -->
-<section class="py-20 md:py-28 px-margin-desktop text-center relative overflow-hidden" style="background: linear-gradient(180deg, #5c3a2e 0%, #3d261e 100%);">
+<section class="py-20 md:py-28 px-margin-desktop text-center relative overflow-hidden" style="background: linear-gradient(160deg, #1f6b4a 0%, #163d2e 55%, #3d261e 100%);">
 <div class="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
 <div class="max-w-4xl mx-auto relative z-10">
 <span class="font-label-caps text-label-caps text-accent uppercase tracking-[0.4em] mb-5 block">On-Ground Property Care</span>

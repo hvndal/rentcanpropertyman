@@ -1,17 +1,20 @@
-/* RentCan brand system — derived from official logo palette */
+/* RentCan brand system — brown + forest green energy */
 :root {
   --rc-brown:        #5c3a2e;
   --rc-brown-dark:   #3d261e;
   --rc-brown-light:  #7a5244;
-  --rc-cream:        #faf6f1;
-  --rc-sand:         #efe6dc;
+  --rc-cream:        #f7faf7;
+  --rc-sand:         #eef4ef;
   --rc-warm-white:   #fffcf8;
   --rc-tan:          #a67c52;
-  --rc-ink:          #2a1810;
-  --rc-muted:        #6b5a52;
-  --rc-border:       rgba(92, 58, 46, 0.14);
-  --rc-shadow:       0 20px 50px rgba(61, 38, 30, 0.08);
-  --rc-shadow-lg:    0 28px 60px rgba(61, 38, 30, 0.12);
+  --rc-green:        #1f6b4a;
+  --rc-green-soft:   #2d8a62;
+  --rc-green-mist:   #e8f3ec;
+  --rc-ink:          #1a2420;
+  --rc-muted:        #5a6b62;
+  --rc-border:       rgba(31, 107, 74, 0.12);
+  --rc-shadow:       0 20px 50px rgba(26, 50, 40, 0.07);
+  --rc-shadow-lg:    0 28px 60px rgba(26, 50, 40, 0.11);
   --rc-radius:       1rem;
   --rc-radius-lg:    1.25rem;
 }
@@ -57,20 +60,21 @@ body.rc-brand {
   justify-content: center;
   gap: 0.5rem;
   padding: 1rem 2rem;
-  background: var(--rc-brown);
+  background: var(--rc-green);
   color: #fff;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-size: 0.72rem;
   border-radius: 0.5rem;
-  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 8px 24px rgba(92, 58, 46, 0.25);
+  transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 10px 28px rgba(31, 107, 74, 0.32);
 }
 
 .rc-btn-primary:hover {
-  background: var(--rc-brown-dark);
-  transform: translateY(-1px);
+  background: #185a3d;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px rgba(31, 107, 74, 0.4);
 }
 
 .rc-btn-outline {
@@ -98,11 +102,11 @@ body.rc-brand {
   letter-spacing: 0.32em;
   text-transform: uppercase;
   font-weight: 700;
-  color: var(--rc-tan);
+  color: var(--rc-green);
 }
 
 .rc-check {
-  color: var(--rc-brown);
+  color: var(--rc-green);
   font-weight: 600;
 }
 
@@ -110,73 +114,176 @@ body.rc-brand {
   filter: drop-shadow(0 4px 12px rgba(42, 24, 16, 0.15));
 }
 
-/* Hero — isolated elements, no single title box */
+/* Hero — each title floats alone with breathing room */
 .hero-stack {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 44rem;
+  max-width: 42rem;
   margin: 0 auto;
   gap: 0;
 }
 
-.hero-lede {
-  color: #ffffff;
-  font-size: 0.9375rem;
-  line-height: 1.75;
-  font-weight: 400;
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.55);
-  max-width: 34rem;
-}
-
-.hero-lede strong {
-  font-weight: 600;
-  color: #fff;
-}
-
-.hero-lede-lines {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1.5rem;
+.hero-iso {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
 }
 
-.hero-lede-lines li {
-  color: #ffffff;
-  font-size: 0.9rem;
-  line-height: 1.65;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
-  padding: 0.2rem 0;
+.hero-logo-block {
+  margin-bottom: 2rem;
+  animation: hero-float 5.5s ease-in-out infinite;
 }
 
-.hero-lede-lines li::before {
-  content: '·';
-  margin-right: 0.5rem;
-  color: var(--rc-tan, #c9a882);
-  font-weight: 700;
+.hero-logo-soft {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.1rem 1.6rem 1rem;
+  border-radius: 1.35rem;
+  background: linear-gradient(180deg, #fffcf8 0%, #f3f8f4 100%);
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.28),
+    0 0 0 1px rgba(255, 255, 255, 0.5);
 }
 
-.hero-logo-float {
-  display: block;
-  margin-bottom: 1.25rem;
-  filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.55));
-}
-
-.hero-logo-float img {
-  width: min(240px, 78vw);
+.hero-logo-soft img {
+  width: min(210px, 68vw);
   height: auto;
-  object-fit: contain;
+  display: block;
 }
 
 @media (min-width: 640px) {
-  .hero-logo-float img {
-    width: min(300px, 85vw);
+  .hero-logo-soft img {
+    width: min(250px, 70vw);
   }
 }
 
+/* Readable HTML tagline under logo (logo bake-in is too small) */
+.hero-logo-tagline {
+  margin-top: 0.65rem;
+  text-align: center;
+}
+
+.hero-logo-tagline .line-a {
+  display: block;
+  font-family: 'Playfair Display', 'DM Serif Display', Georgia, serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--rc-brown);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.hero-logo-tagline .line-b {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--rc-green);
+}
+
 .hero-headline {
-  text-shadow: 0 3px 24px rgba(0, 0, 0, 0.5);
+  margin-top: 0.5rem;
+  margin-bottom: 1.75rem;
+  color: #fff;
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.35),
+    0 12px 40px rgba(0, 0, 0, 0.45);
+  animation: hero-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-headline .accent-script {
+  color: #9fe0bc;
+  font-family: 'Playfair Display', 'DM Serif Display', Georgia, serif;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.hero-sub {
+  max-width: 26rem;
+  margin: 0 auto 2rem;
+  color: #ffffff;
+  font-size: 1rem;
+  line-height: 1.65;
+  font-weight: 400;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55);
+  animation: hero-rise 0.9s 0.12s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-cta-row {
+  animation: hero-rise 0.9s 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  animation: hero-rise 0.9s 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(159, 224, 188, 0.35);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s ease, border-color 0.25s ease;
+}
+
+.hero-pill:hover {
+  transform: translateY(-3px);
+  background: rgba(159, 224, 188, 0.18);
+  border-color: rgba(159, 224, 188, 0.65);
+}
+
+.hero-pill .material-symbols-outlined {
+  font-size: 1.05rem;
+  color: #9fe0bc;
+}
+
+@keyframes hero-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.rc-section-mist {
+  background:
+    radial-gradient(ellipse 80% 50% at 10% 0%, rgba(232, 243, 236, 0.9) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 90% 20%, rgba(239, 230, 220, 0.5) 0%, transparent 50%),
+    var(--rc-cream);
+}
+
+.rc-feat-yes {
+  color: var(--rc-green);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.rc-feat-no {
+  color: var(--rc-muted);
+  opacity: 0.45;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1;
 }
 
 /* Feature matrix — ✓ available, − not */
@@ -208,28 +315,13 @@ body.rc-brand {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-weight: 700;
-  color: var(--rc-brown);
-  background: var(--rc-sand);
-  border-bottom: 2px solid rgba(92, 58, 46, 0.15);
+  color: var(--rc-green);
+  background: var(--rc-green-mist);
+  border-bottom: 2px solid rgba(31, 107, 74, 0.15);
 }
 
 .rc-feature-matrix tbody tr:hover td {
-  background: rgba(239, 230, 220, 0.35);
-}
-
-.rc-feat-yes {
-  color: var(--rc-brown);
-  font-weight: 700;
-  font-size: 1rem;
-  line-height: 1;
-}
-
-.rc-feat-no {
-  color: var(--rc-muted);
-  opacity: 0.45;
-  font-weight: 500;
-  font-size: 1rem;
-  line-height: 1;
+  background: rgba(232, 243, 236, 0.45);
 }
 
 .rc-feature-matrix-wrap {
@@ -254,11 +346,11 @@ body.rc-brand {
     left: 0;
     background: var(--rc-warm-white);
     z-index: 1;
-    box-shadow: 4px 0 8px rgba(61, 38, 30, 0.04);
+    box-shadow: 4px 0 8px rgba(26, 50, 40, 0.04);
   }
 
   .rc-feature-matrix thead th:first-child {
-    background: var(--rc-sand);
+    background: var(--rc-green-mist);
   }
 }
 
@@ -273,7 +365,7 @@ body.rc-brand {
 
 .hero-chip-acc[open] {
   background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(201, 168, 130, 0.45);
+  border-color: rgba(159, 224, 188, 0.45);
 }
 
 .hero-chip-acc summary {
@@ -486,16 +578,25 @@ html.rc-js .rc-reveal:not(.in-view):not(.is-visible) {
 }
 
 .rc-plan-card-featured {
-  border: 2px solid rgba(92, 58, 46, 0.2);
-  background: linear-gradient(180deg, #fff 0%, var(--rc-sand) 100%);
+  border: 2px solid rgba(31, 107, 74, 0.22);
+  background: linear-gradient(180deg, #fff 0%, var(--rc-green-mist) 100%);
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hero-logo-block,
+  .hero-headline,
+  .hero-sub,
+  .hero-cta-row,
+  .hero-pills {
+    animation: none !important;
+  }
+
   .rc-reveal,
   .rc-pricing-tile,
   .rc-tab-btn,
   .rc-plan-card,
-  .rc-card {
+  .rc-card,
+  .hero-pill {
     transition: none !important;
     transform: none !important;
   }
