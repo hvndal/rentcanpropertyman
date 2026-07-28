@@ -172,6 +172,7 @@ const RC_PATHS = {
   '/inspections': 'inspections.html',
   '/reports': 'reports.html',
   '/info': 'info.html',
+  '/investors': 'investors.html',
   '/admin': 'admin.html',
   '/checkout': 'checkout.html'
 };
@@ -190,6 +191,7 @@ function rcCleanPath(href) {
       'inspections.html': '/inspections',
       'reports.html': '/reports',
       'info.html': '/info',
+      'investors.html': '/investors',
       'admin.html': '/admin',
       'checkout.html': '/checkout'
     };

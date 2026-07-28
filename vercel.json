@@ -19,6 +19,7 @@
     { "source": "/dashboard", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] },
     { "source": "/checkout", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] },
     { "source": "/info", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] },
+    { "source": "/investors", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] },
     { "source": "/(.*)\\.html", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] }
   ],
   "builds": [
@@ -35,6 +36,7 @@
     { "src": "/inspections/?", "dest": "/public/inspections.html" },
     { "src": "/reports/?", "dest": "/public/reports.html" },
     { "src": "/info/?", "dest": "/public/info.html" },
+    { "src": "/investors/?", "dest": "/public/investors.html" },
     { "src": "/checkout/?", "dest": "/public/checkout.html" },
     { "src": "/admin/?", "dest": "/public/admin.html" },
     { "src": "/404/?", "dest": "/public/404.html" },

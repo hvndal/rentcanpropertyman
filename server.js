@@ -862,6 +862,7 @@ const CLEAN_PAGES = {
   '/inspections': 'inspections.html',
   '/reports': 'reports.html',
   '/info': 'info.html',
+  '/investors': 'investors.html',
   '/admin': 'admin.html',
   '/checkout': 'checkout.html'
 };

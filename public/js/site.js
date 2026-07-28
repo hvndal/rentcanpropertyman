@@ -244,12 +244,15 @@
       "Hi RentCan — I'd like custom Airbnb management. Full launch is 1 October; please lock me in as one of the first 100 owners with founding pricing and priority service.",
     sos:
       "Hi RentCan — I need an SOS property inspection (₹500/visit). Please help me book one.",
+    investor:
+      "Hi Herman — I came from the RentCan investors page. Would love to learn more and set up a call.",
     general:
       "Hi RentCan — I'd like to get set up. Full launch is 1 October — please lock me in as one of the first 100 owners at today's pricing with priority service.",
   };
 
   function waUrl(plan) {
-    const allowed = PLAN_IDS.includes(plan) || plan === 'sos' || plan === 'general';
+    const allowed =
+      PLAN_IDS.includes(plan) || plan === 'sos' || plan === 'general' || plan === 'investor';
     const key = allowed ? plan : 'general';
     const text = WA_MESSAGES[key] || WA_MESSAGES.general;
     return 'https://wa.me/' + WA_PHONE + '?text=' + encodeURIComponent(text);
@@ -288,7 +291,8 @@
   function injectSideSocial() {
     if (document.querySelector('.rc-side-ig')) return;
     const path = pagePath();
-    const allow = path === '/' || path === '/info' || path === '/checkout' || path === '/login';
+    const allow =
+      path === '/' || path === '/info' || path === '/checkout' || path === '/login' || path === '/investors';
     if (!allow) return;
 
     const ig = document.createElement('a');
