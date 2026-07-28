@@ -6,10 +6,13 @@
 
 /* ── Design Tokens ─────────────────────────────────────────────────── */
 :root {
-  --primary:   #3D8A82;
+  --primary:   #6B4822;
   --secondary: #F6CFDE;
   --accent:    #CFDFDE;
-  --bg:        #F4FAF9;
+  --gold:      #D5B259;
+  --brown:     #6B4822;
+  --ink:       #32261C;
+  --bg:        #FFFCFB;
 
   /* Easing library */
   --ease-out-expo:   cubic-bezier(0.16, 1, 0.3, 1);
@@ -560,8 +563,8 @@ body.rc-fade-boot {
   transition: border-color 0.2s, color 0.2s;
 }
 .rc-auth-cancel:hover {
-  border-color: #3D8A82;
-  color: #3D8A82;
+  border-color: #6B4822;
+  color: #6B4822;
 }
 @keyframes rc-pulse {
   0%, 100% { transform: scale(1); opacity: 1; }
