@@ -294,7 +294,8 @@ body {
   color: #023826; padding: 0;
 }
 .resend-row button:disabled { color: #bec9c5; cursor: not-allowed; }
-</style>
+<link rel="stylesheet" href="styles.css">
+<script src="/js/app.js"></script>
 </head>
 <body>
 
@@ -314,10 +315,8 @@ body {
 <div class="left-panel">
 
   <!-- Logo -->
-  <a href="index.html" style="display:inline-block; margin-bottom:24px; text-decoration:none;">
-    <div style="display:inline-flex; align-items:center; justify-content:center; background:#023826; color:#fff; font-weight:800; font-size:12px; letter-spacing:0.02em; padding:10px 14px; border-radius:10px; box-shadow:0 2px 8px rgba(2,56,38,0.18);">
-      RentCan
-    </div>
+  <a href="/" style="display:inline-block; margin-bottom:24px; text-decoration:none;">
+    <span style="font-size:11px;font-weight:800;letter-spacing:0.28em;text-transform:uppercase;color:#023826;">RentCan</span>
   </a>
 
   <!-- Alert -->
@@ -373,7 +372,7 @@ body {
     </button>
 
     <p style="font-size:12px;color:#9e9e9e;text-align:center;margin-top:28px;line-height:1.6;">
-      By continuing, you agree to RentCan's <a href="info.html" style="color:#023826;font-weight:600;">Terms of Service</a> and <a href="info.html" style="color:#023826;font-weight:600;">Privacy Policy</a>.
+      By continuing, you agree to RentCan's <a href="/info" style="color:#023826;font-weight:600;">Terms of Service</a> and <a href="/info" style="color:#023826;font-weight:600;">Privacy Policy</a>.
     </p>
   </div>
 
@@ -620,17 +619,30 @@ function hideAlert() {
 // ─────────────────────────────────────────────────────────────────────
 async function routeAfterAuth(user) {
   if (!user) {
+    if (window.hideAuthWait) hideAuthWait();
     showView('view-welcome');
     return;
   }
 
   try {
-    // Check if profile exists
+    if (window.showAuthWait) {
+      showAuthWait({
+        title: 'Signing you in',
+        sub: 'Confirming your account and preparing your workspace.',
+        step: 0
+      });
+    }
+
+    await new Promise(r => setTimeout(r, 550));
+    if (window.setAuthWaitStep) setAuthWaitStep(1);
+
     if (sb) {
       const { data: profile } = await sb.from('profiles')
         .select('full_name, role')
         .eq('id', user.id)
         .maybeSingle();
+
+      await new Promise(r => setTimeout(r, 450));
 
       if (profile && profile.full_name && profile.role) {
         sessionStorage.setItem('rentcan_user', JSON.stringify({
@@ -640,12 +652,16 @@ async function routeAfterAuth(user) {
           role: profile.role,
         }));
         sessionStorage.setItem('rentcan_role', profile.role);
-        window.location.href = 'dashboard.html';
+        if (window.finishAuthRedirect) {
+          await finishAuthRedirect('/dashboard');
+        } else {
+          window.location.href = '/dashboard';
+        }
         return;
       }
     }
 
-    // No profile or onboarding incomplete → show onboarding
+    if (window.hideAuthWait) hideAuthWait();
     const nameInput = document.getElementById('onboard-name');
     if (nameInput && user.user_metadata?.full_name) {
       nameInput.value = user.user_metadata.full_name;
@@ -654,13 +670,16 @@ async function routeAfterAuth(user) {
 
   } catch(e) {
     console.warn('Route after auth error:', e);
-    // Fallback: go to dashboard anyway
     sessionStorage.setItem('rentcan_user', JSON.stringify({
       id: user.id,
       email: user.email,
       name: user.user_metadata?.full_name || '',
     }));
-    window.location.href = 'dashboard.html';
+    if (window.finishAuthRedirect) {
+      await finishAuthRedirect('/dashboard');
+    } else {
+      window.location.href = '/dashboard';
+    }
   }
 }
 
@@ -741,21 +760,33 @@ function startResendTimer() {
 async function initApp() {
   // Check for hash errors from OAuth
   const hashParams = new URLSearchParams(window.location.hash.substring(1));
+  const hasOAuthReturn = hashParams.has('access_token') || hashParams.has('code') || window.location.search.includes('code=');
   if (hashParams.has('error_description')) {
     showAlert(decodeURIComponent(hashParams.get('error_description').replace(/\+/g, ' ')));
-    window.location.hash = ''; // clear it
+    window.location.hash = '';
   }
 
-  // Hide loader after brief delay
-  setTimeout(() => {
+  // Returning from Google / magic link — keep a human waiting state
+  if (hasOAuthReturn || sessionStorage.getItem('rc_auth_pending') === 'google') {
+    if (window.showAuthWait) {
+      showAuthWait({
+        title: 'Welcome back',
+        sub: 'Finishing Google sign-in and securing your session…',
+        step: 0
+      });
+    }
     const loader = document.getElementById('loader');
     if (loader) loader.classList.add('gone');
-  }, 300);
+  } else {
+    setTimeout(() => {
+      const loader = document.getElementById('loader');
+      if (loader) loader.classList.add('gone');
+    }, 300);
+  }
 
   let url = DEFAULT_SUPABASE_URL;
   let key = DEFAULT_SUPABASE_KEY;
 
-  // Check for logout request
   if (window.location.search.includes('logout=true')) {
     sessionStorage.clear();
     localStorage.clear();
@@ -765,7 +796,8 @@ async function initApp() {
         await tempSb.auth.signOut();
       } catch(e){}
     }
-    window.history.replaceState({}, document.title, window.location.pathname);
+    window.history.replaceState({}, document.title, '/login');
+    if (window.hideAuthWait) hideAuthWait();
     showView('view-welcome');
     return;
   }
@@ -807,21 +839,23 @@ async function initApp() {
   if (window.supabase) {
     sb = window.supabase.createClient(url, key);
 
-    // Handle OAuth callback (Google redirect)
     try {
       const { data: { session } } = await sb.auth.getSession();
       if (session) {
+        sessionStorage.removeItem('rc_auth_pending');
         await routeAfterAuth(session.user);
         return;
       }
 
       sb.auth.onAuthStateChange(async (event, session) => {
         if (event === 'SIGNED_IN' && session) {
+          sessionStorage.removeItem('rc_auth_pending');
           await routeAfterAuth(session.user);
         }
       });
     } catch(e) {
       console.warn('Auth session check failed:', e);
+      if (window.hideAuthWait) hideAuthWait();
     }
   }
 }
@@ -847,27 +881,40 @@ async function signInWithGoogle() {
 
   const btn = document.getElementById('btn-google');
   btn.disabled = true;
-  btn.querySelector('.btn-label').innerHTML = 'Connecting…<span class="btn-sub">Redirecting to Google</span>';
+  btn.querySelector('.btn-label').innerHTML = 'Connecting…<span class="btn-sub">Opening Google securely</span>';
+
+  if (window.showAuthWait) {
+    showAuthWait({
+      title: 'Connecting to Google',
+      sub: 'You will confirm your account, then we will bring you straight back here.',
+      step: 0
+    });
+  }
 
   try {
+    sessionStorage.setItem('rc_auth_pending', 'google');
     const { data, error } = await sb.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin + '/login.html',
+        redirectTo: window.location.origin + '/login',
         skipBrowserRedirect: true
       }
     });
 
     if (error) throw error;
     if (data?.url) {
+      if (window.setAuthWaitStep) setAuthWaitStep(1);
+      await new Promise(r => setTimeout(r, 700));
       window.location.href = data.url;
     } else {
       throw new Error('Could not generate Google sign-in link.');
     }
   } catch(e) {
+    sessionStorage.removeItem('rc_auth_pending');
+    if (window.hideAuthWait) hideAuthWait();
     showAlert('Google Sign-In notice: ' + e.message);
     btn.disabled = false;
-    btn.querySelector('.btn-label').innerHTML = 'Continue with Google<span class="btn-sub">Instant sign-in with your Google account</span>';
+    btn.querySelector('.btn-label').innerHTML = 'Continue with Google<span class="btn-sub">Secure sign-in with your Google account</span>';
   }
 }
 
@@ -894,7 +941,7 @@ async function signInWithEmail() {
     const { error } = await sb.auth.signInWithOtp({
       email: email,
       options: {
-        emailRedirectTo: window.location.origin + '/login.html'
+        emailRedirectTo: window.location.origin + '/login'
       }
     });
 
@@ -1148,8 +1195,19 @@ async function completeProfile() {
           role: selectedRole,
         }));
         sessionStorage.setItem('rentcan_role', selectedRole);
-        showAlert('Welcome to RentCan! Redirecting…', 'success');
-        setTimeout(() => window.location.href = 'dashboard.html', 800);
+        sessionStorage.removeItem('rc_auth_pending');
+        if (window.showAuthWait) {
+          showAuthWait({
+            title: "You're all set",
+            sub: 'Setting up your RentCan workspace…',
+            step: 2
+          });
+        }
+        if (window.finishAuthRedirect) {
+          await finishAuthRedirect('/dashboard');
+        } else {
+          setTimeout(() => { window.location.href = '/dashboard'; }, 800);
+        }
         return;
       }
     }
@@ -1157,8 +1215,11 @@ async function completeProfile() {
     // Fallback (offline mode)
     sessionStorage.setItem('rentcan_user', JSON.stringify({ name, role: selectedRole }));
     sessionStorage.setItem('rentcan_role', selectedRole);
-    showAlert('Profile created! Redirecting…', 'success');
-    setTimeout(() => window.location.href = 'dashboard.html', 800);
+    if (window.finishAuthRedirect) {
+      await finishAuthRedirect('/dashboard');
+    } else {
+      setTimeout(() => { window.location.href = '/dashboard'; }, 800);
+    }
 
   } catch(e) {
     showAlert('Profile setup failed: ' + e.message);

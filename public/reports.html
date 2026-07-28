@@ -9,17 +9,17 @@
   try {
     const res = await fetch('/api/config');
     const cfg = await res.json();
-    if (!cfg.supabaseUrl) { window.location.href = 'login.html'; return; }
+    if (!cfg.supabaseUrl) { window.location.href = '/login'; return; }
     const client = supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
     const { data: { session } } = await client.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
+    if (!session) { window.location.href = '/login'; return; }
     const meta = session.user.user_metadata || {};
     sessionStorage.setItem('rentcan_role', meta.role || 'landlord');
     sessionStorage.setItem('rentcan_user', JSON.stringify({
       id: session.user.id, email: session.user.email,
       name: meta.full_name || session.user.email, role: meta.role || 'landlord'
     }));
-  } catch (_) { window.location.href = 'login.html'; }
+  } catch (_) { window.location.href = '/login'; }
 })();
 </script>
 
@@ -175,27 +175,27 @@
         <!-- SideNavBar Anchor -->
         <aside class="hidden md:flex flex-col h-screen p-stack-md border-r border-outline bg-surface w-64 shrink-0">
 <div class="mb-stack-xl">
-<a href="dashboard.html" class="bg-white p-1.5 rounded-[10px] shadow-sm border border-outline-variant/30 flex items-center justify-center h-10 w-10"><div class="bg-primary text-white font-black text-xs px-2.5 py-1 rounded-lg inline-flex items-center justify-center shadow-sm">RentCan</div></a>
+<a href="/dashboard" class="bg-white p-1.5 rounded-[10px] shadow-sm border border-outline-variant/30 flex items-center justify-center h-10 w-10"><div class="bg-primary text-white font-black text-xs px-2.5 py-1 rounded-lg inline-flex items-center justify-center shadow-sm">RentCan</div></a>
 </div>
 <div class="flex flex-col space-y-1 flex-grow">
-<a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
+<a href="/dashboard" class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
 <span class="material-symbols-outlined">domain</span><span>Properties</span>
 </a>
-<a href="documents.html" class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded transition-all font-label-lg text-label-lg">
+<a href="/documents" class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded transition-all font-label-lg text-label-lg">
 <span class="material-symbols-outlined">description</span><span>Documents</span>
 </a>
-<a href="payments.html" class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded transition-all font-label-lg text-label-lg">
+<a href="/payments" class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded transition-all font-label-lg text-label-lg">
 <span class="material-symbols-outlined">payments</span><span>Payments</span>
 </a>
-<a href="inspections.html" class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
+<a href="/inspections" class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
 <span class="material-symbols-outlined">fact_check</span><span>Inspections</span>
 </a>
-<a href="reports.html" class="text-primary font-bold bg-surface-container flex items-center gap-3 px-4 py-3 rounded transition-all font-label-lg text-label-lg">
+<a href="/reports" class="text-primary font-bold bg-surface-container flex items-center gap-3 px-4 py-3 rounded transition-all font-label-lg text-label-lg">
 <span class="material-symbols-outlined">analytics</span><span>Reports</span>
 </a>
 </div>
 <div class="mt-auto border-t border-outline-variant pt-stack-md flex flex-col space-y-1">
-<a href="info.html" class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
+<a href="/info" class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
 <span class="material-symbols-outlined">help</span><span>Help</span>
 </a>
 <button id="btn-sign-out" onclick="signOut()" class="w-full flex items-center gap-2 px-3 py-2 text-xs text-on-surface-variant/60 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all font-medium mt-2">
@@ -368,19 +368,19 @@
                 <div>
                     <h5 class="font-label-lg text-label-lg text-on-surface mb-4 uppercase tracking-widest">Resources</h5>
                     <ul class="space-y-2 font-body-md text-body-md">
-                        <li class=""><a href="info.html" class="text-on-surface-variant hover:text-primary transition-colors">Privacy Policy</a></li>
-                        <li class=""><a href="info.html" class="text-on-surface-variant hover:text-primary transition-colors">Terms of Service</a></li>
-                        <li class=""><a href="info.html" class="text-on-surface-variant hover:text-primary transition-colors">Help Center</a></li>
-                        <li class=""><a href="info.html" class="text-on-surface-variant hover:text-primary transition-colors">API Documentation</a></li>
+                        <li class=""><a href="/info" class="text-on-surface-variant hover:text-primary transition-colors">Privacy Policy</a></li>
+                        <li class=""><a href="/info" class="text-on-surface-variant hover:text-primary transition-colors">Terms of Service</a></li>
+                        <li class=""><a href="/info" class="text-on-surface-variant hover:text-primary transition-colors">Help Center</a></li>
+                        <li class=""><a href="/info" class="text-on-surface-variant hover:text-primary transition-colors">API Documentation</a></li>
                     </ul>
                 </div>
                 <div>
                     <h5 class="font-label-lg text-label-lg text-on-surface mb-4 uppercase tracking-widest">Company</h5>
                     <ul class="space-y-2 font-body-md text-body-md">
-                        <li class=""><a href="info.html" class="text-on-surface-variant hover:text-primary transition-colors">Careers</a></li>
-                        <li class=""><a href="info.html" class="text-on-surface-variant hover:text-primary transition-colors">Contact Us</a></li>
-                        <li class=""><a href="info.html" class="text-on-surface-variant hover:text-primary transition-colors">Security</a></li>
-                        <li class=""><a href="info.html" class="text-on-surface-variant hover:text-primary transition-colors">Partners</a></li>
+                        <li class=""><a href="/info" class="text-on-surface-variant hover:text-primary transition-colors">Careers</a></li>
+                        <li class=""><a href="/info" class="text-on-surface-variant hover:text-primary transition-colors">Contact Us</a></li>
+                        <li class=""><a href="/info" class="text-on-surface-variant hover:text-primary transition-colors">Security</a></li>
+                        <li class=""><a href="/info" class="text-on-surface-variant hover:text-primary transition-colors">Partners</a></li>
                     </ul>
                 </div>
             </footer>
@@ -403,17 +403,17 @@ async function signOut() {
       await client.auth.signOut();
     }
   } catch (_) {}
-  window.location.href = 'login.html';
+  window.location.href = '/login';
 
 </script>
 
 
 <nav id="rc-mobile-nav" class="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-outline-variant/40 px-2 pt-2 z-50 flex justify-around items-center shadow-lg" style="padding-bottom:max(10px, env(safe-area-inset-bottom))">
-  <a href="dashboard.html" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 0">domain</span><span>Home</span></a>
-  <a href="inspections.html" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 0">fact_check</span><span>Inspect</span></a>
-  <a href="documents.html" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 0">description</span><span>Vault</span></a>
-  <a href="payments.html" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 0">payments</span><span>Ledger</span></a>
-  <a href="reports.html" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-primary"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 1">analytics</span><span>Reports</span></a>
+  <a href="/dashboard" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 0">domain</span><span>Home</span></a>
+  <a href="/inspections" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 0">fact_check</span><span>Inspect</span></a>
+  <a href="/documents" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 0">description</span><span>Vault</span></a>
+  <a href="/payments" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 0">payments</span><span>Ledger</span></a>
+  <a href="/reports" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-primary"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 1">analytics</span><span>Reports</span></a>
 </nav>
 
 </body></html>

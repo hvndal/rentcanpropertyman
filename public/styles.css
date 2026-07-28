@@ -461,3 +461,108 @@ body { background: var(--bg); overflow-x: hidden; }
 
 summary::-webkit-details-marker { display: none; }
 summary { list-style: none; outline: none; }
+/* Soft page enter/exit for app-like navigation */
+html.rc-ready body {
+  opacity: 1;
+  transition: opacity 320ms ease, transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+html.rc-exit body {
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+}
+body.rc-fade-boot {
+  opacity: 0;
+}
+@supports (padding: env(safe-area-inset-bottom)) {
+  #rc-mobile-nav {
+    padding-bottom: max(10px, env(safe-area-inset-bottom)) !important;
+  }
+}
+
+/* Auth waiting overlay */
+.rc-auth-wait {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #f7faf7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 280ms ease;
+}
+.rc-auth-wait.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+.rc-auth-wait .rc-auth-mark {
+  font-family: 'Plus Jakarta Sans', 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #023826;
+  margin-bottom: 28px;
+}
+.rc-auth-wait .rc-auth-title {
+  font-family: 'Plus Jakarta Sans', 'DM Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #191c1b;
+  margin-bottom: 8px;
+}
+.rc-auth-wait .rc-auth-sub {
+  font-size: 14px;
+  color: #73777f;
+  max-width: 280px;
+  line-height: 1.5;
+  margin-bottom: 28px;
+}
+.rc-auth-wait .rc-auth-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: min(280px, 100%);
+  text-align: left;
+}
+.rc-auth-wait .rc-auth-steps li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #bec9c5;
+  padding: 8px 0;
+  transition: color 300ms ease;
+}
+.rc-auth-wait .rc-auth-steps li.active { color: #023826; font-weight: 700; }
+.rc-auth-wait .rc-auth-steps li.done { color: #005a4e; }
+.rc-auth-wait .rc-auth-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+.rc-auth-wait .rc-auth-dot.pulse {
+  animation: rc-pulse 1.1s ease-in-out infinite;
+}
+@keyframes rc-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 0.55; }
+}
+.rc-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #bec9c5;
+  border-top-color: #023826;
+  border-radius: 50%;
+  animation: rc-spin 0.75s linear infinite;
+  margin-bottom: 22px;
+}
+@keyframes rc-spin { to { transform: rotate(360deg); } }

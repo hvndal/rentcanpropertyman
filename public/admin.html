@@ -40,7 +40,7 @@
     <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest">Monthly Inspection & Vendor Dispatch Hub</span>
   </div>
   <div class="flex items-center gap-3">
-    <a href="dashboard.html" class="text-xs font-bold text-gray-300 hover:text-white flex items-center gap-1"><span class="material-symbols-outlined text-sm">dashboard</span> User View</a>
+    <a href="/dashboard" class="text-xs font-bold text-gray-300 hover:text-white flex items-center gap-1"><span class="material-symbols-outlined text-sm">dashboard</span> User View</a>
     <button onclick="logoutAdmin()" class="text-xs font-bold text-red-400 hover:text-red-300 flex items-center gap-1"><span class="material-symbols-outlined text-sm">logout</span> Exit Admin</button>
   </div>
 </header>
@@ -130,7 +130,7 @@ function verifyAdminPasscode(event) {
 
 function logoutAdmin() {
   sessionStorage.removeItem('rentcan_admin_auth');
-  window.location.href = 'dashboard.html';
+  window.location.href = '/dashboard';
 }
 
 function dispatchVendorWhatsApp() {
@@ -163,7 +163,7 @@ function publishInspectionReport() {
   const date = document.getElementById('admin-inspection-date').value;
   if (!propId || !date) { alert('Please select property and date.'); return; }
   alert('Inspection photos and report published for Landlord & Tenant!');
-  window.location.href = 'inspections.html';
+  window.location.href = '/inspections';
 }
 
 document.addEventListener('DOMContentLoaded', async () => {

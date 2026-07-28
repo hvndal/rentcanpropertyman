@@ -65,7 +65,7 @@ async function signOut() {
   } finally {
     sessionStorage.clear();
     localStorage.clear();
-    window.location.href = 'login.html?logout=true';
+    window.location.href = '/login?logout=true';
   }
 }
 
@@ -99,11 +99,11 @@ async function getSupabaseClient() {
 function mountMobileBottomNav(active) {
   if (document.getElementById('rc-mobile-nav')) return;
   const items = [
-    { href: 'dashboard.html', icon: 'domain', label: 'Home', key: 'dashboard' },
-    { href: 'inspections.html', icon: 'fact_check', label: 'Inspect', key: 'inspections' },
-    { href: 'documents.html', icon: 'description', label: 'Vault', key: 'documents' },
-    { href: 'payments.html', icon: 'payments', label: 'Ledger', key: 'payments' },
-    { href: 'reports.html', icon: 'analytics', label: 'Reports', key: 'reports' }
+    { href: '/dashboard', icon: 'domain', label: 'Home', key: 'dashboard' },
+    { href: '/inspections', icon: 'fact_check', label: 'Inspect', key: 'inspections' },
+    { href: '/documents', icon: 'description', label: 'Vault', key: 'documents' },
+    { href: '/payments', icon: 'payments', label: 'Ledger', key: 'payments' },
+    { href: '/reports', icon: 'analytics', label: 'Reports', key: 'reports' }
   ];
   const nav = document.createElement('nav');
   nav.id = 'rc-mobile-nav';
@@ -111,7 +111,7 @@ function mountMobileBottomNav(active) {
   nav.style.paddingBottom = 'max(10px, env(safe-area-inset-bottom))';
   nav.innerHTML = items.map(item => {
     const on = item.key === active;
-    return `<a href="${item.href}" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider ${on ? 'text-primary' : 'text-on-surface-variant/70'}">
+    return `<a href="${item.href}" data-rc-nav class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider ${on ? 'text-primary' : 'text-on-surface-variant/70'}">
       <span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' ${on ? 1 : 0}">${item.icon}</span>
       <span>${item.label}</span>
     </a>`;
@@ -120,6 +120,144 @@ function mountMobileBottomNav(active) {
   document.body.style.paddingBottom = 'calc(72px + env(safe-area-inset-bottom))';
 }
 
+// 8. Clean paths + soft page transitions (feels like one app, not raw .html hops)
+const RC_PATHS = {
+  '/': 'index.html',
+  '/login': 'login.html',
+  '/dashboard': 'dashboard.html',
+  '/documents': 'documents.html',
+  '/payments': 'payments.html',
+  '/inspections': 'inspections.html',
+  '/reports': 'reports.html',
+  '/info': 'info.html',
+  '/admin': 'admin.html'
+};
+
+function rcCleanPath(href) {
+  if (!href) return href;
+  try {
+    const u = new URL(href, window.location.origin);
+    if (u.origin !== window.location.origin) return href;
+    const map = {
+      'index.html': '/',
+      'login.html': '/login',
+      'dashboard.html': '/dashboard',
+      'documents.html': '/documents',
+      'payments.html': '/payments',
+      'inspections.html': '/inspections',
+      'reports.html': '/reports',
+      'info.html': '/info',
+      'admin.html': '/admin'
+    };
+    const file = u.pathname.split('/').pop();
+    if (map[file]) {
+      return map[file] + u.search + u.hash;
+    }
+    if (u.pathname.endsWith('.html')) {
+      return u.pathname.replace(/\.html$/, '') + u.search + u.hash;
+    }
+    return u.pathname + u.search + u.hash;
+  } catch (_) {
+    return href;
+  }
+}
+
+function softNavigate(href, opts) {
+  const target = rcCleanPath(href);
+  if (!target || target === '#' || target.startsWith('mailto:') || target.startsWith('tel:')) {
+    return true;
+  }
+  // Same-page hash only
+  if (target.startsWith('#')) return true;
+
+  document.documentElement.classList.add('rc-exit');
+  document.documentElement.classList.remove('rc-ready');
+  setTimeout(() => {
+    window.location.href = target;
+  }, (opts && opts.delay) || 280);
+  return false;
+}
+
+function showAuthWait(options) {
+  const opts = options || {};
+  let el = document.getElementById('rc-auth-wait');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'rc-auth-wait';
+    el.className = 'rc-auth-wait';
+    el.innerHTML = `
+      <div class="rc-auth-mark">RentCan</div>
+      <div class="rc-spinner" aria-hidden="true"></div>
+      <div class="rc-auth-title" id="rc-auth-title">Signing you in</div>
+      <div class="rc-auth-sub" id="rc-auth-sub">Just a moment while we prepare your account.</div>
+      <ul class="rc-auth-steps" id="rc-auth-steps">
+        <li data-step="0"><span class="rc-auth-dot"></span><span>Confirming secure sign-in</span></li>
+        <li data-step="1"><span class="rc-auth-dot"></span><span>Loading your profile</span></li>
+        <li data-step="2"><span class="rc-auth-dot"></span><span>Opening your dashboard</span></li>
+      </ul>`;
+    document.body.appendChild(el);
+  }
+  if (opts.title) document.getElementById('rc-auth-title').textContent = opts.title;
+  if (opts.sub) document.getElementById('rc-auth-sub').textContent = opts.sub;
+  el.classList.add('show');
+  setAuthWaitStep(opts.step || 0);
+  return el;
+}
+
+function setAuthWaitStep(step) {
+  const items = document.querySelectorAll('#rc-auth-steps li');
+  items.forEach((li) => {
+    const n = Number(li.getAttribute('data-step'));
+    const dot = li.querySelector('.rc-auth-dot');
+    li.classList.remove('active', 'done');
+    if (dot) dot.classList.remove('pulse');
+    if (n < step) li.classList.add('done');
+    if (n === step) {
+      li.classList.add('active');
+      if (dot) dot.classList.add('pulse');
+    }
+  });
+}
+
+function hideAuthWait() {
+  const el = document.getElementById('rc-auth-wait');
+  if (el) el.classList.remove('show');
+}
+
+async function finishAuthRedirect(dest) {
+  showAuthWait({
+    title: 'Welcome back',
+    sub: 'Everything looks good — taking you in now.',
+    step: 2
+  });
+  await new Promise(r => setTimeout(r, 900));
+  softNavigate(dest || '/dashboard', { delay: 320 });
+}
+
+// Boot soft fade-in + intercept internal links
+document.addEventListener('DOMContentLoaded', () => {
+  requestAnimationFrame(() => {
+    document.documentElement.classList.add('rc-ready');
+  });
+
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href]');
+    if (!a) return;
+    if (a.target === '_blank' || a.hasAttribute('download')) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const href = a.getAttribute('href');
+    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:')) return;
+    try {
+      const u = new URL(href, window.location.origin);
+      if (u.origin !== window.location.origin) return;
+      // leave hash-only on same path alone
+      if (u.pathname === window.location.pathname && u.hash) return;
+      e.preventDefault();
+      softNavigate(href);
+    } catch (_) {}
+  }, true);
+});
+
 window.getNextInspectionDate = getNextInspectionDate;
 window.formatInspectionDateDisplay = formatInspectionDateDisplay;
 window.getKeyHoldingBadgeHtml = getKeyHoldingBadgeHtml;
@@ -127,12 +265,18 @@ window.signOut = signOut;
 window.triggerSpringAnimation = triggerSpringAnimation;
 window.getSupabaseClient = getSupabaseClient;
 window.mountMobileBottomNav = mountMobileBottomNav;
+window.softNavigate = softNavigate;
+window.rcCleanPath = rcCleanPath;
+window.showAuthWait = showAuthWait;
+window.setAuthWaitStep = setAuthWaitStep;
+window.hideAuthWait = hideAuthWait;
+window.finishAuthRedirect = finishAuthRedirect;
 
 // 6. Hidden Admin Portal Shortcuts (Ctrl + Shift + A or 3 Clicks on RentCan Emblem)
 document.addEventListener('keydown', (e) => {
   if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
     e.preventDefault();
-    window.location.href = 'admin.html';
+    window.location.href = '/admin';
   }
 });
 
@@ -143,7 +287,7 @@ document.addEventListener('click', (e) => {
     clickCount++;
     clearTimeout(clickTimer);
     if (clickCount >= 3) {
-      window.location.href = 'admin.html';
+      window.location.href = '/admin';
       clickCount = 0;
     } else {
       clickTimer = setTimeout(() => { clickCount = 0; }, 1500);

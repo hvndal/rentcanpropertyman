@@ -418,7 +418,36 @@ app.post('/api/submit-maintenance', async (req, res) => {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+const CLEAN_PAGES = {
+  '/': 'index.html',
+  '/login': 'login.html',
+  '/dashboard': 'dashboard.html',
+  '/documents': 'documents.html',
+  '/payments': 'payments.html',
+  '/inspections': 'inspections.html',
+  '/reports': 'reports.html',
+  '/info': 'info.html',
+  '/admin': 'admin.html'
+};
+
+Object.keys(CLEAN_PAGES).forEach((route) => {
+  if (route === '/') return;
+  app.get(route, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', CLEAN_PAGES[route]));
+  });
+});
+
+// Fallback: unknown non-API paths → landing
 app.get(/^\/(?!api).*/, (req, res) => {
+  const base = req.path.replace(/\/$/, '') || '/';
+  const file = CLEAN_PAGES[base];
+  if (file) {
+    return res.sendFile(path.join(__dirname, 'public', file));
+  }
+  // Support legacy *.html bookmarks
+  if (base.endsWith('.html')) {
+    return res.sendFile(path.join(__dirname, 'public', path.basename(base)));
+  }
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
