@@ -56,6 +56,73 @@ body.rc-brand {
   border-bottom: 1px solid color-mix(in srgb, var(--rc-mint) 70%, var(--rc-brown) 30%);
   box-shadow: 0 10px 28px -22px rgba(78, 66, 56, 0.28);
   backdrop-filter: none;
+  transition:
+    background 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+/* Homepage: sit on the hero so mobile doesn't show a white strip */
+.rc-site-header.rc-site-header--on-hero {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(50, 40, 32, 0.55) 0%,
+    rgba(78, 66, 56, 0.22) 55%,
+    transparent 100%
+  );
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
+}
+
+.rc-site-header.rc-site-header--on-hero .rc-site-nav-link {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.rc-site-header.rc-site-header--on-hero .rc-site-nav-link:hover,
+.rc-site-header.rc-site-header--on-hero .rc-site-nav-link.rc-nav-active {
+  color: #fff;
+}
+
+.rc-site-header.rc-site-header--on-hero .rc-site-nav-actions > a:first-child {
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+.rc-site-header.rc-site-header--on-hero #site-menu-btn {
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.rc-site-header.rc-site-header--on-hero #site-menu-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* After scroll: solid mint-cream chrome again */
+.rc-site-header.rc-site-header--solid {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--rc-mint) 62%, var(--rc-warm-white)) 0%,
+    color-mix(in srgb, var(--rc-mint) 38%, var(--rc-cream)) 100%
+  );
+  border-bottom: 1px solid color-mix(in srgb, var(--rc-mint) 70%, var(--rc-brown) 30%);
+  box-shadow: 0 10px 28px -22px rgba(78, 66, 56, 0.28);
+}
+
+.rc-site-header.rc-site-header--solid .rc-site-nav-link {
+  color: var(--rc-muted);
+}
+
+.rc-site-header.rc-site-header--solid .rc-site-nav-link:hover,
+.rc-site-header.rc-site-header--solid .rc-site-nav-link.rc-nav-active {
+  color: var(--rc-brown);
 }
 
 .rc-site-header .rc-site-nav-bar {
@@ -67,6 +134,19 @@ body.rc-brand {
 @media (min-width: 768px) {
   .rc-site-header .rc-site-nav-bar {
     padding: 0.65rem 2rem;
+  }
+}
+
+/* Mobile: slightly stronger top wash so logo/menu stay readable on hero video */
+@media (max-width: 767px) {
+  .rc-site-header.rc-site-header--on-hero {
+    background: linear-gradient(
+      180deg,
+      rgba(42, 34, 28, 0.72) 0%,
+      rgba(78, 66, 56, 0.28) 70%,
+      transparent 100%
+    );
+    padding-top: env(safe-area-inset-top, 0px);
   }
 }
 

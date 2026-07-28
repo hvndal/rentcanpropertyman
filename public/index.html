@@ -335,11 +335,11 @@
 </head>
 <body class="rc-brand bg-brand-cream text-on-surface font-body-base antialiased pb-20 md:pb-0">
 
-<!-- Site header — sticky on every section (/, /#inspection, etc.) -->
-<header id="site-header" class="rc-site-header">
+<!-- Site header — overlays hero, then solidifies on scroll -->
+<header id="site-header" class="rc-site-header rc-site-header--on-hero">
   <div class="rc-site-nav-bar">
     <div class="rc-site-nav-brand">
-      <a href="/" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--nav" aria-label="RentCan home">
+      <a href="/" id="site-logo" class="rc-brand-logo rc-brand-logo--ghost rc-brand-logo--nav" aria-label="RentCan home">
         <img src="/assets/logos/rentcan-wordmark.png" alt="RentCan">
       </a>
     </div>
@@ -383,7 +383,7 @@
 
 <main class="fade-in-load">
 <!-- Hero Section -->
-<section class="relative min-h-[min(88vh,720px)] flex items-center justify-center overflow-hidden border-b border-outline-variant/30">
+<section id="hero" class="relative min-h-[min(88vh,720px)] flex items-center justify-center overflow-hidden border-b border-outline-variant/30">
 <div class="hero-video-container">
 <video autoplay loop muted playsinline webkit-playsinline src="hero-video.mp4" poster="/assets/seo/og-image.jpg" class="object-cover w-full h-full object-center"></video>
 </div>
