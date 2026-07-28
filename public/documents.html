@@ -2,13 +2,12 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/js/rentcan-config.js"></script>
 <script>RentCan.requireAuth();</script>
-
 <meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" name="viewport">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/seo/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-
+<meta name="theme-color" content="#6B4822">
 <title>RentCan | Documents Vault</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
@@ -18,233 +17,110 @@
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="/css/brand.css">
 <script src="/js/app.js"></script>
+<script src="/js/demo-portfolio.js"></script>
 </head>
-<body class="rc-app overflow-hidden bg-background text-on-background">
+<body class="rc-app bg-background text-on-background">
 
-<div class="flex h-screen w-full">
-<aside class="hidden md:flex flex-col h-screen p-stack-md border-r border-outline bg-surface w-64 shrink-0">
+<div class="flex min-h-screen w-full">
+<aside class="hidden md:flex flex-col h-screen sticky top-0 p-stack-md border-r border-outline bg-surface w-64 shrink-0">
 <div class="mb-stack-xl">
 <a href="/dashboard" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--app" aria-label="RentCan"><img src="/assets/logos/rentcan-wordmark.png" alt="RentCan"></a>
 </div>
-<div class="flex flex-col space-y-1 flex-grow">
-<a href="/dashboard" class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
-<span class="material-symbols-outlined">domain</span><span>Properties</span>
-</a>
-<a href="/documents" class="text-primary font-bold bg-surface-container flex items-center gap-3 px-4 py-3 rounded transition-all font-label-lg text-label-lg">
-<span class="material-symbols-outlined">description</span><span>Documents</span>
-</a>
-<a href="/payments" class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded transition-all font-label-lg text-label-lg">
-<span class="material-symbols-outlined">payments</span><span>Payments</span>
-</a>
-<a href="/inspections" class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
-<span class="material-symbols-outlined">fact_check</span><span>Inspections</span>
-</a>
-<a href="/reports" class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded transition-all font-label-lg text-label-lg">
-<span class="material-symbols-outlined">analytics</span><span>Reports</span>
-</a>
-</div>
-<div class="mt-auto border-t border-outline-variant pt-stack-md flex flex-col space-y-1">
-<a href="/info" class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
-<span class="material-symbols-outlined">help</span><span>Help</span>
-</a>
-<button id="btn-sign-out" onclick="signOut()" class="w-full flex items-center gap-2 px-3 py-2 text-xs text-on-surface-variant/60 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all font-medium mt-2">
-<span class="material-symbols-outlined text-base">logout</span> Sign Out
-</button>
+<nav class="flex flex-col space-y-1 flex-grow">
+<a href="/dashboard" class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high font-label-lg text-label-lg"><span class="material-symbols-outlined">domain</span><span>Properties</span></a>
+<a href="/documents" class="text-primary font-bold bg-surface-container flex items-center gap-3 px-4 py-3 rounded font-label-lg text-label-lg"><span class="material-symbols-outlined">description</span><span>Documents</span></a>
+<a href="/payments" class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded font-label-lg text-label-lg"><span class="material-symbols-outlined">payments</span><span>Payments</span></a>
+<a href="/inspections" class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high font-label-lg text-label-lg"><span class="material-symbols-outlined">fact_check</span><span>Inspections</span></a>
+<a href="/reports" class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded font-label-lg text-label-lg"><span class="material-symbols-outlined">analytics</span><span>Reports</span></a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-stack-md">
+<button type="button" onclick="signOut()" class="w-full flex items-center gap-2 px-3 py-2 text-xs text-on-surface-variant/60 hover:text-red-600 rounded-lg rc-tap"><span class="material-symbols-outlined text-base">logout</span> Sign Out</button>
 </div>
 </aside>
-<!-- Main Content Canvas -->
-<main class="flex-grow overflow-y-auto custom-scrollbar bg-background relative px-6 md:px-margin-mobile md:px-margin-desktop py-stack-lg pb-32 md:pb-stack-lg">
-<!-- Header Section -->
-<header class="flex justify-between items-end mb-stack-xl">
+
+<main class="flex-grow px-4 sm:px-6 md:px-margin-desktop py-stack-lg pb-32 md:pb-stack-lg">
+<header class="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 mb-stack-xl">
 <div>
 <h1 class="font-display-lg text-display-lg text-primary">Documents Vault</h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant opacity-70">Secure storage for all tenant and property files</p>
-  </div>
-  <button class="flex items-center gap-2 px-6 py-3 bg-primary text-white font-label-lg rounded hover:opacity-90 transition-opacity shadow-lg">
-    <span class="material-symbols-outlined">upload</span> Upload Files
-  </button>
+<p class="font-body-lg text-body-lg text-on-surface-variant opacity-70" id="vault-sub">Leases, IDs, utilities &amp; inspection files</p>
+</div>
+<button type="button" class="rc-tap flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white font-label-lg rounded hover:opacity-90">
+<span class="material-symbols-outlined">upload</span> Upload
+</button>
 </header>
-<!-- Upcoming Rent Section (Bento Style) -->
-<section class="mb-stack-xl">
-<h2 class="font-label-sm text-label-sm text-on-surface-variant mb-stack-md uppercase tracking-[0.1em]">Document Health</h2>
 
-  
-  <div class="flex justify-between items-center mb-6">
-    <div class="flex gap-4">
-      <div class="bg-surface-container-low px-4 py-2 rounded-lg border border-outline flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer hover:bg-surface-container transition-colors">
-        <span class="material-symbols-outlined text-[18px]">folder</span> All Files
-      </div>
-      <div class="bg-surface-container-lowest px-4 py-2 rounded-lg border border-outline border-dashed flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer hover:border-primary hover:text-primary transition-colors">
-        <span class="material-symbols-outlined text-[18px]">add</span> New Folder
-      </div>
-    </div>
-    <div class="bg-surface-container-low px-4 py-2 rounded-lg border border-outline flex items-center gap-2 text-sm text-on-surface-variant w-64">
-      <span class="material-symbols-outlined text-[18px]">search</span>
-      <input type="text" placeholder="Search documents..." class="bg-transparent border-none outline-none w-full text-sm placeholder:text-on-surface-variant/50">
-    </div>
-  </div>
-  </section>
-
-
-<!-- Transaction Table Section -->
-<section class="border border-outline bg-surface-container-lowest overflow-hidden">
-<div class="p-stack-md border-b border-outline flex justify-between items-center bg-white">
-<h3 class="font-title-lg text-title-lg">Tenant Files</h3>
-<div class="flex gap-4">
-<div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
-<input class="pl-10 pr-4 py-2 border border-outline-variant rounded bg-surface font-body-md text-body-md w-64 focus:ring-1 focus:ring-primary focus:border-primary outline-none" placeholder="Filter transactions..." type="text">
-</div>
-<button class="px-4 py-2 bg-primary text-white font-label-lg text-label-lg rounded hover:opacity-90 transition-opacity flex items-center gap-2">
-<span class="material-symbols-outlined text-sm">download</span>
-                            Export CSV
-                        </button>
-</div>
-</div>
-<div class="overflow-x-auto">
-<table class="w-full text-left border-collapse">
-<thead>
-<tr class="bg-surface font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
-<th class="px-stack-md py-4 font-bold border-b border-outline">Date</th>
-<th class="px-stack-md py-4 font-bold border-b border-outline">Asset</th>
-<th class="px-stack-md py-4 font-bold border-b border-outline">Tenant</th>
-<th class="px-stack-md py-4 font-bold border-b border-outline">Amount</th>
-<th class="px-stack-md py-4 font-bold border-b border-outline text-center">Status</th>
-<th class="px-stack-md py-4 font-bold border-b border-outline text-right">Actions</th>
-</tr>
-</thead>
-<tbody class="font-body-md text-body-md">
-<!-- Row 1 -->
-<tr class="hover:bg-surface-container-low transition-colors group">
-<td class="px-stack-md py-5 border-b border-outline-variant">Sep 28, 2024</td>
-<td class="px-stack-md py-5 border-b border-outline-variant font-bold">The Heights #402</td>
-<td class="px-stack-md py-5 border-b border-outline-variant">Sarah Jenkins</td>
-<td class="px-stack-md py-5 border-b border-outline-variant font-bold text-primary">₹2,450.00</td>
-<td class="px-stack-md py-5 border-b border-outline-variant text-center">
-<span class="px-3 py-1 rounded-full bg-primary text-white text-[10px] font-bold uppercase">Paid</span>
-</td>
-<td class="px-stack-md py-5 border-b border-outline-variant text-right">
-<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">more_horiz</span></button>
-</td>
-</tr>
-<!-- Row 2 -->
-<tr class="hover:bg-surface-container-low transition-colors">
-<td class="px-stack-md py-5 border-b border-outline-variant">Sep 27, 2024</td>
-<td class="px-stack-md py-5 border-b border-outline-variant font-bold">Lakeside Apts #12</td>
-<td class="px-stack-md py-5 border-b border-outline-variant">David Chen</td>
-<td class="px-stack-md py-5 border-b border-outline-variant font-bold text-primary">₹3,100.00</td>
-<td class="px-stack-md py-5 border-b border-outline-variant text-center">
-<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-bold uppercase">Pending</span>
-</td>
-<td class="px-stack-md py-5 border-b border-outline-variant text-right">
-<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">more_horiz</span></button>
-</td>
-</tr>
-<!-- Row 3 -->
-<tr class="hover:bg-surface-container-low transition-colors">
-<td class="px-stack-md py-5 border-b border-outline-variant">Sep 26, 2024</td>
-<td class="px-stack-md py-5 border-b border-outline-variant font-bold">North Star Loft #2</td>
-<td class="px-stack-md py-5 border-b border-outline-variant">Amara Okafor</td>
-<td class="px-stack-md py-5 border-b border-outline-variant font-bold text-primary">₹1,950.00</td>
-<td class="px-stack-md py-5 border-b border-outline-variant text-center">
-<span class="px-3 py-1 rounded-full bg-primary text-white text-[10px] font-bold uppercase">Paid</span>
-</td>
-<td class="px-stack-md py-5 border-b border-outline-variant text-right">
-<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">more_horiz</span></button>
-</td>
-</tr>
-<!-- Row 4 -->
-<tr class="hover:bg-surface-container-low transition-colors">
-<td class="px-stack-md py-5 border-b border-outline-variant">Sep 25, 2024</td>
-<td class="px-stack-md py-5 border-b border-outline-variant font-bold">River Terrace #305</td>
-<td class="px-stack-md py-5 border-b border-outline-variant">Leo Henderson</td>
-<td class="px-stack-md py-5 border-b border-outline-variant font-bold text-primary">₹2,800.00</td>
-<td class="px-stack-md py-5 border-b border-outline-variant text-center">
-<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-bold uppercase">Pending</span>
-</td>
-<td class="px-stack-md py-5 border-b border-outline-variant text-right">
-<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">more_horiz</span></button>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="px-stack-md py-4 bg-white flex justify-between items-center">
-<span class="text-label-sm text-on-surface-variant">Showing 4 of 128 transactions</span>
-<div class="flex gap-2">
-<button class="w-8 h-8 flex items-center justify-center border border-outline rounded hover:bg-surface"><span class="material-symbols-outlined text-sm">chevron_left</span></button>
-<button class="w-8 h-8 flex items-center justify-center border border-primary bg-primary text-white rounded text-label-sm">1</button>
-<button class="w-8 h-8 flex items-center justify-center border border-outline rounded hover:bg-surface text-label-sm">2</button>
-<button class="w-8 h-8 flex items-center justify-center border border-outline rounded hover:bg-surface text-label-sm">3</button>
-<button class="w-8 h-8 flex items-center justify-center border border-outline rounded hover:bg-surface"><span class="material-symbols-outlined text-sm">chevron_right</span></button>
-</div>
-</div>
-</section>
-<!-- Footer (from JSON) -->
-<footer class="mt-stack-xl pt-stack-lg border-t border-outline grid grid-cols-1 md:grid-cols-4 gap-gutter mb-stack-lg">
-<div class="col-span-1 md:col-span-2">
-<a href="/dashboard" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--sm" aria-label="RentCan"><img src="/assets/logos/rentcan-wordmark.png" alt="RentCan"></a>
-<p class="font-body-md text-body-md text-on-surface-variant">Precision Property Management platform for the modern landlord. Swiss engineered transparency, Scandinavian efficiency.</p>
-</div>
-<div class="flex flex-col gap-2">
-<span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant opacity-60">Legal</span>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary" href="/info">Privacy Policy</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary" href="/info">Terms of Service</a>
-</div>
-<div class="flex flex-col gap-2">
-<span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant opacity-60">Resources</span>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary" href="/info">Help Center</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary" href="/info">API Documentation</a>
-</div>
-<div class="col-span-full mt-stack-md flex justify-between items-center text-on-surface-variant opacity-70">
-<p class="font-body-md text-body-md">© 2026 RentCan. Precision Property Management.</p>
-<div class="flex gap-4">
-<span class="material-symbols-outlined cursor-pointer hover:text-primary">language</span>
-<span class="material-symbols-outlined cursor-pointer hover:text-primary">share</span>
-</div>
-</div>
-</footer>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8" id="vault-stats"></div>
+<section class="space-y-3" id="documents-list"></section>
 </main>
 </div>
-<!-- Micro-interaction Script -->
-<script>
-        document.querySelectorAll('tr').forEach(row => {
-            row.addEventListener('mouseenter', () => {
-                row.style.transform = 'translateX(4px)';
-                row.style.transition = 'transform 0.2s ease-out';
-            });
-            row.addEventListener('mouseleave', () => {
-                row.style.transform = 'translateX(0)';
-            });
-        });
-    </script>
-
-
-
 
 <script>
-async function signOut() {
-  sessionStorage.removeItem('rentcan_user');
-  sessionStorage.removeItem('rentcan_role');
+const TYPE_ICON = {
+  lease: 'contract',
+  inspection: 'fact_check',
+  utility: 'bolt',
+  id_proof: 'badge',
+  other: 'description'
+};
+
+document.addEventListener('DOMContentLoaded', async () => {
   try {
-    const res = await fetch('/api/config');
-    const cfg = await res.json();
-    if (cfg.supabaseUrl) {
-      const client = supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
-      await client.auth.signOut();
+    if (typeof mountMobileBottomNav === 'function') mountMobileBottomNav('documents');
+    const client = await getSupabaseClient();
+    if (!client) throw new Error('no client');
+    const { data: { session } } = await client.auth.getSession();
+    if (!session) { location.href = '/login'; return; }
+
+    const portfolio = await loadPortfolio(client, session.user.id);
+    RentCanDemo.mountDemoBanner(portfolio.isDemo);
+    document.getElementById('vault-sub').textContent = portfolio.isDemo
+      ? 'Sample vault for Sector 79 & Aerocity'
+      : 'Secure storage for tenant and property files';
+
+    const docs = portfolio.documents || [];
+    const byType = {};
+    docs.forEach(d => { byType[d.type] = (byType[d.type] || 0) + 1; });
+
+    document.getElementById('vault-stats').innerHTML = [
+      ['All files', docs.length, 'folder'],
+      ['Leases', byType.lease || 0, 'contract'],
+      ['Inspections', byType.inspection || 0, 'fact_check'],
+      ['IDs', byType.id_proof || 0, 'badge']
+    ].map(([label, n, icon]) => `
+      <div class="bg-white border border-outline rounded-xl p-4">
+        <span class="material-symbols-outlined text-primary text-xl">${icon}</span>
+        <p class="font-bold text-2xl text-primary mt-2">${n}</p>
+        <p class="text-xs text-on-surface-variant uppercase tracking-wider">${label}</p>
+      </div>`).join('');
+
+    const list = document.getElementById('documents-list');
+    if (!docs.length) {
+      list.innerHTML = `<div class="text-center py-16 border border-dashed border-outline-variant rounded-xl">
+        <span class="material-symbols-outlined text-4xl text-outline mb-2">folder_open</span>
+        <p class="text-on-surface-variant">No documents yet. Upload a lease to get started.</p>
+      </div>`;
+      return;
     }
-  } catch (_) {}
-  window.location.href = '/login';
 
+    list.innerHTML = docs.map(d => `
+      <article class="rc-pay-card sm:flex sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div class="flex items-start gap-3 min-w-0">
+          <div class="w-11 h-11 rounded-xl bg-brand-mint/50 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-primary">${TYPE_ICON[d.type] || 'description'}</span>
+          </div>
+          <div class="min-w-0">
+            <p class="font-bold text-on-surface truncate">${d.name}</p>
+            <p class="text-sm text-on-surface-variant">${d.property_name || 'Property'} · ${formatDate(d.created_at)}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 justify-between sm:justify-end">
+          ${RentCanDemo.statusBadge(d.type.replace('_', ' '))}
+          <button type="button" class="rc-tap text-primary font-bold text-sm px-3">View</button>
+        </div>
+      </article>`).join('');
+  } catch (e) {
+    console.error(e);
+  }
+});
 </script>
-
-
-<nav id="rc-mobile-nav" class="md:hidden fixed bottom-0 left-0 right-0 rc-app-mobile-nav px-2 pt-2 z-50 flex justify-around items-center" style="padding-bottom:max(10px, env(safe-area-inset-bottom))">
-  <a href="/dashboard" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 0">domain</span><span>Home</span></a>
-  <a href="/inspections" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 0">fact_check</span><span>Inspect</span></a>
-  <a href="/documents" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-primary"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 1">description</span><span>Vault</span></a>
-  <a href="/payments" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 0">payments</span><span>Ledger</span></a>
-  <a href="/reports" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 0">analytics</span><span>Reports</span></a>
-</nav>
-
 </body></html>

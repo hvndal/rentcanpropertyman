@@ -1,7 +1,7 @@
 <!DOCTYPE html><html class="light" lang="en"><head>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" name="viewport">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/seo/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -18,7 +18,8 @@
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="/css/brand.css">
 <script src="/js/rentcan-config.js"></script>
-<script src="/js/app.js"></script></head>
+<script src="/js/app.js"></script>
+<script src="/js/demo-portfolio.js"></script></head>
 <body class="rc-app flex flex-col md:flex-row min-h-screen overflow-x-hidden md:overflow-hidden">
 
 <!-- SideNavBar (Shared Component) -->
@@ -96,8 +97,9 @@
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
 <input class="pl-10 pr-4 py-2 border-b border-outline bg-transparent focus:border-primary focus:ring-0 font-body-md text-body-md w-64 outline-none" placeholder="Search property or tenant..." type="text">
 </div>
-<button id="topbar-invite-btn" onclick="showInviteTenantModal()" class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-lg text-label-lg transition-all hover:scale-[1.02] active:scale-95">
-                    Invite Tenant
+<button id="topbar-invite-btn" onclick="showInviteTenantModal()" class="bg-primary text-on-primary px-3 sm:px-6 py-2 rounded-lg font-label-lg text-label-lg transition-all hover:scale-[1.02] active:scale-95 rc-tap flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[18px] sm:hidden">person_add</span>
+                    <span class="hidden sm:inline">Invite Tenant</span>
                 </button>
 </div>
 </header>
@@ -134,17 +136,17 @@
 <!-- Main KPI: Documents -->
 <div class="col-span-12 md:col-span-4 border border-outline p-stack-lg flex flex-col justify-between bg-surface-container-lowest">
 <div>
-<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Active Documents</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Open Requests</p>
 <h3 class="font-display-lg text-display-lg text-primary font-bold" id="stat-active-requests">—</h3>
 </div>
 <div class="mt-stack-md flex gap-gutter">
 <div>
-<p class="font-label-sm text-label-sm text-on-surface-variant">Pending</p>
-<p class="font-title-lg text-title-lg text-error">4</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Open requests</p>
+<p class="font-title-lg text-title-lg text-error" id="stat-pending-docs">—</p>
 </div>
 <div class="border-l border-outline-variant pl-4">
-<p class="font-label-sm text-label-sm text-on-surface-variant">Signed</p>
-<p class="font-title-lg text-title-lg text-primary">14</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">In vault</p>
+<p class="font-title-lg text-title-lg text-primary" id="stat-signed-docs">—</p>
 </div>
 </div>
 </div>
@@ -165,29 +167,23 @@
 </div>
 <!-- Property Grid -->
 <div id="properties-grid" class="swiss-grid gap-stack-lg">
-<!-- Empty State (shown until real data loads) -->
-  <div id="empty-state-properties" class="col-span-12 flex flex-col items-center justify-center py-24 text-center border border-dashed border-outline-variant rounded-lg bg-surface-container-lowest">
+  <div id="empty-state-properties" class="col-span-12 flex flex-col items-center justify-center py-16 md:py-24 text-center border border-dashed border-outline-variant rounded-lg bg-surface-container-lowest px-4">
     <span class="material-symbols-outlined text-[56px] text-outline mb-4">home_work</span>
-    <p class="font-title-lg text-title-lg text-on-surface mb-2">No properties yet</p>
-    <p class="font-body-md text-body-md text-on-surface-variant max-w-xs mb-6">Add your first property to start tracking rent, maintenance, and inspections.</p>
-    <button onclick="showAddPropertyModal()" class="flex items-center gap-2 px-6 py-3 bg-primary text-white font-label-lg text-label-lg rounded-lg hover:opacity-90 transition-opacity">
-      <span class="material-symbols-outlined text-[18px]">add</span>
-      Add First Property
-    </button>
+    <p class="font-title-lg text-title-lg text-on-surface mb-2">Loading portfolio…</p>
+    <p class="font-body-md text-body-md text-on-surface-variant max-w-xs mb-6">Preparing your properties.</p>
   </div>
-<!-- Recent Activity — populated dynamically -->
+</div>
 <section class="mt-stack-xl">
 <h4 class="font-headline-md text-headline-md text-on-surface mb-stack-lg">Recent Activity</h4>
-<div class="border border-outline bg-surface-container-lowest" id="activity-list">
+<div class="border border-outline bg-surface-container-lowest rounded-xl overflow-hidden" id="activity-list">
   <div class="p-stack-xl flex flex-col items-center justify-center text-center" id="empty-state-activity">
     <span class="material-symbols-outlined text-[36px] text-outline mb-3">history</span>
     <p class="font-body-md text-body-md text-on-surface-variant">Activity will appear here once you add properties.</p>
   </div>
 </div>
 </section>
-</div>
 <!-- Footer (Shared Component) -->
-<footer class="mt-auto grid grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop py-stack-xl w-full border-t border-outline bg-surface-container-lowest">
+<footer class="mt-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop py-stack-xl w-full border-t border-outline bg-surface-container-lowest pb-28 md:pb-stack-xl">
 <div class="col-span-4 lg:col-span-1">
 <a href="/dashboard" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--sm" aria-label="RentCan"><img src="/assets/logos/rentcan-wordmark.png" alt="RentCan"></a>
 <p class="font-body-md text-body-md text-on-surface-variant">© 2026 RentCan. Precision Property Management.</p>
@@ -253,6 +249,7 @@ async function signOut() {
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
     try {
+        if (typeof mountMobileBottomNav === 'function') mountMobileBottomNav('dashboard');
         const client = await getSupabaseClient();
         if (!client) throw new Error('Supabase not configured');
 
@@ -263,140 +260,114 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         const userId = session.user.id;
         const role = sessionStorage.getItem('rentcan_role') || 'landlord';
+        const portfolio = await loadPortfolio(client, userId, role);
+        RentCanDemo.mountDemoBanner(portfolio.isDemo);
 
-        let properties = [];
-        if (role === 'tenant') {
-            const { data: tenantRecords, error: tenantErr } = await client
-                .from('tenants')
-                .select('*, properties(*)')
-                .eq('user_id', userId);
-            if (tenantErr) throw tenantErr;
-            properties = (tenantRecords || []).map(t => t.properties).filter(Boolean);
-        } else {
-            const { data, error: propsErr } = await client.from('properties').select('*').eq('owner_id', userId);
-            if (propsErr) throw propsErr;
-            properties = data || [];
-        }
+        const { properties, payments, maintenance, stats } = portfolio;
 
-        // Calculate Stats
-        const totalProperties = properties.length;
-        const occupiedProps = properties.filter(p => p.status === 'occupied').length;
-        const occupancyRate = totalProperties ? Math.round((occupiedProps / totalProperties) * 100) : 0;
-        const monthlyRevenue = properties.reduce((sum, p) => p.status === 'occupied' ? sum + Number(p.rent_amount) : sum, 0);
-
-        // Fetch Active Requests
-        const { data: activeReqs, error: reqsErr } = await client.from('maintenance_requests')
-            .select('*, properties!inner(owner_id)')
-            .eq('status', 'pending')
-            .eq('properties.owner_id', userId);
-        const activeRequests = activeReqs ? activeReqs.length : 0;
-
-        // Update Stat DOM
-        document.getElementById('stat-occupancy').textContent = occupancyRate + '%';
+        document.getElementById('stat-occupancy').textContent = stats.occupancyRate + '%';
         const bar = document.getElementById('occupancy-bar');
-        if (bar) bar.style.width = occupancyRate + '%';
+        if (bar) bar.style.width = stats.occupancyRate + '%';
         const totalEl = document.getElementById('stat-total-properties');
-        if (totalEl) totalEl.textContent = totalProperties ? `(${totalProperties} properties)` : '';
-        document.getElementById('stat-monthly-revenue').textContent = '₹' + monthlyRevenue.toLocaleString();
-        document.getElementById('stat-active-requests').textContent = activeRequests;
+        if (totalEl) totalEl.textContent = stats.totalProperties ? `(${stats.totalProperties} properties)` : '';
+        document.getElementById('stat-monthly-revenue').textContent = formatINR(stats.monthlyRevenue);
+        document.getElementById('stat-active-requests').textContent = stats.activeRequests;
+        const pend = document.getElementById('stat-pending-docs');
+        const signed = document.getElementById('stat-signed-docs');
+        if (pend) pend.textContent = String(stats.activeRequests);
+        if (signed) signed.textContent = String(stats.documentsCount);
 
-        // Render Properties
         const grid = document.getElementById('properties-grid');
-        const emptyState = document.getElementById('empty-state-properties');
-        if (emptyState) emptyState.style.display = properties.length ? 'none' : '';
-        grid.innerHTML = properties.length ? '' : (emptyState ? emptyState.outerHTML : '');
-        if (properties.length && emptyState) {
-            const restored = document.getElementById('empty-state-properties');
-            if (restored) restored.style.display = 'none';
+        grid.innerHTML = '';
+
+        if (!properties.length) {
+            grid.innerHTML = `<div class="col-span-12 flex flex-col items-center justify-center py-16 text-center border border-dashed border-outline-variant rounded-lg bg-surface-container-lowest px-4">
+              <span class="material-symbols-outlined text-[56px] text-outline mb-4">home_work</span>
+              <p class="font-title-lg text-title-lg text-on-surface mb-2">No properties yet</p>
+              <p class="font-body-md text-body-md text-on-surface-variant max-w-xs mb-6">Add your first property to start tracking rent, maintenance, and inspections.</p>
+              <button onclick="showAddPropertyModal()" class="flex items-center gap-2 px-6 py-3 bg-primary text-white font-label-lg rounded-lg rc-tap">
+                <span class="material-symbols-outlined text-[18px]">add</span> Add First Property
+              </button>
+            </div>`;
         }
 
         properties.forEach(prop => {
-            const statusText = prop.status.toUpperCase();
+            const statusText = String(prop.status || 'vacant').toUpperCase();
+            const img = prop.image || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80';
             const card = document.createElement('div');
             card.className = "col-span-12 md:col-span-6 lg:col-span-4 bg-surface-container-lowest border border-outline rounded-xl overflow-hidden group hover:border-primary transition-colors flex flex-col";
             card.innerHTML = `
-                <div class="h-48 w-full bg-surface-variant overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="${prop.name}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                <div class="h-44 sm:h-48 w-full bg-surface-variant overflow-hidden relative">
+                    <img src="${img}" alt="${prop.name}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" loading="lazy">
                     <div class="absolute top-4 right-4 px-3 py-1 bg-surface-container-lowest rounded-full shadow-sm border border-outline-variant/60 font-label-caps text-[10px] tracking-wider text-primary font-bold">
                         ${statusText}
                     </div>
                 </div>
                 <div class="p-stack-md flex-1 flex flex-col">
                     <h5 class="font-title-lg text-title-lg text-on-surface mb-1">${prop.name}</h5>
-                    <p class="font-body-md text-body-md text-on-surface-variant mb-4 flex-1">${prop.address}</p>
+                    <p class="font-body-md text-body-md text-on-surface-variant mb-4 flex-1">${prop.address || ''}</p>
                     <div class="flex justify-between items-center pt-4 border-t border-outline-variant">
-                        <span class="font-label-lg text-label-lg text-primary font-bold">₹${Number(prop.rent_amount).toLocaleString()}/mo</span>
+                        <span class="font-label-lg text-label-lg text-primary font-bold">${formatINR(prop.rent_amount)}/mo</span>
                         <div class="flex gap-2 font-label-sm text-on-surface-variant">
-                            <span>${prop.beds}B</span> • <span>${prop.baths}BA</span>
+                            <span>${prop.beds || 0}B</span> • <span>${prop.baths || 0}BA</span>
                         </div>
                     </div>
-                </div>
-            `;
+                </div>`;
             grid.appendChild(card);
         });
 
-        // Add Property Card Placeholder (landlord only)
         if (role !== 'tenant') {
-        const addCardHtml = `
-            <div class="col-span-12 md:col-span-6 lg:col-span-4 border border-outline border-dashed bg-transparent group flex flex-col items-center justify-center p-stack-xl transition-all hover:bg-surface-container-low cursor-pointer min-h-[300px] rounded-xl">
-                <span class="material-symbols-outlined text-[48px] text-outline mb-stack-md group-hover:scale-110 transition-transform" data-icon="add_circle">add_circle</span>
+            const addCard = document.createElement('div');
+            addCard.className = "col-span-12 md:col-span-6 lg:col-span-4 border border-outline border-dashed bg-transparent group flex flex-col items-center justify-center p-stack-xl transition-all hover:bg-surface-container-low cursor-pointer min-h-[240px] rounded-xl";
+            addCard.innerHTML = `
+                <span class="material-symbols-outlined text-[48px] text-outline mb-stack-md group-hover:scale-110 transition-transform">add_circle</span>
                 <p class="font-title-lg text-title-lg text-on-surface">Add New Property</p>
-                <p class="font-body-md text-body-md text-on-surface-variant text-center mt-2 px-margin-mobile">Expand your portfolio with our precise management tools.</p>
-            </div>
-        `;
-        const addCardWrapper = document.createElement('div');
-        addCardWrapper.innerHTML = addCardHtml;
-        const addCard = addCardWrapper.firstElementChild;
-        addCard.onclick = showAddPropertyModal;
-        grid.appendChild(addCard);
+                <p class="font-body-md text-body-md text-on-surface-variant text-center mt-2 px-4">Expand your Tricity portfolio.</p>`;
+            addCard.onclick = showAddPropertyModal;
+            grid.appendChild(addCard);
         }
 
-
-        // Fetch Activity
-        const { data: payments } = await client.from('payments').select('*, properties!inner(name, owner_id)').eq('properties.owner_id', userId).order('created_at', { ascending: false }).limit(5);
-        const { data: maintenance } = await client.from('maintenance_requests').select('*, properties!inner(name, owner_id)').eq('properties.owner_id', userId).order('created_at', { ascending: false }).limit(5);
-        
         let activities = [];
-        if (payments) activities = activities.concat(payments.map(p => ({ type: 'payment', ...p })));
-        if (maintenance) activities = activities.concat(maintenance.map(m => ({ type: 'maintenance', ...m })));
-        
+        payments.forEach(p => activities.push({ type: 'payment', ...p }));
+        maintenance.forEach(m => activities.push({ type: 'maintenance', ...m }));
         activities.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         activities = activities.slice(0, 10);
 
         const activityList = document.getElementById('activity-list');
-        activityList.innerHTML = '';
-
-        activities.forEach(act => {
-            const item = document.createElement('div');
-            item.className = "p-stack-md border-b border-outline-variant flex items-center justify-between hover:bg-surface transition-colors cursor-pointer";
-
-            let icon = 'info';
-            let iconColor = 'text-primary';
-            let desc = '';
-
-            if (act.type === 'payment') {
-                icon = 'payments';
-                iconColor = act.status === 'paid' ? 'text-primary' : 'text-brand-gold';
-                desc = `Rent payment ${act.status}: ${act.properties.name}`;
-            } else {
-                icon = 'build';
-                iconColor = act.status === 'resolved' ? 'text-primary' : 'text-tertiary';
-                desc = `Maintenance: ${act.title} (${act.properties.name})`;
-            }
-
-            item.innerHTML = `
-                <div class="flex items-center gap-gutter">
-                    <span class="material-symbols-outlined ${iconColor}">${icon}</span>
-                    <div>
-                        <p class="font-body-lg text-body-lg text-on-surface">${desc}</p>
-                        <p class="font-label-sm text-label-sm text-on-surface-variant">${new Date(act.created_at).toLocaleDateString()}</p>
+        if (!activities.length) {
+            activityList.innerHTML = `<div class="p-stack-xl flex flex-col items-center justify-center text-center" id="empty-state-activity">
+              <span class="material-symbols-outlined text-[36px] text-outline mb-3">history</span>
+              <p class="font-body-md text-body-md text-on-surface-variant">Activity will appear here once you add properties.</p>
+            </div>`;
+        } else {
+            activityList.innerHTML = '';
+            activities.forEach(act => {
+                const item = document.createElement('div');
+                item.className = "p-stack-md border-b border-outline-variant flex items-center justify-between hover:bg-surface transition-colors";
+                let icon = 'info';
+                let iconColor = 'text-primary';
+                let desc = '';
+                if (act.type === 'payment') {
+                    icon = 'payments';
+                    iconColor = act.status === 'paid' ? 'text-primary' : 'text-brand-gold';
+                    desc = `Rent ${act.status}: ${act.properties?.name || 'Property'} · ${formatINR(act.amount)}`;
+                } else {
+                    icon = 'build';
+                    iconColor = act.status === 'resolved' ? 'text-primary' : 'text-brand-gold';
+                    desc = `${act.title} (${act.properties?.name || 'Property'})`;
+                }
+                item.innerHTML = `
+                <div class="flex items-center gap-3 min-w-0">
+                    <span class="material-symbols-outlined ${iconColor} shrink-0">${icon}</span>
+                    <div class="min-w-0">
+                        <p class="font-body-lg text-body-lg text-on-surface truncate">${desc}</p>
+                        <p class="font-label-sm text-label-sm text-on-surface-variant">${formatDate(act.created_at)}</p>
                     </div>
                 </div>
-                <span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
-            `;
-            activityList.appendChild(item);
-        });
-
+                <span class="material-symbols-outlined text-on-surface-variant shrink-0">chevron_right</span>`;
+                activityList.appendChild(item);
+            });
+        }
     } catch(err) {
         console.error("Error fetching dashboard data:", err);
     }
