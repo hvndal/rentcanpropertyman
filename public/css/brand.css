@@ -109,3 +109,131 @@ body.rc-brand {
 .hero-logo-glow {
   filter: drop-shadow(0 12px 40px rgba(0, 0, 0, 0.35));
 }
+
+/* Scroll reveal — visible by default when JS hasn't run yet */
+.rc-reveal {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease;
+}
+
+html.rc-js .rc-reveal:not(.in-view):not(.is-visible) {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+.rc-reveal.in-view,
+.rc-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Pricing summary tiles — lift + glow on hover */
+.rc-pricing-tile {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease;
+}
+
+.rc-pricing-tile::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(166, 124, 82, 0.06) 0%, transparent 55%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.rc-pricing-tile:hover,
+.rc-pricing-tile.is-hovered {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 28px 56px rgba(61, 38, 30, 0.14);
+  border-color: rgba(92, 58, 46, 0.28);
+}
+
+.rc-pricing-tile:hover::before,
+.rc-pricing-tile.is-hovered::before {
+  opacity: 1;
+}
+
+/* Info page tab buttons */
+.rc-tab-btn {
+  padding: 10px 22px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid var(--rc-border);
+  background: var(--rc-warm-white);
+  color: var(--rc-muted);
+  white-space: nowrap;
+  transition:
+    background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s ease;
+}
+
+.rc-tab-btn:hover:not(.active) {
+  border-color: rgba(92, 58, 46, 0.35);
+  color: var(--rc-brown);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(61, 38, 30, 0.08);
+}
+
+.rc-tab-btn.active {
+  background: var(--rc-brown);
+  color: #fff;
+  border-color: var(--rc-brown);
+  box-shadow: 0 10px 28px rgba(92, 58, 46, 0.28);
+}
+
+.rc-plan-card {
+  border-radius: 1.25rem;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  background: var(--rc-warm-white);
+  border: 1px solid var(--rc-border);
+  box-shadow: var(--rc-shadow);
+  transition:
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease;
+}
+
+.rc-plan-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--rc-shadow-lg);
+  border-color: rgba(92, 58, 46, 0.22);
+}
+
+.rc-plan-card-featured {
+  border: 2px solid rgba(92, 58, 46, 0.2);
+  background: linear-gradient(180deg, #fff 0%, var(--rc-sand) 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rc-reveal,
+  .rc-pricing-tile,
+  .rc-tab-btn,
+  .rc-plan-card,
+  .rc-card {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  html.rc-js .rc-reveal:not(.in-view):not(.is-visible) {
+    opacity: 1;
+    transform: none;
+  }
+}

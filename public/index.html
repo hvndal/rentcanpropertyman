@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html class="scroll-smooth" lang="en"><head>
+<html class="scroll-smooth rc-js" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="https://use.typekit.net/jrc7ooj.css" rel="stylesheet"/>
@@ -363,7 +363,7 @@
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
 
     <!-- Residential -->
-    <div class="pricing-card rc-card p-8 md:p-10 flex flex-col h-full">
+    <div class="rc-reveal rc-card p-8 md:p-10 flex flex-col h-full">
       <span class="inline-block px-3.5 py-1 bg-brand-sand text-primary font-label-caps text-[10px] uppercase tracking-widest rounded-md font-bold w-max mb-5">Residential</span>
       <h3 class="font-display-md text-2xl text-primary mb-2">Residential Property Management</h3>
       <div class="flex items-baseline gap-2 mb-1">
@@ -388,7 +388,7 @@
     </div>
 
     <!-- Commercial -->
-    <div class="pricing-card rc-card p-8 md:p-10 flex flex-col h-full ring-2 ring-primary/15">
+    <div class="rc-reveal rc-card p-8 md:p-10 flex flex-col h-full ring-2 ring-primary/15">
       <span class="inline-block px-3.5 py-1 bg-primary/10 text-primary font-label-caps text-[10px] uppercase tracking-widest rounded-md font-bold w-max mb-5">Commercial</span>
       <h3 class="font-display-md text-2xl text-primary mb-2">Commercial Property Management</h3>
       <div class="flex items-baseline gap-2 mb-1">
@@ -409,7 +409,7 @@
     </div>
 
     <!-- Airbnb -->
-    <div class="pricing-card rc-card p-8 md:p-10 flex flex-col h-full bg-gradient-to-b from-white to-brand-sand/40">
+    <div class="rc-reveal rc-card p-8 md:p-10 flex flex-col h-full bg-gradient-to-b from-white to-brand-sand/40">
       <span class="inline-block px-3.5 py-1 bg-primary/10 text-primary font-label-caps text-[10px] uppercase tracking-widest rounded-md font-bold w-max mb-5">Premium Hospitality</span>
       <h3 class="font-display-md text-2xl text-primary mb-2">Airbnb Complete Management</h3>
       <p class="text-2xl font-bold text-primary mb-1">Contact Team</p>
@@ -527,21 +527,21 @@
       <p class="font-body-lg text-on-surface-variant max-w-2xl mx-auto">No percentage of your rent. You pay for on-ground property management — residential, commercial, or custom Airbnb hospitality.</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto text-center">
-      <div class="rc-card p-6 text-center">
+      <a href="/login" class="rc-pricing-tile rc-card p-6 text-center block no-underline text-inherit">
         <p class="text-primary font-bold text-sm uppercase tracking-widest mb-2">Residential</p>
         <p class="text-3xl font-bold text-primary">₹1,499<span class="text-sm font-normal text-on-surface-variant">/mo</span></p>
         <p class="text-xs text-on-surface-variant mt-2">+ ₹799/additional property</p>
-      </div>
-      <div class="rc-card p-6 text-center ring-2 ring-primary/20">
+      </a>
+      <a href="/login" class="rc-pricing-tile rc-card p-6 text-center ring-2 ring-primary/20 block no-underline text-inherit">
         <p class="text-primary font-bold text-sm uppercase tracking-widest mb-2">Commercial</p>
         <p class="text-3xl font-bold text-primary">₹1,999<span class="text-sm font-normal text-on-surface-variant">/mo</span></p>
         <p class="text-xs text-on-surface-variant mt-2">+ ₹799/additional property</p>
-      </div>
-      <div class="rc-card p-6 text-center">
+      </a>
+      <a href="#contact" class="rc-pricing-tile rc-card p-6 text-center block no-underline text-inherit">
         <p class="text-primary font-bold text-sm uppercase tracking-widest mb-2">Airbnb</p>
         <p class="text-xl font-bold text-primary">Custom Pricing</p>
-        <p class="text-xs text-on-surface-variant mt-2"><a href="#contact" class="text-primary hover:underline">Contact Team</a></p>
-      </div>
+        <p class="text-xs text-on-surface-variant mt-2"><span class="text-primary">Contact Team →</span></p>
+      </a>
     </div>
     <p class="text-center text-on-surface-variant/60 font-light mt-10 text-sm">SOS visits: ₹500/visit · Base plan covers 1 property · Airbnb management is a separate premium service</p>
   </div>
@@ -573,9 +573,9 @@
 <div class="col-span-1">
 <h4 class="font-label-caps text-label-caps text-primary font-bold mb-5 uppercase tracking-[0.2em]">Regional Focus</h4>
 <ul class="space-y-3">
-<li class="text-on-surface-variant/70 text-sm hover:text-secondary transition-all cursor-pointer font-light"><a href="/info#services">Mohali</a></li>
-<li class="text-on-surface-variant/70 text-sm hover:text-secondary transition-all cursor-pointer font-light"><a href="/info#services">Chandigarh</a></li>
-<li class="text-on-surface-variant/70 text-sm hover:text-secondary transition-all cursor-pointer font-light"><a href="/info#services">Panchkula</a></li>
+<li class="text-on-surface-variant/70 text-sm hover:text-secondary transition-all cursor-pointer font-light"><a href="/#services">Mohali</a></li>
+<li class="text-on-surface-variant/70 text-sm hover:text-secondary transition-all cursor-pointer font-light"><a href="/#services">Chandigarh</a></li>
+<li class="text-on-surface-variant/70 text-sm hover:text-secondary transition-all cursor-pointer font-light"><a href="/#services">Panchkula</a></li>
 <li class="text-on-surface-variant/30 text-sm cursor-not-allowed italic font-light">Zirakpur (Coming Soon)</li>
 </ul>
 </div>
@@ -607,29 +607,6 @@
 </div>
 </footer>
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('opacity-100', 'translate-y-0');
-                    entry.target.classList.remove('opacity-0', 'translate-y-10');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.pricing-card').forEach(el => {
-            el.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
-            observer.observe(el);
-        });
-    });
-</script>
-
-<script>
   window.addEventListener('DOMContentLoaded', () => {
     const loader = document.getElementById('global-loader');
     if (loader) {
@@ -659,11 +636,16 @@
     <span class="material-symbols-outlined text-xl">loyalty</span>
     <span>Plans</span>
   </a>
+  <a href="#contact" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
+    <span class="material-symbols-outlined text-xl">mail</span>
+    <span>Contact</span>
+  </a>
   <a href="/login" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-primary font-bold bg-primary/10 px-3.5 py-1 rounded-full border border-primary/20">
     <span class="material-symbols-outlined text-xl">account_circle</span>
     <span>Sign In</span>
   </a>
 </nav>
 
+<script src="/js/site.js"></script>
 <script src="/js/app.js"></script>
 </body></html>
