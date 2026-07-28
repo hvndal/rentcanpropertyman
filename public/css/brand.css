@@ -107,7 +107,190 @@ body.rc-brand {
 }
 
 .hero-logo-glow {
-  filter: drop-shadow(0 12px 40px rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0 4px 12px rgba(42, 24, 16, 0.15));
+}
+
+/* Hero spotlight — readable over stock video */
+.rc-hero-spotlight {
+  width: 100%;
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 1.75rem;
+  border-radius: 1.5rem;
+  background: linear-gradient(
+    165deg,
+    rgba(42, 24, 16, 0.92) 0%,
+    rgba(61, 38, 30, 0.88) 50%,
+    rgba(42, 24, 16, 0.9) 100%
+  );
+  backdrop-filter: blur(24px) saturate(130%);
+  -webkit-backdrop-filter: blur(24px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 28px 80px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+@media (min-width: 640px) {
+  .rc-hero-spotlight {
+    padding: 2rem 2.25rem 2.25rem;
+    max-width: 48rem;
+  }
+}
+
+.hero-tagline {
+  color: #ffffff;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  font-weight: 400;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+@media (min-width: 768px) {
+  .hero-tagline {
+    font-size: 1.0625rem;
+  }
+}
+
+.hero-logo-plate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 1.5rem;
+  border-radius: 1rem;
+  background: linear-gradient(180deg, #fffcf8 0%, #f5ebe0 100%);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.hero-logo-plate img {
+  height: auto;
+  width: min(220px, 72vw);
+  object-fit: contain;
+}
+
+@media (min-width: 640px) {
+  .hero-logo-plate img {
+    width: min(280px, 80vw);
+  }
+}
+
+/* Mobile service chips — tap to expand titles */
+.hero-chip-acc {
+  border-radius: 0.875rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.hero-chip-acc[open] {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(201, 168, 130, 0.45);
+}
+
+.hero-chip-acc summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hero-chip-acc summary::-webkit-details-marker {
+  display: none;
+}
+
+.hero-chip-acc summary .chip-chevron {
+  margin-left: auto;
+  font-family: 'Material Symbols Outlined';
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.65);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-chip-acc[open] summary .chip-chevron {
+  transform: rotate(180deg);
+  color: var(--rc-accent, #c9a882);
+}
+
+.hero-chip-acc .chip-body {
+  padding: 0 1rem 1rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.88);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 0.75rem;
+  margin: 0 1rem 1rem;
+}
+
+/* Mobile hero nav drawer */
+.rc-mobile-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.rc-mobile-drawer.is-open {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.rc-mobile-drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(42, 24, 16, 0.55);
+  backdrop-filter: blur(4px);
+}
+
+.rc-mobile-drawer-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: min(300px, 88vw);
+  height: 100%;
+  background: linear-gradient(180deg, #3d261e 0%, #2a1810 100%);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.25rem;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: -12px 0 48px rgba(0, 0, 0, 0.35);
+}
+
+.rc-mobile-drawer.is-open .rc-mobile-drawer-panel {
+  transform: translateX(0);
+}
+
+.rc-mobile-drawer-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 0.625rem;
+  transition: background 0.2s ease, color 0.2s ease;
+  text-decoration: none;
+}
+
+.rc-mobile-drawer-link:hover,
+.rc-mobile-drawer-link:focus {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
 }
 
 /* Scroll reveal — visible by default when JS hasn't run yet */
