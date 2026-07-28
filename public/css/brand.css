@@ -741,6 +741,7 @@ html.rc-js .rc-reveal:not(.in-view):not(.is-visible) {
   opacity: 0;
   transition: opacity 0.4s ease;
   pointer-events: none;
+  z-index: 2;
 }
 
 .rc-pricing-tile:hover,
@@ -753,6 +754,192 @@ html.rc-js .rc-reveal:not(.in-view):not(.is-visible) {
 .rc-pricing-tile:hover::before,
 .rc-pricing-tile.is-hovered::before {
   opacity: 1;
+}
+
+/* Photo plan tiles — stock bg + hover zoom */
+.rc-photo-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 22rem;
+  padding: 1.5rem;
+  border-radius: var(--rc-radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--rc-border);
+  text-decoration: none;
+  color: #fff;
+  isolation: isolate;
+  box-shadow: var(--rc-shadow);
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease;
+}
+
+.rc-photo-tile__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.04);
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rc-photo-tile__shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(78, 66, 56, 0.15) 0%, rgba(78, 66, 56, 0.35) 42%, rgba(50, 40, 32, 0.88) 100%),
+    linear-gradient(120deg, rgba(207, 223, 222, 0.18) 0%, transparent 55%);
+  transition: background 0.45s ease;
+}
+
+.rc-photo-tile__body {
+  position: relative;
+  z-index: 3;
+  text-align: left;
+}
+
+.rc-photo-tile__eyebrow {
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #D5B259;
+  margin-bottom: 0.45rem;
+}
+
+.rc-photo-tile__price {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: #fff;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+}
+
+.rc-photo-tile__price span {
+  font-size: 0.85rem;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.rc-photo-tile__meta {
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.rc-photo-tile__cta {
+  margin-top: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.rc-photo-tile:hover,
+.rc-photo-tile:focus-visible {
+  transform: translateY(-10px);
+  box-shadow: 0 32px 60px rgba(78, 66, 56, 0.22);
+  border-color: rgba(213, 178, 89, 0.45);
+  outline: none;
+}
+
+.rc-photo-tile:hover .rc-photo-tile__media,
+.rc-photo-tile:focus-visible .rc-photo-tile__media {
+  transform: scale(1.12);
+}
+
+.rc-photo-tile:hover .rc-photo-tile__shade,
+.rc-photo-tile:focus-visible .rc-photo-tile__shade {
+  background:
+    linear-gradient(180deg, rgba(78, 66, 56, 0.1) 0%, rgba(78, 66, 56, 0.28) 40%, rgba(50, 40, 32, 0.9) 100%),
+    linear-gradient(120deg, rgba(246, 207, 222, 0.22) 0%, transparent 50%);
+}
+
+.rc-photo-tile--featured {
+  box-shadow: 0 0 0 2px rgba(107, 72, 34, 0.22), var(--rc-shadow);
+}
+
+.rc-photo-tile--residential .rc-photo-tile__media {
+  background-image: url('/assets/stock/residential.jpg');
+}
+.rc-photo-tile--commercial .rc-photo-tile__media {
+  background-image: url('/assets/stock/commercial.jpg');
+}
+.rc-photo-tile--airbnb .rc-photo-tile__media {
+  background-image: url('/assets/stock/airbnb.jpg');
+}
+
+/* Plan cards on info — optional photo header band */
+.rc-plan-card.rc-plan-card--photo {
+  padding-top: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+.rc-plan-card.rc-plan-card--photo > :not(.rc-plan-card__hero) {
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
+.rc-plan-card.rc-plan-card--photo > .badge,
+.rc-plan-card.rc-plan-card--photo > .badge-accent {
+  margin-top: 0.25rem;
+}
+.rc-plan-card.rc-plan-card--photo > a:last-child {
+  margin-bottom: 2rem;
+  width: calc(100% - 4rem);
+}
+.rc-plan-card__hero {
+  position: relative;
+  height: 11.5rem;
+  margin: 0 0 1.25rem;
+  overflow: hidden;
+  border-radius: 1.25rem 1.25rem 0 0;
+}
+.rc-plan-card__hero-media {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.03);
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.rc-plan-card__hero-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 20%, rgba(78, 66, 56, 0.45) 100%);
+}
+.rc-plan-card--photo:hover .rc-plan-card__hero-media {
+  transform: scale(1.1);
+}
+.rc-plan-card__hero--residential .rc-plan-card__hero-media {
+  background-image: url('/assets/stock/residential.jpg');
+}
+.rc-plan-card__hero--commercial .rc-plan-card__hero-media {
+  background-image: url('/assets/stock/commercial.jpg');
+}
+.rc-plan-card__hero--airbnb .rc-plan-card__hero-media {
+  background-image: url('/assets/stock/airbnb.jpg');
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rc-photo-tile,
+  .rc-photo-tile__media,
+  .rc-plan-card__hero-media {
+    transition: none !important;
+  }
+  .rc-photo-tile:hover,
+  .rc-photo-tile:hover .rc-photo-tile__media,
+  .rc-plan-card--photo:hover .rc-plan-card__hero-media {
+    transform: none !important;
+  }
 }
 
 /* Info page tab buttons */

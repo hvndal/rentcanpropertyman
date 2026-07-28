@@ -452,26 +452,38 @@
     <p class="text-on-surface-variant font-light text-sm md:text-base leading-relaxed">Premium physical care across Mohali, Chandigarh, Panchkula &amp; Aerocity — plus an owner dashboard for visibility.</p>
   </div>
 
-  <!-- Plan headers -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-10">
-    <div class="rc-card p-5 text-center">
-      <p class="text-[10px] font-label-caps uppercase tracking-widest text-brand-gold font-bold mb-1">Residential</p>
-      <p class="text-3xl font-bold text-primary">₹1,499<span class="text-sm font-normal text-on-surface-variant">/mo</span></p>
-      <p class="text-xs text-on-surface-variant mt-1">+ ₹799 per extra property</p>
-      <a href="/login" class="inline-block mt-4 text-xs font-bold uppercase tracking-widest text-primary hover:text-brand-gold">Get Started →</a>
-    </div>
-    <div class="rc-card p-5 text-center ring-2 ring-primary/15">
-      <p class="text-[10px] font-label-caps uppercase tracking-widest text-primary font-bold mb-1">Commercial</p>
-      <p class="text-3xl font-bold text-primary">₹1,999<span class="text-sm font-normal text-on-surface-variant">/mo</span></p>
-      <p class="text-xs text-on-surface-variant mt-1">+ ₹799 per extra property</p>
-      <a href="/login" class="inline-block mt-4 text-xs font-bold uppercase tracking-widest text-primary hover:text-brand-gold">Get Started →</a>
-    </div>
-    <div class="rc-card p-5 text-center">
-      <p class="text-[10px] font-label-caps uppercase tracking-widest text-brand-gold font-bold mb-1">Airbnb</p>
-      <p class="text-xl font-bold text-primary">Custom</p>
-      <p class="text-xs text-on-surface-variant mt-1">Separate premium plan</p>
-      <a href="#contact" class="inline-block mt-4 text-xs font-bold uppercase tracking-widest text-primary hover:text-brand-gold">Contact Team →</a>
-    </div>
+  <!-- Plan photo tiles -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-5xl mx-auto mb-10">
+    <a href="/checkout?plan=residential" class="rc-photo-tile rc-photo-tile--residential">
+      <span class="rc-photo-tile__media" aria-hidden="true"></span>
+      <span class="rc-photo-tile__shade" aria-hidden="true"></span>
+      <div class="rc-photo-tile__body">
+        <p class="rc-photo-tile__eyebrow">Residential</p>
+        <p class="rc-photo-tile__price">₹1,499<span>/mo</span></p>
+        <p class="rc-photo-tile__meta">+ ₹799 per extra property</p>
+        <span class="rc-photo-tile__cta">Get Started →</span>
+      </div>
+    </a>
+    <a href="/checkout?plan=commercial" class="rc-photo-tile rc-photo-tile--commercial rc-photo-tile--featured">
+      <span class="rc-photo-tile__media" aria-hidden="true"></span>
+      <span class="rc-photo-tile__shade" aria-hidden="true"></span>
+      <div class="rc-photo-tile__body">
+        <p class="rc-photo-tile__eyebrow">Commercial</p>
+        <p class="rc-photo-tile__price">₹1,999<span>/mo</span></p>
+        <p class="rc-photo-tile__meta">+ ₹799 per extra property</p>
+        <span class="rc-photo-tile__cta">Get Started →</span>
+      </div>
+    </a>
+    <a href="#contact" class="rc-photo-tile rc-photo-tile--airbnb">
+      <span class="rc-photo-tile__media" aria-hidden="true"></span>
+      <span class="rc-photo-tile__shade" aria-hidden="true"></span>
+      <div class="rc-photo-tile__body">
+        <p class="rc-photo-tile__eyebrow">Airbnb</p>
+        <p class="rc-photo-tile__price" style="font-size:1.6rem">Custom</p>
+        <p class="rc-photo-tile__meta">Separate premium hospitality plan</p>
+        <span class="rc-photo-tile__cta">Contact Team →</span>
+      </div>
+    </a>
   </div>
 
   <!-- Feature comparison: ✓ included, − not included -->
@@ -598,23 +610,36 @@
       <h2 class="font-display-lg text-4xl md:text-5xl text-primary tracking-tight mb-5">Flat fees. Real service.</h2>
       <p class="font-body-lg text-on-surface-variant max-w-2xl mx-auto">No percentage of your rent. You pay for on-ground property management — residential, commercial, or custom Airbnb hospitality.</p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto text-center">
-      <a href="/checkout?plan=residential" class="rc-pricing-tile rc-card p-6 text-center block no-underline text-inherit">
-        <p class="text-primary font-bold text-sm uppercase tracking-widest mb-2">Residential</p>
-        <p class="text-3xl font-bold text-primary">₹1,499<span class="text-sm font-normal text-on-surface-variant">/mo</span></p>
-        <p class="text-xs text-on-surface-variant mt-2">+ ₹799/additional property</p>
-        <p class="text-xs font-bold text-primary mt-4 uppercase tracking-wider">Sign in &amp; pay →</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+      <a href="/checkout?plan=residential" class="rc-photo-tile rc-photo-tile--residential">
+        <span class="rc-photo-tile__media" aria-hidden="true"></span>
+        <span class="rc-photo-tile__shade" aria-hidden="true"></span>
+        <div class="rc-photo-tile__body">
+          <p class="rc-photo-tile__eyebrow">Residential</p>
+          <p class="rc-photo-tile__price">₹1,499<span>/mo</span></p>
+          <p class="rc-photo-tile__meta">+ ₹799/additional property</p>
+          <span class="rc-photo-tile__cta">Sign in &amp; pay →</span>
+        </div>
       </a>
-      <a href="/checkout?plan=commercial" class="rc-pricing-tile rc-card p-6 text-center ring-2 ring-primary/20 block no-underline text-inherit">
-        <p class="text-primary font-bold text-sm uppercase tracking-widest mb-2">Commercial</p>
-        <p class="text-3xl font-bold text-primary">₹1,999<span class="text-sm font-normal text-on-surface-variant">/mo</span></p>
-        <p class="text-xs text-on-surface-variant mt-2">+ ₹799/additional property</p>
-        <p class="text-xs font-bold text-primary mt-4 uppercase tracking-wider">Sign in &amp; pay →</p>
+      <a href="/checkout?plan=commercial" class="rc-photo-tile rc-photo-tile--commercial rc-photo-tile--featured">
+        <span class="rc-photo-tile__media" aria-hidden="true"></span>
+        <span class="rc-photo-tile__shade" aria-hidden="true"></span>
+        <div class="rc-photo-tile__body">
+          <p class="rc-photo-tile__eyebrow">Commercial</p>
+          <p class="rc-photo-tile__price">₹1,999<span>/mo</span></p>
+          <p class="rc-photo-tile__meta">+ ₹799/additional property</p>
+          <span class="rc-photo-tile__cta">Sign in &amp; pay →</span>
+        </div>
       </a>
-      <a href="#contact" class="rc-pricing-tile rc-card p-6 text-center block no-underline text-inherit">
-        <p class="text-primary font-bold text-sm uppercase tracking-widest mb-2">Airbnb</p>
-        <p class="text-xl font-bold text-primary">Custom Pricing</p>
-        <p class="text-xs text-on-surface-variant mt-2"><span class="text-primary">Contact Team →</span></p>
+      <a href="#contact" class="rc-photo-tile rc-photo-tile--airbnb">
+        <span class="rc-photo-tile__media" aria-hidden="true"></span>
+        <span class="rc-photo-tile__shade" aria-hidden="true"></span>
+        <div class="rc-photo-tile__body">
+          <p class="rc-photo-tile__eyebrow">Airbnb</p>
+          <p class="rc-photo-tile__price" style="font-size:1.6rem">Custom Pricing</p>
+          <p class="rc-photo-tile__meta">Premium hospitality management</p>
+          <span class="rc-photo-tile__cta">Contact Team →</span>
+        </div>
       </a>
     </div>
     <p class="text-center text-on-surface-variant/60 font-light mt-10 text-sm">SOS visits: <a href="/checkout?plan=sos" class="text-primary font-semibold underline">₹500/visit</a> · Base plan covers 1 property · Pay securely via Razorpay after sign-in</p>

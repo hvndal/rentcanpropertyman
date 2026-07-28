@@ -194,7 +194,11 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
     <div class="grid lg:grid-cols-3 gap-8 mb-12">
 
       <!-- Residential -->
-      <div class="rc-plan-card">
+      <div class="rc-plan-card rc-plan-card--photo">
+        <div class="rc-plan-card__hero rc-plan-card__hero--residential">
+          <span class="rc-plan-card__hero-media" aria-hidden="true"></span>
+          <span class="rc-plan-card__hero-shade" aria-hidden="true"></span>
+        </div>
         <span class="badge mb-4">Residential</span>
         <h3 class="text-2xl font-bold text-primary mb-2">Residential Property Management</h3>
         <div class="mb-1">
@@ -216,7 +220,11 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
       </div>
 
       <!-- Commercial -->
-      <div class="rc-plan-card rc-plan-card-featured">
+      <div class="rc-plan-card rc-plan-card-featured rc-plan-card--photo">
+        <div class="rc-plan-card__hero rc-plan-card__hero--commercial">
+          <span class="rc-plan-card__hero-media" aria-hidden="true"></span>
+          <span class="rc-plan-card__hero-shade" aria-hidden="true"></span>
+        </div>
         <span class="badge badge-accent mb-4">Commercial</span>
         <h3 class="text-2xl font-bold text-primary mb-2">Commercial Property Management</h3>
         <div class="mb-1">
@@ -237,7 +245,11 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
       </div>
 
       <!-- Airbnb -->
-      <div class="rc-plan-card">
+      <div class="rc-plan-card rc-plan-card--photo">
+        <div class="rc-plan-card__hero rc-plan-card__hero--airbnb">
+          <span class="rc-plan-card__hero-media" aria-hidden="true"></span>
+          <span class="rc-plan-card__hero-shade" aria-hidden="true"></span>
+        </div>
         <span class="badge badge-accent mb-4">Premium Hospitality</span>
         <h3 class="text-2xl font-bold text-primary mb-2">Airbnb Complete Management</h3>
         <p class="text-2xl font-bold text-primary mb-1">Contact Team</p>
@@ -289,23 +301,36 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
     <h2 class="text-4xl font-bold text-primary mb-3 tracking-tight">On-ground management.<br/>Not just software.</h2>
     <p class="text-on-surface-variant max-w-2xl mb-10 leading-relaxed">RentCan is a property management company that physically looks after your assets across Chandigarh, Mohali, Panchkula and Aerocity — with a modern owner dashboard for visibility, not as a substitute for service.</p>
 
-    <div class="grid md:grid-cols-3 gap-6 mb-16">
-      <a href="/checkout?plan=residential" class="rc-plan-card block no-underline text-inherit">
-        <span class="badge mb-3">Residential</span>
-        <p class="text-2xl font-bold text-primary mb-1">₹1,499<span class="text-sm font-normal text-on-surface-variant">/mo</span></p>
-        <p class="text-sm text-on-surface-variant">Apartments, villas, PGs &amp; long-term rentals with monthly inspections.</p>
-        <p class="text-xs font-bold text-primary mt-3 uppercase tracking-wider">Sign in &amp; pay →</p>
+    <div class="grid md:grid-cols-3 gap-5 mb-16">
+      <a href="/checkout?plan=residential" class="rc-photo-tile rc-photo-tile--residential" style="min-height:18rem">
+        <span class="rc-photo-tile__media" aria-hidden="true"></span>
+        <span class="rc-photo-tile__shade" aria-hidden="true"></span>
+        <div class="rc-photo-tile__body">
+          <p class="rc-photo-tile__eyebrow">Residential</p>
+          <p class="rc-photo-tile__price">₹1,499<span>/mo</span></p>
+          <p class="rc-photo-tile__meta">Apartments, villas, PGs &amp; long-term rentals</p>
+          <span class="rc-photo-tile__cta">Sign in &amp; pay →</span>
+        </div>
       </a>
-      <a href="/checkout?plan=commercial" class="rc-plan-card rc-plan-card-featured block no-underline text-inherit">
-        <span class="badge badge-accent mb-3">Commercial</span>
-        <p class="text-2xl font-bold text-primary mb-1">₹1,999<span class="text-sm font-normal text-on-surface-variant">/mo</span></p>
-        <p class="text-sm text-on-surface-variant">Offices, retail, warehouses — everything in residential plus commercial checks.</p>
-        <p class="text-xs font-bold text-primary mt-3 uppercase tracking-wider">Sign in &amp; pay →</p>
+      <a href="/checkout?plan=commercial" class="rc-photo-tile rc-photo-tile--commercial rc-photo-tile--featured" style="min-height:18rem">
+        <span class="rc-photo-tile__media" aria-hidden="true"></span>
+        <span class="rc-photo-tile__shade" aria-hidden="true"></span>
+        <div class="rc-photo-tile__body">
+          <p class="rc-photo-tile__eyebrow">Commercial</p>
+          <p class="rc-photo-tile__price">₹1,999<span>/mo</span></p>
+          <p class="rc-photo-tile__meta">Offices, retail &amp; warehouses</p>
+          <span class="rc-photo-tile__cta">Sign in &amp; pay →</span>
+        </div>
       </a>
-      <a href="/#contact" class="rc-plan-card block no-underline text-inherit">
-        <span class="badge badge-accent mb-3">Airbnb</span>
-        <p class="text-xl font-bold text-primary mb-1">Custom Pricing</p>
-        <p class="text-sm text-on-surface-variant">Complete hospitality management — separate premium service.</p>
+      <a href="/#contact" class="rc-photo-tile rc-photo-tile--airbnb" style="min-height:18rem">
+        <span class="rc-photo-tile__media" aria-hidden="true"></span>
+        <span class="rc-photo-tile__shade" aria-hidden="true"></span>
+        <div class="rc-photo-tile__body">
+          <p class="rc-photo-tile__eyebrow">Airbnb</p>
+          <p class="rc-photo-tile__price" style="font-size:1.45rem">Custom Pricing</p>
+          <p class="rc-photo-tile__meta">Complete hospitality management</p>
+          <span class="rc-photo-tile__cta">Contact Team →</span>
+        </div>
       </a>
     </div>
 
