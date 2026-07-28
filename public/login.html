@@ -27,6 +27,7 @@
 <meta property="og:image" content="https://rentcan.in/assets/seo/og-image.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
+<link rel="stylesheet" href="/css/brand.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script type="text/javascript" src="https://verify.msg91.com/otp-provider.js"></script>
 <style>
@@ -60,7 +61,6 @@ body {
     max-width: 100% !important;
   }
 }
-.right-panel { display: none !important; }
 
 /* ── View System ── */
 .view { display: none; }
@@ -73,7 +73,7 @@ body {
   font-weight: 700; cursor: pointer; transition: all 0.2s;
   display: flex; align-items: center; gap: 12px;
   border: 1.5px solid #e0e4e0; background: #fff;
-  color: #191c1b; text-align: left;
+  color: #32261C; text-align: left;
   margin-bottom: 10px; box-sizing: border-box;
 }
 .auth-btn:hover {
@@ -90,7 +90,7 @@ body {
   flex: 1; font-size: 14px; font-weight: 700; line-height: 1.25;
 }
 .auth-btn .btn-sub {
-  font-size: 11px; font-weight: 400; color: #73777f; display: block; margin-top: 2px;
+  font-size: 11px; font-weight: 400; color: #5c4a3a; display: block; margin-top: 2px;
 }
 .auth-btn-google .btn-icon { background: #f4f6fb; border: 1px solid #e0e6f5; }
 .auth-btn-phone .btn-icon { background: #f0f6f3; border: 1px solid #d8e8e2; }
@@ -98,7 +98,7 @@ body {
 
 /* ── OTP / Phone Views ── */
 .back-link {
-  background: none; border: none; cursor: pointer; color: #73777f;
+  background: none; border: none; cursor: pointer; color: #5c4a3a;
   font-family: inherit; font-size: 12px; font-weight: 700;
   display: inline-flex; align-items: center; gap: 4px;
   margin-bottom: 18px; padding: 0;
@@ -109,11 +109,11 @@ body {
 .field { margin-bottom: 14px; }
 .field label {
   display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
-  text-transform: uppercase; color: #3f4946; margin-bottom: 6px;
+  text-transform: uppercase; color: #5c4a3a; margin-bottom: 6px;
 }
 .field input:not(.phone-input-field):not(.country-code) {
   width: 100%; padding: 12px 14px; border: 1.5px solid #bec9c5;
-  border-radius: 10px; font-size: 14px; font-family: inherit; color: #191c1b;
+  border-radius: 10px; font-size: 14px; font-family: inherit; color: #32261C;
   background: #fff; outline: none; transition: border-color 0.2s; box-sizing: border-box;
 }
 .field input:not(.phone-input-field):not(.country-code):focus { border-color: #6B4822; }
@@ -137,7 +137,7 @@ body {
   font-size: 22px !important;
   font-weight: 800 !important;
   font-family: inherit !important;
-  color: #191c1b !important;
+  color: #32261C !important;
   background: #fff !important;
   outline: none !important;
   text-align: center !important;
@@ -180,7 +180,7 @@ body {
   font-weight: 700 !important;
   font-family: inherit !important;
   color: #6B4822 !important;
-  background: #f7faf7 !important;
+  background: #FFFCFB !important;
   outline: none !important;
   cursor: pointer !important;
   height: 48px !important;
@@ -201,7 +201,7 @@ body {
   font-size: 16px !important;
   font-weight: 700 !important;
   font-family: inherit !important;
-  color: #191c1b !important;
+  color: #32261C !important;
   background: transparent !important;
   letter-spacing: 0.05em !important;
   margin: 0 !important;
@@ -245,7 +245,7 @@ body {
 .role-card:not(.selected) .role-icon { color: #6B4822; }
 .role-card .role-name { font-size: 13px; font-weight: 700; }
 .role-card .role-sub { font-size: 10px; margin-top: 2px; }
-.role-card:not(.selected) .role-sub { color: #73777f; }
+.role-card:not(.selected) .role-sub { color: #5c4a3a; }
 .role-card.selected .role-sub { color: rgba(255,255,255,0.7); }
 .check-badge {
   display: none;
@@ -271,13 +271,13 @@ body {
 
 .divider {
   display: flex; align-items: center; gap: 10px;
-  margin: 16px 0; color: #73777f; font-size: 11px; font-weight: 600;
+  margin: 16px 0; color: #5c4a3a; font-size: 11px; font-weight: 600;
 }
 .divider::before, .divider::after {
   content: ''; flex: 1; height: 1px; background: #e0e4e0;
 }
 
-.resend-row { text-align: center; margin-top: 16px; font-size: 13px; color: #73777f; }
+.resend-row { text-align: center; margin-top: 16px; font-size: 13px; color: #5c4a3a; }
 .resend-row button {
   background: none; border: none; cursor: pointer;
   font-family: inherit; font-size: 13px; font-weight: 700;
@@ -288,7 +288,7 @@ body {
 <link rel="stylesheet" href="/styles.css">
 <link rel="stylesheet" href="/css/brand.css">
 </head>
-<body>
+<body class="rc-brand">
 
 <!-- ── Left Panel ── -->
 <div class="left-panel">
@@ -303,8 +303,8 @@ body {
 
   <!-- ══ VIEW: Welcome ══ -->
   <div class="view active" id="view-welcome">
-    <h1 style="font-size:28px;font-weight:800;letter-spacing:-0.02em;color:#191c1b;margin-bottom:8px;">Welcome back.</h1>
-    <p style="font-size:14px;color:#73777f;margin-bottom:28px;line-height:1.6;">Sign in with phone, Google, or email — quick and secure.</p>
+    <h1 style="font-size:28px;font-weight:800;letter-spacing:-0.02em;color:#32261C;margin-bottom:8px;">Welcome back.</h1>
+    <p style="font-size:14px;color:#5c4a3a;margin-bottom:28px;line-height:1.6;">Sign in with phone, Google, or email — quick and secure.</p>
 
     <!-- Phone (primary) -->
     <button class="auth-btn auth-btn-phone" onclick="showView('view-phone')" style="border-color:#6B4822;box-shadow:0 4px 14px rgba(107,72,34,0.1);">
@@ -362,11 +362,11 @@ body {
       Back to Sign In
     </button>
 
-    <h2 style="font-size:22px;font-weight:800;letter-spacing:-0.02em;margin-bottom:4px;color:#191c1b;">Enter your email.</h2>
-    <p style="font-size:13px;color:#73777f;margin-bottom:20px;line-height:1.4;">We'll send a magic link to your inbox.</p>
+    <h2 style="font-size:22px;font-weight:800;letter-spacing:-0.02em;margin-bottom:4px;color:#32261C;">Enter your email.</h2>
+    <p style="font-size:13px;color:#5c4a3a;margin-bottom:20px;line-height:1.4;">We'll send a magic link to your inbox.</p>
 
     <div class="field" style="margin-bottom:28px;">
-      <label style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#3f4946;">Email Address</label>
+      <label style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#5c4a3a;">Email Address</label>
       <input type="email" id="email-input" placeholder="name@example.com" autocomplete="email" required>
     </div>
 
@@ -378,9 +378,9 @@ body {
     <div style="text-align:center;padding:12px 0 8px;">
       <span style="font-family:'Material Symbols Outlined';font-size:48px;color:#6B4822;font-variation-settings:'FILL' 1;display:block;margin-bottom:16px;">mark_email_read</span>
       <h2 style="font-size:22px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;color:#32261C;">Check your inbox</h2>
-      <p style="font-size:14px;color:#73777f;line-height:1.6;margin-bottom:6px;">We sent a secure sign-in link to</p>
+      <p style="font-size:14px;color:#5c4a3a;line-height:1.6;margin-bottom:6px;">We sent a secure sign-in link to</p>
       <p style="font-size:15px;font-weight:700;color:#6B4822;margin-bottom:20px;word-break:break-all;" id="email-sent-display"></p>
-      <p style="font-size:12px;color:#73777f;line-height:1.6;margin-bottom:24px;">Tap the link in the email to finish signing in. The link expires in about an hour. Check spam if you do not see it.</p>
+      <p style="font-size:12px;color:#5c4a3a;line-height:1.6;margin-bottom:24px;">Tap the link in the email to finish signing in. The link expires in about an hour. Check spam if you do not see it.</p>
       <button type="button" class="back-link" style="margin:0 auto;display:inline-flex;" onclick="showView('view-welcome')">
         <span style="font-family:'Material Symbols Outlined';font-size:18px;">arrow_back</span>
         Back to Sign In
@@ -395,11 +395,11 @@ body {
       Back to Sign In
     </button>
 
-    <h2 style="font-size:22px;font-weight:800;letter-spacing:-0.02em;margin-bottom:4px;color:#191c1b;">Enter your number.</h2>
-    <p style="font-size:13px;color:#73777f;margin-bottom:20px;line-height:1.4;">We'll send a 6-digit OTP code to verify.</p>
+    <h2 style="font-size:22px;font-weight:800;letter-spacing:-0.02em;margin-bottom:4px;color:#32261C;">Enter your number.</h2>
+    <p style="font-size:13px;color:#5c4a3a;margin-bottom:20px;line-height:1.4;">We'll send a 6-digit OTP code to verify.</p>
 
     <div class="field" style="margin-bottom:28px;">
-      <label style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#3f4946;">Mobile Number</label>
+      <label style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#5c4a3a;">Mobile Number</label>
       <div class="phone-wrap">
         <select id="country-select" class="country-code-select" onchange="updatePhonePlaceholder()">
           <option value="+91" selected>🇮🇳 +91 (IN)</option>
@@ -408,14 +408,14 @@ body {
         </select>
         <input type="tel" id="phone-input" class="phone-input-field" placeholder="9876543210" maxlength="10" autocomplete="tel-national" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')">
       </div>
-      <p style="font-size:11px;color:#73777f;margin-top:8px;">India numbers: 10 digits. OTP arrives via SMS in a few seconds.</p>
+      <p style="font-size:11px;color:#5c4a3a;margin-top:8px;">India numbers: 10 digits. OTP arrives via SMS in a few seconds.</p>
     </div>
 
     <button class="btn-primary" id="btn-send-otp" onclick="sendOTP()" style="padding:16px;font-size:14px;border-radius:12px;">Send OTP →</button>
 
     <div style="display:flex;align-items:center;gap:10px;margin-top:20px;padding:10px 12px;background:#f2f4f2;border-radius:10px;border:1px solid #e0e4e0;">
       <span style="font-family:'Material Symbols Outlined';font-size:18px;color:#6B4822;font-variation-settings:'FILL' 1;">verified_user</span>
-      <span style="font-size:11px;color:#3f4946;line-height:1.4;font-weight:500;">Instant 6-digit SMS verification code sent to your phone.</span>
+      <span style="font-size:11px;color:#5c4a3a;line-height:1.4;font-weight:500;">Instant 6-digit SMS verification code sent to your phone.</span>
     </div>
   </div>
 
@@ -426,7 +426,7 @@ body {
       Change number
     </button>
     <h2 style="font-size:24px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;">Check your messages.</h2>
-    <p style="font-size:14px;color:#73777f;margin-bottom:4px;">Enter the 6-digit code sent to</p>
+    <p style="font-size:14px;color:#5c4a3a;margin-bottom:4px;">Enter the 6-digit code sent to</p>
     <p style="font-size:14px;font-weight:700;color:#6B4822;margin-bottom:28px;" id="otp-phone-display"></p>
 
     <div class="otp-row" id="otp-row">
@@ -449,14 +449,14 @@ body {
   <!-- ══ VIEW: Onboarding ══ -->
   <div class="view" id="view-onboarding">
     <h2 style="font-size:24px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;">Just one more step.</h2>
-    <p style="font-size:14px;color:#73777f;margin-bottom:28px;">Tell us about yourself to set up your account.</p>
+    <p style="font-size:14px;color:#5c4a3a;margin-bottom:28px;">Tell us about yourself to set up your account.</p>
 
     <div class="field">
       <label>Full Name</label>
       <input type="text" id="onboard-name" placeholder="Your full name" autocomplete="name" required>
     </div>
 
-    <p style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#3f4946;margin-bottom:12px;">I am a:</p>
+    <p style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#5c4a3a;margin-bottom:12px;">I am a:</p>
     <div class="role-grid">
       <div class="role-card" id="role-landlord" onclick="selectRole('landlord')">
         <span class="check-badge">check</span>
@@ -475,34 +475,6 @@ body {
     <button class="btn-primary" id="btn-complete-profile" onclick="completeProfile()">Complete Setup →</button>
   </div>
 
-</div>
-
-<!-- ── Right Panel (hidden on mobile, decorative on desktop) ── -->
-<div class="right-panel">
-  <div style="position:relative;z-index:1;text-align:center;max-width:380px;">
-    <div style="display:flex;gap:12px;justify-content:center;margin-bottom:48px;">
-      <div class="stat-card">
-        <div class="label">Properties Managed</div>
-        <div class="value">1,240+</div>
-      </div>
-      <div class="stat-card">
-        <div class="label">Rent Collected</div>
-        <div class="value">₹4.2 Cr</div>
-      </div>
-    </div>
-    <h2 style="color:#fff;font-size:36px;font-weight:800;line-height:1.2;margin-bottom:16px;letter-spacing:-0.02em;">
-      Your property,<br><span style="color:#00E599;">always accounted for.</span>
-    </h2>
-    <p style="color:rgba(255,255,255,0.5);font-size:14px;line-height:1.7;">
-      Monthly inspections, maintenance tracking, and digital agreements — serving landlords and tenants across Chandigarh, Mohali, Panchkula and Aerocity.
-    </p>
-    <div style="display:flex;justify-content:center;gap:10px;margin-top:32px;flex-wrap:wrap;">
-      <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:6px 14px;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.05em;">Chandigarh</span>
-      <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:6px 14px;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.05em;">Mohali</span>
-      <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:6px 14px;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.05em;">Panchkula</span>
-      <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:6px 14px;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.05em;">Aerocity</span>
-    </div>
-  </div>
 </div>
 
 <script src="/js/rentcan-config.js"></script>

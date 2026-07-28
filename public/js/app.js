@@ -35,7 +35,7 @@ function getKeyHoldingBadgeHtml(status = 'landlord') {
   const map = {
     landlord: { label: 'Landlord Held', color: 'bg-primary/10 text-primary border-primary/20', icon: 'key' },
     tenant: { label: 'Tenant Held', color: 'bg-blue-50 text-blue-800 border-blue-200', icon: 'key' },
-    rentcan_vault: { label: 'RentCan Vault', color: 'bg-emerald-50 text-emerald-800 border-emerald-300 font-bold', icon: 'lock' },
+    rentcan_vault: { label: 'RentCan Vault', color: 'bg-brand-mint/30 text-brand-brown border-brand-mint font-bold', icon: 'lock' },
     agency: { label: 'Agency Custody', color: 'bg-purple-50 text-purple-800 border-purple-200', icon: 'vpn_key' }
   };
   const item = map[status] || map.landlord;
@@ -109,7 +109,7 @@ function mountMobileBottomNav(active) {
   ];
   const nav = document.createElement('nav');
   nav.id = 'rc-mobile-nav';
-  nav.className = 'md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-outline-variant/40 px-2 pt-2 z-50 flex justify-around items-center shadow-lg text-on-surface';
+  nav.className = 'md:hidden fixed bottom-0 left-0 right-0 rc-app-mobile-nav px-2 pt-2 z-50 flex justify-around items-center text-on-surface';
   nav.style.paddingBottom = 'max(10px, env(safe-area-inset-bottom))';
   nav.innerHTML = items.map(item => {
     const on = item.key === active;

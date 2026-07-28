@@ -210,7 +210,7 @@ body { background: var(--bg); overflow-x: hidden; }
 .btn-primary-premium:hover {
   transform: translateY(-1px) scale(1.01);
   box-shadow: var(--shadow-md);
-  background: #005a4e;
+  background: var(--ink);
 }
 .btn-primary-premium:active {
   transform: scale(0.99);
@@ -274,8 +274,8 @@ body { background: var(--bg); overflow-x: hidden; }
 }
 .bento-card:hover {
   transform: translateY(-4px) scale(1.005);
-  box-shadow: 0 20px 48px rgba(0,65,55,0.08), 0 4px 12px rgba(0,65,55,0.05);
-  border-color: rgba(0,65,55,0.18) !important;
+  box-shadow: 0 20px 48px rgba(50, 38, 28, 0.08), 0 4px 12px rgba(50, 38, 28, 0.05);
+  border-color: rgba(107, 72, 34, 0.18) !important;
 }
 .bento-card:active {
   transform: translateY(-2px) scale(1.002);
@@ -305,9 +305,9 @@ body { background: var(--bg); overflow-x: hidden; }
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg,
-    rgba(0,33,28,0.28) 0%,
-    rgba(0,33,28,0.52) 60%,
-    rgba(0,33,28,0.70) 100%
+    rgba(50, 38, 28, 0.28) 0%,
+    rgba(50, 38, 28, 0.52) 60%,
+    rgba(50, 38, 28, 0.70) 100%
   );
 }
 
@@ -322,7 +322,7 @@ body { background: var(--bg); overflow-x: hidden; }
 .pricing-row {
   transition: background var(--dur-fast) var(--ease-out-quart);
 }
-.pricing-row:hover { background: rgba(0,65,55,0.025); }
+.pricing-row:hover { background: rgba(207, 223, 222, 0.35); }
 
 /* ── Footer links ─────────────────────────────────────────────────── */
 .footer-link {
@@ -349,7 +349,7 @@ body { background: var(--bg); overflow-x: hidden; }
 .line-accent {
   width: 0;
   height: 2px;
-  background: rgba(133,79,91,0.35);
+  background: rgba(213, 178, 89, 0.45);
   transition: width var(--dur-slow) var(--ease-out-expo);
   will-change: width;
 }
@@ -506,12 +506,12 @@ body.rc-fade-boot {
   font-size: 22px;
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: #191c1b;
+  color: var(--ink);
   margin-bottom: 8px;
 }
 .rc-auth-wait .rc-auth-sub {
   font-size: 14px;
-  color: #73777f;
+  color: #5c4a3a;
   max-width: 280px;
   line-height: 1.5;
   margin-bottom: 28px;

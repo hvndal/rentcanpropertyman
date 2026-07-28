@@ -31,6 +31,7 @@ body.rc-brand {
 }
 
 .rc-glass {
+  /* Solid surface — not translucent glass */
   background: var(--rc-warm-white);
   border: 1px solid var(--rc-border);
 }
