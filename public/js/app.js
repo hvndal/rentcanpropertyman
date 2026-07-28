@@ -167,14 +167,9 @@ function softNavigate(href, opts) {
   if (!target || target === '#' || target.startsWith('mailto:') || target.startsWith('tel:')) {
     return true;
   }
-  // Same-page hash only
   if (target.startsWith('#')) return true;
-
-  document.documentElement.classList.add('rc-exit');
-  document.documentElement.classList.remove('rc-ready');
-  setTimeout(() => {
-    window.location.href = target;
-  }, (opts && opts.delay) || 280);
+  // Navigate immediately — no opacity blanking (that was blocking pages)
+  window.location.href = target;
   return false;
 }
 
@@ -231,31 +226,13 @@ async function finishAuthRedirect(dest) {
     step: 2
   });
   await new Promise(r => setTimeout(r, 900));
-  softNavigate(dest || '/dashboard', { delay: 320 });
+  window.location.href = rcCleanPath(dest || '/dashboard');
 }
 
-// Boot soft fade-in + intercept internal links
+// Do not intercept clicks — normal browser navigation only
 document.addEventListener('DOMContentLoaded', () => {
-  requestAnimationFrame(() => {
-    document.documentElement.classList.add('rc-ready');
-  });
-
-  document.addEventListener('click', (e) => {
-    const a = e.target.closest('a[href]');
-    if (!a) return;
-    if (a.target === '_blank' || a.hasAttribute('download')) return;
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    const href = a.getAttribute('href');
-    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:')) return;
-    try {
-      const u = new URL(href, window.location.origin);
-      if (u.origin !== window.location.origin) return;
-      // leave hash-only on same path alone
-      if (u.pathname === window.location.pathname && u.hash) return;
-      e.preventDefault();
-      softNavigate(href);
-    } catch (_) {}
-  }, true);
+  document.documentElement.classList.remove('rc-exit');
+  document.documentElement.classList.add('rc-ready');
 });
 
 window.getNextInspectionDate = getNextInspectionDate;

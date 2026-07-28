@@ -461,18 +461,12 @@ body { background: var(--bg); overflow-x: hidden; }
 
 summary::-webkit-details-marker { display: none; }
 summary { list-style: none; outline: none; }
-/* Soft page enter/exit for app-like navigation */
-html.rc-ready body {
-  opacity: 1;
-  transition: opacity 320ms ease, transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
-}
+/* Soft page helpers — never blank the whole site */
 html.rc-exit body {
-  opacity: 0;
-  transform: translateY(6px);
-  pointer-events: none;
+  /* intentionally empty: previous opacity:0 blanked pages when nav failed */
 }
 body.rc-fade-boot {
-  opacity: 0;
+  opacity: 1;
 }
 @supports (padding: env(safe-area-inset-bottom)) {
   #rc-mobile-nav {
@@ -566,3 +560,12 @@ body.rc-fade-boot {
   margin-bottom: 22px;
 }
 @keyframes rc-spin { to { transform: rotate(360deg); } }
+
+/* Safety: never leave full-screen loader forever */
+@keyframes page-loader-safety {
+  0%, 90% { opacity: 1; }
+  100% { opacity: 0; pointer-events: none; }
+}
+.page-loader {
+  animation: page-loader-safety 1.6s ease forwards;
+}
