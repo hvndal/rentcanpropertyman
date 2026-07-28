@@ -114,6 +114,88 @@ body.rc-brand {
   filter: drop-shadow(0 4px 12px rgba(42, 24, 16, 0.15));
 }
 
+/* Crop baked-in micro tagline from logo PNG — show icon + wordmark only */
+.rc-logo-crop {
+  overflow: hidden;
+  line-height: 0;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.rc-logo-crop img {
+  display: block;
+  width: auto;
+  max-width: none;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.rc-logo-crop--hero {
+  height: 5.5rem;
+}
+
+.rc-logo-crop--hero img {
+  height: 8rem;
+  transform: translateY(0);
+}
+
+.rc-logo-crop--nav {
+  height: 2.25rem;
+}
+
+.rc-logo-crop--nav img {
+  height: 3.25rem;
+}
+
+.rc-logo-crop--sm {
+  height: 2rem;
+}
+
+.rc-logo-crop--sm img {
+  height: 2.85rem;
+}
+
+.rc-nav-logo-plate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.65rem;
+  border-radius: 0.65rem;
+  background: linear-gradient(180deg, #fffcf8 0%, #f3f8f4 100%);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+}
+
+/* White tagline on top of hero — readable over video */
+.hero-tagline-top {
+  margin-bottom: 1.35rem;
+  animation: hero-rise 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-tagline-top .line-a {
+  display: block;
+  font-family: 'Playfair Display', 'DM Serif Display', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(1.2rem, 4.5vw, 1.65rem);
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.01em;
+  text-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.45),
+    0 8px 28px rgba(0, 0, 0, 0.35);
+}
+
+.hero-tagline-top .line-b {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: clamp(0.62rem, 2.2vw, 0.72rem);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
 /* Hero — each title floats alone with breathing room */
 .hero-stack {
   display: flex;
@@ -149,42 +231,14 @@ body.rc-brand {
     0 0 0 1px rgba(255, 255, 255, 0.5);
 }
 
-.hero-logo-soft img {
-  width: min(210px, 68vw);
+.hero-logo-soft .rc-logo-crop--hero {
+  width: min(220px, 72vw);
+}
+
+.hero-logo-soft .rc-logo-crop--hero img {
+  width: 100%;
   height: auto;
-  display: block;
-}
-
-@media (min-width: 640px) {
-  .hero-logo-soft img {
-    width: min(250px, 70vw);
-  }
-}
-
-/* Readable HTML tagline under logo (logo bake-in is too small) */
-.hero-logo-tagline {
-  margin-top: 0.65rem;
-  text-align: center;
-}
-
-.hero-logo-tagline .line-a {
-  display: block;
-  font-family: 'Playfair Display', 'DM Serif Display', Georgia, serif;
-  font-style: italic;
-  font-size: 0.95rem;
-  color: var(--rc-brown);
-  font-weight: 600;
-  letter-spacing: 0.01em;
-}
-
-.hero-logo-tagline .line-b {
-  display: block;
-  margin-top: 0.15rem;
-  font-size: 0.68rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--rc-green);
+  min-height: 8rem;
 }
 
 .hero-headline {

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rentcan-v4';
+const CACHE_NAME = 'rentcan-v5';
 const ASSETS = [
   '/js/app.js',
   '/js/rentcan-config.js',

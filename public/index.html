@@ -374,6 +374,23 @@
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="/css/brand.css">
 <link rel="icon" type="image/png" href="/assets/logos/rentcan-logo.png">
+<script>
+  // Clear stale service workers / caches so login & sections never stick on broken shell
+  (function () {
+    try {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function (regs) {
+          regs.forEach(function (r) { r.unregister(); });
+        });
+      }
+      if (window.caches && caches.keys) {
+        caches.keys().then(function (keys) {
+          keys.forEach(function (k) { caches.delete(k); });
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
 <script src="/js/sound_manager.js"></script>
 </head>
 <body class="rc-brand bg-brand-cream text-on-surface font-body-base antialiased">
@@ -399,8 +416,11 @@
 <!-- Absolute Navbar overlaying the Hero Video -->
 <nav class="absolute top-0 left-0 right-0 z-30 px-margin-desktop py-4 max-w-container-max mx-auto">
 <div class="rc-glass-dark rounded-2xl px-5 py-3 flex justify-between items-center">
-<a href="/" class="flex items-center gap-3 shrink-0">
-  <img src="/assets/logos/rentcan-logo.png" alt="RentCan" class="h-9 md:h-10 w-auto object-contain rounded-md">
+<a href="/" class="flex items-center gap-3 shrink-0 rc-nav-logo-plate">
+  <span class="rc-logo-crop rc-logo-crop--nav" aria-hidden="true">
+    <img src="/assets/logos/rentcan-logo.png" alt="">
+  </span>
+  <span class="sr-only">RentCan</span>
 </a>
 <div class="hidden md:flex items-center gap-8">
 <a class="font-label-caps text-label-caps uppercase text-white/75 hover:text-white transition-colors duration-300 text-[11px] tracking-widest" href="#services">Services</a>
@@ -422,7 +442,7 @@
 <div class="rc-mobile-drawer-backdrop" data-close-menu></div>
 <div class="rc-mobile-drawer-panel">
 <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
-<img src="/assets/logos/rentcan-logo.png" alt="RentCan" class="h-8 w-auto">
+<span class="rc-nav-logo-plate"><span class="rc-logo-crop rc-logo-crop--sm"><img src="/assets/logos/rentcan-logo.png" alt="RentCan"></span></span>
 <button type="button" class="w-9 h-9 flex items-center justify-center rounded-lg text-white/80 hover:bg-white/10" data-close-menu aria-label="Close menu">
 <span class="material-symbols-outlined">close</span>
 </button>
@@ -439,14 +459,18 @@
 <div class="relative z-10 w-full max-w-container-max mx-auto px-margin-desktop text-center flex flex-col items-center pt-24 md:pt-28 pb-14 md:pb-20">
 
 <div class="hero-stack">
-  <!-- Logo alone on soft plate so baked-in tagline is readable -->
+  <!-- Readable white tagline on top (not the tiny bake-in on the PNG) -->
+  <div class="hero-iso hero-tagline-top">
+    <span class="line-a">No More “Kal Aaunga”</span>
+    <span class="line-b">Reliable on-time inspections</span>
+  </div>
+
+  <!-- Cropped wordmark only — icon + RentCan script, no micro tagline -->
   <div class="hero-iso hero-logo-block">
     <div class="hero-logo-soft">
-      <img src="/assets/logos/rentcan-logo.png" alt="RentCan">
-      <div class="hero-logo-tagline" aria-hidden="false">
-        <span class="line-a">No More “Kal Aaunga”</span>
-        <span class="line-b">Reliable on-time inspections</span>
-      </div>
+      <span class="rc-logo-crop rc-logo-crop--hero">
+        <img src="/assets/logos/rentcan-logo.png" alt="RentCan">
+      </span>
     </div>
   </div>
 
@@ -750,10 +774,13 @@
   window.addEventListener('DOMContentLoaded', () => {
     const loader = document.getElementById('global-loader');
     if (loader) {
-      setTimeout(() => {
+      const hide = () => {
         loader.classList.add('hidden');
+        loader.style.pointerEvents = 'none';
         setTimeout(() => loader.remove(), 500);
-      }, 300); // 300ms premium pause
+      };
+      setTimeout(hide, 280);
+      setTimeout(hide, 1800); // safety — never block taps
     }
   });
 </script>

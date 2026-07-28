@@ -303,8 +303,6 @@ body {
 </style>
 <link rel="stylesheet" href="/styles.css">
 <link rel="stylesheet" href="/css/brand.css">
-<script src="/js/rentcan-config.js"></script>
-<script src="/js/app.js"></script>
 </head>
 <body>
 
@@ -340,7 +338,11 @@ body {
 
   <!-- Logo -->
   <a href="/" style="display:inline-block; margin-bottom:24px; text-decoration:none;">
-    <img src="/assets/logos/rentcan-logo.png" alt="RentCan" style="height:36px;width:auto;display:block;">
+    <span class="rc-nav-logo-plate" style="display:inline-flex;">
+      <span class="rc-logo-crop rc-logo-crop--nav">
+        <img src="/assets/logos/rentcan-logo.png" alt="RentCan">
+      </span>
+    </span>
   </a>
 
   <!-- Alert -->
@@ -524,7 +526,7 @@ body {
       Your property,<br><span style="color:#00E599;">always accounted for.</span>
     </h2>
     <p style="color:rgba(255,255,255,0.5);font-size:14px;line-height:1.7;">
-      Monthly inspections, maintenance tracking, and digital agreements — serving landlords and tenants across Chandigarh, Mohali, and Panchkula.
+      Monthly inspections, maintenance tracking, and digital agreements — serving landlords and tenants across Chandigarh, Mohali, Panchkula and Aerocity.
     </p>
     <div style="display:flex;justify-content:center;gap:10px;margin-top:32px;flex-wrap:wrap;">
       <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:6px 14px;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.05em;">Chandigarh</span>
@@ -535,6 +537,8 @@ body {
   </div>
 </div>
 
+<script src="/js/rentcan-config.js"></script>
+<script src="/js/app.js"></script>
 <script>
 // ─────────────────────────────────────────────────────────────────────
 // STATE
