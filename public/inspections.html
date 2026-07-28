@@ -1,664 +1,242 @@
-<!DOCTYPE html><html class="light" lang="en"><head>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
 <meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" name="viewport">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#6B4822">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/seo/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-
-<title>RentCan | Property Management Dashboard</title>
-<!-- Material Symbols -->
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<!-- Google Fonts: Plus Jakarta Sans for Swiss/Scandi feel -->
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap" rel="stylesheet">
-<!-- Tailwind CSS -->
+<title>RentCan | Inspections</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="/js/tailwind-brand.config.js"></script>
 <link rel="stylesheet" href="/css/app.css">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="/styles.css">
 <link rel="stylesheet" href="/css/brand.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/js/rentcan-config.js"></script>
 <script src="/js/app.js"></script>
-<script src="/js/demo-portfolio.js"></script></head>
+<script src="/js/demo-portfolio.js"></script>
+</head>
 <body class="rc-app flex flex-col md:flex-row min-h-screen overflow-x-hidden md:overflow-hidden">
 
-<!-- SideNavBar (Shared Component) -->
 <aside class="hidden md:flex flex-col h-screen p-stack-md border-r border-outline bg-surface w-64 shrink-0 overflow-y-auto">
-<div class="mb-stack-xl px-2">
-<a href="/dashboard" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--app" aria-label="RentCan"><img src="/assets/logos/rentcan-wordmark.png" alt="RentCan"></a>
-<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-1" id="sidebar-role-label">Dashboard</p>
-</div>
-<nav class="flex-1 space-y-1">
-<!-- Active: Properties -->
-<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high transition-all rounded-lg" href="/dashboard" onclick="window.soundManager && window.soundManager.playClick()">
-  <span class="material-symbols-outlined" data-icon="domain">domain</span>
-  <span class="font-label-lg text-label-lg">Properties</span>
-  </a>
-<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high transition-all rounded-lg" href="/documents" onclick="window.soundManager && window.soundManager.playClick()">
-<span class="material-symbols-outlined" data-icon="description">description</span>
-<span class="font-label-lg text-label-lg">Documents</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high transition-all rounded-lg" href="/payments" onclick="window.soundManager && window.soundManager.playClick()">
-<span class="material-symbols-outlined" data-icon="payments">payments</span>
-<span class="font-label-lg text-label-lg">Payments</span>
-</a>
+  <div class="mb-stack-xl px-2">
+    <a href="/dashboard" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--app" aria-label="RentCan"><img src="/assets/logos/rentcan-wordmark.png" alt="RentCan"></a>
+    <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-1" id="sidebar-role-label">Inspections</p>
+  </div>
+  <nav class="flex-1 space-y-1">
+    <a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high rounded-lg" href="/dashboard"><span class="material-symbols-outlined">domain</span><span class="font-label-lg">Properties</span></a>
+    <a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high rounded-lg" href="/documents"><span class="material-symbols-outlined">description</span><span class="font-label-lg">Documents</span></a>
+    <a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high rounded-lg" href="/payments"><span class="material-symbols-outlined">payments</span><span class="font-label-lg">Payments</span></a>
+    <a class="flex items-center gap-3 px-3 py-2 text-primary font-bold bg-surface-container rounded-lg" href="/inspections"><span class="material-symbols-outlined">fact_check</span><span class="font-label-lg">Inspections</span></a>
+    <a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high rounded-lg" href="/reports"><span class="material-symbols-outlined">analytics</span><span class="font-label-lg">Reports</span></a>
+  </nav>
+  <div class="mt-auto pt-stack-md border-t border-outline-variant space-y-1">
+    <a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high rounded-lg" href="/info"><span class="material-symbols-outlined">help</span><span class="font-label-lg">Help</span></a>
+    <button type="button" onclick="signOut()" class="w-full flex items-center gap-2 px-3 py-2 text-xs text-on-surface-variant/60 hover:text-red-600 rounded-lg"><span class="material-symbols-outlined text-base">logout</span> Sign Out</button>
+  </div>
+</aside>
 
-  <a class="flex items-center gap-3 px-3 py-2 text-primary font-bold bg-surface-container rounded-lg transition-all scale-95 group" href="/inspections" onclick="window.soundManager && window.soundManager.playClick()">
-  <span class="material-symbols-outlined" data-icon="fact_check">fact_check</span>
-  <span class="font-label-lg text-label-lg">Inspections</span>
-  </a>
-<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high transition-all rounded-lg" href="/reports" onclick="window.soundManager && window.soundManager.playClick()">
-<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
-<span class="font-label-lg text-label-lg">Reports</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high transition-all rounded-lg" href="/dashboard" onclick="window.soundManager && window.soundManager.playClick()">
-<span class="material-symbols-outlined" data-icon="group">group</span>
-<span class="font-label-lg text-label-lg">Team</span>
-</a>
-</nav>
-<div class="mt-auto pt-stack-md border-t border-outline-variant space-y-1">
-<button class="w-full flex items-center justify-center gap-2 bg-primary text-on-primary font-label-lg text-label-lg py-3 rounded-lg mb-stack-md hover:opacity-90 transition-opacity" onclick="window.soundManager && window.soundManager.playClick()">
-<span class="material-symbols-outlined" data-icon="person_add">person_add</span>
-                Invite Tenant
-            </button>
-<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high transition-all rounded-lg" href="/info" onclick="window.soundManager && window.soundManager.playClick()">
-<span class="material-symbols-outlined" data-icon="settings">settings</span>
-<span class="font-label-lg text-label-lg">Settings</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high transition-all rounded-lg" href="/info" onclick="window.soundManager && window.soundManager.playClick()">
-<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
-<span class="font-label-lg text-label-lg">Switch View</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2 text-red-600 font-medium hover:bg-red-50/20 transition-all rounded-lg" href="login.html?logout=true" onclick="signOut(); return false;">
-<span class="material-symbols-outlined" data-icon="logout">logout</span>
-<span class="font-label-lg text-label-lg">Sign Out</span>
-</a>
-</div>
-<div class="mt-stack-lg flex items-center gap-3 px-2">
-<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold border border-outline-variant">
-                PA
-            </div>
-<div>
-<p class="font-label-lg text-label-lg text-on-surface" id="sidebar-user-name">Loading…</p>
-  <p class="font-label-sm text-label-sm text-on-surface-variant" id="sidebar-user-email"></p>
-</div>
-</div>
-  <button id="btn-sign-out" onclick="signOut()" class="w-full flex items-center gap-2 px-3 py-2 text-xs text-on-surface-variant/60 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all font-medium mt-2">
-    <span class="material-symbols-outlined text-base">logout</span> Sign Out
-  </button>
-  </aside>
-<!-- Main Content -->
 <main class="flex-1 flex flex-col overflow-y-auto bg-background">
-<!-- TopBar -->
-<header class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-stack-md w-full sticky top-0 rc-app-header z-10">
-<div class="flex items-center gap-stack-md">
-<h2 class="font-headline-lg text-headline-lg text-primary">Inspections</h2>
-<div class="hidden md:flex gap-gutter">
+  <header class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 px-margin-mobile md:px-margin-desktop py-stack-md sticky top-0 rc-app-header z-10">
+    <div>
+      <h1 class="font-headline-lg text-headline-lg text-primary">Inspections</h1>
+      <p class="text-sm text-on-surface-variant mt-0.5">Monthly 5th-of-month checks · 15-point checklist · photo reports</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <button id="tenant-repair-btn" type="button" onclick="showComplaintModal()" class="hidden bg-red-600 text-white px-4 py-2.5 rounded-lg text-sm font-bold">Raise Repair</button>
+      <a href="/reports" class="hidden sm:inline-flex items-center gap-1 text-sm font-bold text-primary">View reports <span class="material-symbols-outlined text-base">arrow_forward</span></a>
+    </div>
+  </header>
 
-  <a class="text-on-surface-variant hover:text-primary transition-colors pb-1 font-body-md text-body-md" href="/dashboard">Properties</a>
-  <a class="text-on-surface-variant hover:text-primary transition-colors pb-1 font-body-md text-body-md" href="/documents">Documents</a>
-  <a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md" href="/inspections">Inspections</a>
-  <a class="text-on-surface-variant hover:text-primary transition-colors pb-1 font-body-md text-body-md" href="/payments">Payments</a>
-  <a class="text-on-surface-variant hover:text-primary transition-colors pb-1 font-body-md text-body-md" href="/reports">Reports</a>
-
-  </div>
-</div>
-<div class="flex items-center gap-gutter">
-<div class="relative hidden lg:block">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
-<input class="pl-10 pr-4 py-2 border-b border-outline bg-transparent focus:border-primary focus:ring-0 font-body-md text-body-md w-64 outline-none" placeholder="Search property or tenant..." type="text">
-</div>
-<button id="tenant-repair-btn" onclick="showComplaintModal()" class="bg-red-600 text-white px-6 py-2 rounded-lg font-label-lg text-label-lg transition-all hover:scale-[1.02] active:scale-95 hidden">
-                    Raise Repair
-                </button>
-</div>
-</header>
-<!-- Canvas -->
-<div class="px-margin-mobile md:px-margin-desktop py-stack-lg pb-32 md:pb-stack-lg">
-<!-- Stats Bento Grid -->
-<section class="swiss-grid mb-stack-xl">
-<!-- Main KPI: Occupancy -->
-<div class="col-span-12 md:col-span-4 border border-outline p-stack-lg flex flex-col justify-between bg-surface-container-lowest">
-<div>
-<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Portfolio Occupancy</p>
-<h3 class="font-display-lg text-display-lg text-primary font-bold" id="stat-occupancy">—</h3>
-</div>
-<div class="mt-stack-md flex items-center gap-2">
-<span class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
-<div id="occupancy-bar" class="bg-primary h-full w-0 transition-all duration-500"></div>
-</span>
-<span class="font-label-sm text-label-sm text-on-surface-variant">Target 98%</span>
-</div>
-</div>
-<!-- Main KPI: Rent -->
-<div class="col-span-12 md:col-span-4 border border-outline p-stack-lg flex flex-col justify-between bg-surface-container-lowest">
-<div>
-<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Current Rent Collection</p>
-<h3 class="font-display-lg text-display-lg text-primary font-bold" id="stat-monthly-revenue">—</h3>
-</div>
-<div class="mt-stack-md">
-<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
-<span class="material-symbols-outlined text-primary text-[16px]" data-icon="trending_up">trending_up</span>
-                            +12% from last month
-                        </p>
-</div>
-</div>
-<!-- Main KPI: Documents -->
-<div class="col-span-12 md:col-span-4 border border-outline p-stack-lg flex flex-col justify-between bg-surface-container-lowest">
-<div>
-<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Active Documents</p>
-<h3 class="font-display-lg text-display-lg text-primary font-bold" id="stat-active-requests">—</h3>
-</div>
-<div class="mt-stack-md flex gap-gutter">
-<div>
-<p class="font-label-sm text-label-sm text-on-surface-variant">Pending</p>
-<p class="font-title-lg text-title-lg text-error" id="stat-pending-docs">—</p>
-</div>
-<div class="border-l border-outline-variant pl-4">
-<p class="font-label-sm text-label-sm text-on-surface-variant">In vault</p>
-<p class="font-title-lg text-title-lg text-primary" id="stat-signed-docs">—</p>
-</div>
-</div>
-</div>
-</section>
-<!-- Property Section Header -->
-<div class="flex justify-between items-end mb-stack-md border-b border-outline pb-4">
-<h4 class="font-headline-md text-headline-md text-on-surface">Active Properties</h4>
-<div class="flex items-center gap-stack-md">
-<button class="font-label-lg text-label-lg text-on-surface-variant flex items-center gap-1 hover:text-primary transition-colors">
-<span class="material-symbols-outlined text-[18px]" data-icon="filter_list">filter_list</span>
-                        Filter
-                    </button>
-<button class="font-label-lg text-label-lg text-on-surface-variant flex items-center gap-1 hover:text-primary transition-colors">
-<span class="material-symbols-outlined text-[18px]" data-icon="sort">sort</span>
-                        Sort by Price
-                    </button>
-</div>
-</div>
-<!-- Property Grid -->
-<div id="properties-grid" class="swiss-grid gap-stack-lg">
-<!-- Empty State (shown until real data loads) -->
-  <div id="empty-state-properties" class="col-span-12 flex flex-col items-center justify-center py-24 text-center border border-dashed border-outline-variant rounded-lg bg-surface-container-lowest">
-    <span class="material-symbols-outlined text-[56px] text-outline mb-4">home_work</span>
-    <p class="font-title-lg text-title-lg text-on-surface mb-2">No properties yet</p>
-    <p class="font-body-md text-body-md text-on-surface-variant max-w-xs mb-6">Add your first property to start tracking rent, maintenance, and inspections.</p>
-    <button onclick="showAddPropertyModal()" class="flex items-center gap-2 px-6 py-3 bg-primary text-white font-label-lg text-label-lg rounded-lg hover:opacity-90 transition-opacity">
-      <span class="material-symbols-outlined text-[18px]">add</span>
-      Add First Property
-    </button>
-  </div>
-<!-- Recent Activity — populated dynamically -->
-<section class="mt-stack-xl">
-<h4 class="font-headline-md text-headline-md text-on-surface mb-stack-lg">Recent Activity</h4>
-<div class="border border-outline bg-surface-container-lowest" id="activity-list">
-  <div class="p-stack-xl flex flex-col items-center justify-center text-center" id="empty-state-activity">
-    <span class="material-symbols-outlined text-[36px] text-outline mb-3">history</span>
-    <p class="font-body-md text-body-md text-on-surface-variant">Activity will appear here once you add properties.</p>
-  </div>
-</div>
-</section>
-</div>
-<!-- Footer (Shared Component) -->
-<footer class="mt-auto grid grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop py-stack-xl w-full border-t border-outline bg-surface-container-lowest">
-<div class="col-span-4 lg:col-span-1">
-<a href="/dashboard" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--sm" aria-label="RentCan"><img src="/assets/logos/rentcan-wordmark.png" alt="RentCan"></a>
-<p class="font-body-md text-body-md text-on-surface-variant">© 2026 RentCan. Precision Property Management.</p>
-</div>
-<div class="col-span-2 lg:col-span-1">
-<p class="font-label-lg text-label-lg text-on-surface font-bold mb-4">Resources</p>
-<ul class="space-y-2">
-<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/info">Privacy Policy</a></li>
-<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/info">Terms of Service</a></li>
-<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/info">Help Center</a></li>
-</ul>
-</div>
-<div class="col-span-2 lg:col-span-1">
-<p class="font-label-lg text-label-lg text-on-surface font-bold mb-4">Company</p>
-<ul class="space-y-2">
-<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/info">Careers</a></li>
-<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/info">API Documentation</a></li>
-<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="/info">Contact Us</a></li>
-</ul>
-</div>
-<div class="col-span-4 lg:col-span-1 border-t lg:border-t-0 lg:border-l border-outline-variant pt-stack-md lg:pt-0 lg:pl-stack-lg">
-<p class="font-label-lg text-label-lg text-on-surface font-bold mb-4">Newsletter</p>
-<div class="flex items-center gap-2">
-<input class="flex-1 bg-surface-container-low border border-outline-variant px-4 py-2 font-body-md text-body-md focus:ring-0 focus:border-primary outline-none" placeholder="Your email" type="email">
-<button class="bg-primary text-on-primary px-4 py-2 font-label-lg text-label-lg">Join</button>
-</div>
-</div>
-</footer>
-</main>
-<!-- Interactions Script -->
-<script>
-        // Simple Micro-interaction for Stats
-        document.querySelectorAll('section.swiss-grid > div').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.backgroundColor = '#f5f2f0'; // surface-container
-                card.style.transition = 'background-color 0.3s ease';
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.backgroundColor = '#ffffff'; // surface-container-lowest
-            });
-        });
-    </script>
-
-
-
-
-<script>
-async function signOut() {
-  try {
-    const res = await fetch('/api/config');
-    const config = await res.json();
-    const { createClient } = supabase;
-    const client = createClient(config.supabaseUrl, config.supabaseKey);
-    await client.auth.signOut();
-    window.location.href = '/login';
-  } catch (err) {
-    console.error('Sign out error:', err);
-    window.location.href = '/login';
-  }
-}
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        if (typeof mountMobileBottomNav === 'function') mountMobileBottomNav('inspections');
-        const client = await getSupabaseClient();
-        if (!client) throw new Error('Supabase not configured');
-
-        const { data: { session } } = await client.auth.getSession();
-        if (!session) {
-            window.location.href = '/login';
-            return;
-        }
-        const userId = session.user.id;
-        const role = sessionStorage.getItem('rentcan_role') || 'landlord';
-        const portfolio = await loadPortfolio(client, userId, role);
-        RentCanDemo.mountDemoBanner(portfolio.isDemo);
-
-        const properties = portfolio.properties || [];
-        const maintenance = portfolio.maintenance || [];
-        const stats = portfolio.stats;
-
-        document.getElementById('stat-occupancy').textContent = stats.occupancyRate + '%';
-        const totalEl = document.getElementById('stat-total-properties');
-        if (totalEl) totalEl.textContent = stats.totalProperties;
-        document.getElementById('stat-monthly-revenue').textContent = formatINR(stats.monthlyRevenue);
-        document.getElementById('stat-active-requests').textContent = stats.activeRequests;
-        const pend = document.getElementById('stat-pending-docs');
-        const signed = document.getElementById('stat-signed-docs');
-        if (pend) pend.textContent = String(stats.activeRequests);
-        if (signed) signed.textContent = String(stats.documentsCount);
-
-        const grid = document.getElementById('properties-grid');
-        if (grid) {
-        grid.innerHTML = '';
-
-        properties.forEach(prop => {
-            const statusText = String(prop.status || 'vacant').toUpperCase();
-            const img = prop.image || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80';
-            const card = document.createElement('div');
-            card.className = "col-span-12 md:col-span-6 lg:col-span-4 bg-surface-container-lowest border border-outline rounded-xl overflow-hidden group hover:border-primary transition-colors flex flex-col";
-            card.innerHTML = `
-                <div class="h-44 sm:h-48 w-full bg-surface-variant overflow-hidden relative">
-                    <img src="${img}" alt="${prop.name}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" loading="lazy">
-                    <div class="absolute top-4 right-4 px-3 py-1 bg-surface-container-lowest rounded-full shadow-sm border border-outline-variant/60 font-label-caps text-[10px] tracking-wider text-primary font-bold">
-                        ${statusText}
-                    </div>
-                </div>
-                <div class="p-stack-md flex-1 flex flex-col">
-                    <h5 class="font-title-lg text-title-lg text-on-surface mb-1">${prop.name}</h5>
-                    <p class="font-body-md text-body-md text-on-surface-variant mb-4 flex-1">${prop.address || ''}</p>
-                    <div class="flex justify-between items-center pt-4 border-t border-outline-variant">
-                        <span class="font-label-lg text-label-lg text-primary font-bold">${formatINR(prop.rent_amount)}/mo</span>
-                        <button type="button" class="text-xs font-bold text-primary uppercase tracking-wider">Inspect</button>
-                    </div>
-                </div>`;
-            grid.appendChild(card);
-        });
-        }
-
-        // Maintenance / inspection activity
-        const activityList = document.getElementById('activity-list');
-        if (activityList) {
-          if (!maintenance.length) {
-            activityList.innerHTML = '<div class="p-8 text-center text-on-surface-variant text-sm">No inspection activity yet.</div>';
-          } else {
-            activityList.innerHTML = maintenance.map(m => `
-              <div class="p-stack-md border-b border-outline-variant flex items-center justify-between gap-3">
-                <div class="min-w-0">
-                  <p class="font-body-lg text-on-surface truncate">${m.title}</p>
-                  <p class="text-xs text-on-surface-variant">${m.properties?.name || ''} · ${formatDate(m.created_at)}</p>
-                </div>
-                ${RentCanDemo.statusBadge(m.status)}
-              </div>`).join('');
-          }
-        }
-
-    } catch(err) {
-        console.error("Error fetching inspections data:", err);
-    }
-});
-</script>
-
-<script>
-// ── Render user info from sessionStorage + role-gate UI ──
-document.addEventListener('DOMContentLoaded', () => {
-  const rawUser  = sessionStorage.getItem('rentcan_user');
-  const role     = sessionStorage.getItem('rentcan_role') || 'landlord';
-
-  let user = { name: 'User', email: '', role };
-  try { user = JSON.parse(rawUser); } catch(_) {}
-
-  const name    = user.name || user.email || 'User';
-  const initial = name.charAt(0).toUpperCase();
-  const roleLabel = role.charAt(0).toUpperCase() + role.slice(1);
-
-  // Avatar & info
-  const avatarEl = document.getElementById('user-avatar');
-  const nameEl   = document.getElementById('user-name');
-  const emailEl  = document.getElementById('user-email');
-  const roleEl   = document.getElementById('user-role');
-  const sidebarRoleEl = document.getElementById('sidebar-role-label');
-
-  if (avatarEl)  avatarEl.textContent = initial;
-  if (nameEl)    nameEl.textContent   = name;
-  if (emailEl)   emailEl.textContent  = user.email || '';
-  if (roleEl)    roleEl.textContent   = roleLabel;
-  if (sidebarRoleEl) sidebarRoleEl.textContent = roleLabel + ' Portal';
-
-  // Role-gate: only Landlord and Admin see "Invite Tenant" and landlord-specific actions
-  const isLandlord = role === 'landlord' || role === 'admin';
-
-  const inviteBtn   = document.getElementById('invite-tenant-btn');
-  const topbarInvite = document.getElementById('topbar-invite-btn');
-
-  if (isLandlord) {
-    if (inviteBtn)    inviteBtn.style.display    = '';
-    if (topbarInvite) topbarInvite.style.display = '';
-  }
-
-  // Tenant view: hide "Add New Property" card (it's landlord-only)
-  if (role === 'tenant') {
-    // Hide static add-property placeholder card
-    document.querySelectorAll('.border-dashed').forEach(el => {
-      el.style.display = 'none';
-    });
-    // Update page title
-    const h2 = document.querySelector('h2');
-    if (h2) h2.textContent = 'My Tenancy';
-  }
-});
-</script>
-
-<script>
-function showAddPropertyModal() {
-  alert('Property onboarding coming soon! Contact us at support@rentcan.com to add your property.');
-}
-</script>
-
-  <!-- Add Property Slide-over Modal -->
-  <div id="add-property-modal" class="fixed inset-0 z-50 hidden">
-    <!-- Backdrop -->
-    <div class="absolute inset-0 rc-app-modal-backdrop transition-opacity" onclick="closeAddPropertyModal()"></div>
-    
-    <!-- Slide-over panel -->
-    <div class="absolute right-0 top-0 h-full w-full max-w-md bg-surface border-l border-outline shadow-2xl transform translate-x-full transition-transform duration-300 ease-out" id="add-property-panel">
-      <div class="flex flex-col h-full">
-        <!-- Header -->
-        <div class="px-6 py-4 border-b border-outline flex items-center justify-between bg-surface-container-lowest">
-          <h2 class="font-headline-sm text-primary">Add New Property</h2>
-          <button onclick="closeAddPropertyModal()" class="text-on-surface-variant hover:text-primary transition-colors">
-            <span class="material-symbols-outlined">close</span>
-          </button>
-        </div>
-        
-        <!-- Body / Form -->
-        <div class="flex-1 overflow-y-auto p-6">
-          <form id="add-property-form" class="space-y-6">
-            <div>
-              <label class="block font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Property Name / Unit</label>
-              <input type="text" id="prop-name" required placeholder="e.g. The Heights #402" class="w-full bg-surface-container-lowest border border-outline rounded p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
-            </div>
-            
-            <div>
-              <label class="block font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Address</label>
-              <input type="text" id="prop-address" required placeholder="Sector, City, Pin" class="w-full bg-surface-container-lowest border border-outline rounded p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Type</label>
-                <select id="prop-type" class="w-full bg-surface-container-lowest border border-outline rounded p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
-                  <option value="Residential">Residential</option>
-                  <option value="Commercial">Commercial</option>
-                  <option value="Airbnb">Airbnb</option>
-                </select>
-              </div>
-              <div>
-                <label class="block font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Expected Rent (₹)</label>
-                <input type="number" id="prop-rent" required placeholder="25000" class="w-full bg-surface-container-lowest border border-outline rounded p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
-              </div>
-            </div>
-
-            <div>
-              <label class="block font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Tenant Name (Optional)</label>
-              <input type="text" id="prop-tenant" placeholder="Leave blank if vacant" class="w-full bg-surface-container-lowest border border-outline rounded p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
-            </div>
-          </form>
-        </div>
-        
-        <!-- Footer -->
-        <div class="p-6 border-t border-outline bg-surface-container-lowest flex justify-end gap-3">
-          <button onclick="closeAddPropertyModal()" class="px-5 py-2.5 rounded font-label-lg text-on-surface-variant hover:bg-surface-container transition-colors">Cancel</button>
-          <button onclick="submitAddProperty()" class="px-5 py-2.5 rounded font-label-lg bg-primary text-white hover:opacity-90 transition-opacity flex items-center gap-2">
-            <span class="material-symbols-outlined text-[18px]">add</span> Add Property
-          </button>
-        </div>
+  <div class="px-margin-mobile md:px-margin-desktop py-stack-lg pb-32 md:pb-stack-lg space-y-8">
+    <section class="grid grid-cols-2 lg:grid-cols-4 gap-3" id="insp-kpis">
+      <div class="rc-kpi border border-outline rounded-xl p-4 bg-surface-container-lowest">
+        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Next cycle</p>
+        <p class="text-xl font-bold text-primary mt-1" id="kpi-next">—</p>
       </div>
-    </div>
+      <div class="rc-kpi border border-outline rounded-xl p-4 bg-surface-container-lowest">
+        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Published</p>
+        <p class="text-xl font-bold text-primary mt-1" id="kpi-published">—</p>
+      </div>
+      <div class="rc-kpi border border-outline rounded-xl p-4 bg-surface-container-lowest">
+        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Due / open</p>
+        <p class="text-xl font-bold text-primary mt-1" id="kpi-open">—</p>
+      </div>
+      <div class="rc-kpi border border-outline rounded-xl p-4 bg-surface-container-lowest">
+        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Properties</p>
+        <p class="text-xl font-bold text-primary mt-1" id="kpi-props">—</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="flex justify-between items-end mb-4 border-b border-outline pb-3">
+        <h2 class="font-headline-md text-headline-md text-on-surface">Property schedule</h2>
+        <p class="text-xs text-on-surface-variant">Tap a property for checklist &amp; history</p>
+      </div>
+      <div id="properties-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+    </section>
+
+    <section>
+      <h2 class="font-headline-md text-headline-md text-on-surface mb-4">Recent inspection activity</h2>
+      <div id="activity-list" class="border border-outline rounded-xl overflow-hidden bg-surface-container-lowest divide-y divide-outline-variant"></div>
+    </section>
   </div>
+</main>
 
-  <script>
-    function showAddPropertyModal() {
-      const modal = document.getElementById('add-property-modal');
-      const panel = document.getElementById('add-property-panel');
-      modal.classList.remove('hidden');
-      // small delay to allow display:block to apply before animating transform
-      setTimeout(() => {
-        panel.classList.remove('translate-x-full');
-      }, 10);
-    }
-
-    function closeAddPropertyModal() {
-      const modal = document.getElementById('add-property-modal');
-      const panel = document.getElementById('add-property-panel');
-      panel.classList.add('translate-x-full');
-      setTimeout(() => {
-        modal.classList.add('hidden');
-      }, 300);
-    }
-
-    function submitAddProperty() {
-      const name = document.getElementById('prop-name').value;
-      const address = document.getElementById('prop-address').value;
-      const type = document.getElementById('prop-type').value;
-      const rent = document.getElementById('prop-rent').value;
-      const tenant = document.getElementById('prop-tenant').value || 'Vacant';
-      
-      if(!name || !address || !rent) {
-        alert("Please fill out Name, Address, and Rent.");
-        return;
-      }
-
-      // Optimistic UI Update
-      document.getElementById('empty-state-properties').style.display = 'none';
-      
-      const grid = document.querySelector('.swiss-grid.gap-stack-lg');
-      const newCard = document.createElement('div');
-      newCard.className = "col-span-12 md:col-span-6 lg:col-span-4 border border-outline bg-surface-container-lowest p-stack-md hover:border-primary transition-colors flex flex-col justify-between";
-      newCard.innerHTML = `
-        <div class="mb-4">
-          <div class="flex justify-between items-start mb-2">
-            <span class="font-label-caps text-[10px] uppercase tracking-widest text-brand-gold">${type}</span>
-            <span class="${tenant === 'Vacant' ? 'bg-error-container text-error' : 'bg-primary-fixed text-primary'} px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest">${tenant === 'Vacant' ? 'Vacant' : 'Occupied'}</span>
-          </div>
-          <h4 class="font-title-lg text-title-lg text-on-surface">${name}</h4>
-          <p class="font-body-sm text-body-sm text-on-surface-variant truncate">${address}</p>
-        </div>
-        <div class="mt-auto pt-4 border-t border-outline-variant/30 flex justify-between items-center">
-          <div>
-            <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Rent</p>
-            <p class="font-title-md text-title-md text-primary font-bold">₹${Number(rent).toLocaleString()}</p>
-          </div>
-          <div>
-            <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Tenant</p>
-            <p class="font-body-sm text-body-sm text-on-surface">${tenant}</p>
-          </div>
-        </div>
-      `;
-      
-      grid.insertBefore(newCard, grid.firstChild);
-      
-      // Update counts
-      const activeStats = document.getElementById('stat-occupancy');
-      if (activeStats.innerText === '—') activeStats.innerText = tenant === 'Vacant' ? '0%' : '100%';
-      const revenueStats = document.getElementById('stat-monthly-revenue');
-      if (revenueStats.innerText === '—') revenueStats.innerText = tenant === 'Vacant' ? '₹0' : `₹${Number(rent).toLocaleString()}`;
-
-      closeAddPropertyModal();
-      document.getElementById('add-property-form').reset();
-    }
-  </script>
-
-  <script src="/js/sound_manager.js"></script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const items = document.querySelectorAll('.animate-stagger-item');
-      items.forEach((item, index) => {
-        item.style.transition = 'opacity 500ms ease-out, transform 500ms cubic-bezier(0.16, 1, 0.3, 1)';
-        item.style.transitionDelay = `${index * 100}ms`;
-        
-        // Use requestAnimationFrame to ensure CSS transitions trigger
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            item.classList.remove('opacity-0', 'translate-y-4');
-          });
-        });
-      });
-    });
-  </script>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-// AUTH BOOT - session check with shared RentCan config
-(async function() {
-  let sb = null;
-  try {
-    sb = await RentCan.createClient();
-  } catch (e) {
-    console.warn('Auth boot:', e);
-  }
-
-  // Get user info from sessionStorage (populated by login.html)
-  const storedUser = JSON.parse(sessionStorage.getItem('rentcan_user') || 'null');
-
-  if (sb) {
-    const { data: { session } } = await sb.auth.getSession();
-    if (!session && !storedUser) {
-      // Not authenticated — redirect to login
-      window.location.href = '/login';
-      return;
-    }
-    if (session) {
-      // Prefer live session data
-      const nameEl = document.getElementById('sidebar-user-name');
-      const emailEl = document.getElementById('sidebar-user-email');
-      if (nameEl) nameEl.textContent = session.user.user_metadata?.full_name || storedUser?.name || 'User';
-      if (emailEl) emailEl.textContent = session.user.email || session.user.phone || '';
-    }
-  }
-
-  // Fallback to sessionStorage
-  if (storedUser) {
-    const nameEl = document.getElementById('sidebar-user-name');
-    const emailEl = document.getElementById('sidebar-user-email');
-    if (nameEl && nameEl.textContent === 'Loading…') nameEl.textContent = storedUser.name || 'User';
-    if (emailEl && !emailEl.textContent) emailEl.textContent = storedUser.email || '';
-  }
-
-  window.signOut = async function() {
-    if (sb) await sb.auth.signOut();
-    sessionStorage.clear();
-    window.location.href = '/login';
-  };
-})();
-</script>
-
-<!-- Mobile Bottom App Bar -->
-<nav id="rc-mobile-nav" class="md:hidden fixed bottom-0 left-0 right-0 rc-app-mobile-nav px-2 pt-2 z-50 flex justify-around items-center" style="padding-bottom:max(10px, env(safe-area-inset-bottom))">
-  <a href="/dashboard" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]">domain</span><span>Home</span></a>
-  <a href="/inspections" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-primary"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 1">fact_check</span><span>Inspect</span></a>
-  <a href="/documents" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]">description</span><span>Vault</span></a>
-  <a href="/payments" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]">payments</span><span>Ledger</span></a>
-  <a href="/reports" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]">analytics</span><span>Reports</span></a>
-</nav>
-
-<!-- Raise Complaint / Repair Request Modal -->
-<div id="complaint-modal" class="fixed inset-0 z-50 hidden">
-  <div class="absolute inset-0 rc-app-modal-backdrop transition-opacity" onclick="closeComplaintModal()"></div>
-  <div class="absolute right-0 bottom-0 md:top-0 h-[85vh] md:h-full w-full max-w-md bg-white border-t md:border-l border-outline shadow-2xl rounded-t-2xl md:rounded-none transform translate-y-full md:translate-y-0 md:translate-x-full transition-transform duration-300 ease-out flex flex-col" id="complaint-panel">
-    <div class="px-6 py-4 border-b border-outline flex items-center justify-between bg-surface-container-lowest">
-      <h3 class="text-base font-bold text-red-600 flex items-center gap-2">
-        <span class="material-symbols-outlined text-lg">build</span> Raise Repair / Complaint Request
-      </h3>
-      <button onclick="closeComplaintModal()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">close</span></button>
+<!-- Detail slide-over -->
+<div id="detail-modal" class="fixed inset-0 z-50 hidden" aria-hidden="true">
+  <div class="absolute inset-0 rc-app-modal-backdrop" onclick="closeDetail()"></div>
+  <div id="detail-panel" class="absolute right-0 bottom-0 md:top-0 h-[90vh] md:h-full w-full max-w-lg bg-surface border-t md:border-l border-outline shadow-2xl rounded-t-2xl md:rounded-none translate-y-full md:translate-y-0 md:translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="px-5 py-4 border-b border-outline flex items-center justify-between">
+      <div>
+        <h3 class="font-bold text-primary" id="detail-title">Inspection</h3>
+        <p class="text-xs text-on-surface-variant" id="detail-sub"></p>
+      </div>
+      <button type="button" onclick="closeDetail()" class="p-2 rounded-lg hover:bg-surface-container"><span class="material-symbols-outlined">close</span></button>
     </div>
-    
+    <div class="flex-1 overflow-y-auto p-5 space-y-6" id="detail-body"></div>
+  </div>
+</div>
+
+<!-- Repair modal -->
+<div id="complaint-modal" class="fixed inset-0 z-50 hidden">
+  <div class="absolute inset-0 rc-app-modal-backdrop" onclick="closeComplaintModal()"></div>
+  <div id="complaint-panel" class="absolute right-0 bottom-0 md:top-0 h-[85vh] md:h-full w-full max-w-md bg-surface border-t md:border-l border-outline shadow-2xl rounded-t-2xl md:rounded-none translate-y-full md:translate-y-0 md:translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="px-6 py-4 border-b border-outline flex items-center justify-between">
+      <h3 class="text-base font-bold text-red-600 flex items-center gap-2"><span class="material-symbols-outlined">build</span> Raise Repair</h3>
+      <button type="button" onclick="closeComplaintModal()"><span class="material-symbols-outlined">close</span></button>
+    </div>
     <form id="complaint-form" class="p-6 space-y-4 flex-1 overflow-y-auto">
       <div>
-        <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Property Unit / Address</label>
-        <input type="text" id="complaint-prop" required placeholder="e.g. Sector 17 Flat 302" class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus:border-red-500">
+        <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Property</label>
+        <select id="complaint-prop" required class="w-full border border-outline rounded-xl p-3 text-sm"></select>
       </div>
       <div>
         <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Issue Category</label>
-        <select id="complaint-category" class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus:border-red-500 font-bold">
+        <select id="complaint-category" class="w-full border border-outline rounded-xl p-3 text-sm font-bold">
           <option value="AC Repair / Cooling">AC Repair / Cooling</option>
           <option value="Plumbing / Water Leak">Plumbing / Water Leak</option>
           <option value="Electrical / Power">Electrical / Power</option>
-          <option value="Locks & Keys">Locks & Key Custody</option>
+          <option value="Locks & Keys">Locks &amp; Keys</option>
           <option value="Appliance Fix">Appliance Fix</option>
-          <option value="Other Repair">Other Repair Request</option>
+          <option value="Other Repair">Other Repair</option>
         </select>
       </div>
       <div>
-        <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Issue Details & Description</label>
-        <textarea id="complaint-details" rows="3" required placeholder="e.g. AC in master bedroom blowing warm air, requires technician gas refill." class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus:border-red-500"></textarea>
+        <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Details</label>
+        <textarea id="complaint-details" rows="3" required class="w-full border border-outline rounded-xl p-3 text-sm" placeholder="Describe the issue…"></textarea>
       </div>
       <div>
-        <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Priority Level</label>
-        <select id="complaint-priority" class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus:border-red-500 font-bold">
+        <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Priority</label>
+        <select id="complaint-priority" class="w-full border border-outline rounded-xl p-3 text-sm font-bold">
           <option value="Urgent / Emergency">Urgent / Emergency</option>
           <option value="Standard">Standard (Within 24 hrs)</option>
         </select>
       </div>
     </form>
-
-    <div class="p-4 border-t border-outline bg-gray-50 flex justify-end gap-2">
-      <button onclick="closeComplaintModal()" class="px-4 py-2 text-xs font-semibold text-on-surface-variant hover:bg-gray-200 rounded-xl">Cancel</button>
-      <button onclick="submitComplaint()" class="px-5 py-2.5 text-xs font-bold bg-primary text-on-primary rounded-xl shadow-sm hover:opacity-90 flex items-center gap-1.5">
-        <span class="material-symbols-outlined text-sm">send</span> Submit Repair Request
-      </button>
+    <div class="p-4 border-t border-outline flex justify-end gap-2">
+      <button type="button" onclick="closeComplaintModal()" class="px-4 py-2 text-xs font-semibold rounded-xl">Cancel</button>
+      <button type="button" onclick="submitComplaint()" class="px-5 py-2.5 text-xs font-bold bg-primary text-on-primary rounded-xl">Submit</button>
     </div>
   </div>
 </div>
 
 <script>
+let STATE = { properties: [], inspections: [], maintenance: [], isDemo: false, client: null, userId: null, role: 'landlord' };
+
+function outcomeBadge(status, outcome) {
+  const s = String(outcome || status || '').toLowerCase();
+  if (s === 'pass' || s === 'published' || s === 'resolved') return '<span class="rc-status rc-status-ok">' + escapeHtml(s.replace('_', ' ')) + '</span>';
+  if (s === 'minor_issue' || s === 'scheduled' || s === 'in_progress' || s === 'pending') return '<span class="rc-status rc-status-pending">' + escapeHtml(s.replace('_', ' ')) + '</span>';
+  if (s === 'urgent' || s === 'overdue') return '<span class="rc-status rc-status-warn">' + escapeHtml(s) + '</span>';
+  return '<span class="rc-status">' + escapeHtml(s || '—') + '</span>';
+}
+
+async function fetchInspections(client, propertyIds) {
+  if (!propertyIds.length) return [];
+  try {
+    const { data, error } = await client
+      .from('inspections')
+      .select('*')
+      .in('property_id', propertyIds)
+      .order('inspection_date', { ascending: false })
+      .limit(50);
+    if (error) throw error;
+    return data || [];
+  } catch (_) {
+    return [];
+  }
+}
+
+function openDetail(propId) {
+  const prop = STATE.properties.find(p => p.id === propId);
+  if (!prop) return;
+  const next = getNextInspectionDate();
+  const history = STATE.inspections.filter(i => i.property_id === propId);
+  const fallback = STATE.maintenance.filter(m => m.property_id === propId && m.category === 'inspection');
+  document.getElementById('detail-title').textContent = prop.name;
+  document.getElementById('detail-sub').textContent = (prop.address || '') + ' · Next: ' + formatInspectionDateDisplay(next);
+
+  const checklist = (RC_INSPECTION_CHECKLIST || []).map(item =>
+    `<li class="flex items-start gap-2 text-sm text-on-surface py-1.5 border-b border-outline-variant/50"><span class="material-symbols-outlined text-primary text-[18px] mt-0.5">check_circle</span><span>${escapeHtml(item)}</span></li>`
+  ).join('');
+
+  const histHtml = (history.length ? history : fallback.map(m => ({
+    inspection_date: m.created_at,
+    status: m.status,
+    outcome: m.status === 'resolved' ? 'pass' : 'minor_issue',
+    summary: m.description || m.title,
+    notes: m.description
+  }))).map(i => `
+    <article class="border border-outline rounded-xl p-3">
+      <div class="flex justify-between gap-2 items-start">
+        <div>
+          <p class="font-semibold text-on-surface">${escapeHtml(formatDate(i.inspection_date || i.published_at || i.created_at))}</p>
+          <p class="text-sm text-on-surface-variant mt-1">${escapeHtml(i.summary || i.notes || 'Inspection record')}</p>
+        </div>
+        ${outcomeBadge(i.status, i.outcome)}
+      </div>
+    </article>`).join('') || '<p class="text-sm text-on-surface-variant">No published inspections yet for this property.</p>';
+
+  document.getElementById('detail-body').innerHTML = `
+    <div>
+      <p class="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant mb-2">15-point checklist</p>
+      <ul class="rounded-xl border border-outline overflow-hidden bg-surface-container-lowest px-3">${checklist}</ul>
+    </div>
+    <div>
+      <p class="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant mb-2">History</p>
+      <div class="space-y-2">${histHtml}</div>
+    </div>
+    <p class="text-xs text-on-surface-variant">On-site visits are completed by RentCan on the 5th of each month. Published photo reports appear in Reports within 24 hours.</p>
+  `;
+
+  const modal = document.getElementById('detail-modal');
+  const panel = document.getElementById('detail-panel');
+  modal.classList.remove('hidden');
+  modal.setAttribute('aria-hidden', 'false');
+  requestAnimationFrame(() => panel.classList.remove('translate-y-full', 'md:translate-x-full'));
+}
+
+function closeDetail() {
+  const modal = document.getElementById('detail-modal');
+  const panel = document.getElementById('detail-panel');
+  panel.classList.add('translate-y-full', 'md:translate-x-full');
+  setTimeout(() => {
+    modal.classList.add('hidden');
+    modal.setAttribute('aria-hidden', 'true');
+  }, 280);
+}
+
 function showComplaintModal() {
+  const sel = document.getElementById('complaint-prop');
+  sel.innerHTML = STATE.properties.map(p =>
+    `<option value="${escapeHtml(p.id)}">${escapeHtml(p.name)}</option>`
+  ).join('') || '<option value="">No property</option>';
   const modal = document.getElementById('complaint-modal');
   const panel = document.getElementById('complaint-panel');
   modal.classList.remove('hidden');
@@ -669,51 +247,166 @@ function closeComplaintModal() {
   const modal = document.getElementById('complaint-modal');
   const panel = document.getElementById('complaint-panel');
   panel.classList.add('translate-y-full', 'md:translate-x-full');
-  setTimeout(() => modal.classList.add('hidden'), 300);
+  setTimeout(() => modal.classList.add('hidden'), 280);
 }
 
 async function submitComplaint() {
-  const prop = document.getElementById('complaint-prop').value.trim();
-  const category = document.getElementById('complaint-category').value;
+  const propId = document.getElementById('complaint-prop').value;
+  const categoryLabel = document.getElementById('complaint-category').value;
   const details = document.getElementById('complaint-details').value.trim();
   const priority = document.getElementById('complaint-priority').value;
+  if (!propId || !details) { alert('Please select a property and describe the issue.'); return; }
 
-  if (!prop || !details) { alert('Please fill out Property and Issue Details.'); return; }
-
+  const category = mapMaintenanceCategory(categoryLabel);
+  let saved = false;
   try {
-    const client = await getSupabaseClient();
+    const client = STATE.client || await getSupabaseClient();
     if (client) {
       const { data: { session } } = await client.auth.getSession();
       if (session) {
-        const { data: tenantRecord } = await client.from('tenants').select('id, property_id').eq('user_id', session.user.id).limit(1).single();
-        if (tenantRecord) {
-          await client.from('maintenance_requests').insert({
-            property_id: tenantRecord.property_id,
-            tenant_id: tenantRecord.id,
-            title: category + ' — ' + prop,
-            description: details,
-            category: 'appliance',
-            priority: priority.includes('Urgent') ? 'high' : 'medium',
-            status: 'pending'
-          });
-        }
+        const { data: tenantRecord } = await client.from('tenants').select('id, property_id').eq('user_id', session.user.id).eq('property_id', propId).maybeSingle();
+        const payload = {
+          property_id: propId,
+          tenant_id: tenantRecord?.id || null,
+          title: categoryLabel,
+          description: details,
+          category,
+          priority: priority.includes('Urgent') ? 'high' : 'medium',
+          status: 'pending'
+        };
+        const { error } = await client.from('maintenance_requests').insert(payload);
+        if (error) throw error;
+        saved = true;
       }
     }
-  } catch(e) {
-    console.warn('DB save fallback:', e);
+  } catch (e) {
+    console.warn('Repair save failed:', e);
   }
 
-  const msg = '*NEW TENANT REPAIR REQUEST*%0A%0A*Property:* ' + encodeURIComponent(prop) + '%0A*Issue:* ' + encodeURIComponent(category) + '%0A*Priority:* ' + encodeURIComponent(priority) + '%0A*Details:* ' + encodeURIComponent(details) + '%0A%0A_Sent via RentCan Portal. Please dispatch vendor._';
+  const propName = STATE.properties.find(p => p.id === propId)?.name || propId;
+  const msg = '*NEW TENANT REPAIR REQUEST*%0A%0A*Property:* ' + encodeURIComponent(propName) + '%0A*Issue:* ' + encodeURIComponent(categoryLabel) + '%0A*Priority:* ' + encodeURIComponent(priority) + '%0A*Details:* ' + encodeURIComponent(details);
   window.open('https://wa.me/918146298024?text=' + msg, '_blank');
   closeComplaintModal();
-  alert('Repair request submitted! Our team will contact you shortly.');
+  if (saved) alert('Repair request saved and WhatsApp opened for our team.');
+  else alert('WhatsApp opened for our team. Could not save to your account — please confirm on WhatsApp.');
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const role = sessionStorage.getItem('rentcan_role') || 'landlord';
-  const repairBtn = document.getElementById('tenant-repair-btn');
-  if (role === 'tenant' && repairBtn) repairBtn.classList.remove('hidden');
+function renderPage() {
+  const next = getNextInspectionDate();
+  document.getElementById('kpi-next').textContent = formatInspectionDateDisplay(next);
+  const published = STATE.inspections.filter(i => i.status === 'published' || i.status === 'pass' || i.published_at).length
+    || STATE.maintenance.filter(m => m.category === 'inspection' && m.status === 'resolved').length;
+  const open = STATE.inspections.filter(i => i.status === 'scheduled' || i.status === 'in_progress').length
+    || STATE.maintenance.filter(m => m.category === 'inspection' && m.status !== 'resolved').length;
+  document.getElementById('kpi-published').textContent = String(published);
+  document.getElementById('kpi-open').textContent = String(open);
+  document.getElementById('kpi-props').textContent = String(STATE.properties.length);
+
+  const grid = document.getElementById('properties-grid');
+  if (!STATE.properties.length) {
+    grid.innerHTML = `<div class="col-span-full flex flex-col items-center justify-center py-16 text-center border border-dashed border-outline-variant rounded-xl">
+      <span class="material-symbols-outlined text-[48px] text-outline mb-3">fact_check</span>
+      <p class="font-semibold text-on-surface mb-1">No properties to inspect</p>
+      <p class="text-sm text-on-surface-variant mb-4 max-w-sm">Add a property on the dashboard to schedule monthly inspections.</p>
+      <a href="/dashboard" class="px-5 py-2.5 bg-primary text-white rounded-lg text-sm font-bold">Go to dashboard</a>
+    </div>`;
+  } else {
+    grid.innerHTML = STATE.properties.map(prop => {
+      const latest = STATE.inspections.find(i => i.property_id === prop.id)
+        || STATE.maintenance.find(m => m.property_id === prop.id && m.category === 'inspection');
+      const statusLabel = latest
+        ? (latest.outcome || latest.status || 'recorded')
+        : 'scheduled';
+      const img = prop.image || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80';
+      return `<button type="button" onclick="openDetail('${escapeHtml(prop.id)}')" class="text-left border border-outline rounded-xl overflow-hidden bg-surface-container-lowest hover:border-primary transition-colors flex flex-col">
+        <div class="h-36 w-full bg-surface-variant overflow-hidden relative">
+          <img src="${escapeHtml(img)}" alt="" class="w-full h-full object-cover" loading="lazy">
+          <div class="absolute top-3 right-3">${outcomeBadge(statusLabel)}</div>
+        </div>
+        <div class="p-4 flex-1 flex flex-col">
+          <h3 class="font-semibold text-on-surface">${escapeHtml(prop.name)}</h3>
+          <p class="text-sm text-on-surface-variant mt-1 flex-1">${escapeHtml(prop.address || '')}</p>
+          <div class="flex justify-between items-center pt-3 mt-3 border-t border-outline-variant text-xs">
+            <span class="text-on-surface-variant">Next ${escapeHtml(formatInspectionDateDisplay(next))}</span>
+            <span class="font-bold text-primary uppercase tracking-wider">Open</span>
+          </div>
+        </div>
+      </button>`;
+    }).join('');
+  }
+
+  const activity = document.getElementById('activity-list');
+  const rows = [];
+  STATE.inspections.forEach(i => {
+    const prop = STATE.properties.find(p => p.id === i.property_id);
+    rows.push({
+      title: i.summary || 'Inspection report',
+      meta: (prop?.name || 'Property') + ' · ' + formatDate(i.inspection_date || i.created_at),
+      status: i.outcome || i.status
+    });
+  });
+  STATE.maintenance.filter(m => m.category === 'inspection' || m.category === 'plumbing' || m.category === 'appliance').slice(0, 8).forEach(m => {
+    rows.push({
+      title: m.title,
+      meta: (m.properties?.name || '') + ' · ' + formatDate(m.created_at),
+      status: m.status
+    });
+  });
+  if (!rows.length) {
+    activity.innerHTML = '<div class="p-8 text-center text-sm text-on-surface-variant">Inspection activity will appear here after the first visit.</div>';
+  } else {
+    activity.innerHTML = rows.slice(0, 12).map(r => `
+      <div class="p-4 flex items-center justify-between gap-3">
+        <div class="min-w-0">
+          <p class="font-medium text-on-surface truncate">${escapeHtml(r.title)}</p>
+          <p class="text-xs text-on-surface-variant">${escapeHtml(r.meta)}</p>
+        </div>
+        ${outcomeBadge(r.status)}
+      </div>`).join('');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    if (typeof mountMobileBottomNav === 'function') mountMobileBottomNav('inspections');
+    const client = await getSupabaseClient();
+    if (!client) throw new Error('Supabase not configured');
+    STATE.client = client;
+
+    const { data: { session } } = await client.auth.getSession();
+    if (!session) { location.href = '/login'; return; }
+    STATE.userId = session.user.id;
+    STATE.role = sessionStorage.getItem('rentcan_role') || 'landlord';
+    document.getElementById('sidebar-role-label').textContent =
+      (STATE.role.charAt(0).toUpperCase() + STATE.role.slice(1)) + ' · Inspections';
+
+    if (STATE.role === 'tenant') {
+      document.getElementById('tenant-repair-btn')?.classList.remove('hidden');
+    }
+
+    const portfolio = await loadPortfolio(client, STATE.userId, STATE.role);
+    RentCanDemo.mountDemoBanner(portfolio.isDemo);
+    STATE.isDemo = portfolio.isDemo;
+    STATE.properties = portfolio.properties || [];
+    STATE.maintenance = portfolio.maintenance || [];
+    STATE.inspections = portfolio.inspections || [];
+
+    if (!STATE.isDemo && STATE.properties.length) {
+      const live = await fetchInspections(client, STATE.properties.map(p => p.id));
+      if (live.length) STATE.inspections = live;
+    }
+
+    renderPage();
+  } catch (err) {
+    console.error(err);
+    document.getElementById('properties-grid').innerHTML =
+      '<p class="text-sm text-error col-span-full">Could not load inspections. Please refresh or sign in again.</p>';
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') { closeDetail(); closeComplaintModal(); }
 });
 </script>
-
-</body></html>
+</body>
+</html>

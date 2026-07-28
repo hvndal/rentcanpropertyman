@@ -225,3 +225,7 @@ create policy "Authenticated upload property photos" on storage.objects for inse
 
 drop policy if exists "Authenticated upload documents" on storage.objects;
 create policy "Authenticated upload documents" on storage.objects for insert with check (bucket_id = 'documents-vault' and auth.role() = 'authenticated');
+
+
+-- 8. INSPECTIONS (see also database/inspections.sql for full idempotent script)
+-- Run database/inspections.sql after this file for the inspections table + RLS.

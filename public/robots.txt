@@ -18,13 +18,23 @@ Disallow: /inspections
 Disallow: /reports
 Disallow: /admin
 Disallow: /login
+Disallow: /checkout
 Disallow: /api/
 
-# Google, Bing, etc.
 User-agent: Googlebot
 Allow: /
 Allow: /info
+Allow: /assets/
 Allow: /assets/seo/
+Disallow: /dashboard
+Disallow: /documents
+Disallow: /payments
+Disallow: /inspections
+Disallow: /reports
+Disallow: /admin
+Disallow: /login
+Disallow: /checkout
+Disallow: /api/
 
 User-agent: Googlebot-Image
 Allow: /assets/

@@ -2,6 +2,46 @@
    RENTCAN SHARED APPLICATION SERVICES & UTILITIES
    ═════════════════════════════════════════════════════════════════════ */
 
+/** Escape user/DB text before inserting into HTML (XSS-safe). */
+function escapeHtml(value) {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/** Map free-text repair categories to schema enum values. */
+function mapMaintenanceCategory(label) {
+  const s = String(label || '').toLowerCase();
+  if (s.includes('plumb') || s.includes('water') || s.includes('leak')) return 'plumbing';
+  if (s.includes('electric') || s.includes('power')) return 'electrical';
+  if (s.includes('ac') || s.includes('appliance') || s.includes('cool')) return 'appliance';
+  if (s.includes('struct') || s.includes('paint') || s.includes('wall')) return 'structural';
+  if (s.includes('inspect')) return 'inspection';
+  if (s.includes('sos') || s.includes('emerg')) return 'sos';
+  return 'appliance';
+}
+
+const RC_INSPECTION_CHECKLIST = [
+  'Entrance & main door / locks',
+  'Living area walls & flooring',
+  'Kitchen sink, taps & appliances',
+  'Bathrooms — taps, drainage, tiles',
+  'Bedrooms — windows & AC vents',
+  'Electrical switches & lighting',
+  'Water supply & pressure',
+  'Balcony / terrace condition',
+  'Common areas / parking access',
+  'Fire safety / extinguisher (if any)',
+  'Pest signs',
+  'Overall cleanliness',
+  'Key set count verified',
+  'Meter readings noted',
+  'Photo evidence captured'
+];
+
 // 1. Calculate Next Monthly Inspection Date (Always 5th of every month)
 function getNextInspectionDate(fromDate = new Date()) {
   const d = new Date(fromDate);
@@ -249,6 +289,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.documentElement.classList.add('rc-ready');
 });
 
+window.escapeHtml = escapeHtml;
+window.mapMaintenanceCategory = mapMaintenanceCategory;
+window.RC_INSPECTION_CHECKLIST = RC_INSPECTION_CHECKLIST;
 window.getNextInspectionDate = getNextInspectionDate;
 window.formatInspectionDateDisplay = formatInspectionDateDisplay;
 window.getKeyHoldingBadgeHtml = getKeyHoldingBadgeHtml;

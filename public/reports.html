@@ -8,6 +8,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/seo/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#6B4822">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -157,7 +158,7 @@ async function signOut() {
     }
   } catch (_) {}
   window.location.href = '/login';
-
+}
 </script>
 
 
@@ -171,6 +172,25 @@ async function signOut() {
 
 
 <script>
+function showReportDetail(btn) {
+  try {
+    const raw = btn.getAttribute('data-report');
+    const r = JSON.parse(decodeURIComponent(raw));
+    const lines = [
+      r.title || 'Inspection report',
+      '',
+      'Property: ' + (r.property || '—'),
+      'Date: ' + (formatDate(r.date) || '—'),
+      '',
+      r.summary || 'No additional notes.',
+      r.value ? ('Value note: ' + formatINR(r.value)) : ''
+    ].filter(Boolean);
+    alert(lines.join('\n'));
+  } catch (_) {
+    alert('Could not open report details.');
+  }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     if (typeof mountMobileBottomNav === 'function') mountMobileBottomNav('reports');
@@ -181,47 +201,75 @@ document.addEventListener('DOMContentLoaded', async () => {
     const portfolio = await loadPortfolio(client, session.user.id);
     RentCanDemo.mountDemoBanner(portfolio.isDemo);
 
+    let reports = portfolio.reports || [];
+    // Prefer live inspections table when present
+    try {
+      const propIds = (portfolio.properties || []).map(p => p.id).filter(id => id && !String(id).startsWith('demo-'));
+      if (propIds.length) {
+        const { data } = await client.from('inspections').select('*').in('property_id', propIds).order('inspection_date', { ascending: false }).limit(30);
+        if (data && data.length) {
+          reports = data.map(i => {
+            const prop = (portfolio.properties || []).find(p => p.id === i.property_id);
+            return {
+              id: i.id,
+              title: i.summary || 'Inspection report',
+              property: prop?.name || 'Property',
+              date: i.inspection_date || i.published_at || i.created_at,
+              summary: i.notes || i.summary || '',
+              value: 0,
+              type: 'inspection',
+              outcome: i.outcome || i.status
+            };
+          });
+        }
+      }
+    } catch (_) {}
+
     const list = document.getElementById('reports-list');
-    const reports = portfolio.reports || [];
     if (!reports.length) {
-      list.innerHTML = '<p class="text-on-surface-variant py-8">No inspection reports yet.</p>';
+      list.innerHTML = '<p class="text-on-surface-variant py-8">No inspection reports yet. After the 5th-of-month visit, published reports appear here.</p>';
     } else {
-      list.innerHTML = reports.map(r => `
-        <div class="group flex flex-col md:flex-row items-stretch md:items-center bg-white scandi-border hover:border-primary transition-colors overflow-hidden rounded-xl">
+      list.innerHTML = reports.map(r => {
+        const payload = encodeURIComponent(JSON.stringify({
+          title: r.title, property: r.property, date: r.date, summary: r.summary, value: r.value
+        }));
+        return `
+        <div class="group flex flex-col md:flex-row items-stretch md:items-center bg-surface-container-lowest border border-outline hover:border-primary transition-colors overflow-hidden rounded-xl">
           <div class="w-full md:w-40 h-28 md:h-auto bg-surface-container-high flex items-center justify-center shrink-0">
             <span class="material-symbols-outlined text-4xl text-outline-variant">photo_camera</span>
           </div>
           <div class="flex-1 p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h3 class="font-title-lg text-title-lg text-on-surface">${r.title}</h3>
-              <p class="font-body-md text-body-md text-on-surface-variant">${r.property} — ${r.summary || ''}</p>
+              <h3 class="font-title-lg text-title-lg text-on-surface">${escapeHtml(r.title)}</h3>
+              <p class="font-body-md text-body-md text-on-surface-variant">${escapeHtml(r.property)} — ${escapeHtml(r.summary || '')}</p>
             </div>
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <div class="sm:text-right">
-                <p class="font-label-lg text-label-lg">${formatDate(r.date)}</p>
-                <p class="font-label-sm text-label-sm text-on-surface-variant">PDF${r.value ? ' · ' + formatINR(r.value) : ''}</p>
+                <p class="font-label-lg text-label-lg">${escapeHtml(formatDate(r.date))}</p>
+                <p class="font-label-sm text-label-sm text-on-surface-variant">${escapeHtml(r.outcome || 'PDF')}${r.value ? ' · ' + escapeHtml(formatINR(r.value)) : ''}</p>
               </div>
-              <button type="button" class="rc-tap bg-primary text-on-primary px-4 py-2 font-label-lg text-label-lg rounded">View Report</button>
+              <button type="button" data-report="${payload}" onclick="showReportDetail(this)" class="rc-tap bg-primary text-on-primary px-4 py-2 font-label-lg text-label-lg rounded">View Report</button>
             </div>
           </div>
-        </div>`).join('');
+        </div>`;
+      }).join('');
     }
 
     const vault = document.getElementById('vault-cards');
     if (vault) {
       const docs = portfolio.documents || [];
       vault.innerHTML = docs.slice(0, 6).map(d => `
-        <div class="bg-surface-container-lowest scandi-border p-stack-lg flex flex-col justify-between hover:bg-surface-container transition-colors rounded-xl min-h-[160px]">
+        <a href="${d.file_url && d.file_url !== '#' ? escapeHtml(d.file_url) : '/documents'}" class="bg-surface-container-lowest border border-outline p-stack-lg flex flex-col justify-between hover:bg-surface-container transition-colors rounded-xl min-h-[160px] no-underline">
           <div>
             <span class="material-symbols-outlined text-primary mb-3 text-3xl">description</span>
-            <h4 class="font-title-lg text-title-lg mb-2">${d.name}</h4>
-            <p class="font-body-md text-body-md text-on-surface-variant">${d.property_name || ''} · ${formatDate(d.created_at)}</p>
+            <h4 class="font-title-lg text-title-lg mb-2 text-on-surface">${escapeHtml(d.name)}</h4>
+            <p class="font-body-md text-body-md text-on-surface-variant">${escapeHtml(d.property_name || '')} · ${escapeHtml(formatDate(d.created_at))}</p>
           </div>
           <div class="flex justify-between items-center pt-stack-md border-t border-outline-variant mt-4">
             ${RentCanDemo.statusBadge(String(d.type || 'file').replace('_',' '))}
             <span class="material-symbols-outlined text-outline">arrow_forward</span>
           </div>
-        </div>`).join('') || '<p class="text-on-surface-variant">Vault is empty.</p>';
+        </a>`).join('') || '<p class="text-on-surface-variant">Vault is empty.</p>';
     }
   } catch (e) { console.error(e); }
 });

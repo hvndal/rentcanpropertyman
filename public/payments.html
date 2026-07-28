@@ -9,7 +9,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/seo/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <meta name="theme-color" content="#6B4822">
-
+<meta name="robots" content="noindex, nofollow">
 <title>RentCan | Payments &amp; Billing</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
@@ -82,7 +82,7 @@
 <section class="border border-outline bg-surface-container-lowest overflow-hidden rounded-xl">
 <div class="p-stack-md border-b border-outline flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 bg-white">
 <h3 class="font-title-lg text-title-lg">Recent transactions</h3>
-<button type="button" class="rc-tap px-4 py-2 bg-primary text-white font-label-lg text-label-lg rounded hover:opacity-90 transition-opacity flex items-center justify-center gap-2 rc-mobile-hide">
+<button type="button" id="export-csv-btn" class="rc-tap px-4 py-2 bg-primary text-white font-label-lg text-label-lg rounded hover:opacity-90 transition-opacity flex items-center justify-center gap-2 rc-mobile-hide">
 <span class="material-symbols-outlined text-sm">download</span> Export CSV
 </button>
 </div>
@@ -132,9 +132,32 @@
 </div>
 
 <script>
+let PAYMENTS_CACHE = [];
+
+function exportPaymentsCsv() {
+  const rows = [['Date', 'Property', 'Tenant', 'Amount', 'Status']].concat(
+    PAYMENTS_CACHE.map(p => [
+      formatDate(p.paid_at || p.due_date || p.created_at),
+      p.properties?.name || 'Property',
+      p.tenant_name || '',
+      String(p.amount || 0),
+      p.status || ''
+    ])
+  );
+  const csv = rows.map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'rentcan-payments.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     if (typeof mountMobileBottomNav === 'function') mountMobileBottomNav('payments');
+    document.getElementById('export-csv-btn')?.addEventListener('click', exportPaymentsCsv);
     const client = await getSupabaseClient();
     if (!client) throw new Error('Supabase not configured');
     const { data: { session } } = await client.auth.getSession();
@@ -144,6 +167,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     RentCanDemo.mountDemoBanner(portfolio.isDemo);
 
     const { stats, payments, tenants } = portfolio;
+    PAYMENTS_CACHE = payments || [];
     document.getElementById('kpi-collected').textContent = formatINR(stats.paidTotal);
     document.getElementById('kpi-pending').textContent = formatINR(stats.pendingTotal);
     document.getElementById('ledger-subtitle').textContent = portfolio.isDemo
@@ -161,14 +185,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         const due = formatDate(p.due_date);
         return `<div class="border border-outline bg-surface-container-lowest p-stack-md flex flex-col justify-between min-h-[140px] rounded-xl">
           <div class="flex justify-between items-start gap-2">
-            <div class="w-10 h-10 rounded-full bg-brand-mint flex items-center justify-center text-primary font-bold text-sm shrink-0">${RentCanDemo.initials(name)}</div>
-            <span class="text-label-sm font-bold text-primary bg-primary-fixed px-2 py-1 rounded">DUE ${due}</span>
+            <div class="w-10 h-10 rounded-full bg-brand-mint flex items-center justify-center text-primary font-bold text-sm shrink-0">${escapeHtml(RentCanDemo.initials(name))}</div>
+            <span class="text-label-sm font-bold text-primary bg-primary-fixed px-2 py-1 rounded">DUE ${escapeHtml(due)}</span>
           </div>
           <div class="mt-3">
-            <p class="font-title-lg text-title-lg mb-1">${name}</p>
+            <p class="font-title-lg text-title-lg mb-1">${escapeHtml(name)}</p>
             <div class="flex justify-between items-end gap-2">
-              <span class="font-body-md text-body-md text-on-surface-variant">${prop}</span>
-              <span class="font-headline-md text-headline-md">${formatINR(p.amount)}</span>
+              <span class="font-body-md text-body-md text-on-surface-variant">${escapeHtml(prop)}</span>
+              <span class="font-headline-md text-headline-md">${escapeHtml(formatINR(p.amount))}</span>
             </div>
           </div>
         </div>`;
@@ -185,10 +209,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         const name = p.tenant_name || '—';
         const prop = p.properties?.name || 'Property';
         return `<tr class="hover:bg-surface-container-low transition-colors">
-          <td class="px-stack-md py-5 border-b border-outline-variant">${formatDate(p.paid_at || p.due_date || p.created_at)}</td>
-          <td class="px-stack-md py-5 border-b border-outline-variant font-bold">${prop}</td>
-          <td class="px-stack-md py-5 border-b border-outline-variant">${name}</td>
-          <td class="px-stack-md py-5 border-b border-outline-variant font-bold text-primary">${formatINR(p.amount)}</td>
+          <td class="px-stack-md py-5 border-b border-outline-variant">${escapeHtml(formatDate(p.paid_at || p.due_date || p.created_at))}</td>
+          <td class="px-stack-md py-5 border-b border-outline-variant font-bold">${escapeHtml(prop)}</td>
+          <td class="px-stack-md py-5 border-b border-outline-variant">${escapeHtml(name)}</td>
+          <td class="px-stack-md py-5 border-b border-outline-variant font-bold text-primary">${escapeHtml(formatINR(p.amount))}</td>
           <td class="px-stack-md py-5 border-b border-outline-variant text-center">${RentCanDemo.statusBadge(p.status)}</td>
         </tr>`;
       }).join('');
@@ -199,14 +223,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         return `<div class="rc-pay-card">
           <div class="flex justify-between items-start gap-2">
             <div>
-              <p class="font-bold text-on-surface">${prop}</p>
-              <p class="text-sm text-on-surface-variant">${name}</p>
+              <p class="font-bold text-on-surface">${escapeHtml(prop)}</p>
+              <p class="text-sm text-on-surface-variant">${escapeHtml(name)}</p>
             </div>
             ${RentCanDemo.statusBadge(p.status)}
           </div>
           <div class="flex justify-between items-end">
-            <span class="text-xs text-on-surface-variant">${formatDate(p.paid_at || p.due_date || p.created_at)}</span>
-            <span class="font-bold text-primary text-lg">${formatINR(p.amount)}</span>
+            <span class="text-xs text-on-surface-variant">${escapeHtml(formatDate(p.paid_at || p.due_date || p.created_at))}</span>
+            <span class="font-bold text-primary text-lg">${escapeHtml(formatINR(p.amount))}</span>
           </div>
         </div>`;
       }).join('');

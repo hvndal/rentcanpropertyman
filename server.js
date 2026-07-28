@@ -19,10 +19,13 @@ const { rateLimit, clientIp } = require('./lib/rate-limit');
 const { getPlan, listPlans } = require('./lib/plans');
 const {
   getKeyId,
+  getKeySecret,
   isRazorpayReady,
   getRazorpayClient,
-  verifyPaymentSignature
+  verifyPaymentSignature,
+  verifyWebhookSignature
 } = require('./lib/razorpay');
+const crypto = require('crypto');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -149,17 +152,25 @@ app.get('/api/config', (req, res) => {
 // ── Health check ──
 app.get('/api/health', (req, res) => {
   const hasServiceRole = envPresent('SUPABASE_SERVICE_ROLE_KEY') || envPresent('SUPABASE_SERVICE_KEY');
-  res.json({
-    ok: true,
-    time: new Date().toISOString(),
-    env: IS_PROD ? 'production' : 'development',
-    supabase: Boolean(resolveSupabaseUrl() && resolveSupabaseAnonKey()),
+  const supabaseOk = Boolean(resolveSupabaseUrl() && resolveSupabaseAnonKey());
+  const checks = {
+    supabase: supabaseOk,
     msg91: msg91Configured(),
     msg91Widget: msg91WidgetConfigured(),
     msg91Verify: msg91VerifyReady(),
     phoneAuth: Boolean(getSupabaseAdmin()),
     razorpay: isRazorpayReady(),
-    // Booleans only — helps debug Vercel env without exposing values
+    adminPasscode: envPresent('ADMIN_PASSCODE')
+  };
+  // Launch-ready when core auth works; phone/razorpay reported separately
+  const ok = supabaseOk;
+  const degraded = ok && (!checks.phoneAuth || !checks.msg91Verify || !checks.razorpay);
+  res.status(ok ? 200 : 503).json({
+    ok,
+    degraded,
+    time: new Date().toISOString(),
+    env: IS_PROD ? 'production' : 'development',
+    ...checks,
     config: {
       MSG91_AUTH_KEY: envPresent('MSG91_AUTH_KEY') || envPresent('MSG91_AUTHKEY') || envPresent('MSG91_API_KEY'),
       MSG91_TEMPLATE_ID: envPresent('MSG91_TEMPLATE_ID'),
@@ -167,9 +178,64 @@ app.get('/api/health', (req, res) => {
       MSG91_TOKEN_AUTH: envPresent('MSG91_TOKEN_AUTH'),
       SUPABASE_SERVICE_ROLE_KEY: hasServiceRole,
       RAZORPAY_KEY_ID: envPresent('RAZORPAY_KEY_ID'),
-      RAZORPAY_KEY_SECRET: envPresent('RAZORPAY_KEY_SECRET')
+      RAZORPAY_KEY_SECRET: envPresent('RAZORPAY_KEY_SECRET'),
+      ADMIN_PASSCODE: envPresent('ADMIN_PASSCODE')
     }
   });
+});
+
+// ── Admin passcode verify (requires signed-in Supabase user + ADMIN_PASSCODE) ──
+app.post('/api/admin/verify', async (req, res) => {
+  const ip = clientIp(req);
+  const limit = rateLimit({ key: `admin-verify:${ip}`, limit: 8, windowMs: 15 * 60 * 1000 });
+  if (!limit.allowed) {
+    return res.status(429).json({ type: 'error', message: 'Too many attempts. Try again later.' });
+  }
+
+  const expected = String(process.env.ADMIN_PASSCODE || '').trim();
+  if (!expected) {
+    return res.status(503).json({
+      type: 'error',
+      message: 'Admin portal is not configured. Set ADMIN_PASSCODE on the server.'
+    });
+  }
+
+  const auth = String(req.headers.authorization || '');
+  const token = auth.startsWith('Bearer ') ? auth.slice(7) : '';
+  if (!token) {
+    return res.status(401).json({ type: 'error', message: 'Sign in required.' });
+  }
+
+  try {
+    const url = resolveSupabaseUrl();
+    const key = resolveSupabaseAnonKey();
+    if (!url || !key) {
+      return res.status(503).json({ type: 'error', message: 'Auth not configured.' });
+    }
+    const anon = createClient(url, key);
+    const { data: userData, error } = await anon.auth.getUser(token);
+    if (error || !userData?.user) {
+      return res.status(401).json({ type: 'error', message: 'Invalid session.' });
+    }
+  } catch (_) {
+    return res.status(401).json({ type: 'error', message: 'Could not validate session.' });
+  }
+
+  const provided = String((req.body || {}).passcode || '');
+  const a = Buffer.from(provided);
+  const b = Buffer.from(expected);
+  let match = false;
+  try {
+    match = a.length === b.length && crypto.timingSafeEqual(a, b);
+  } catch (_) {
+    match = false;
+  }
+  if (!match) {
+    return res.status(403).json({ type: 'error', message: 'Invalid admin passcode.' });
+  }
+
+  const sessionToken = crypto.createHmac('sha256', expected).update(String(Date.now()).slice(0, -5)).digest('hex').slice(0, 24);
+  return res.json({ type: 'success', token: sessionToken });
 });
 
 // After MSG91 widget verifyOtp — server verifies JWT, then creates Supabase session
@@ -708,9 +774,49 @@ app.get('/api/payments/plans', (req, res) => {
   res.json({ type: 'success', plans: listPlans() });
 });
 
-// Invite / Add Tenant API (fallback)
+// ── Razorpay webhook (payment.captured → mark service_orders paid) ──
+app.post('/api/payments/webhook', async (req, res) => {
+  const signature = req.headers['x-razorpay-signature'];
+  const raw = typeof req.body === 'string' ? req.body : JSON.stringify(req.body || {});
+  if (!verifyWebhookSignature(raw, signature)) {
+    return res.status(400).json({ type: 'error', message: 'Invalid webhook signature.' });
+  }
+
+  const event = typeof req.body === 'object' ? req.body : {};
+  const eventName = event.event || '';
+  const paymentEntity = event.payload?.payment?.entity || {};
+  const orderId = paymentEntity.order_id;
+  const paymentId = paymentEntity.id;
+
+  if (eventName === 'payment.captured' && orderId) {
+    const admin = getSupabaseAdmin();
+    if (admin) {
+      try {
+        await admin
+          .from('service_orders')
+          .update({
+            status: 'paid',
+            razorpay_payment_id: paymentId || null,
+            paid_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          })
+          .eq('razorpay_order_id', orderId);
+      } catch (e) {
+        console.error('[Razorpay webhook] update failed:', e.message);
+      }
+    }
+  }
+
+  return res.json({ type: 'success' });
+});
+
+// Invite / Add Tenant API (fallback) — requires auth
 app.post('/api/invite-tenant', async (req, res) => {
-  const { property_id, full_name, email, phone, rent_due_date } = req.body;
+  const auth = String(req.headers.authorization || '');
+  if (!auth.startsWith('Bearer ')) {
+    return res.status(401).json({ type: 'error', message: 'Sign in required.' });
+  }
+  const { property_id, full_name, email, phone, rent_due_date } = req.body || {};
   if (!property_id || !full_name || (!email && !phone)) {
     return res.status(400).json({ type: 'error', message: 'Property, tenant name, and email or phone are required.' });
   }
@@ -721,9 +827,13 @@ app.post('/api/invite-tenant', async (req, res) => {
   });
 });
 
-// Submit Maintenance / Repair Request API (fallback)
+// Submit Maintenance / Repair Request API (fallback) — requires auth
 app.post('/api/submit-maintenance', async (req, res) => {
-  const { property_id, title, description, category, priority } = req.body;
+  const auth = String(req.headers.authorization || '');
+  if (!auth.startsWith('Bearer ')) {
+    return res.status(401).json({ type: 'error', message: 'Sign in required.' });
+  }
+  const { property_id, title, description, category, priority } = req.body || {};
   if (!property_id || !title || !description) {
     return res.status(400).json({ type: 'error', message: 'Property, title, and description are required.' });
   }
@@ -763,29 +873,34 @@ Object.keys(CLEAN_PAGES).forEach((route) => {
   });
 });
 
-// Fallback: unknown non-API paths → landing
+// Fallback: unknown non-API paths → real 404
 app.get(/^\/(?!api).*/, (req, res) => {
   const base = req.path.replace(/\/$/, '') || '/';
   const file = CLEAN_PAGES[base];
   if (file) {
     return res.sendFile(path.join(__dirname, 'public', file));
   }
-  // Support legacy *.html bookmarks
   if (base.endsWith('.html')) {
-    return res.sendFile(path.join(__dirname, 'public', path.basename(base)));
+    const candidate = path.join(__dirname, 'public', path.basename(base));
+    return res.sendFile(candidate, (err) => {
+      if (err) res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
+    });
   }
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  return res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`RentCan running 🚀 http://localhost:${PORT}`);
-  console.log(`Env            🚀 ${IS_PROD ? 'production' : 'development'}`);
-  console.log(`Supabase URL   🚀 ${resolveSupabaseUrl()}`);
-  console.log(`MSG91 API       🚀 ${msg91Configured() ? 'READY' : 'optional fallback'}`);
-  console.log(`MSG91 Widget    🚀 ${msg91WidgetConfigured() ? 'READY' : 'NOT CONFIGURED'}`);
-  console.log(`MSG91 Verify    🚀 ${msg91VerifyReady() ? 'READY' : 'set MSG91_AUTH_KEY on server'}`);
-  console.log(`Phone sessions  🚀 ${getSupabaseAdmin() ? 'READY' : 'needs SUPABASE_SERVICE_ROLE_KEY'}`);
-  console.log(`Razorpay        🚀 ${isRazorpayReady() ? 'READY' : 'set RAZORPAY_KEY_ID + RAZORPAY_KEY_SECRET'}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`RentCan running 🚀 http://localhost:${PORT}`);
+    console.log(`Env            🚀 ${IS_PROD ? 'production' : 'development'}`);
+    console.log(`Supabase URL   🚀 ${resolveSupabaseUrl()}`);
+    console.log(`MSG91 API       🚀 ${msg91Configured() ? 'READY' : 'optional fallback'}`);
+    console.log(`MSG91 Widget    🚀 ${msg91WidgetConfigured() ? 'READY' : 'NOT CONFIGURED'}`);
+    console.log(`MSG91 Verify    🚀 ${msg91VerifyReady() ? 'READY' : 'set MSG91_AUTH_KEY on server'}`);
+    console.log(`Phone sessions  🚀 ${getSupabaseAdmin() ? 'READY' : 'needs SUPABASE_SERVICE_ROLE_KEY'}`);
+    console.log(`Razorpay        🚀 ${isRazorpayReady() ? 'READY' : 'set RAZORPAY_KEY_ID + RAZORPAY_KEY_SECRET'}`);
+    console.log(`Admin portal    🚀 ${envPresent('ADMIN_PASSCODE') ? 'READY' : 'set ADMIN_PASSCODE'}`);
+  });
+}
 
 module.exports = app;

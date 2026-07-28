@@ -8,13 +8,14 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/seo/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <meta name="theme-color" content="#6B4822">
+<meta name="robots" content="noindex, nofollow">
 <title>RentCan | Documents Vault</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 <script src="/js/tailwind-brand.config.js"></script>
 <link rel="stylesheet" href="/css/app.css">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="/styles.css">
 <link rel="stylesheet" href="/css/brand.css">
 <script src="/js/app.js"></script>
 <script src="/js/demo-portfolio.js"></script>
@@ -44,7 +45,7 @@
 <h1 class="font-display-lg text-display-lg text-primary">Documents Vault</h1>
 <p class="font-body-lg text-body-lg text-on-surface-variant opacity-70" id="vault-sub">Leases, IDs, utilities &amp; inspection files</p>
 </div>
-<button type="button" class="rc-tap flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white font-label-lg rounded hover:opacity-90">
+<button type="button" onclick="openUpload()" class="rc-tap flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white font-label-lg rounded hover:opacity-90">
 <span class="material-symbols-outlined">upload</span> Upload
 </button>
 </header>
@@ -52,6 +53,40 @@
 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8" id="vault-stats"></div>
 <section class="space-y-3" id="documents-list"></section>
 </main>
+</div>
+
+<div id="upload-modal" class="fixed inset-0 z-50 hidden">
+  <div class="absolute inset-0 rc-app-modal-backdrop" onclick="closeUpload()"></div>
+  <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(92vw,420px)] bg-surface border border-outline rounded-2xl shadow-2xl p-5 space-y-4">
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold text-primary">Upload document</h3>
+      <button type="button" onclick="closeUpload()"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    <div>
+      <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-1">Name</label>
+      <input id="upload-name" type="text" class="w-full border border-outline rounded-xl p-3 text-sm" placeholder="Lease Agreement — Tenant">
+    </div>
+    <div>
+      <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-1">Type</label>
+      <select id="upload-type" class="w-full border border-outline rounded-xl p-3 text-sm">
+        <option value="lease">Lease</option>
+        <option value="inspection">Inspection</option>
+        <option value="utility">Utility</option>
+        <option value="id_proof">ID proof</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div>
+      <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-1">Property</label>
+      <select id="upload-prop" class="w-full border border-outline rounded-xl p-3 text-sm"></select>
+    </div>
+    <div>
+      <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-1">File</label>
+      <input id="upload-file" type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx" class="w-full text-sm">
+    </div>
+    <p id="upload-status" class="text-xs text-on-surface-variant"></p>
+    <button type="button" id="upload-btn" onclick="submitUpload()" class="w-full py-3 bg-primary text-white font-bold rounded-xl">Save to vault</button>
+  </div>
 </div>
 
 <script>
@@ -63,6 +98,106 @@ const TYPE_ICON = {
   other: 'description'
 };
 
+let DOC_STATE = { client: null, userId: null, properties: [], isDemo: false };
+
+function openUpload() {
+  const sel = document.getElementById('upload-prop');
+  sel.innerHTML = (DOC_STATE.properties || []).map(p =>
+    `<option value="${escapeHtml(p.id)}">${escapeHtml(p.name)}</option>`
+  ).join('') || '<option value="">No property</option>';
+  document.getElementById('upload-modal').classList.remove('hidden');
+}
+
+function closeUpload() {
+  document.getElementById('upload-modal').classList.add('hidden');
+}
+
+async function submitUpload() {
+  const name = document.getElementById('upload-name').value.trim();
+  const type = document.getElementById('upload-type').value;
+  const propertyId = document.getElementById('upload-prop').value;
+  const file = document.getElementById('upload-file').files[0];
+  const status = document.getElementById('upload-status');
+  const btn = document.getElementById('upload-btn');
+  if (!name || !file) { status.textContent = 'Name and file are required.'; return; }
+  if (DOC_STATE.isDemo || String(propertyId).startsWith('demo-')) {
+    status.textContent = 'Sample portfolio can’t store files. Add a real property first, or dismiss the demo banner.';
+    return;
+  }
+  btn.disabled = true;
+  status.textContent = 'Uploading…';
+  try {
+    const client = DOC_STATE.client;
+    const path = `${DOC_STATE.userId}/${Date.now()}-${file.name.replace(/[^\w.\-]+/g, '_')}`;
+    const { error: upErr } = await client.storage.from('documents-vault').upload(path, file, { upsert: false });
+    if (upErr) throw upErr;
+    const { data: pub } = client.storage.from('documents-vault').getPublicUrl(path);
+    const fileUrl = pub?.publicUrl || path;
+    const { error: rowErr } = await client.from('documents').insert({
+      property_id: propertyId || null,
+      uploaded_by: DOC_STATE.userId,
+      name,
+      type,
+      file_url: fileUrl
+    });
+    if (rowErr) throw rowErr;
+    status.textContent = 'Saved.';
+    setTimeout(() => location.reload(), 600);
+  } catch (e) {
+    console.error(e);
+    status.textContent = 'Upload failed. Ensure the documents-vault bucket exists and Storage policies allow your account. (' + (e.message || 'error') + ')';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function renderDocs(docs) {
+  const byType = {};
+  docs.forEach(d => { byType[d.type] = (byType[d.type] || 0) + 1; });
+  document.getElementById('vault-stats').innerHTML = [
+    ['All files', docs.length, 'folder'],
+    ['Leases', byType.lease || 0, 'contract'],
+    ['Inspections', byType.inspection || 0, 'fact_check'],
+    ['IDs', byType.id_proof || 0, 'badge']
+  ].map(([label, n, icon]) => `
+    <div class="border border-outline rounded-xl p-4 bg-surface-container-lowest">
+      <span class="material-symbols-outlined text-primary text-xl">${icon}</span>
+      <p class="font-bold text-2xl text-primary mt-2">${n}</p>
+      <p class="text-xs text-on-surface-variant uppercase tracking-wider">${label}</p>
+    </div>`).join('');
+
+  const list = document.getElementById('documents-list');
+  if (!docs.length) {
+    list.innerHTML = `<div class="text-center py-16 border border-dashed border-outline-variant rounded-xl">
+      <span class="material-symbols-outlined text-4xl text-outline mb-2">folder_open</span>
+      <p class="text-on-surface-variant">No documents yet. Upload a lease to get started.</p>
+    </div>`;
+    return;
+  }
+
+  list.innerHTML = docs.map(d => {
+    const href = d.file_url && d.file_url !== '#' ? d.file_url : '';
+    return `
+    <article class="rc-pay-card sm:flex sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div class="flex items-start gap-3 min-w-0">
+        <div class="w-11 h-11 rounded-xl bg-brand-mint/50 flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-primary">${TYPE_ICON[d.type] || 'description'}</span>
+        </div>
+        <div class="min-w-0">
+          <p class="font-bold text-on-surface truncate">${escapeHtml(d.name)}</p>
+          <p class="text-sm text-on-surface-variant">${escapeHtml(d.property_name || 'Property')} · ${escapeHtml(formatDate(d.created_at))}</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 justify-between sm:justify-end">
+        ${RentCanDemo.statusBadge(String(d.type || 'file').replace('_', ' '))}
+        ${href
+          ? `<a class="rc-tap text-primary font-bold text-sm px-3" href="${escapeHtml(href)}" target="_blank" rel="noopener">View</a>`
+          : `<span class="text-xs text-on-surface-variant px-3">Sample</span>`}
+      </div>
+    </article>`;
+  }).join('');
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     if (typeof mountMobileBottomNav === 'function') mountMobileBottomNav('documents');
@@ -70,54 +205,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!client) throw new Error('no client');
     const { data: { session } } = await client.auth.getSession();
     if (!session) { location.href = '/login'; return; }
+    DOC_STATE.client = client;
+    DOC_STATE.userId = session.user.id;
 
     const portfolio = await loadPortfolio(client, session.user.id);
     RentCanDemo.mountDemoBanner(portfolio.isDemo);
+    DOC_STATE.isDemo = portfolio.isDemo;
+    DOC_STATE.properties = portfolio.properties || [];
     document.getElementById('vault-sub').textContent = portfolio.isDemo
       ? 'Sample vault for Sector 79 & Aerocity'
       : 'Secure storage for tenant and property files';
 
-    const docs = portfolio.documents || [];
-    const byType = {};
-    docs.forEach(d => { byType[d.type] = (byType[d.type] || 0) + 1; });
-
-    document.getElementById('vault-stats').innerHTML = [
-      ['All files', docs.length, 'folder'],
-      ['Leases', byType.lease || 0, 'contract'],
-      ['Inspections', byType.inspection || 0, 'fact_check'],
-      ['IDs', byType.id_proof || 0, 'badge']
-    ].map(([label, n, icon]) => `
-      <div class="bg-white border border-outline rounded-xl p-4">
-        <span class="material-symbols-outlined text-primary text-xl">${icon}</span>
-        <p class="font-bold text-2xl text-primary mt-2">${n}</p>
-        <p class="text-xs text-on-surface-variant uppercase tracking-wider">${label}</p>
-      </div>`).join('');
-
-    const list = document.getElementById('documents-list');
-    if (!docs.length) {
-      list.innerHTML = `<div class="text-center py-16 border border-dashed border-outline-variant rounded-xl">
-        <span class="material-symbols-outlined text-4xl text-outline mb-2">folder_open</span>
-        <p class="text-on-surface-variant">No documents yet. Upload a lease to get started.</p>
-      </div>`;
-      return;
-    }
-
-    list.innerHTML = docs.map(d => `
-      <article class="rc-pay-card sm:flex sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div class="flex items-start gap-3 min-w-0">
-          <div class="w-11 h-11 rounded-xl bg-brand-mint/50 flex items-center justify-center shrink-0">
-            <span class="material-symbols-outlined text-primary">${TYPE_ICON[d.type] || 'description'}</span>
-          </div>
-          <div class="min-w-0">
-            <p class="font-bold text-on-surface truncate">${d.name}</p>
-            <p class="text-sm text-on-surface-variant">${d.property_name || 'Property'} · ${formatDate(d.created_at)}</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2 justify-between sm:justify-end">
-          ${RentCanDemo.statusBadge(d.type.replace('_', ' '))}
-          <button type="button" class="rc-tap text-primary font-bold text-sm px-3">View</button>
-        </div>
-      </article>`).join('');
+    renderDocs(portfolio.documents || []);
   } catch (e) {
     console.error(e);
   }

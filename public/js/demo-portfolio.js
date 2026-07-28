@@ -263,6 +263,45 @@
       }
     ];
 
+    const inspections = [
+      {
+        id: 'demo-insp-1',
+        property_id: 'demo-prop-1',
+        inspection_date: daysAgo(20).slice(0, 10),
+        status: 'published',
+        outcome: 'pass',
+        summary: 'July 2026 Technical Inspection',
+        notes: 'Routine check — HVAC filters replaced, no structural issues.',
+        published_at: daysAgo(19),
+        checklist: [],
+        photo_urls: []
+      },
+      {
+        id: 'demo-insp-2',
+        property_id: 'demo-prop-2',
+        inspection_date: daysAgo(45).slice(0, 10),
+        status: 'published',
+        outcome: 'pass',
+        summary: 'June 2026 Electrical Safety Audit',
+        notes: 'MCB and wiring inspection passed.',
+        published_at: daysAgo(44),
+        checklist: [],
+        photo_urls: []
+      },
+      {
+        id: 'demo-insp-3',
+        property_id: 'demo-prop-1',
+        inspection_date: daysFromNow(5),
+        status: 'scheduled',
+        outcome: null,
+        summary: 'Upcoming monthly visit',
+        notes: '',
+        published_at: null,
+        checklist: [],
+        photo_urls: []
+      }
+    ];
+
     const occupied = props.filter((p) => p.status === 'occupied');
     const monthlyRevenue = occupied.reduce((s, p) => s + Number(p.rent_amount), 0);
     const paidTotal = payments.filter((p) => p.status === 'paid').reduce((s, p) => s + Number(p.amount), 0);
@@ -276,6 +315,7 @@
       maintenance,
       documents,
       reports,
+      inspections,
       stats: {
         totalProperties: props.length,
         occupied: occupied.length,
@@ -316,19 +356,53 @@
     }
 
     let properties = [];
+    let queryError = false;
+
     try {
       if (role === 'tenant') {
-        const { data } = await client
+        const { data: tenancies, error } = await client
           .from('tenants')
           .select('*, properties(*)')
           .eq('user_id', userId);
-        properties = (data || []).map((t) => t.properties).filter(Boolean);
+        if (error) throw error;
+        properties = (tenancies || []).map((t) => t.properties).filter(Boolean);
       } else {
-        const { data } = await client.from('properties').select('*').eq('owner_id', userId);
+        const { data, error } = await client
+          .from('properties')
+          .select('*')
+          .eq('owner_id', userId)
+          .order('created_at', { ascending: false });
+        if (error) throw error;
         properties = data || [];
       }
     } catch (e) {
-      console.warn('[portfolio] properties fetch failed', e);
+      console.warn('Portfolio properties query failed:', e);
+      queryError = true;
+    }
+
+    // Do not fake a healthy portfolio when the database failed
+    if (queryError) {
+      return {
+        isDemo: false,
+        error: true,
+        properties: [],
+        tenants: [],
+        payments: [],
+        maintenance: [],
+        documents: [],
+        reports: [],
+        inspections: [],
+        stats: {
+          totalProperties: 0,
+          occupied: 0,
+          occupancyRate: 0,
+          monthlyRevenue: 0,
+          paidTotal: 0,
+          pendingTotal: 0,
+          activeRequests: 0,
+          documentsCount: 0
+        }
+      };
     }
 
     if (!properties.length && !isDemoForcedOff()) {
@@ -394,6 +468,7 @@
         value: 0,
         type: 'inspection'
       })),
+      inspections: [],
       stats: {
         totalProperties: properties.length,
         occupied: occupied.length,

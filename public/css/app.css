@@ -171,8 +171,8 @@ body.rc-app {
 
   .rc-kpi-row > div {
     text-align: left !important;
-    background: #fff;
-    border: 1px solid var(--rc-border, #d4ccc4);
+    background: var(--rc-surface, color-mix(in srgb, #CFDFDE 34%, #ffffff));
+    border: 1px solid var(--rc-border, #d0ccc6);
     border-radius: 12px;
     padding: 12px;
   }
@@ -182,9 +182,9 @@ body.rc-app {
     flex-direction: column;
     gap: 8px;
     padding: 14px;
-    border: 1px solid var(--rc-border, #d4ccc4);
+    border: 1px solid var(--rc-border, #d0ccc6);
     border-radius: 12px;
-    background: #fff;
+    background: var(--rc-surface, color-mix(in srgb, #CFDFDE 34%, #ffffff));
   }
 
   .rc-tap {
