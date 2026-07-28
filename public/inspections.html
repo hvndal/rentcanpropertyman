@@ -190,7 +190,7 @@
 <span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
 <span class="font-label-lg text-label-lg">Switch View</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2 text-red-600 font-medium hover:bg-red-50/20 transition-all rounded-lg" href="#" onclick="signOut(); return false;">
+<a class="flex items-center gap-3 px-3 py-2 text-red-600 font-medium hover:bg-red-50/20 transition-all rounded-lg" href="login.html?logout=true" onclick="signOut(); return false;">
 <span class="material-symbols-outlined" data-icon="logout">logout</span>
 <span class="font-label-lg text-label-lg">Sign Out</span>
 </a>
@@ -216,8 +216,9 @@
 <h2 class="font-headline-lg text-headline-lg text-primary">Inspections</h2>
 <div class="hidden md:flex gap-gutter">
 
-  <a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md" href="dashboard.html">Properties</a>
+  <a class="text-on-surface-variant hover:text-primary transition-colors pb-1 font-body-md text-body-md" href="dashboard.html">Properties</a>
   <a class="text-on-surface-variant hover:text-primary transition-colors pb-1 font-body-md text-body-md" href="documents.html">Documents</a>
+  <a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md" href="inspections.html">Inspections</a>
   <a class="text-on-surface-variant hover:text-primary transition-colors pb-1 font-body-md text-body-md" href="payments.html">Payments</a>
   <a class="text-on-surface-variant hover:text-primary transition-colors pb-1 font-body-md text-body-md" href="reports.html">Reports</a>
 
@@ -245,7 +246,7 @@
 </div>
 <div class="mt-stack-md flex items-center gap-2">
 <span class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
-<div class="bg-primary h-full w-[—]"></div>
+<div id="occupancy-bar" class="bg-primary h-full w-0 transition-all duration-500"></div>
 </span>
 <span class="font-label-sm text-label-sm text-on-surface-variant">Target 98%</span>
 </div>
@@ -394,26 +395,6 @@ async function signOut() {
   });
 </script>
 
-
-<!-- Mobile Bottom Navigation Bar -->
-<div class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-outline-variant/60 flex justify-around py-3 px-6 z-40 md:hidden shadow-lg">
-  <a href="dashboard.html" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-primary font-bold">
-    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">domain</span>
-    Properties
-  </a>
-  <a href="payments.html" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
-    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">payments</span>
-    Payments
-  </a>
-  <a href="reports.html" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
-    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">analytics</span>
-    Reports
-  </a>
-  <a href="#" onclick="signOut(); return false;" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-red-600/80">
-    <span class="material-symbols-outlined text-[20px]">logout</span>
-    Sign Out
-  </a>
-</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
@@ -804,28 +785,13 @@ function showAddPropertyModal() {
 })();
 </script>
 
-<!-- Mobile Bottom App Bar (Translucent Glass Finish) -->
-<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-outline-variant/30 px-3 py-2 z-50 flex justify-around items-center shadow-lg text-on-surface">
-  <a href="dashboard.html" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-primary font-bold">
-    <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">domain</span>
-    <span>Properties</span>
-  </a>
-  <a href="inspections.html" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
-    <span class="material-symbols-outlined text-xl">fact_check</span>
-    <span>Inspections</span>
-  </a>
-  <a href="documents.html" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
-    <span class="material-symbols-outlined text-xl">description</span>
-    <span>Vault</span>
-  </a>
-  <a href="payments.html" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
-    <span class="material-symbols-outlined text-xl">payments</span>
-    <span>Ledger</span>
-  </a>
-  <a href="reports.html" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
-    <span class="material-symbols-outlined text-xl">analytics</span>
-    <span>Reports</span>
-  </a>
+<!-- Mobile Bottom App Bar -->
+<nav id="rc-mobile-nav" class="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-outline-variant/40 px-2 pt-2 z-50 flex justify-around items-center shadow-lg" style="padding-bottom:max(10px, env(safe-area-inset-bottom))">
+  <a href="dashboard.html" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]">domain</span><span>Home</span></a>
+  <a href="inspections.html" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-primary"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 1">fact_check</span><span>Inspect</span></a>
+  <a href="documents.html" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]">description</span><span>Vault</span></a>
+  <a href="payments.html" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]">payments</span><span>Ledger</span></a>
+  <a href="reports.html" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]">analytics</span><span>Reports</span></a>
 </nav>
 
 <!-- Raise Complaint / Repair Request Modal -->

@@ -95,12 +95,38 @@ async function getSupabaseClient() {
   return supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
 }
 
+// 7. Shared mobile bottom navigation (phone-first)
+function mountMobileBottomNav(active) {
+  if (document.getElementById('rc-mobile-nav')) return;
+  const items = [
+    { href: 'dashboard.html', icon: 'domain', label: 'Home', key: 'dashboard' },
+    { href: 'inspections.html', icon: 'fact_check', label: 'Inspect', key: 'inspections' },
+    { href: 'documents.html', icon: 'description', label: 'Vault', key: 'documents' },
+    { href: 'payments.html', icon: 'payments', label: 'Ledger', key: 'payments' },
+    { href: 'reports.html', icon: 'analytics', label: 'Reports', key: 'reports' }
+  ];
+  const nav = document.createElement('nav');
+  nav.id = 'rc-mobile-nav';
+  nav.className = 'md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-outline-variant/40 px-2 pt-2 z-50 flex justify-around items-center shadow-lg text-on-surface';
+  nav.style.paddingBottom = 'max(10px, env(safe-area-inset-bottom))';
+  nav.innerHTML = items.map(item => {
+    const on = item.key === active;
+    return `<a href="${item.href}" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider ${on ? 'text-primary' : 'text-on-surface-variant/70'}">
+      <span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' ${on ? 1 : 0}">${item.icon}</span>
+      <span>${item.label}</span>
+    </a>`;
+  }).join('');
+  document.body.appendChild(nav);
+  document.body.style.paddingBottom = 'calc(72px + env(safe-area-inset-bottom))';
+}
+
 window.getNextInspectionDate = getNextInspectionDate;
 window.formatInspectionDateDisplay = formatInspectionDateDisplay;
 window.getKeyHoldingBadgeHtml = getKeyHoldingBadgeHtml;
 window.signOut = signOut;
 window.triggerSpringAnimation = triggerSpringAnimation;
 window.getSupabaseClient = getSupabaseClient;
+window.mountMobileBottomNav = mountMobileBottomNav;
 
 // 6. Hidden Admin Portal Shortcuts (Ctrl + Shift + A or 3 Clicks on RentCan Emblem)
 document.addEventListener('keydown', (e) => {

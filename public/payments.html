@@ -151,6 +151,7 @@
         }
     </style>
 <link rel="stylesheet" href="styles.css">
+<script src="/js/app.js"></script>
 </head>
 <body class="overflow-hidden">
 
@@ -167,61 +168,36 @@
 </div>
 
 <div class="flex h-screen w-full">
-<!-- SideNavBar (from JSON) -->
 <aside class="hidden md:flex flex-col h-screen p-stack-md border-r border-outline bg-surface w-64 shrink-0">
 <div class="mb-stack-xl">
-<div class="bg-white p-1.5 rounded-[10px] shadow-sm border border-outline-variant/30 flex items-center justify-center h-10 w-10"><div class="bg-primary text-white font-black text-xs pr-2.5 px-2.5 py-1 rounded-lg inline-flex items-center justify-center shadow-sm">RentCan</div></div>
+<a href="dashboard.html" class="bg-white p-1.5 rounded-[10px] shadow-sm border border-outline-variant/30 flex items-center justify-center h-10 w-10"><div class="bg-primary text-white font-black text-xs px-2.5 py-1 rounded-lg inline-flex items-center justify-center shadow-sm">RentCan</div></a>
 </div>
 <div class="flex flex-col space-y-1 flex-grow">
-<!-- Navigation Tabs Mapping -->
-<button class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
-<span class="material-symbols-outlined">domain</span>
-<span class="">Properties</span>
-</button>
-<button class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
-<span class="material-symbols-outlined">description</span>
-<span class="">Documents</span>
-</button>
-<!-- Active Tab: Payments -->
-<button class="flex items-center gap-3 px-4 py-3 rounded text-primary font-bold bg-surface-container transition-all font-label-lg text-label-lg">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span>
-<span class="">Payments</span>
-</button>
-<button class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
-<span class="material-symbols-outlined">analytics</span>
-<span class="">Reports</span>
-</button>
-<button class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
-<span class="material-symbols-outlined">group</span>
-<span class="">Team</span>
-</button>
+<a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
+<span class="material-symbols-outlined">domain</span><span>Properties</span>
+</a>
+<a href="documents.html" class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded transition-all font-label-lg text-label-lg">
+<span class="material-symbols-outlined">description</span><span>Documents</span>
+</a>
+<a href="payments.html" class="text-primary font-bold bg-surface-container flex items-center gap-3 px-4 py-3 rounded transition-all font-label-lg text-label-lg">
+<span class="material-symbols-outlined">payments</span><span>Payments</span>
+</a>
+<a href="inspections.html" class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
+<span class="material-symbols-outlined">fact_check</span><span>Inspections</span>
+</a>
+<a href="reports.html" class="text-on-surface-variant hover:bg-surface-container-high flex items-center gap-3 px-4 py-3 rounded transition-all font-label-lg text-label-lg">
+<span class="material-symbols-outlined">analytics</span><span>Reports</span>
+</a>
 </div>
 <div class="mt-auto border-t border-outline-variant pt-stack-md flex flex-col space-y-1">
-<button class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
-<span class="material-symbols-outlined">settings</span>
-<span class="">Settings</span>
+<a href="info.html" class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
+<span class="material-symbols-outlined">help</span><span>Help</span>
+</a>
+<button id="btn-sign-out" onclick="signOut()" class="w-full flex items-center gap-2 px-3 py-2 text-xs text-on-surface-variant/60 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all font-medium mt-2">
+<span class="material-symbols-outlined text-base">logout</span> Sign Out
 </button>
-<button class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
-<span class="material-symbols-outlined">grid_view</span>
-<span class="">Switch View</span>
-</button>
-<div class="mt-4 px-4 py-4 bg-primary-container text-on-primary-container rounded flex flex-col gap-2">
-<div class="flex items-center gap-2">
-<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-[10px] font-bold">PM</div>
-<div class="flex flex-col">
-<span class="text-label-lg font-bold">Property Manager</span>
-<span class="text-[10px] opacity-80">Portfolio Admin</span>
 </div>
-</div>
-<button class="w-full bg-white text-primary text-label-sm py-2 rounded font-bold uppercase tracking-wider mt-2 hover:bg-opacity-90 transition-opacity">
-                        Invite Tenant
-                    </button>
-</div>
-</div>
-  <button id="btn-sign-out" onclick="signOut()" class="w-full flex items-center gap-2 px-3 py-2 text-xs text-on-surface-variant/60 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all font-medium mt-2">
-    <span class="material-symbols-outlined text-base">logout</span> Sign Out
-  </button>
-  </aside>
+</aside>
 <!-- Main Content Canvas -->
 <main class="flex-grow overflow-y-auto custom-scrollbar bg-background relative px-6 md:px-margin-mobile md:px-margin-desktop py-stack-lg pb-32 md:pb-stack-lg">
 <!-- Header Section -->
@@ -450,5 +426,14 @@ async function signOut() {
   window.location.href = 'login.html';
 
 </script>
+
+
+<nav id="rc-mobile-nav" class="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-outline-variant/40 px-2 pt-2 z-50 flex justify-around items-center shadow-lg" style="padding-bottom:max(10px, env(safe-area-inset-bottom))">
+  <a href="dashboard.html" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 0">domain</span><span>Home</span></a>
+  <a href="inspections.html" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 0">fact_check</span><span>Inspect</span></a>
+  <a href="documents.html" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 0">description</span><span>Vault</span></a>
+  <a href="payments.html" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-primary"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 1">payments</span><span>Ledger</span></a>
+  <a href="reports.html" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/70"><span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 0">analytics</span><span>Reports</span></a>
+</nav>
 
 </body></html>

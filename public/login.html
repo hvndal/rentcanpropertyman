@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/png" href="/">
+<link rel="icon" type="image/png" href="logo.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 <meta name="theme-color" content="#023826">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -13,9 +13,6 @@
   input, button { touch-action: manipulation; }
   * { -webkit-tap-highlight-color: transparent; }
   button, a, input, select { touch-action: manipulation; }
-  @media (max-width: 768px) {
-    body { padding-bottom: 72px; }
-  }
 </style>
 <title>RentCan | Sign In</title>
 <meta name="description" content="Sign in to RentCan — property management for the Tricity.">
@@ -259,6 +256,17 @@ body {
 .role-card .role-sub { font-size: 10px; margin-top: 2px; }
 .role-card:not(.selected) .role-sub { color: #73777f; }
 .role-card.selected .role-sub { color: rgba(255,255,255,0.7); }
+.check-badge {
+  display: none;
+  font-family: 'Material Symbols Outlined';
+  font-size: 16px;
+  position: absolute;
+  top: 8px; right: 8px;
+  color: #00E599;
+  font-variation-settings: 'FILL' 1;
+}
+.role-card { position: relative; }
+.role-card.selected .check-badge { display: block; }
 
 /* ── Alert ── */
 .alert {
@@ -305,9 +313,9 @@ body {
 <div class="left-panel">
 
   <!-- Logo -->
-  <a href="index.html" style="display:inline-block; margin-bottom:24px;">
-    <div style="display:inline-flex;width:44px;height:44px;border-radius:10px;border:1.5px solid #e0e4e0;padding:5px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-      <div class="bg-primary text-white font-black text-xs pr-2.5 px-2.5 py-1 rounded-lg inline-flex items-center justify-center shadow-sm">RentCan</div>
+  <a href="index.html" style="display:inline-block; margin-bottom:24px; text-decoration:none;">
+    <div style="display:inline-flex; align-items:center; justify-content:center; background:#023826; color:#fff; font-weight:800; font-size:12px; letter-spacing:0.02em; padding:10px 14px; border-radius:10px; box-shadow:0 2px 8px rgba(2,56,38,0.18);">
+      RentCan
     </div>
   </a>
 
@@ -317,9 +325,22 @@ body {
   <!-- ══ VIEW: Welcome ══ -->
   <div class="view active" id="view-welcome">
     <h1 style="font-size:28px;font-weight:800;letter-spacing:-0.02em;color:#191c1b;margin-bottom:8px;">Welcome back.</h1>
-    <p style="font-size:14px;color:#73777f;margin-bottom:36px;line-height:1.6;">Sign in to your RentCan dashboard. No password needed.</p>
+    <p style="font-size:14px;color:#73777f;margin-bottom:36px;line-height:1.6;">Sign in with your phone — no password needed.</p>
 
-    <!-- Google -->
+    <!-- Phone (primary) -->
+    <button class="auth-btn auth-btn-phone" onclick="showView('view-phone')" style="border-color:#023826;box-shadow:0 4px 14px rgba(0,56,38,0.1);">
+      <div class="btn-icon">
+        <span style="font-family:'Material Symbols Outlined';font-size:22px;color:#023826;font-variation-settings:'FILL' 1;">smartphone</span>
+      </div>
+      <div class="btn-label">
+        Continue with Phone Number
+        <span class="btn-sub">Get a one-time OTP via SMS</span>
+      </div>
+    </button>
+
+    <div class="divider">or</div>
+
+<!-- Google -->
     <button class="auth-btn auth-btn-google" id="btn-google" onclick="signInWithGoogle()">
       <div class="btn-icon">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -335,18 +356,9 @@ body {
       </div>
     </button>
 
-    <div class="divider">or</div>
+    
 
-    <!-- Phone -->
-    <button class="auth-btn auth-btn-phone" onclick="showView('view-phone')">
-      <div class="btn-icon">
-        <span style="font-family:'Material Symbols Outlined';font-size:22px;color:#023826;font-variation-settings:'FILL' 1;">smartphone</span>
-      </div>
-      <div class="btn-label">
-        Continue with Phone Number
-        <span class="btn-sub">Get a one-time OTP via SMS</span>
-      </div>
-    </button>
+    
 
     <!-- Email -->
     <button class="auth-btn auth-btn-email" onclick="showView('view-email')">
@@ -360,7 +372,7 @@ body {
     </button>
 
     <p style="font-size:12px;color:#9e9e9e;text-align:center;margin-top:28px;line-height:1.6;">
-      By continuing, you agree to RentCan's <a href="#" style="color:#023826;font-weight:600;">Terms of Service</a> and <a href="#" style="color:#023826;font-weight:600;">Privacy Policy</a>.
+      By continuing, you agree to RentCan's <a href="info.html" style="color:#023826;font-weight:600;">Terms of Service</a> and <a href="info.html" style="color:#023826;font-weight:600;">Privacy Policy</a>.
     </p>
   </div>
 
@@ -395,13 +407,14 @@ body {
     <div class="field" style="margin-bottom:28px;">
       <label style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#3f4946;">Mobile Number</label>
       <div class="phone-wrap">
-        <select id="country-select" class="country-code-select">
-          <option value="+91">🇮🇳 +91 (IN)</option>
+        <select id="country-select" class="country-code-select" onchange="updatePhonePlaceholder()">
+          <option value="+91" selected>🇮🇳 +91 (IN)</option>
           <option value="+1">🇺🇸 +1 (US)</option>
-          <option value="+1">🇨🇦 +1 (CA)</option>
+          <option value="+44">🇬🇧 +44 (UK)</option>
         </select>
-        <input type="tel" id="phone-input" class="phone-input-field" placeholder="9876543210" maxlength="10" autocomplete="tel-national" oninput="this.value=this.value.replace(/\D/g,'')">
+        <input type="tel" id="phone-input" class="phone-input-field" placeholder="9876543210" maxlength="10" autocomplete="tel-national" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')">
       </div>
+      <p style="font-size:11px;color:#73777f;margin-top:8px;">India numbers: 10 digits. OTP arrives via SMS in a few seconds.</p>
     </div>
 
     <button class="btn-primary" id="btn-send-otp" onclick="sendOTP()" style="padding:16px;font-size:14px;border-radius:12px;">Send OTP →</button>
@@ -515,12 +528,32 @@ function showView(id) {
   const target = document.getElementById(id);
   if (target) target.classList.add('active');
   hideAlert();
-  // Auto-focus phone input when switching to phone view
   if (id === 'view-phone') {
+    const sendBtn = document.getElementById('btn-send-otp');
+    if (sendBtn) {
+      sendBtn.disabled = false;
+      sendBtn.textContent = 'Send OTP →';
+    }
     setTimeout(() => {
       const pi = document.getElementById('phone-input');
       if (pi) pi.focus();
     }, 100);
+  }
+}
+
+function updatePhonePlaceholder() {
+  const code = document.getElementById('country-select').value;
+  const input = document.getElementById('phone-input');
+  if (!input) return;
+  if (code === '+91') {
+    input.maxLength = 10;
+    input.placeholder = '9876543210';
+  } else if (code === '+1') {
+    input.maxLength = 10;
+    input.placeholder = '5551234567';
+  } else {
+    input.maxLength = 11;
+    input.placeholder = '7123456789';
   }
 }
 
@@ -644,6 +677,7 @@ function startResendTimer() {
   const countEl = document.getElementById('resend-count');
   const btnResend = document.getElementById('btn-resend');
 
+  if (countEl) countEl.textContent = '30';
   if (timerEl) timerEl.style.display = 'inline';
   if (btnResend) { btnResend.style.display = 'none'; btnResend.disabled = true; }
 
@@ -677,6 +711,9 @@ async function initApp() {
     if (loader) loader.classList.add('gone');
   }, 300);
 
+  let url = DEFAULT_SUPABASE_URL;
+  let key = DEFAULT_SUPABASE_KEY;
+
   // Check for logout request
   if (window.location.search.includes('logout=true')) {
     sessionStorage.clear();
@@ -691,9 +728,6 @@ async function initApp() {
     showView('view-welcome');
     return;
   }
-
-  let url = DEFAULT_SUPABASE_URL;
-  let key = DEFAULT_SUPABASE_KEY;
 
   try {
     const res = await fetch('/api/config');
@@ -824,8 +858,9 @@ async function signInWithEmail() {
 async function sendOTP() {
   const phone = document.getElementById('phone-input').value.trim();
   const countryCode = document.getElementById('country-select').value;
-  if (phone.length < 7 || phone.length > 11) {
-    showAlert('Please enter a valid mobile number.');
+  const expectedLen = countryCode === '+91' || countryCode === '+1' ? 10 : 7;
+  if (phone.length < expectedLen) {
+    showAlert(countryCode === '+91' ? 'Enter a valid 10-digit Indian mobile number.' : 'Please enter a valid mobile number.');
     return;
   }
 
@@ -853,12 +888,22 @@ async function sendOTP() {
       throw new Error(data.message || 'Failed to send OTP.');
     }
 
+    if (data.mode === 'dev') {
+      showAlert('Dev mode: enter any 6-digit code (MSG91 not configured on server).', 'info');
+    } else {
+      showAlert('OTP sent! Check your SMS.', 'success');
+    }
+
     otpRequestId = data.request_id;
     document.getElementById('otp-phone-display').textContent = fullPhone;
     showView('view-otp');
+    // Re-enable send button so "Change number" / resend works
+    btn.disabled = false;
+    btn.textContent = 'Send OTP →';
+    [0,1,2,3,4,5].forEach(i => { document.getElementById('otp-' + i).value = ''; });
+    document.getElementById('btn-verify-otp').disabled = true;
     document.getElementById('otp-0').focus();
     startResendTimer();
-    showAlert('OTP sent successfully!', 'success');
   } catch(e) {
     showAlert('Could not send OTP: ' + e.message);
     btn.disabled = false;
@@ -894,25 +939,22 @@ async function verifyOTP() {
       throw new Error(data.message || 'Invalid OTP. Please try again.');
     }
 
-    // OTP verified — now sign in/up via Supabase phone auth
-    if (sb) {
-      try {
-        const { data: verifyData } = await sb.auth.verifyOtp({
-          phone,
-          token: code,
-          type: 'sms'
-        });
+    sessionStorage.setItem('rentcan_phone', phone);
 
-        if (verifyData?.session) {
-          await routeAfterAuth(verifyData.session.user);
-          return;
-        }
-      } catch(err) {
-        console.warn('Supabase phone verify fallback:', err);
+    // Prefer real Supabase session created server-side after MSG91 verify
+    if (sb && data.session?.access_token && data.session?.refresh_token) {
+      const { data: sessData, error: sessErr } = await sb.auth.setSession({
+        access_token: data.session.access_token,
+        refresh_token: data.session.refresh_token
+      });
+      if (!sessErr && sessData?.user) {
+        await routeAfterAuth(sessData.user);
+        return;
       }
+      console.warn('setSession failed:', sessErr);
     }
 
-    sessionStorage.setItem('rentcan_phone', phone);
+    // Session unavailable (missing service role) — still allow onboarding with phone
     showView('view-onboarding');
 
   } catch(e) {
@@ -923,8 +965,27 @@ async function verifyOTP() {
 }
 
 async function resendOTP() {
-  document.getElementById('btn-resend').disabled = true;
-  await sendOTP();
+  const btnResend = document.getElementById('btn-resend');
+  if (btnResend) btnResend.disabled = true;
+  // Resend from OTP view without requiring phone view button state
+  const phone = document.getElementById('phone-input').value.trim();
+  const countryCode = document.getElementById('country-select').value;
+  const fullPhone = countryCode + phone;
+  try {
+    const res = await fetch('/api/send-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone: fullPhone })
+    });
+    const data = await res.json();
+    if (!res.ok || data.type === 'error') throw new Error(data.message || 'Failed to resend OTP.');
+    otpRequestId = data.request_id;
+    startResendTimer();
+    showAlert(data.mode === 'dev' ? 'Dev mode: enter any 6-digit code.' : 'OTP resent! Check your SMS.', data.mode === 'dev' ? 'info' : 'success');
+  } catch(e) {
+    showAlert('Could not resend OTP: ' + e.message);
+    if (btnResend) btnResend.disabled = false;
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────
