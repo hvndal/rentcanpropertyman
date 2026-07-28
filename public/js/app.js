@@ -183,7 +183,9 @@ function showAuthWait(options) {
     el.id = 'rc-auth-wait';
     el.className = 'rc-auth-wait';
     el.innerHTML = `
-      <div class="rc-auth-mark">RentCan</div>
+      <a href="/" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--app rc-auth-mark" aria-label="RentCan">
+        <img src="/assets/logos/rentcan-wordmark.png" alt="RentCan">
+      </a>
       <div class="rc-spinner" aria-hidden="true"></div>
       <div class="rc-auth-title" id="rc-auth-title">Signing you in</div>
       <div class="rc-auth-sub" id="rc-auth-sub">Just a moment while we prepare your account.</div>
