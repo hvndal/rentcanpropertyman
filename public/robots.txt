@@ -4,6 +4,7 @@
 User-agent: *
 Allow: /
 Allow: /info
+Allow: /investors
 Allow: /assets/
 Allow: /css/
 Allow: /js/
@@ -24,6 +25,7 @@ Disallow: /api/
 User-agent: Googlebot
 Allow: /
 Allow: /info
+Allow: /investors
 Allow: /assets/
 Allow: /assets/seo/
 Disallow: /dashboard
