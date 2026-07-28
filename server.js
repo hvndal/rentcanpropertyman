@@ -4,6 +4,12 @@ const cors    = require('cors');
 const path    = require('path');
 const https   = require('https');
 const { createClient } = require('@supabase/supabase-js');
+const {
+  resolveSupabaseUrl,
+  resolveSupabaseAnonKey,
+  resolveMsg91WidgetId,
+  resolveMsg91TokenAuth
+} = require('./lib/rentcan-config');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -34,11 +40,11 @@ function msg91WidgetConfigured() {
 }
 
 function getMsg91WidgetId() {
-  return (process.env.MSG91_WIDGET_ID || '366674716248383037373030').trim();
+  return resolveMsg91WidgetId();
 }
 
 function getMsg91TokenAuth() {
-  return (process.env.MSG91_TOKEN_AUTH || process.env.MSG91_AUTH_KEY || '535432TXjnw0dF6a5d0eb2P1').trim();
+  return resolveMsg91TokenAuth();
 }
 
 function httpsJson(options, body) {
@@ -73,8 +79,8 @@ function getSupabaseAdmin() {
 // ── Serve public client config ──
 app.get('/api/config', (req, res) => {
   res.json({
-    supabaseUrl: process.env.SUPABASE_URL || null,
-    supabaseKey: process.env.SUPABASE_KEY || null,
+    supabaseUrl: resolveSupabaseUrl(),
+    supabaseKey: resolveSupabaseAnonKey(),
     msg91Ready: msg91Configured() || msg91WidgetConfigured(),
     msg91Widget: {
       widgetId: getMsg91WidgetId(),
@@ -90,7 +96,7 @@ app.get('/api/health', (req, res) => {
     ok: true,
     time: new Date().toISOString(),
     env: IS_PROD ? 'production' : 'development',
-    supabase: Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_KEY),
+    supabase: Boolean(resolveSupabaseUrl() && resolveSupabaseAnonKey()),
     msg91: msg91Configured(),
     msg91Widget: msg91WidgetConfigured(),
     phoneAuth: Boolean(getSupabaseAdmin())
@@ -138,6 +144,12 @@ app.post('/api/phone-session', async (req, res) => {
   }
 
   const session = await createPhoneSession(cleanPhone);
+  if (!session?.access_token) {
+    return res.status(503).json({
+      type: 'error',
+      message: 'Phone verified, but server session is unavailable. Use Google or Email sign-in, or contact support.'
+    });
+  }
   return res.json({
     type: 'success',
     message: 'Phone verified.',
@@ -324,8 +336,8 @@ async function createPhoneSession(cleanPhone) {
 
   const e164 = '+' + cleanPhone;
   const email = cleanPhone + '@phone.rentcan.in';
-  const url = process.env.SUPABASE_URL;
-  const anonKey = process.env.SUPABASE_KEY;
+  const url = resolveSupabaseUrl();
+  const anonKey = resolveSupabaseAnonKey();
 
   try {
     // Ensure auth user exists for this phone
@@ -454,7 +466,7 @@ app.get(/^\/(?!api).*/, (req, res) => {
 app.listen(PORT, () => {
   console.log(`RentCan running 🚀 http://localhost:${PORT}`);
   console.log(`Env            🚀 ${IS_PROD ? 'production' : 'development'}`);
-  console.log(`Supabase URL   🚀 ${process.env.SUPABASE_URL || '(not set)'}`);
+  console.log(`Supabase URL   🚀 ${resolveSupabaseUrl()}`);
   console.log(`MSG91 API       🚀 ${msg91Configured() ? 'READY' : 'optional fallback'}`);
   console.log(`MSG91 Widget    🚀 ${msg91WidgetConfigured() ? 'READY' : 'NOT CONFIGURED'}`);
   console.log(`Phone sessions  🚀 ${getSupabaseAdmin() ? 'READY' : 'needs SUPABASE_SERVICE_ROLE_KEY'}`);

@@ -81,6 +81,8 @@ function triggerSpringAnimation(element) {
 
 // 5. Shared Supabase client helper
 async function getSupabaseClient() {
+  if (window.RentCan) return window.RentCan.createClient();
+
   let cfg = { supabaseUrl: '', supabaseKey: '' };
   try {
     const res = await fetch('/api/config');
