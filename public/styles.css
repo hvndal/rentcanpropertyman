@@ -482,7 +482,7 @@ body.rc-fade-boot {
   position: fixed;
   inset: 0;
   z-index: 10000;
-  background: #f7faf7;
+  background: #FFFCFB;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -538,7 +538,7 @@ body.rc-fade-boot {
   transition: color 300ms ease;
 }
 .rc-auth-wait .rc-auth-steps li.active { color: #6B4822; font-weight: 700; }
-.rc-auth-wait .rc-auth-steps li.done { color: #005a4e; }
+.rc-auth-wait .rc-auth-steps li.done { color: #6B4822; opacity: 0.65; }
 .rc-auth-wait .rc-auth-dot {
   width: 8px;
   height: 8px;

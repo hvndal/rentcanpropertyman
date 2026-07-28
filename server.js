@@ -8,7 +8,8 @@ const {
   resolveSupabaseUrl,
   resolveSupabaseAnonKey,
   resolveMsg91WidgetId,
-  resolveMsg91TokenAuth
+  resolveMsg91TokenAuth,
+  resolveMsg91AuthKey
 } = require('./lib/rentcan-config');
 
 const app  = express();
@@ -41,6 +42,10 @@ function msg91WidgetConfigured() {
 
 function getMsg91WidgetId() {
   return resolveMsg91WidgetId();
+}
+
+function getMsg91AuthKey() {
+  return resolveMsg91AuthKey();
 }
 
 function getMsg91TokenAuth() {
@@ -111,8 +116,12 @@ app.post('/api/phone-session', async (req, res) => {
     return res.status(400).json({ type: 'error', message: 'Valid phone number required.' });
   }
 
-  // Optional: verify MSG91 access token when provided
+  // Optional: verify MSG91 access token when provided (widget flow)
   if (access_token) {
+    const authKey = getMsg91AuthKey();
+    if (!authKey) {
+      console.warn('[MSG91 verifyAccessToken] no auth key — trusting client widget verification');
+    } else {
     try {
       const result = await httpsJson({
         method: 'POST',
@@ -123,7 +132,7 @@ app.post('/api/phone-session', async (req, res) => {
           'Accept': 'application/json'
         }
       }, JSON.stringify({
-        authkey: getMsg91TokenAuth(),
+        authkey: authKey,
         'access-token': access_token
       }));
       console.log('[MSG91 verifyAccessToken]:', result.status, result.body);
@@ -131,7 +140,6 @@ app.post('/api/phone-session', async (req, res) => {
       const ok = parsed.type === 'success'
         || /success|verified/i.test(String(parsed.message || ''))
         || (result.status >= 200 && result.status < 300 && !parsed.type);
-      // If MSG91 explicitly rejects, block. If endpoint missing/unknown, continue (widget already verified client-side).
       if (parsed.type === 'error' || result.status === 401 || result.status === 403) {
         return res.status(401).json({ type: 'error', message: parsed.message || 'OTP token validation failed.' });
       }
@@ -141,13 +149,18 @@ app.post('/api/phone-session', async (req, res) => {
     } catch (e) {
       console.warn('[MSG91 verifyAccessToken] skipped:', e.message);
     }
+    }
   }
 
   const session = await createPhoneSession(cleanPhone);
   if (!session?.access_token) {
+    const adminMissing = !getSupabaseAdmin();
     return res.status(503).json({
       type: 'error',
-      message: 'Phone verified, but server session is unavailable. Use Google or Email sign-in, or contact support.'
+      code: adminMissing ? 'PHONE_SESSION_UNAVAILABLE' : 'PHONE_SESSION_FAILED',
+      message: adminMissing
+        ? 'Phone verified, but account sign-in is not fully configured yet. Please use Google or Email sign-in for now.'
+        : 'Phone verified, but we could not start your session. Please try Google or Email sign-in.'
     });
   }
   return res.json({

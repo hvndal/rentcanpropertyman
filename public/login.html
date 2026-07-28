@@ -35,38 +35,19 @@
 
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  background: #f7faf7;
-  color: #191c1b;
+  background: #FFFCFB;
+  color: #32261C;
   min-height: 100vh;
   display: flex;
-}
-
-/* ── Page Loader ── */
-#loader {
-  position: fixed; inset: 0; background: #f7faf7; z-index: 9999;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  transition: opacity 0.4s;
-}
-#loader.gone { opacity: 0; pointer-events: none; }
-.spin {
-  width: 32px; height: 32px; border: 3px solid #bec9c5;
-  border-top-color: #6B4822; border-radius: 50%;
-  animation: spin 0.7s linear infinite; margin-bottom: 14px;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── Layout ── */
-body {
-  margin: 0; padding: 0; min-height: 100vh;
-  display: flex; align-items: center; justify-content: center;
-  background: #f4f6f4; font-family: 'Plus Jakarta Sans', sans-serif;
+  align-items: center;
+  justify-content: center;
 }
 .left-panel {
   width: 100%; max-width: 440px;
   background: #ffffff;
   border-radius: 20px;
   box-shadow: 0 10px 40px rgba(0, 56, 38, 0.08);
-  border: 1px solid #e0e4e0;
+  border: 1px solid color-mix(in srgb, #CFDFDE 70%, #6B4822 30%);
   padding: 32px 28px;
   margin: 20px 16px;
   box-sizing: border-box;
@@ -114,7 +95,7 @@ body {
 }
 .auth-btn-google .btn-icon { background: #f4f6fb; border: 1px solid #e0e6f5; }
 .auth-btn-phone .btn-icon { background: #f0f6f3; border: 1px solid #d8e8e2; }
-.auth-btn-email .btn-icon { background: #fdf5f3; border: 1px solid #f9e2dc; }
+.auth-btn-email .btn-icon { background: #F6CFDE; border: 1px solid #CFDFDE; }
 
 /* ── OTP / Phone Views ── */
 .back-link {
@@ -168,7 +149,7 @@ body {
 }
 .otp-input:focus {
   border-color: #6B4822 !important;
-  box-shadow: 0 0 0 3px rgba(61,138,130,0.12) !important;
+  box-shadow: 0 0 0 3px rgba(107, 72, 34, 0.12) !important;
 }
 
 /* ── Compact Phone input with country code ── */
@@ -186,7 +167,7 @@ body {
 }
 .phone-wrap:focus-within {
   border-color: #6B4822;
-  box-shadow: 0 0 0 3px rgba(61,138,130,0.12);
+  box-shadow: 0 0 0 3px rgba(107, 72, 34, 0.12);
 }
 .country-code-select {
   width: auto !important;
@@ -246,7 +227,7 @@ body {
   cursor: pointer; transition: background 0.2s, transform 0.15s; margin-top: 6px;
   box-sizing: border-box;
 }
-.btn-primary:hover { background: #005a4e; transform: translateY(-1px); }
+.btn-primary:hover { background: #32261C; transform: translateY(-1px); }
 .btn-primary:disabled { background: #bec9c5; cursor: not-allowed; transform: none; }
 
 /* ── Onboarding: Role Cards ── */
@@ -273,7 +254,7 @@ body {
   font-size: 16px;
   position: absolute;
   top: 8px; right: 8px;
-  color: #00E599;
+  color: #D5B259;
   font-variation-settings: 'FILL' 1;
 }
 .role-card { position: relative; }
@@ -324,7 +305,7 @@ body {
   <!-- ══ VIEW: Welcome ══ -->
   <div class="view active" id="view-welcome">
     <h1 style="font-size:28px;font-weight:800;letter-spacing:-0.02em;color:#191c1b;margin-bottom:8px;">Welcome back.</h1>
-    <p style="font-size:14px;color:#73777f;margin-bottom:36px;line-height:1.6;">Sign in with your phone — no password needed.</p>
+    <p style="font-size:14px;color:#73777f;margin-bottom:28px;line-height:1.6;">Sign in with phone, Google, or email — quick and secure.</p>
 
     <!-- Phone (primary) -->
     <button class="auth-btn auth-btn-phone" onclick="showView('view-phone')" style="border-color:#6B4822;box-shadow:0 4px 14px rgba(107,72,34,0.1);">
@@ -362,7 +343,7 @@ body {
     <!-- Email -->
     <button class="auth-btn auth-btn-email" onclick="showView('view-email')">
       <div class="btn-icon">
-        <span style="font-family:'Material Symbols Outlined';font-size:22px;color:#cc4b2b;font-variation-settings:'FILL' 1;">email</span>
+        <span style="font-family:'Material Symbols Outlined';font-size:22px;color:#6B4822;font-variation-settings:'FILL' 1;">email</span>
       </div>
       <div class="btn-label">
         Continue with Email
@@ -391,6 +372,21 @@ body {
     </div>
 
     <button class="btn-primary" id="btn-send-email" onclick="signInWithEmail()" style="padding:16px;font-size:14px;border-radius:12px;">Send Magic Link →</button>
+  </div>
+
+  <!-- ══ VIEW: Email Sent ══ -->
+  <div class="view" id="view-email-sent">
+    <div style="text-align:center;padding:12px 0 8px;">
+      <span style="font-family:'Material Symbols Outlined';font-size:48px;color:#6B4822;font-variation-settings:'FILL' 1;display:block;margin-bottom:16px;">mark_email_read</span>
+      <h2 style="font-size:22px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;color:#32261C;">Check your inbox</h2>
+      <p style="font-size:14px;color:#73777f;line-height:1.6;margin-bottom:6px;">We sent a secure sign-in link to</p>
+      <p style="font-size:15px;font-weight:700;color:#6B4822;margin-bottom:20px;word-break:break-all;" id="email-sent-display"></p>
+      <p style="font-size:12px;color:#73777f;line-height:1.6;margin-bottom:24px;">Tap the link in the email to finish signing in. The link expires in about an hour. Check spam if you do not see it.</p>
+      <button type="button" class="back-link" style="margin:0 auto;display:inline-flex;" onclick="showView('view-welcome')">
+        <span style="font-family:'Material Symbols Outlined';font-size:18px;">arrow_back</span>
+        Back to Sign In
+      </button>
+    </div>
   </div>
 
   <!-- ══ VIEW: Phone Entry ══ -->
@@ -521,9 +517,27 @@ let otpRequestId = null;
 let selectedRole = null;
 let msg91WidgetReady = false;
 let msg91AccessToken = null;
+let serverPhoneAuthReady = true;
 
 function digitsPhone(countryCode, local) {
   return String(countryCode || '').replace(/\D/g, '') + String(local || '').replace(/\D/g, '');
+}
+
+function friendlyAuthError(message) {
+  const msg = String(message || '').toLowerCase();
+  if (msg.includes('requested path is invalid') || msg.includes('redirect')) {
+    return 'Google sign-in needs a redirect URL update in Supabase. Try phone or email sign-in, or contact support.';
+  }
+  if (msg.includes('email rate limit') || msg.includes('rate limit')) {
+    return 'Too many attempts. Please wait a minute and try again.';
+  }
+  if (msg.includes('invalid login credentials') || msg.includes('invalid otp')) {
+    return 'That code did not work. Please check and try again.';
+  }
+  if (msg.includes('user already registered')) {
+    return 'This account already exists. Try signing in with Google or email instead.';
+  }
+  return message || 'Something went wrong. Please try again.';
 }
 
 function initMsg91Widget(widgetCfg) {
@@ -691,6 +705,54 @@ function resetStaleAuthUi() {
   if (window.cancelAuthWait) cancelAuthWait();
 }
 
+async function handleAuthCallback() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const hashParams = new URLSearchParams((window.location.hash || '').substring(1));
+
+  const errDesc = urlParams.get('error_description') || hashParams.get('error_description');
+  const errCode = urlParams.get('error') || hashParams.get('error');
+  if (errDesc || (errCode && errCode !== 'access_denied')) {
+    resetStaleAuthUi();
+    showAlert(friendlyAuthError(decodeURIComponent((errDesc || errCode).replace(/\+/g, ' '))));
+    if (RentCan.cleanAuthUrl) RentCan.cleanAuthUrl();
+    return;
+  }
+
+  const authCode = urlParams.get('code');
+  if (authCode && sb) {
+    if (window.showAuthWait) {
+      showAuthWait({ title: 'Finishing sign-in', sub: 'Confirming your account…', step: 0 });
+    }
+    try {
+      const { error } = await sb.auth.exchangeCodeForSession(authCode);
+      if (error) throw error;
+      if (RentCan.cleanAuthUrl) RentCan.cleanAuthUrl();
+    } catch (e) {
+      resetStaleAuthUi();
+      showAlert(friendlyAuthError(e.message || e));
+      if (RentCan.cleanAuthUrl) RentCan.cleanAuthUrl();
+    }
+    return;
+  }
+
+  const tokenHash = urlParams.get('token_hash');
+  const otpType = urlParams.get('type');
+  if (tokenHash && otpType && sb) {
+    if (window.showAuthWait) {
+      showAuthWait({ title: 'Finishing sign-in', sub: 'Verifying your email link…', step: 0 });
+    }
+    try {
+      const { error } = await sb.auth.verifyOtp({ token_hash: tokenHash, type: otpType });
+      if (error) throw error;
+      if (RentCan.cleanAuthUrl) RentCan.cleanAuthUrl();
+    } catch (e) {
+      resetStaleAuthUi();
+      showAlert(friendlyAuthError(e.message || e));
+      if (RentCan.cleanAuthUrl) RentCan.cleanAuthUrl();
+    }
+  }
+}
+
 // ─────────────────────────────────────────────────────────────────────
 // OTP INPUT HANDLER (auto-advance, backspace, paste)
 // ─────────────────────────────────────────────────────────────────────
@@ -703,6 +765,13 @@ function otpInput(el, idx) {
     document.getElementById('otp-' + i).value.length === 1
   );
   document.getElementById('btn-verify-otp').disabled = !allFilled;
+  if (allFilled) {
+    clearTimeout(window._otpAutoVerifyTimer);
+    window._otpAutoVerifyTimer = setTimeout(() => {
+      const btn = document.getElementById('btn-verify-otp');
+      if (btn && !btn.disabled) verifyOTP();
+    }, 200);
+  }
 }
 
 // Backspace navigation
@@ -787,12 +856,13 @@ async function initApp() {
     resetStaleAuthUi();
   }
 
-  const hashParams = new URLSearchParams(window.location.hash.substring(1));
-  if (hashParams.has('error_description')) {
-    resetStaleAuthUi();
-    showAlert(decodeURIComponent(hashParams.get('error_description').replace(/\+/g, ' ')));
-    if (RentCan.cleanAuthUrl) RentCan.cleanAuthUrl();
-  }
+  try {
+    const healthRes = await fetch('/api/health');
+    if (healthRes.ok) {
+      const health = await healthRes.json();
+      serverPhoneAuthReady = Boolean(health.phoneAuth);
+    }
+  } catch (e) {}
 
   if (window.location.search.includes('logout=true')) {
     sessionStorage.clear();
@@ -827,23 +897,7 @@ async function initApp() {
     return;
   }
 
-  // PKCE code exchange when returning from Google
-  const urlParams = new URLSearchParams(window.location.search);
-  const authCode = urlParams.get('code');
-  if (authCode) {
-    if (window.showAuthWait) {
-      showAuthWait({ title: 'Finishing sign-in', sub: 'Confirming your Google account…', step: 0 });
-    }
-    try {
-      const { error } = await sb.auth.exchangeCodeForSession(authCode);
-      if (error) throw error;
-      if (RentCan.cleanAuthUrl) RentCan.cleanAuthUrl();
-    } catch (e) {
-      resetStaleAuthUi();
-      showAlert('Google sign-in could not be completed: ' + (e.message || e));
-      if (RentCan.cleanAuthUrl) RentCan.cleanAuthUrl();
-    }
-  }
+  await handleAuthCallback();
 
   try {
     const { data: { session } } = await sb.auth.getSession();
@@ -921,7 +975,7 @@ async function signInWithGoogle() {
   } catch(e) {
     sessionStorage.removeItem('rc_auth_pending');
     if (window.hideAuthWait) hideAuthWait();
-    showAlert('Google sign-in: ' + e.message);
+    showAlert(friendlyAuthError(e.message || e));
     btn.disabled = false;
     btn.querySelector('.btn-label').innerHTML = 'Continue with Google<span class="btn-sub">Instant sign-in with your Google account</span>';
   }
@@ -950,16 +1004,18 @@ async function signInWithEmail() {
     const { error } = await sb.auth.signInWithOtp({
       email: email,
       options: {
+        shouldCreateUser: true,
         emailRedirectTo: RentCan.getAuthRedirectUrl ? RentCan.getAuthRedirectUrl() : (window.location.origin + '/login')
       }
     });
 
     if (error) throw error;
-    
-    showAlert('Magic link sent! Please check your email.', 'success');
-    btn.textContent = 'Link Sent ✓';
+
+    const sentEl = document.getElementById('email-sent-display');
+    if (sentEl) sentEl.textContent = email;
+    showView('view-email-sent');
   } catch(e) {
-    showAlert('Could not send magic link: ' + e.message);
+    showAlert(friendlyAuthError(e.message));
     btn.disabled = false;
     btn.textContent = 'Send Magic Link →';
   }
@@ -983,7 +1039,11 @@ async function finishPhoneLogin(phoneDisplay, accessToken) {
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok || data.type === 'error') {
-      showAlert(data.message || 'Could not complete phone sign-in. Try Google or Email instead.');
+      const msg = data.code === 'PHONE_SESSION_UNAVAILABLE'
+        ? 'SMS verified, but phone sign-in is finishing setup. Please use Google or Email for now.'
+        : (data.message || 'Could not complete phone sign-in. Try Google or Email instead.');
+      showAlert(msg);
+      showView('view-welcome');
       return;
     }
     if (sb && data.session?.access_token && data.session?.refresh_token) {
@@ -1011,6 +1071,15 @@ function sendOTP() {
   if (phone.length < expectedLen) {
     showAlert(countryCode === '+91' ? 'Enter a valid 10-digit Indian mobile number.' : 'Please enter a valid mobile number.');
     return;
+  }
+
+  if (!serverPhoneAuthReady && !msg91WidgetReady) {
+    showAlert('SMS sign-in is temporarily unavailable. Please use Google or Email.');
+    return;
+  }
+
+  if (!serverPhoneAuthReady) {
+    showAlert('SMS will verify your number, but you may need Google or Email to finish sign-in until phone login is fully enabled.', 'info');
   }
 
   const identifier = digitsPhone(countryCode, phone); // e.g. 919876543210 (no +)
@@ -1186,6 +1255,7 @@ async function completeProfile() {
           full_name: name,
           role: selectedRole,
           avatar_url: user.user_metadata?.avatar_url || null,
+          phone_number: sessionStorage.getItem('rentcan_phone') || user.phone || null,
           updated_at: new Date().toISOString()
         };
 
@@ -1235,11 +1305,25 @@ async function completeProfile() {
     }
 
   } catch(e) {
-    showAlert('Profile setup failed: ' + e.message);
+    showAlert(friendlyAuthError(e.message));
     btn.disabled = false;
     btn.textContent = 'Complete Setup →';
   }
 }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter') return;
+  const active = document.querySelector('.view.active');
+  if (!active) return;
+  if (active.id === 'view-email' && !document.getElementById('btn-send-email')?.disabled) {
+    e.preventDefault();
+    signInWithEmail();
+  }
+  if (active.id === 'view-phone' && !document.getElementById('btn-send-otp')?.disabled) {
+    e.preventDefault();
+    sendOTP();
+  }
+});
 </script>
 </body>
 </html>
