@@ -9,7 +9,7 @@
 <link rel="manifest" href="/manifest.json">
 <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-<meta name="theme-color" content="#6B4822">
+<meta name="theme-color" content="#3D8A82">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
@@ -67,11 +67,11 @@ try {
   tailwind.config = {
     theme: { extend: {
       colors: {
-        "primary":"#6B4822","on-primary":"#ffffff","primary-container":"#32261C",
-        "secondary":"#D5B259","on-secondary":"#32261C","secondary-container":"#F6CFDE",
-        "surface":"#F8F7F5","on-surface":"#32261C","on-surface-variant":"#6B5E56",
+        "primary":"#3D8A82","on-primary":"#ffffff","primary-container":"#2F736C",
+        "secondary":"#F6CFDE","on-secondary":"#32261C","secondary-container":"#CFDFDE",
+        "surface":"#F4FAF9","on-surface":"#32261C","on-surface-variant":"#5A726E",
         "surface-container":"#CFDFDE","outline-variant":"#CFDFDE",
-        "accent":"#D5B259","background":"#F8F7F5","brand-mint":"#CFDFDE","brand-pink":"#F6CFDE"
+        "accent":"#F6CFDE","background":"#F4FAF9","brand-mint":"#CFDFDE","brand-pink":"#F6CFDE"
       },
       fontFamily:{"sans":["Plus Jakarta Sans","sans-serif"]}
     }}
@@ -131,12 +131,12 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
 
 /* ── Check items ── */
 .check-item { display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; }
-.check-icon { color: #6B4822; font-size: 18px; flex-shrink: 0; margin-top: 1px; font-family: 'Material Symbols Outlined'; }
+.check-icon { color: #3D8A82; font-size: 18px; flex-shrink: 0; margin-top: 1px; font-family: 'Material Symbols Outlined'; }
 
 /* ── Badge ── */
 .badge {
   background: #efe6dc; border: 1px solid rgba(92, 58, 46, 0.18); border-radius: 20px;
-  padding: 4px 12px; font-size: 11px; font-weight: 600; color: #6B4822;
+  padding: 4px 12px; font-size: 11px; font-weight: 600; color: #3D8A82;
   letter-spacing: 0.05em; display: inline-block;
 }
 .badge-accent { background: rgba(246, 207, 222, 0.55); border-color: rgba(213, 178, 89, 0.45); color: #6B4822; }
@@ -159,7 +159,9 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
 <nav class="sticky top-0 bg-white/90 backdrop-blur-md border-b border-outline-variant z-50">
   <div class="max-w-6xl mx-auto px-6 md:px-16 py-4 flex items-center justify-between">
     <a href="/" class="flex items-center gap-2 no-underline">
-      <img src="/assets/logos/rentcan-logo.png" alt="RentCan" class="h-9 w-auto">
+      <a href="/" class="rc-brand-logo rc-brand-logo--nav">
+        <img src="/assets/logos/rentcan-logo.png" alt="RentCan">
+      </a>
     </a>
     <div class="flex items-center gap-4">
       <a href="/" class="text-sm text-on-surface-variant hover:text-primary font-medium transition-colors">Home</a>
@@ -750,7 +752,9 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
 <footer class="bg-white border-t border-outline-variant py-10 mt-10">
   <div class="max-w-6xl mx-auto px-6 md:px-16 flex flex-col md:flex-row items-center justify-between gap-4">
     <a href="/" class="flex items-center gap-2 no-underline">
-      <img src="/assets/logos/rentcan-logo.png" alt="RentCan" class="h-9 w-auto">
+      <a href="/" class="rc-brand-logo rc-brand-logo--nav">
+        <img src="/assets/logos/rentcan-logo.png" alt="RentCan">
+      </a>
     </a>
     <p class="text-sm text-on-surface-variant">© 2025 RentCan. On-ground property management across the Tricity.</p>
     <div class="flex gap-4 text-sm text-on-surface-variant">

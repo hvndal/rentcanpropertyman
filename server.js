@@ -428,6 +428,13 @@ app.post('/api/submit-maintenance', async (req, res) => {
   });
 });
 
+// SEO / crawler files — explicit routes so they never fall through to SPA fallback
+['/robots.txt', '/sitemap.xml', '/humans.txt', '/manifest.json', '/favicon.ico', '/apple-touch-icon.png'].forEach((file) => {
+  app.get(file, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', file.replace(/^\//, '')));
+  });
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 const CLEAN_PAGES = {
