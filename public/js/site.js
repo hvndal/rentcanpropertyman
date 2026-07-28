@@ -233,6 +233,78 @@
     window.addEventListener('resize', sync, { passive: true });
   }
 
+  const PLAN_IDS = ['residential', 'commercial', 'airbnb'];
+
+  function setPlanFocus(plan, options) {
+    const opts = options || {};
+    if (!PLAN_IDS.includes(plan)) return;
+
+    document.documentElement.setAttribute('data-plan-focus', plan);
+
+    document.querySelectorAll('[data-plan-tab]').forEach((btn) => {
+      const active = btn.getAttribute('data-plan-tab') === plan;
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+
+    document.querySelectorAll('[data-plan]').forEach((el) => {
+      const match = el.getAttribute('data-plan') === plan;
+      el.classList.toggle('is-plan-focus', match);
+      el.classList.toggle('rc-plan-pulse', match && opts.pulse !== false);
+    });
+
+    document.querySelectorAll('[data-plan-matrix]').forEach((table) => {
+      table.setAttribute('data-focus', plan);
+      table.querySelectorAll('tbody tr').forEach((row) => {
+        const cell = row.querySelector('[data-plan-col="' + plan + '"]');
+        const included = !!(cell && cell.querySelector('.rc-feat-yes'));
+        row.classList.toggle('is-plan-included', included);
+        row.classList.toggle('is-plan-excluded', !included);
+      });
+    });
+
+    if (opts.scroll !== false) {
+      const targets = document.querySelectorAll(
+        '.rc-price-rail [data-plan="' + plan + '"], .rc-plan-rail [data-plan="' + plan + '"]'
+      );
+      targets.forEach((el) => {
+        try {
+          el.scrollIntoView({
+            behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+            inline: 'center',
+            block: 'nearest',
+          });
+        } catch (_) {}
+      });
+    }
+
+    window.clearTimeout(setPlanFocus._pulseTimer);
+    setPlanFocus._pulseTimer = window.setTimeout(() => {
+      document.querySelectorAll('.rc-plan-pulse').forEach((el) => el.classList.remove('rc-plan-pulse'));
+    }, 2400);
+  }
+
+  function initPlanFocus() {
+    if (!document.querySelector('[data-plan-tab], [data-plan], [data-plan-matrix]')) return;
+
+    document.addEventListener('click', (e) => {
+      const tab = e.target.closest('[data-plan-tab]');
+      if (tab) {
+        e.preventDefault();
+        setPlanFocus(tab.getAttribute('data-plan-tab'), { scroll: true, pulse: true });
+        return;
+      }
+
+      const planEl = e.target.closest('[data-plan]');
+      if (!planEl) return;
+      // Focus matching plan when tapping a tile/compare cell (still allow navigation)
+      setPlanFocus(planEl.getAttribute('data-plan'), { scroll: true, pulse: true });
+    });
+
+    // Default: residential so the compare pattern is obvious on first visit
+    setPlanFocus('residential', { scroll: false, pulse: false });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     initRevealObserver();
     initAnchorLinks();
@@ -241,10 +313,11 @@
     initMobileMenu();
     initHeroChipAccordion();
     initHeroHeaderBlend();
+    initPlanFocus();
     handleInitialHash();
   });
 
   window.addEventListener('hashchange', () => smoothScrollToHash(window.location.hash));
 
-  window.RentCanSite = { smoothScrollToHash, revealInSection };
+  window.RentCanSite = { smoothScrollToHash, revealInSection, setPlanFocus };
 })();

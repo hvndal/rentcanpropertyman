@@ -631,6 +631,57 @@ body.rc-brand {
   background: rgba(207, 223, 222, 0.4);
 }
 
+.rc-matrix-plan-btn {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  font-weight: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.rc-matrix-plan-btn:focus-visible {
+  outline: 2px solid var(--rc-gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Plan focus — highlight selected column + included rows */
+html[data-plan-focus] .rc-feature-matrix td[data-plan-col],
+html[data-plan-focus] .rc-feature-matrix thead th:nth-child(n+2) {
+  opacity: 0.38;
+  transition: opacity 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+html[data-plan-focus="residential"] .rc-feature-matrix td[data-plan-col="residential"],
+html[data-plan-focus="residential"] .rc-feature-matrix thead th:nth-child(2),
+html[data-plan-focus="commercial"] .rc-feature-matrix td[data-plan-col="commercial"],
+html[data-plan-focus="commercial"] .rc-feature-matrix thead th:nth-child(3),
+html[data-plan-focus="airbnb"] .rc-feature-matrix td[data-plan-col="airbnb"],
+html[data-plan-focus="airbnb"] .rc-feature-matrix thead th:nth-child(4) {
+  opacity: 1;
+  background: color-mix(in srgb, var(--rc-mint) 55%, #ffffff);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--rc-gold) 45%, transparent);
+}
+
+html[data-plan-focus] .rc-feature-matrix tbody tr.is-plan-included td:first-child {
+  color: var(--rc-brown);
+  font-weight: 650;
+}
+
+html[data-plan-focus] .rc-feature-matrix tbody tr.is-plan-included {
+  background: color-mix(in srgb, var(--rc-mint) 22%, transparent);
+}
+
+html[data-plan-focus] .rc-feature-matrix tbody tr.is-plan-excluded {
+  opacity: 0.42;
+}
+
 .rc-feature-matrix-wrap {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -658,6 +709,10 @@ body.rc-brand {
 
   .rc-feature-matrix thead th:first-child {
     background: var(--rc-green-mist);
+  }
+
+  html[data-plan-focus] .rc-feature-matrix tbody tr.is-plan-included td:first-child {
+    background: color-mix(in srgb, var(--rc-mint) 40%, var(--rc-surface));
   }
 }
 
@@ -1244,6 +1299,104 @@ html.rc-js .rc-reveal:not(.in-view):not(.is-visible) {
   color: #fff;
   border-color: var(--rc-brown);
   box-shadow: 0 10px 28px rgba(107, 72, 34, 0.28);
+}
+
+/* Plan selector tabs (Residential / Commercial / Airbnb) */
+.rc-plan-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.55rem;
+}
+
+.rc-plan-tab {
+  appearance: none;
+  padding: 0.55rem 1.05rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--rc-border);
+  background: color-mix(in srgb, var(--rc-surface) 90%, var(--rc-mint));
+  color: var(--rc-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
+}
+
+.rc-plan-tab:hover {
+  color: var(--rc-brown);
+  border-color: color-mix(in srgb, var(--rc-brown) 40%, var(--rc-border));
+  transform: translateY(-1px);
+}
+
+.rc-plan-tab[aria-selected="true"],
+.rc-plan-tab.is-active {
+  background: var(--rc-brown);
+  color: #fff;
+  border-color: var(--rc-brown);
+  box-shadow: 0 10px 24px rgba(78, 66, 56, 0.22);
+}
+
+.rc-plan-tabs-hint {
+  letter-spacing: 0.02em;
+}
+
+/* Dim non-selected comparable tiles / cards when a plan is focused */
+html[data-plan-focus] .rc-photo-tile[data-plan],
+html[data-plan-focus] .rc-price-compare__cell[data-plan],
+html[data-plan-focus] .rc-plan-card[data-plan] {
+  transition:
+    opacity 0.3s ease,
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s ease,
+    border-color 0.3s ease,
+    filter 0.3s ease;
+}
+
+html[data-plan-focus] .rc-photo-tile[data-plan]:not(.is-plan-focus),
+html[data-plan-focus] .rc-price-compare__cell[data-plan]:not(.is-plan-focus),
+html[data-plan-focus] .rc-plan-card[data-plan]:not(.is-plan-focus) {
+  opacity: 0.42;
+  filter: grayscale(0.2);
+  transform: scale(0.985);
+}
+
+html[data-plan-focus] .rc-photo-tile[data-plan].is-plan-focus,
+html[data-plan-focus] .rc-price-compare__cell[data-plan].is-plan-focus,
+html[data-plan-focus] .rc-plan-card[data-plan].is-plan-focus {
+  opacity: 1;
+  filter: none;
+  border-color: color-mix(in srgb, var(--rc-gold) 55%, var(--rc-brown));
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--rc-gold) 55%, transparent),
+    0 18px 40px rgba(78, 66, 56, 0.18);
+  transform: translateY(-4px) scale(1.01);
+  z-index: 2;
+}
+
+html[data-plan-focus] .rc-price-compare__cell[data-plan].is-plan-focus {
+  transform: translateY(-2px) scale(1.02);
+}
+
+@keyframes rc-plan-pulse {
+  0%, 100% { box-shadow: 0 0 0 2px color-mix(in srgb, var(--rc-gold) 45%, transparent), 0 18px 40px rgba(78, 66, 56, 0.16); }
+  50% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--rc-gold) 30%, transparent), 0 22px 48px rgba(78, 66, 56, 0.2); }
+}
+
+html[data-plan-focus] .is-plan-focus.rc-plan-pulse {
+  animation: rc-plan-pulse 1.1s ease 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-plan-focus] .is-plan-focus.rc-plan-pulse {
+    animation: none;
+  }
 }
 
 .rc-plan-card {

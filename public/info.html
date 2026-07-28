@@ -191,33 +191,40 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
     <h2 class="text-4xl font-bold text-primary mb-3 tracking-tight">Flat fees. Real service.</h2>
     <p class="text-on-surface-variant max-w-2xl mb-8 md:mb-12 leading-relaxed">No percentage of your rent. You pay for on-ground property management — residential, commercial, or custom Airbnb hospitality. No lock-in period.</p>
 
+    <div class="rc-plan-tabs mb-5" role="tablist" aria-label="Pricing plans">
+      <button type="button" class="rc-plan-tab" role="tab" data-plan-tab="residential" aria-selected="false">Residential</button>
+      <button type="button" class="rc-plan-tab" role="tab" data-plan-tab="commercial" aria-selected="false">Commercial</button>
+      <button type="button" class="rc-plan-tab" role="tab" data-plan-tab="airbnb" aria-selected="false">Airbnb</button>
+    </div>
+    <p class="rc-plan-tabs-hint text-xs text-on-surface-variant mb-5">Tap a plan to highlight matching price tiles and details</p>
+
     <!-- Mobile compare strip -->
     <div class="rc-price-compare lg:hidden mb-5" role="group" aria-label="Compare plans">
-      <a href="/checkout?plan=residential" class="rc-price-compare__cell">
+      <a href="/checkout?plan=residential" class="rc-price-compare__cell" data-plan="residential">
         <span class="rc-price-compare__label">Residential</span>
         <span class="rc-price-compare__amount">₹1,499</span>
         <span class="rc-price-compare__unit">/mo</span>
         <span class="rc-price-compare__note">+₹799 extra</span>
       </a>
-      <a href="/checkout?plan=commercial" class="rc-price-compare__cell rc-price-compare__cell--featured">
+      <a href="/checkout?plan=commercial" class="rc-price-compare__cell rc-price-compare__cell--featured" data-plan="commercial">
         <span class="rc-price-compare__label">Commercial</span>
         <span class="rc-price-compare__amount">₹1,999</span>
         <span class="rc-price-compare__unit">/mo</span>
         <span class="rc-price-compare__note">+₹799 extra</span>
       </a>
-      <a href="/#contact" class="rc-price-compare__cell">
+      <a href="/#contact" class="rc-price-compare__cell" data-plan="airbnb">
         <span class="rc-price-compare__label">Airbnb</span>
         <span class="rc-price-compare__amount rc-price-compare__amount--sm">Custom</span>
         <span class="rc-price-compare__unit">quote</span>
         <span class="rc-price-compare__note">Hospitality</span>
       </a>
     </div>
-    <p class="rc-price-compare-hint lg:hidden">Swipe for full plan details</p>
+    <p class="rc-price-compare-hint lg:hidden">Tap a plan tab · swipe for full details</p>
 
-    <div class="rc-plan-rail mb-12">
+    <div class="rc-plan-rail mb-12" data-plan-group="pricing">
 
       <!-- Residential -->
-      <div class="rc-plan-card rc-plan-card--photo">
+      <div class="rc-plan-card rc-plan-card--photo" data-plan="residential" id="plan-residential">
         <div class="rc-plan-card__hero rc-plan-card__hero--residential">
           <span class="rc-plan-card__hero-media" aria-hidden="true"></span>
           <span class="rc-plan-card__hero-shade" aria-hidden="true"></span>
@@ -243,7 +250,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
       </div>
 
       <!-- Commercial -->
-      <div class="rc-plan-card rc-plan-card-featured rc-plan-card--photo">
+      <div class="rc-plan-card rc-plan-card-featured rc-plan-card--photo" data-plan="commercial" id="plan-commercial">
         <div class="rc-plan-card__hero rc-plan-card__hero--commercial">
           <span class="rc-plan-card__hero-media" aria-hidden="true"></span>
           <span class="rc-plan-card__hero-shade" aria-hidden="true"></span>
@@ -268,7 +275,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
       </div>
 
       <!-- Airbnb -->
-      <div class="rc-plan-card rc-plan-card--photo">
+      <div class="rc-plan-card rc-plan-card--photo" data-plan="airbnb" id="plan-airbnb">
         <div class="rc-plan-card__hero rc-plan-card__hero--airbnb">
           <span class="rc-plan-card__hero-media" aria-hidden="true"></span>
           <span class="rc-plan-card__hero-shade" aria-hidden="true"></span>
@@ -324,8 +331,8 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
     <h2 class="text-4xl font-bold text-primary mb-3 tracking-tight">On-ground management.<br/>Not just software.</h2>
     <p class="text-on-surface-variant max-w-2xl mb-10 leading-relaxed">RentCan is a property management company that physically looks after your assets across Chandigarh, Mohali, Panchkula and Aerocity — with a modern owner dashboard for visibility, not as a substitute for service.</p>
 
-    <div class="grid md:grid-cols-3 gap-5 mb-16">
-      <a href="/checkout?plan=residential" class="rc-photo-tile rc-photo-tile--residential" style="min-height:18rem">
+    <div class="grid md:grid-cols-3 gap-5 mb-16" data-plan-group="tiles">
+      <a href="/checkout?plan=residential" class="rc-photo-tile rc-photo-tile--residential" style="min-height:18rem" data-plan="residential">
         <span class="rc-photo-tile__media" aria-hidden="true"></span>
         <span class="rc-photo-tile__shade" aria-hidden="true"></span>
         <div class="rc-photo-tile__body">
@@ -335,7 +342,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
           <span class="rc-photo-tile__cta">Sign in &amp; pay →</span>
         </div>
       </a>
-      <a href="/checkout?plan=commercial" class="rc-photo-tile rc-photo-tile--commercial rc-photo-tile--featured" style="min-height:18rem">
+      <a href="/checkout?plan=commercial" class="rc-photo-tile rc-photo-tile--commercial rc-photo-tile--featured" style="min-height:18rem" data-plan="commercial">
         <span class="rc-photo-tile__media" aria-hidden="true"></span>
         <span class="rc-photo-tile__shade" aria-hidden="true"></span>
         <div class="rc-photo-tile__body">
@@ -345,7 +352,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
           <span class="rc-photo-tile__cta">Sign in &amp; pay →</span>
         </div>
       </a>
-      <a href="/#contact" class="rc-photo-tile rc-photo-tile--airbnb" style="min-height:18rem">
+      <a href="/#contact" class="rc-photo-tile rc-photo-tile--airbnb" style="min-height:18rem" data-plan="airbnb">
         <span class="rc-photo-tile__media" aria-hidden="true"></span>
         <span class="rc-photo-tile__shade" aria-hidden="true"></span>
         <div class="rc-photo-tile__body">
@@ -843,6 +850,10 @@ function switchTab(tabId, btn) {
   if (tabs) {
     const top = tabs.getBoundingClientRect().top + window.scrollY - 72;
     window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+  }
+  // Airbnb page tab should highlight Airbnb plan tiles/cards
+  if (tabId === 'airbnb' && window.RentCanSite && typeof window.RentCanSite.setPlanFocus === 'function') {
+    window.RentCanSite.setPlanFocus('airbnb', { scroll: true });
   }
 }
 
