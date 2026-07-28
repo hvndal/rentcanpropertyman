@@ -1399,6 +1399,99 @@ html[data-plan-focus] .is-plan-focus.rc-plan-pulse {
   }
 }
 
+/* Fixed Instagram handle — stays on the side while scrolling */
+.rc-side-ig {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 46;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  padding: 1rem 0.55rem;
+  background: color-mix(in srgb, var(--rc-brown) 92%, var(--rc-mint));
+  color: #fff;
+  text-decoration: none;
+  border-radius: 0.85rem 0 0 0.85rem;
+  box-shadow: -8px 12px 28px rgba(78, 66, 56, 0.22);
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: lowercase;
+  transition: background 0.25s ease, padding 0.25s ease, box-shadow 0.25s ease;
+}
+
+.rc-side-ig:hover {
+  background: var(--rc-brown);
+  padding-right: 0.7rem;
+  box-shadow: -10px 14px 32px rgba(78, 66, 56, 0.28);
+}
+
+.rc-side-ig__icon {
+  display: inline-flex;
+  writing-mode: horizontal-tb;
+  transform: rotate(90deg);
+}
+
+.rc-side-ig__handle {
+  line-height: 1;
+}
+
+.rc-launch-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-width: 42rem;
+  margin: 0 auto 1.5rem;
+  padding: 1rem 1.15rem;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--rc-gold) 45%, var(--rc-border));
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--rc-mint) 45%, #fff) 0%, color-mix(in srgb, var(--rc-cream) 80%, #fff) 100%);
+  text-align: center;
+  box-shadow: var(--rc-shadow);
+}
+
+.rc-launch-banner strong {
+  color: var(--rc-brown);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+}
+
+.rc-launch-banner p {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: var(--rc-muted);
+}
+
+.rc-launch-banner a {
+  color: var(--rc-brown);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (max-width: 767px) {
+  .rc-side-ig {
+    top: auto;
+    bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px));
+    transform: none;
+    writing-mode: horizontal-tb;
+    border-radius: 999px 0 0 999px;
+    padding: 0.65rem 0.75rem 0.65rem 0.9rem;
+    gap: 0.4rem;
+    font-size: 0.68rem;
+  }
+
+  .rc-side-ig__icon {
+    transform: none;
+  }
+}
+
 .rc-plan-card {
   border-radius: 1.25rem;
   padding: 2rem;

@@ -234,6 +234,75 @@
   }
 
   const PLAN_IDS = ['residential', 'commercial', 'airbnb'];
+  const WA_PHONE = '918146298024';
+  const WA_MESSAGES = {
+    residential:
+      "Hi RentCan — I'd like to get set up for Residential (₹1,499/mo). Full launch is 1 October; please lock me in as one of the first 100 owners at this pricing with priority service.",
+    commercial:
+      "Hi RentCan — I'd like to get set up for Commercial (₹1,999/mo). Full launch is 1 October; please lock me in as one of the first 100 owners at this pricing with priority service.",
+    airbnb:
+      "Hi RentCan — I'd like custom Airbnb management. Full launch is 1 October; please lock me in as one of the first 100 owners with founding pricing and priority service.",
+    sos:
+      "Hi RentCan — I need an SOS property inspection (₹500/visit). Please help me book one.",
+    general:
+      "Hi RentCan — I'd like to get set up. Full launch is 1 October — please lock me in as one of the first 100 owners at today's pricing with priority service.",
+  };
+
+  function waUrl(plan) {
+    const allowed = PLAN_IDS.includes(plan) || plan === 'sos' || plan === 'general';
+    const key = allowed ? plan : 'general';
+    const text = WA_MESSAGES[key] || WA_MESSAGES.general;
+    return 'https://wa.me/' + WA_PHONE + '?text=' + encodeURIComponent(text);
+  }
+
+  function planFromHref(href) {
+    try {
+      const url = new URL(href, window.location.origin);
+      if (!url.pathname.includes('checkout')) return null;
+      return url.searchParams.get('plan') || 'general';
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function wireWhatsAppCtas() {
+    document.querySelectorAll('[data-wa-plan]').forEach((el) => {
+      const plan = el.getAttribute('data-wa-plan') || 'general';
+      if (el.tagName === 'A') {
+        el.setAttribute('href', waUrl(plan));
+        el.setAttribute('target', '_blank');
+        el.setAttribute('rel', 'noopener noreferrer');
+      }
+    });
+
+    document.querySelectorAll('a[href*="/checkout"], a[href*="checkout.html"]').forEach((a) => {
+      if (a.hasAttribute('data-wa-skip')) return;
+      const plan = a.getAttribute('data-wa-plan') || planFromHref(a.getAttribute('href')) || 'general';
+      a.setAttribute('href', waUrl(plan));
+      a.setAttribute('target', '_blank');
+      a.setAttribute('rel', 'noopener noreferrer');
+      a.setAttribute('data-wa-plan', plan);
+    });
+  }
+
+  function injectSideSocial() {
+    if (document.querySelector('.rc-side-ig')) return;
+    const path = pagePath();
+    const allow = path === '/' || path === '/info' || path === '/checkout' || path === '/login';
+    if (!allow) return;
+
+    const ig = document.createElement('a');
+    ig.className = 'rc-side-ig';
+    ig.href = 'https://instagram.com/rentcan.in';
+    ig.target = '_blank';
+    ig.rel = 'noopener noreferrer';
+    ig.setAttribute('aria-label', 'RentCan on Instagram @rentcan.in');
+    ig.innerHTML =
+      '<span class="rc-side-ig__icon" aria-hidden="true">' +
+      '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8A3.6 3.6 0 0 0 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6A3.6 3.6 0 0 0 16.4 4H7.6m9.65 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>' +
+      '</span><span class="rc-side-ig__handle">@rentcan.in</span>';
+    document.body.appendChild(ig);
+  }
 
   function setPlanFocus(plan, options) {
     const opts = options || {};
@@ -313,11 +382,13 @@
     initMobileMenu();
     initHeroChipAccordion();
     initHeroHeaderBlend();
+    injectSideSocial();
+    wireWhatsAppCtas();
     initPlanFocus();
     handleInitialHash();
   });
 
   window.addEventListener('hashchange', () => smoothScrollToHash(window.location.hash));
 
-  window.RentCanSite = { smoothScrollToHash, revealInSection, setPlanFocus };
+  window.RentCanSite = { smoothScrollToHash, revealInSection, setPlanFocus, waUrl };
 })();

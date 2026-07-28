@@ -351,7 +351,7 @@
     </nav>
     <div class="rc-site-nav-actions">
       <a class="hidden sm:inline text-xs font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" href="/login">Login</a>
-      <a class="hidden sm:inline-flex px-4 py-2 bg-primary text-white text-[11px] font-bold uppercase tracking-widest rounded-lg hover:bg-primary-container transition-colors" href="/login">Get Started</a>
+      <a class="hidden sm:inline-flex px-4 py-2 bg-primary text-white text-[11px] font-bold uppercase tracking-widest rounded-lg hover:bg-primary-container transition-colors" href="#" data-wa-plan="general">WhatsApp to join</a>
       <button type="button" id="site-menu-btn" class="sm:hidden flex items-center justify-center w-10 h-10 rounded-lg border border-outline-variant text-primary hover:bg-surface-container-low transition-colors" aria-label="Open menu" aria-expanded="false" aria-controls="site-mobile-menu">
         <span class="material-symbols-outlined text-[22px]">menu</span>
       </button>
@@ -376,7 +376,7 @@
       <a href="#pricing" class="rc-mobile-drawer-link" data-close-menu><span class="material-symbols-outlined text-primary text-xl">loyalty</span> Pricing</a>
       <a href="#inspection" class="rc-mobile-drawer-link" data-close-menu><span class="material-symbols-outlined text-primary text-xl">fact_check</span> Inspections</a>
       <a href="#contact" class="rc-mobile-drawer-link" data-close-menu><span class="material-symbols-outlined text-primary text-xl">mail</span> Contact</a>
-      <a href="/login" class="rc-mobile-drawer-link mt-3 border border-outline-variant"><span class="material-symbols-outlined text-primary text-xl">login</span> Get Started</a>
+      <a href="#" data-wa-plan="general" class="rc-mobile-drawer-link mt-3 border border-outline-variant"><span class="material-symbols-outlined text-primary text-xl">chat</span> WhatsApp to join</a>
     </nav>
   </div>
 </div>
@@ -397,11 +397,11 @@
 
   <!-- Isolated subtitle -->
   <p class="hero-iso hero-sub">
-    Premium on-ground property management for landlords, investors &amp; NRIs in Mohali, Chandigarh, Panchkula &amp; Aerocity.
+    Premium on-ground property management for landlords, investors &amp; NRIs in Mohali, Chandigarh, Panchkula &amp; Aerocity. Full platform launch 1 October — first 100 owners lock in today’s pricing + priority service.
   </p>
 
   <div class="hero-iso hero-cta-row flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
-    <a href="/login" class="rc-btn-primary w-full sm:w-auto justify-center">Get Started <span class="material-symbols-outlined text-base">arrow_forward</span></a>
+    <a href="#" data-wa-plan="general" class="rc-btn-primary w-full sm:w-auto justify-center" target="_blank" rel="noopener">WhatsApp to get set up <span class="material-symbols-outlined text-base">chat</span></a>
     <a href="#contact" class="rc-btn-outline w-full sm:w-auto justify-center">Contact Team</a>
   </div>
 
@@ -469,7 +469,7 @@
         <p class="rc-photo-tile__eyebrow">Residential</p>
         <p class="rc-photo-tile__price">₹1,499<span>/mo</span></p>
         <p class="rc-photo-tile__meta">+ ₹799 per extra property</p>
-        <span class="rc-photo-tile__cta">Get Started →</span>
+        <span class="rc-photo-tile__cta">WhatsApp to join →</span>
       </div>
     </a>
     <a href="/checkout?plan=commercial" class="rc-photo-tile rc-photo-tile--commercial rc-photo-tile--featured" data-plan="commercial">
@@ -479,17 +479,17 @@
         <p class="rc-photo-tile__eyebrow">Commercial</p>
         <p class="rc-photo-tile__price">₹1,999<span>/mo</span></p>
         <p class="rc-photo-tile__meta">+ ₹799 per extra property</p>
-        <span class="rc-photo-tile__cta">Get Started →</span>
+        <span class="rc-photo-tile__cta">WhatsApp to join →</span>
       </div>
     </a>
-    <a href="#contact" class="rc-photo-tile rc-photo-tile--airbnb" data-plan="airbnb">
+    <a href="#" data-wa-plan="airbnb" class="rc-photo-tile rc-photo-tile--airbnb" data-plan="airbnb">
       <span class="rc-photo-tile__media" aria-hidden="true"></span>
       <span class="rc-photo-tile__shade" aria-hidden="true"></span>
       <div class="rc-photo-tile__body">
         <p class="rc-photo-tile__eyebrow">Airbnb</p>
         <p class="rc-photo-tile__price" style="font-size:1.6rem">Custom</p>
         <p class="rc-photo-tile__meta">Separate premium hospitality plan</p>
-        <span class="rc-photo-tile__cta">Contact Team →</span>
+        <span class="rc-photo-tile__cta">WhatsApp to join →</span>
       </div>
     </a>
   </div>
@@ -606,7 +606,7 @@
       <li>✔ Digital Inspection Report</li>
       <li>✔ Issue Summary</li>
     </ul>
-    <a href="#contact" class="inline-block px-10 py-3.5 bg-primary text-white font-label-caps text-xs uppercase tracking-widest rounded-xl hover:bg-primary/90 transition-colors">Book Inspection</a>
+    <a href="#" data-wa-plan="sos" class="inline-block px-10 py-3.5 bg-primary text-white font-label-caps text-xs uppercase tracking-widest rounded-xl hover:bg-primary/90 transition-colors">WhatsApp to book</a>
   </div>
 </section>
 
@@ -625,6 +625,11 @@
       <button type="button" class="rc-plan-tab" role="tab" data-plan-tab="airbnb" aria-selected="false">Airbnb</button>
     </div>
 
+    <div class="rc-launch-banner">
+      <strong>Full launch · 1 October</strong>
+      <p>WhatsApp <a href="#" data-wa-plan="general">+91 81462 98024</a> to get set up now. First 100 owners keep today’s pricing and get priority service.</p>
+    </div>
+
     <!-- Mobile: all three prices visible at once -->
     <div class="rc-price-compare md:hidden mb-5" role="group" aria-label="Compare plans">
       <a href="/checkout?plan=residential" class="rc-price-compare__cell" data-plan="residential">
@@ -639,7 +644,7 @@
         <span class="rc-price-compare__unit">/mo</span>
         <span class="rc-price-compare__note">+₹799 extra</span>
       </a>
-      <a href="#contact" class="rc-price-compare__cell" data-plan="airbnb">
+      <a href="#" data-wa-plan="airbnb" class="rc-price-compare__cell" data-plan="airbnb">
         <span class="rc-price-compare__label">Airbnb</span>
         <span class="rc-price-compare__amount rc-price-compare__amount--sm">Custom</span>
         <span class="rc-price-compare__unit">quote</span>
@@ -656,7 +661,7 @@
           <p class="rc-photo-tile__eyebrow">Residential</p>
           <p class="rc-photo-tile__price">₹1,499<span>/mo</span></p>
           <p class="rc-photo-tile__meta">+ ₹799/additional property</p>
-          <span class="rc-photo-tile__cta">Sign in &amp; pay →</span>
+          <span class="rc-photo-tile__cta">WhatsApp to join →</span>
         </div>
       </a>
       <a href="/checkout?plan=commercial" class="rc-photo-tile rc-photo-tile--commercial rc-photo-tile--featured" data-plan="commercial">
@@ -666,21 +671,21 @@
           <p class="rc-photo-tile__eyebrow">Commercial</p>
           <p class="rc-photo-tile__price">₹1,999<span>/mo</span></p>
           <p class="rc-photo-tile__meta">+ ₹799/additional property</p>
-          <span class="rc-photo-tile__cta">Sign in &amp; pay →</span>
+          <span class="rc-photo-tile__cta">WhatsApp to join →</span>
         </div>
       </a>
-      <a href="#contact" class="rc-photo-tile rc-photo-tile--airbnb" data-plan="airbnb">
+      <a href="#" data-wa-plan="airbnb" class="rc-photo-tile rc-photo-tile--airbnb" data-plan="airbnb">
         <span class="rc-photo-tile__media" aria-hidden="true"></span>
         <span class="rc-photo-tile__shade" aria-hidden="true"></span>
         <div class="rc-photo-tile__body">
           <p class="rc-photo-tile__eyebrow">Airbnb</p>
           <p class="rc-photo-tile__price" style="font-size:1.6rem">Custom Pricing</p>
           <p class="rc-photo-tile__meta">Premium hospitality management</p>
-          <span class="rc-photo-tile__cta">Contact Team →</span>
+          <span class="rc-photo-tile__cta">WhatsApp to join →</span>
         </div>
       </a>
     </div>
-    <p class="text-center text-on-surface-variant/60 font-light mt-10 text-sm">SOS visits: <a href="/checkout?plan=sos" class="text-primary font-semibold underline">₹500/visit</a> · Base plan covers 1 property · Pay securely via Razorpay after sign-in</p>
+    <p class="text-center text-on-surface-variant/60 font-light mt-10 text-sm">SOS visits: <a href="/checkout?plan=sos" class="text-primary font-semibold underline">₹500/visit</a> · Base plan covers 1 property · WhatsApp to get set up — online payments open at full launch</p>
   </div>
 </section>
 
@@ -691,7 +696,7 @@
 <span class="font-label-caps text-label-caps text-[#F6CFDE] uppercase tracking-[0.4em] mb-5 block">On-Ground Property Care</span>
 <h2 class="font-display-lg text-white text-4xl md:text-[56px] mb-8 leading-[1.08] tracking-tight">Because your property deserves<br/>more than an app.</h2>
 <div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
-<a href="/login" class="px-12 sm:px-16 py-5 sm:py-6 bg-surface text-primary font-label-caps text-label-caps uppercase tracking-[0.2em] font-bold hover:scale-[1.02] transition-all duration-300 shadow-lg rounded-sm inline-block">Get Started</a>
+<a href="#" data-wa-plan="general" class="px-12 sm:px-16 py-5 sm:py-6 bg-surface text-primary font-label-caps text-label-caps uppercase tracking-[0.2em] font-bold hover:scale-[1.02] transition-all duration-300 shadow-lg rounded-sm inline-block">WhatsApp to get set up</a>
 <a href="#contact" class="px-12 sm:px-16 py-5 sm:py-6 border border-white/50 text-white font-label-caps text-label-caps uppercase tracking-[0.2em] hover:bg-white/10 transition-all duration-300 rounded-sm inline-block">Contact Team</a>
 </div>
 </div>
@@ -734,10 +739,12 @@
 <h4 class="font-label-caps text-label-caps text-primary font-bold mb-4 uppercase tracking-[0.2em]">Contact</h4>
 <p class="text-on-surface-variant text-sm mb-3 leading-relaxed font-light">Sector 79, Mohali<br/>SAS Nagar, Punjab</p>
 <a href="mailto:hundalg968@gmail.com" class="block text-sm font-semibold text-primary hover:text-brand-gold transition-colors mb-1.5">hundalg968@gmail.com</a>
-<a href="tel:+918146298024" class="block text-sm font-semibold text-primary hover:text-brand-gold transition-colors mb-4">+91 81462 98024</a>
+<a href="tel:+918146298024" class="block text-sm font-semibold text-primary hover:text-brand-gold transition-colors mb-1.5">+91 81462 98024</a>
+<a href="#" data-wa-plan="general" class="block text-sm font-semibold text-primary hover:text-brand-gold transition-colors mb-4">WhatsApp to get set up</a>
 <div class="flex gap-6">
 <a href="mailto:hundalg968@gmail.com" aria-label="Email RentCan" class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-primary/5 text-primary hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-[20px]">mail</span></a>
 <a href="tel:+918146298024" aria-label="Call RentCan" class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-primary/5 text-primary hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-[20px]">call</span></a>
+<a href="#" data-wa-plan="general" aria-label="WhatsApp RentCan" class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-primary/5 text-primary hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-[20px]">chat</span></a>
 </div>
 </div>
 </div>
