@@ -1,27 +1,7 @@
 <!DOCTYPE html><html lang="en" class="light"><head>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-// ── Auth guard: accepts both admin bypass (sessionStorage) and real Supabase session ──
-(async function checkAuth() {
-  const cached = sessionStorage.getItem('rentcan_user');
-  if (cached) return; // authenticated
-
-  try {
-    const res = await fetch('/api/config');
-    const cfg = await res.json();
-    if (!cfg.supabaseUrl) { window.location.href = '/login'; return; }
-    const client = supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
-    const { data: { session } } = await client.auth.getSession();
-    if (!session) { window.location.href = '/login'; return; }
-    const meta = session.user.user_metadata || {};
-    sessionStorage.setItem('rentcan_role', meta.role || 'landlord');
-    sessionStorage.setItem('rentcan_user', JSON.stringify({
-      id: session.user.id, email: session.user.email,
-      name: meta.full_name || session.user.email, role: meta.role || 'landlord'
-    }));
-  } catch (_) { window.location.href = '/login'; }
-})();
-</script>
+<script src="/js/rentcan-config.js"></script>
+<script>RentCan.requireAuth();</script>
 
     <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo.png">

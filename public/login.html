@@ -295,6 +295,7 @@ body {
 }
 .resend-row button:disabled { color: #bec9c5; cursor: not-allowed; }
 <link rel="stylesheet" href="styles.css">
+<script src="/js/rentcan-config.js"></script>
 <script src="/js/app.js"></script>
 </head>
 <body>
@@ -519,19 +520,13 @@ let otpRequestId = null;
 let selectedRole = null;
 let msg91WidgetReady = false;
 let msg91AccessToken = null;
-const DEFAULT_SUPABASE_URL = "https://pomxnutomfzmignmyjbi.supabase.co";
-const DEFAULT_SUPABASE_KEY = "sb_publishable_85_NJkwy59qf7ZChmG7ujg_BRIM0Y89";
-const DEFAULT_MSG91_WIDGET = {
-  widgetId: "366674716248383037373030",
-  tokenAuth: "535432TXjnw0dF6a5d0eb2P1"
-};
 
 function digitsPhone(countryCode, local) {
   return String(countryCode || '').replace(/\D/g, '') + String(local || '').replace(/\D/g, '');
 }
 
 function initMsg91Widget(widgetCfg) {
-  const cfg = widgetCfg || DEFAULT_MSG91_WIDGET;
+  const cfg = widgetCfg || (window.RentCan && RentCan.DEFAULTS.msg91Widget);
   if (!cfg.widgetId || !cfg.tokenAuth) {
     console.warn('MSG91 widget config missing');
     return;
@@ -784,8 +779,8 @@ async function initApp() {
     }, 300);
   }
 
-  let url = DEFAULT_SUPABASE_URL;
-  let key = DEFAULT_SUPABASE_KEY;
+  let url = RentCan.DEFAULTS.supabaseUrl;
+  let key = RentCan.DEFAULTS.supabaseKey;
 
   if (window.location.search.includes('logout=true')) {
     sessionStorage.clear();
@@ -803,36 +798,19 @@ async function initApp() {
   }
 
   try {
-    const res = await fetch('/api/config');
-    if (res.ok) {
-      const rawText = await res.text();
-      try {
-        const cfg = JSON.parse(rawText);
-        if (cfg.supabaseUrl && cfg.supabaseKey) {
-          url = cfg.supabaseUrl;
-          key = cfg.supabaseKey;
-        }
-        if (cfg.msg91Widget) {
-          initMsg91Widget(cfg.msg91Widget);
-        } else {
-          initMsg91Widget(DEFAULT_MSG91_WIDGET);
-        }
-      } catch(parseErr) {
-        console.warn('Config response not JSON, using defaults');
-        initMsg91Widget(DEFAULT_MSG91_WIDGET);
-      }
-    } else {
-      initMsg91Widget(DEFAULT_MSG91_WIDGET);
-    }
+    const cfg = await RentCan.fetchConfig();
+    url = cfg.supabaseUrl;
+    key = cfg.supabaseKey;
+    initMsg91Widget(cfg.msg91Widget);
   } catch(e) {
     console.warn('API config fallback used:', e);
-    initMsg91Widget(DEFAULT_MSG91_WIDGET);
+    initMsg91Widget(RentCan.DEFAULTS.msg91Widget);
   }
 
   // Retry widget init if script loaded late
   if (!msg91WidgetReady) {
     setTimeout(() => {
-      if (!msg91WidgetReady) initMsg91Widget(DEFAULT_MSG91_WIDGET);
+      if (!msg91WidgetReady) initMsg91Widget(RentCan.DEFAULTS.msg91Widget);
     }, 800);
   }
 
@@ -870,9 +848,7 @@ if (document.readyState === 'loading') {
 // GOOGLE SIGN IN
 // ─────────────────────────────────────────────────────────────────────
 async function signInWithGoogle() {
-  if (!sb && window.supabase) {
-    sb = window.supabase.createClient(DEFAULT_SUPABASE_URL, DEFAULT_SUPABASE_KEY);
-  }
+  if (!sb) sb = await RentCan.createClient();
 
   if (!sb) {
     showAlert('RentCan security is loading. Please try clicking again in a moment.');
@@ -973,6 +949,10 @@ async function finishPhoneLogin(phoneDisplay, accessToken) {
       })
     });
     const data = await res.json().catch(() => ({}));
+    if (!res.ok || data.type === 'error') {
+      showAlert(data.message || 'Could not complete phone sign-in. Try Google or Email instead.');
+      return;
+    }
     if (sb && data.session?.access_token && data.session?.refresh_token) {
       const { data: sessData, error: sessErr } = await sb.auth.setSession({
         access_token: data.session.access_token,
