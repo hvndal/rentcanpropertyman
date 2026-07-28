@@ -11,6 +11,11 @@ const {
   resolveMsg91TokenAuth,
   resolveMsg91AuthKey
 } = require('./lib/rentcan-config');
+const {
+  verifyWidgetAccessToken,
+  extractVerifiedPhone
+} = require('./lib/msg91');
+const { rateLimit, clientIp } = require('./lib/rate-limit');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -46,6 +51,10 @@ function getMsg91WidgetId() {
 
 function getMsg91AuthKey() {
   return resolveMsg91AuthKey();
+}
+
+function msg91VerifyReady() {
+  return Boolean(getMsg91AuthKey());
 }
 
 function getMsg91TokenAuth() {
@@ -90,7 +99,8 @@ app.get('/api/config', (req, res) => {
     msg91Widget: {
       widgetId: getMsg91WidgetId(),
       tokenAuth: getMsg91TokenAuth(),
-      ready: msg91WidgetConfigured()
+      ready: msg91WidgetConfigured(),
+      serverVerify: msg91VerifyReady()
     }
   });
 });
@@ -104,52 +114,89 @@ app.get('/api/health', (req, res) => {
     supabase: Boolean(resolveSupabaseUrl() && resolveSupabaseAnonKey()),
     msg91: msg91Configured(),
     msg91Widget: msg91WidgetConfigured(),
+    msg91Verify: msg91VerifyReady(),
     phoneAuth: Boolean(getSupabaseAdmin())
   });
 });
 
-// After MSG91 widget verifyOtp success — create Supabase session
+// After MSG91 widget verifyOtp — server verifies JWT, then creates Supabase session
 app.post('/api/phone-session', async (req, res) => {
-  const { phone, access_token } = req.body || {};
+  const ip = clientIp(req);
+  const limit = rateLimit({ key: `phone-session:${ip}`, limit: 15, windowMs: 15 * 60 * 1000 });
+  if (!limit.allowed) {
+    return res.status(429).json({
+      type: 'error',
+      code: 'RATE_LIMITED',
+      message: 'Too many attempts. Please wait and try again.',
+      retry_after: limit.retryAfterSec
+    });
+  }
+
+  const { phone, access_token: accessToken } = req.body || {};
   const cleanPhone = normalizePhone(phone);
   if (!cleanPhone || cleanPhone.length < 10) {
     return res.status(400).json({ type: 'error', message: 'Valid phone number required.' });
   }
 
-  // Optional: verify MSG91 access token when provided (widget flow)
-  if (access_token) {
-    const authKey = getMsg91AuthKey();
-    if (!authKey) {
-      console.warn('[MSG91 verifyAccessToken] no auth key — trusting client widget verification');
+  const token = typeof accessToken === 'string' ? accessToken.trim() : '';
+
+  if (IS_PROD && !token) {
+    return res.status(401).json({
+      type: 'error',
+      code: 'ACCESS_TOKEN_REQUIRED',
+      message: 'Complete OTP verification before signing in.'
+    });
+  }
+
+  if (token) {
+    if (!msg91VerifyReady()) {
+      if (IS_PROD) {
+        return res.status(503).json({
+          type: 'error',
+          code: 'MSG91_AUTH_KEY_MISSING',
+          message: 'Phone sign-in is not fully configured. Use Google or Email sign-in.'
+        });
+      }
+      console.warn('[MSG91] MSG91_AUTH_KEY not set — skipping verifyAccessToken (dev only)');
     } else {
-    try {
-      const result = await httpsJson({
-        method: 'POST',
-        hostname: 'control.msg91.com',
-        path: '/api/v5/widget/verifyAccessToken',
-        headers: {
-          'content-type': 'application/json',
-          'Accept': 'application/json'
+      try {
+        const verified = await verifyWidgetAccessToken(token);
+        if (!verified.ok) {
+          console.warn('[MSG91 verifyAccessToken] rejected:', verified.code, verified.status || '');
+          return res.status(401).json({
+            type: 'error',
+            code: verified.code || 'MSG91_VERIFY_FAILED',
+            message: 'OTP verification could not be confirmed. Please request a new code.'
+          });
         }
-      }, JSON.stringify({
-        authkey: authKey,
-        'access-token': access_token
-      }));
-      console.log('[MSG91 verifyAccessToken]:', result.status, result.body);
-      const parsed = result.json || {};
-      const ok = parsed.type === 'success'
-        || /success|verified/i.test(String(parsed.message || ''))
-        || (result.status >= 200 && result.status < 300 && !parsed.type);
-      if (parsed.type === 'error' || result.status === 401 || result.status === 403) {
-        return res.status(401).json({ type: 'error', message: parsed.message || 'OTP token validation failed.' });
+
+        const msgPhone = extractVerifiedPhone(verified.data);
+        if (msgPhone && msgPhone.length >= 10) {
+          const normalizedMsgPhone = normalizePhone(msgPhone);
+          if (normalizedMsgPhone !== cleanPhone) {
+            console.warn('[MSG91] phone mismatch for session request');
+            return res.status(401).json({
+              type: 'error',
+              code: 'PHONE_MISMATCH',
+              message: 'Phone number does not match the verified OTP.'
+            });
+          }
+        }
+      } catch (e) {
+        console.error('[MSG91 verifyAccessToken] error:', e.message);
+        return res.status(502).json({
+          type: 'error',
+          code: 'MSG91_UNAVAILABLE',
+          message: 'Could not verify OTP with SMS provider. Please try again.'
+        });
       }
-      if (!ok) {
-        console.warn('[MSG91 verifyAccessToken] inconclusive — proceeding with widget-verified phone');
-      }
-    } catch (e) {
-      console.warn('[MSG91 verifyAccessToken] skipped:', e.message);
     }
-    }
+  } else if (IS_PROD) {
+    return res.status(401).json({
+      type: 'error',
+      code: 'ACCESS_TOKEN_REQUIRED',
+      message: 'Complete OTP verification before signing in.'
+    });
   }
 
   const session = await createPhoneSession(cleanPhone);
@@ -199,6 +246,16 @@ app.get('/api/inspection-schedule', (req, res) => {
 
 // ── MSG91 Send OTP ──
 app.post('/api/send-otp', async (req, res) => {
+  const ip = clientIp(req);
+  const limit = rateLimit({ key: `send-otp:${ip}`, limit: 8, windowMs: 15 * 60 * 1000 });
+  if (!limit.allowed) {
+    return res.status(429).json({
+      type: 'error',
+      message: 'Too many OTP requests. Please wait before trying again.',
+      retry_after: limit.retryAfterSec
+    });
+  }
+
   const { phone } = req.body;
   if (!phone) return res.status(400).json({ type: 'error', message: 'Phone number required.' });
 
@@ -274,6 +331,16 @@ app.post('/api/send-otp', async (req, res) => {
 
 // ── MSG91 Verify OTP (+ optional Supabase session) ──
 app.post('/api/verify-otp', async (req, res) => {
+  const ip = clientIp(req);
+  const limit = rateLimit({ key: `verify-otp:${ip}`, limit: 12, windowMs: 15 * 60 * 1000 });
+  if (!limit.allowed) {
+    return res.status(429).json({
+      type: 'error',
+      message: 'Too many verification attempts. Please wait and try again.',
+      retry_after: limit.retryAfterSec
+    });
+  }
+
   const { phone, otp, request_id } = req.body;
   if (!phone || !otp) return res.status(400).json({ type: 'error', message: 'Phone and OTP required.' });
 
@@ -489,6 +556,7 @@ app.listen(PORT, () => {
   console.log(`Supabase URL   🚀 ${resolveSupabaseUrl()}`);
   console.log(`MSG91 API       🚀 ${msg91Configured() ? 'READY' : 'optional fallback'}`);
   console.log(`MSG91 Widget    🚀 ${msg91WidgetConfigured() ? 'READY' : 'NOT CONFIGURED'}`);
+  console.log(`MSG91 Verify    🚀 ${msg91VerifyReady() ? 'READY' : 'set MSG91_AUTH_KEY on server'}`);
   console.log(`Phone sessions  🚀 ${getSupabaseAdmin() ? 'READY' : 'needs SUPABASE_SERVICE_ROLE_KEY'}`);
 });
 

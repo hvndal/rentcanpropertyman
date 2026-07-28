@@ -1025,7 +1025,14 @@ async function signInWithEmail() {
 // ─────────────────────────────────────────────────────────────────────
 async function finishPhoneLogin(phoneDisplay, accessToken) {
   sessionStorage.setItem('rentcan_phone', phoneDisplay);
-  msg91AccessToken = accessToken || null;
+  const token = accessToken || msg91AccessToken || null;
+  msg91AccessToken = token;
+
+  if (!token) {
+    showAlert('Phone verification did not complete. Please enter the OTP code again.');
+    showView('view-otp');
+    return;
+  }
 
   try {
     const res = await fetch('/api/phone-session', {
@@ -1033,16 +1040,22 @@ async function finishPhoneLogin(phoneDisplay, accessToken) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         phone: phoneDisplay,
-        access_token: accessToken || undefined
+        access_token: token
       })
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok || data.type === 'error') {
-      const msg = data.code === 'PHONE_SESSION_UNAVAILABLE'
-        ? 'SMS verified, but phone sign-in is finishing setup. Please use Google or Email for now.'
-        : (data.message || 'Could not complete phone sign-in. Try Google or Email instead.');
+      let msg = data.message || 'Could not complete phone sign-in. Try Google or Email instead.';
+      if (data.code === 'PHONE_SESSION_UNAVAILABLE') {
+        msg = 'SMS verified, but phone sign-in is finishing setup. Please use Google or Email for now.';
+      } else if (data.code === 'MSG91_AUTH_KEY_MISSING' || data.code === 'MSG91_VERIFY_FAILED') {
+        msg = 'SMS sign-in could not be verified on our servers. Try Google or Email, or try again in a few minutes.';
+      } else if (data.code === 'RATE_LIMITED') {
+        msg = 'Too many attempts. Please wait a few minutes and try again.';
+      }
       showAlert(msg);
-      showView('view-welcome');
+      if (res.status === 401) showView('view-otp');
+      else showView('view-welcome');
       return;
     }
     if (sb && data.session?.access_token && data.session?.refresh_token) {
@@ -1150,6 +1163,13 @@ function verifyOTP() {
   const onOk = async (data) => {
     console.log('[MSG91] verifyOtp success', data);
     const token = data?.accessToken || data?.access_token || data?.token || null;
+    if (!token) {
+      showAlert('OTP verified but secure token was missing. Please try again.');
+      btn.disabled = false;
+      btn.textContent = 'Verify & Continue →';
+      return;
+    }
+    msg91AccessToken = token;
     showAlert('Phone verified!', 'success');
     await finishPhoneLogin(displayPhone, token);
   };

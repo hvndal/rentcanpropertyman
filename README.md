@@ -234,7 +234,12 @@ npm install
 # 3. Configure environment variables (.env)
 SUPABASE_URL=your_supabase_url
 SUPABASE_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+
+# MSG91 — keep MSG91_AUTH_KEY server-only (Vercel env, never in client JS)
 MSG91_AUTH_KEY=your_msg91_auth_key
+MSG91_WIDGET_ID=your_widget_id
+MSG91_TOKEN_AUTH=your_widget_token_auth
 MSG91_TEMPLATE_ID=your_msg91_template_id
 
 # 4. Launch local development instance
