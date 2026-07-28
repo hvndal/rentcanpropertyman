@@ -163,46 +163,29 @@ app.post('/api/verify-otp', async (req, res) => {
 
 // ── Static frontend ──
 
-// ₔ RENTCAN PRODUCTION BACKEND API ENDPOINTS ₔ
-structuredApiSafe();
-function structuredApiSafe() {};
-
-// 1. Invite / Add Tenant API
+// Invite / Add Tenant API (fallback when client-side Supabase unavailable)
 app.post('/api/invite-tenant', async (req, res) => {
-  const { property_id, full_name, email, phone, rent_due_date, rent_amount } = req.body;
-  if (!full_name || (!email && !phone)) {
-    return res.status(400).json({ type: 'error', message: 'Tenant Name and Enail/Phone are required.' });
+  const { property_id, full_name, email, phone, rent_due_date } = req.body;
+  if (!property_id || !full_name || (!email && !phone)) {
+    return res.status(400).json({ type: 'error', message: 'Property, tenant name, and email or phone are required.' });
   }
   res.json({
     type: 'success',
     message: 'Tenant invited successfully!',
-    tenant: {
-      id: 'client-' + Date.now(),
-      full_name,
-      email,
-      phone,
-      rent_due_date: rent_due_date || '2026-08-05'
-    }
+    tenant: { property_id, full_name, email, phone, rent_due_date: rent_due_date || 5 }
   });
 });
 
-// 2. Submit Maintenance / Repair Request API
+// Submit Maintenance / Repair Request API (fallback)
 app.post('/api/submit-maintenance', async (req, res) => {
-  const { property, issue_category, details, priority } = req.body;
-  if (!property || !details) {
-    return res.status(400).json({ type: 'error', message: 'Property and Issue Details are required.' });
+  const { property_id, title, description, category, priority } = req.body;
+  if (!property_id || !title || !description) {
+    return res.status(400).json({ type: 'error', message: 'Property, title, and description are required.' });
   }
   res.json({
     type: 'success',
     message: 'Maintenance request submitted successfully!',
-    request: {
-      id: 'req-' + Date.now(),
-      property,
-      issue_category: issue_category || 'AC Repair',
-      details,
-      priority: priority || 'Standard',
-      status: 'pending_landlord_approval'
-    }
+    request: { property_id, title, description, category: category || 'appliance', priority: priority || 'medium', status: 'pending' }
   });
 });
 

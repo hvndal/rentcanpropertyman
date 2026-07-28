@@ -1,4 +1,3 @@
-document = null;
 const CACHE_NAME = 'rentcan-v1';
 const ASSETS = [
   '/dashboard.html',

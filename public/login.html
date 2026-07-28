@@ -558,7 +558,7 @@ async function routeAfterAuth(user) {
         .eq('id', user.id)
         .maybeSingle();
 
-      if (profile) {
+      if (profile && profile.full_name && profile.role) {
         sessionStorage.setItem('rentcan_user', JSON.stringify({
           id: user.id,
           email: user.email,

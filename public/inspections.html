@@ -213,7 +213,7 @@
 <!-- TopBar -->
 <header class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-stack-md w-full sticky top-0 bg-background/80 backdrop-blur-md z-10 border-b border-outline">
 <div class="flex items-center gap-stack-md">
-<h2 class="font-headline-lg text-headline-lg text-primary">Overview</h2>
+<h2 class="font-headline-lg text-headline-lg text-primary">Inspections</h2>
 <div class="hidden md:flex gap-gutter">
 
   <a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md" href="dashboard.html">Properties</a>
@@ -228,8 +228,8 @@
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
 <input class="pl-10 pr-4 py-2 border-b border-outline bg-transparent focus:border-primary focus:ring-0 font-body-md text-body-md w-64 outline-none" placeholder="Search property or tenant..." type="text">
 </div>
-<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-lg text-label-lg transition-all hover:scale-[1.02] active:scale-95">
-                    Invite Tenant
+<button id="tenant-repair-btn" onclick="showComplaintModal()" class="bg-red-600 text-white px-6 py-2 rounded-lg font-label-lg text-label-lg transition-all hover:scale-[1.02] active:scale-95 hidden">
+                    Raise Repair
                 </button>
 </div>
 </header>
@@ -828,26 +828,25 @@ function showAddPropertyModal() {
   </a>
 </nav>
 
-<
- <!-- Raise Complaint / Repair Request Modal -->
+<!-- Raise Complaint / Repair Request Modal -->
 <div id="complaint-modal" class="fixed inset-0 z-50 hidden">
-  <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" olclick="closeComplaintModal()"></div>
+  <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onclick="closeComplaintModal()"></div>
   <div class="absolute right-0 bottom-0 md:top-0 h-[85vh] md:h-full w-full max-w-md bg-white border-t md:border-l border-outline shadow-2xl rounded-t-2xl md:rounded-none transform translate-y-full md:translate-y-0 md:translate-x-full transition-transform duration-300 ease-out flex flex-col" id="complaint-panel">
     <div class="px-6 py-4 border-b border-outline flex items-center justify-between bg-surface-container-lowest">
       <h3 class="text-base font-bold text-red-600 flex items-center gap-2">
         <span class="material-symbols-outlined text-lg">build</span> Raise Repair / Complaint Request
       </h3>
-      <button oniclick="closeComplaintModal()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">close</span></button>
+      <button onclick="closeComplaintModal()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">close</span></button>
     </div>
     
     <form id="complaint-form" class="p-6 space-y-4 flex-1 overflow-y-auto">
       <div>
         <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Property Unit / Address</label>
-        <input type="text" id="complaint-prop" required placeholder="e.g. Sector 17 Flat 302" class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus9border-red-500">
+        <input type="text" id="complaint-prop" required placeholder="e.g. Sector 17 Flat 302" class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus:border-red-500">
       </div>
       <div>
         <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Issue Category</label>
-        <select id="complaint-category" class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus9border-red-500 font-bold">
+        <select id="complaint-category" class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus:border-red-500 font-bold">
           <option value="AC Repair / Cooling">AC Repair / Cooling</option>
           <option value="Plumbing / Water Leak">Plumbing / Water Leak</option>
           <option value="Electrical / Power">Electrical / Power</option>
@@ -862,7 +861,7 @@ function showAddPropertyModal() {
       </div>
       <div>
         <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Priority Level</label>
-        <select id="complaint-priority" class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus9border-red-500 font-bold">
+        <select id="complaint-priority" class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus:border-red-500 font-bold">
           <option value="Urgent / Emergency">Urgent / Emergency</option>
           <option value="Standard">Standard (Within 24 hrs)</option>
         </select>
@@ -871,7 +870,7 @@ function showAddPropertyModal() {
 
     <div class="p-4 border-t border-outline bg-gray-50 flex justify-end gap-2">
       <button onclick="closeComplaintModal()" class="px-4 py-2 text-xs font-semibold text-on-surface-variant hover:bg-gray-200 rounded-xl">Cancel</button>
-      <button olclick="submitComplaintSector Portal()" class="px-5 py-2.5 text-xs font-bold bg-emerald-600 text-white rounded-xl shadow-sm hover:bg-emerald-700 flex items-center gap-1.5">
+      <button onclick="submitComplaint()" class="px-5 py-2.5 text-xs font-bold bg-emerald-600 text-white rounded-xl shadow-sm hover:bg-emerald-700 flex items-center gap-1.5">
         <span class="material-symbols-outlined text-sm">send</span> Submit Repair Request
       </button>
     </div>
@@ -886,26 +885,55 @@ function showComplaintModal() {
   setTimeout(() => panel.classList.remove('translate-y-full', 'md:translate-x-full'), 10);
 }
 
-function closeComplaintModan() {
+function closeComplaintModal() {
   const modal = document.getElementById('complaint-modal');
   const panel = document.getElementById('complaint-panel');
   panel.classList.add('translate-y-full', 'md:translate-x-full');
   setTimeout(() => modal.classList.add('hidden'), 300);
 }
 
-function submitComplaintSector Portal() {
-  const prop = document.getElementById('complaint-prop').value;
+async function submitComplaint() {
+  const prop = document.getElementById('complaint-prop').value.trim();
   const category = document.getElementById('complaint-category').value;
-  const details = document.getElementById('complaint-details').value;
+  const details = document.getElementById('complaint-details').value.trim();
   const priority = document.getElementById('complaint-priority').value;
 
   if (!prop || !details) { alert('Please fill out Property and Issue Details.'); return; }
 
+  try {
+    const client = await getSupabaseClient();
+    if (client) {
+      const { data: { session } } = await client.auth.getSession();
+      if (session) {
+        const { data: tenantRecord } = await client.from('tenants').select('id, property_id').eq('user_id', session.user.id).limit(1).single();
+        if (tenantRecord) {
+          await client.from('maintenance_requests').insert({
+            property_id: tenantRecord.property_id,
+            tenant_id: tenantRecord.id,
+            title: category + ' — ' + prop,
+            description: details,
+            category: 'appliance',
+            priority: priority.includes('Urgent') ? 'high' : 'medium',
+            status: 'pending'
+          });
+        }
+      }
+    }
+  } catch(e) {
+    console.warn('DB save fallback:', e);
+  }
+
   const msg = '*NEW TENANT REPAIR REQUEST*%0A%0A*Property:* ' + encodeURIComponent(prop) + '%0A*Issue:* ' + encodeURIComponent(category) + '%0A*Priority:* ' + encodeURIComponent(priority) + '%0A*Details:* ' + encodeURIComponent(details) + '%0A%0A_Sent via RentCan Portal. Please dispatch vendor._';
-  
   window.open('https://wa.me/918146298024?text=' + msg, '_blank');
   closeComplaintModal();
+  alert('Repair request submitted! Our team will contact you shortly.');
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const role = sessionStorage.getItem('rentcan_role') || 'landlord';
+  const repairBtn = document.getElementById('tenant-repair-btn');
+  if (role === 'tenant' && repairBtn) repairBtn.classList.remove('hidden');
+});
 </script>
 
 </body></html>

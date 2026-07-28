@@ -178,7 +178,7 @@
 </a>
 </nav>
 <div class="mt-auto pt-stack-md border-t border-outline-variant space-y-1">
-<button class="w-full flex items-center justify-center gap-2 bg-primary text-on-primary font-label-lg text-label-lg py-3 rounded-lg mb-stack-md hover:opacity-90 transition-opacity" onclick="window.soundManager && window.soundManager.playClick()">
+<button id="invite-tenant-btn" class="w-full flex items-center justify-center gap-2 bg-primary text-on-primary font-label-lg text-label-lg py-3 rounded-lg mb-stack-md hover:opacity-90 transition-opacity" onclick="showInviteTenantModal(); window.soundManager && window.soundManager.playClick()">
 <span class="material-symbols-outlined" data-icon="person_add">person_add</span>
                 Invite Tenant
             </button>
@@ -228,7 +228,7 @@
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
 <input class="pl-10 pr-4 py-2 border-b border-outline bg-transparent focus:border-primary focus:ring-0 font-body-md text-body-md w-64 outline-none" placeholder="Search property or tenant..." type="text">
 </div>
-<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-lg text-label-lg transition-all hover:scale-[1.02] active:scale-95">
+<button id="topbar-invite-btn" onclick="showInviteTenantModal()" class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-lg text-label-lg transition-all hover:scale-[1.02] active:scale-95">
                     Invite Tenant
                 </button>
 </div>
@@ -240,7 +240,7 @@
 <!-- Main KPI: Occupancy -->
 <div class="col-span-12 md:col-span-4 border border-outline p-stack-lg flex flex-col justify-between bg-surface-container-lowest">
 <div>
-<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Portfolio Occupancy</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Portfolio Occupancy <span id="stat-total-properties" class="text-on-surface-variant/60"></span></p>
 <h3 class="font-display-lg text-display-lg text-primary font-bold" id="stat-occupancy">—</h3>
 </div>
 <div class="mt-stack-md flex items-center gap-2">
@@ -296,7 +296,7 @@
 </div>
 </div>
 <!-- Property Grid -->
-<div class="swiss-grid gap-stack-lg">
+<div id="properties-grid" class="swiss-grid gap-stack-lg">
 <!-- Empty State (shown until real data loads) -->
   <div id="empty-state-properties" class="col-span-12 flex flex-col items-center justify-center py-24 text-center border border-dashed border-outline-variant rounded-lg bg-surface-container-lowest">
     <span class="material-symbols-outlined text-[56px] text-outline mb-4">home_work</span>
@@ -395,34 +395,11 @@ async function signOut() {
 </script>
 
 
-<!-- Mobile Bottom Navigation Bar -->
-<div class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-outline-variant/60 flex justify-around py-3 px-6 z-40 md:hidden shadow-lg">
-  <a href="dashboard.html" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-primary font-bold">
-    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">domain</span>
-    Properties
-  </a>
-  <a href="payments.html" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
-    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">payments</span>
-    Payments
-  </a>
-  <a href="reports.html" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
-    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">analytics</span>
-    Reports
-  </a>
-  <a href="#" onclick="signOut(); return false;" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-red-600/80">
-    <span class="material-symbols-outlined text-[20px]">logout</span>
-    Sign Out
-  </a>
-</div>
-
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        // Initialize Supabase Client
-        const res = await fetch('/api/config');
-        const config = await res.json();
-        const { createClient } = supabase;
-        const client = createClient(config.supabaseUrl, config.supabaseKey);
+        const client = await getSupabaseClient();
+        if (!client) throw new Error('Supabase not configured');
 
         const { data: { session } } = await client.auth.getSession();
         if (!session) {
@@ -430,10 +407,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
         const userId = session.user.id;
+        const role = sessionStorage.getItem('rentcan_role') || 'landlord';
 
-        // Fetch Properties
-        const { data: properties, error: propsErr } = await client.from('properties').select('*').eq('owner_id', userId);
-        if (propsErr) throw propsErr;
+        let properties = [];
+        if (role === 'tenant') {
+            const { data: tenantRecords, error: tenantErr } = await client
+                .from('tenants')
+                .select('*, properties(*)')
+                .eq('user_id', userId);
+            if (tenantErr) throw tenantErr;
+            properties = (tenantRecords || []).map(t => t.properties).filter(Boolean);
+        } else {
+            const { data, error: propsErr } = await client.from('properties').select('*').eq('owner_id', userId);
+            if (propsErr) throw propsErr;
+            properties = data || [];
+        }
 
         // Calculate Stats
         const totalProperties = properties.length;
@@ -450,13 +438,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Update Stat DOM
         document.getElementById('stat-occupancy').textContent = occupancyRate + '%';
-        document.getElementById('stat-total-properties').textContent = totalProperties;
+        const totalEl = document.getElementById('stat-total-properties');
+        if (totalEl) totalEl.textContent = totalProperties ? `(${totalProperties} properties)` : '';
         document.getElementById('stat-monthly-revenue').textContent = '₹' + monthlyRevenue.toLocaleString();
         document.getElementById('stat-active-requests').textContent = activeRequests;
 
         // Render Properties
         const grid = document.getElementById('properties-grid');
-        grid.innerHTML = '';
+        const emptyState = document.getElementById('empty-state-properties');
+        if (emptyState) emptyState.style.display = properties.length ? 'none' : '';
+        grid.innerHTML = properties.length ? '' : (emptyState ? emptyState.outerHTML : '');
+        if (properties.length && emptyState) {
+            const restored = document.getElementById('empty-state-properties');
+            if (restored) restored.style.display = 'none';
+        }
 
         properties.forEach(prop => {
             const statusText = prop.status.toUpperCase();
@@ -483,7 +478,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             grid.appendChild(card);
         });
 
-        // Add Property Card Placeholder
+        // Add Property Card Placeholder (landlord only)
+        if (role !== 'tenant') {
         const addCardHtml = `
             <div class="col-span-12 md:col-span-6 lg:col-span-4 border border-outline border-dashed bg-transparent group flex flex-col items-center justify-center p-stack-xl transition-all hover:bg-surface-container-low cursor-pointer min-h-[300px] rounded-xl">
                 <span class="material-symbols-outlined text-[48px] text-outline mb-stack-md group-hover:scale-110 transition-transform" data-icon="add_circle">add_circle</span>
@@ -493,7 +489,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         `;
         const addCardWrapper = document.createElement('div');
         addCardWrapper.innerHTML = addCardHtml;
-        grid.appendChild(addCardWrapper.firstElementChild);
+        const addCard = addCardWrapper.firstElementChild;
+        addCard.onclick = showAddPropertyModal;
+        grid.appendChild(addCard);
+        }
 
 
         // Fetch Activity
@@ -582,6 +581,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (isLandlord) {
     if (inviteBtn)    inviteBtn.style.display    = '';
     if (topbarInvite) topbarInvite.style.display = '';
+  } else {
+    if (inviteBtn)    inviteBtn.style.display    = 'none';
+    if (topbarInvite) topbarInvite.style.display = 'none';
   }
 
   // Tenant view: hide "Add New Property" card (it's landlord-only)
@@ -595,12 +597,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (h2) h2.textContent = 'My Tenancy';
   }
 });
-</script>
-
-<script>
-function showAddPropertyModal() {
-  alert('Property onboarding coming soon! Contact us at support@rentcan.com to add your property.');
-}
 </script>
 
   <!-- Add Property Slide-over Modal -->
@@ -685,55 +681,42 @@ function showAddPropertyModal() {
       }, 300);
     }
 
-    function submitAddProperty() {
-      const name = document.getElementById('prop-name').value;
-      const address = document.getElementById('prop-address').value;
+    async function submitAddProperty() {
+      const name = document.getElementById('prop-name').value.trim();
+      const address = document.getElementById('prop-address').value.trim();
       const type = document.getElementById('prop-type').value;
       const rent = document.getElementById('prop-rent').value;
-      const tenant = document.getElementById('prop-tenant').value || 'Vacant';
-      
-      if(!name || !address || !rent) {
-        alert("Please fill out Name, Address, and Rent.");
+      const tenant = document.getElementById('prop-tenant').value.trim();
+
+      if (!name || !address || !rent) {
+        alert('Please fill out Name, Address, and Rent.');
         return;
       }
 
-      // Optimistic UI Update
-      document.getElementById('empty-state-properties').style.display = 'none';
-      
-      const grid = document.querySelector('.swiss-grid.gap-stack-lg');
-      const newCard = document.createElement('div');
-      newCard.className = "col-span-12 md:col-span-6 lg:col-span-4 border border-outline bg-surface-container-lowest p-stack-md hover:border-primary transition-colors flex flex-col justify-between";
-      newCard.innerHTML = `
-        <div class="mb-4">
-          <div class="flex justify-between items-start mb-2">
-            <span class="font-label-caps text-[10px] uppercase tracking-widest text-secondary">${type}</span>
-            <span class="${tenant === 'Vacant' ? 'bg-error-container text-error' : 'bg-primary-fixed text-primary'} px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest">${tenant === 'Vacant' ? 'Vacant' : 'Occupied'}</span>
-          </div>
-          <h4 class="font-title-lg text-title-lg text-on-surface">${name}</h4>
-          <p class="font-body-sm text-body-sm text-on-surface-variant truncate">${address}</p>
-        </div>
-        <div class="mt-auto pt-4 border-t border-outline-variant/30 flex justify-between items-center">
-          <div>
-            <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Rent</p>
-            <p class="font-title-md text-title-md text-primary font-bold">₹${Number(rent).toLocaleString()}</p>
-          </div>
-          <div>
-            <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Tenant</p>
-            <p class="font-body-sm text-body-sm text-on-surface">${tenant}</p>
-          </div>
-        </div>
-      `;
-      
-      grid.insertBefore(newCard, grid.firstChild);
-      
-      // Update counts
-      const activeStats = document.getElementById('stat-occupancy');
-      if (activeStats.innerText === '—') activeStats.innerText = tenant === 'Vacant' ? '0%' : '100%';
-      const revenueStats = document.getElementById('stat-monthly-revenue');
-      if (revenueStats.innerText === '—') revenueStats.innerText = tenant === 'Vacant' ? '₹0' : `₹${Number(rent).toLocaleString()}`;
+      const client = await getSupabaseClient();
+      if (!client) { alert('Unable to connect. Please try again.'); return; }
+
+      const { data: { session } } = await client.auth.getSession();
+      if (!session) { window.location.href = 'login.html'; return; }
+
+      const planMap = { Residential: 'residential', Commercial: 'commercial', Airbnb: 'residential' };
+      const { error } = await client.from('properties').insert({
+        owner_id: session.user.id,
+        name,
+        address,
+        plan: planMap[type] || 'residential',
+        rent_amount: Number(rent),
+        status: tenant ? 'occupied' : 'vacant'
+      });
+
+      if (error) {
+        alert('Could not save property: ' + error.message);
+        return;
+      }
 
       closeAddPropertyModal();
       document.getElementById('add-property-form').reset();
+      window.location.reload();
     }
   </script>
 
@@ -828,35 +811,40 @@ function showAddPropertyModal() {
   </a>
 </nav>
 
-<
 <!-- Invite Tenant Modal -->
 <div id="invite-tenant-modal" class="fixed inset-0 z-50 hidden">
-  <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onclick="closeInviteTenantModan()"></div>
+  <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onclick="closeInviteTenantModal()"></div>
   <div class="absolute right-0 top-0 h-full w-full max-w-md bg-surface-container-lowest border-l border-outline shadow-2xl transform translate-x-full transition-transform duration-300 ease-out flex flex-col" id="invite-panel">
     <div class="px-6 py-4 border-b border-outline flex items-center justify-between">
       <h3 class="text-base font-bold text-primary flex items-center gap-2">
         <span class="material-symbols-outlined">person_add</span> Invite New Tenant
       </h3>
-      <button oniclick="closeInviteTenantModal()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">close</span></button>
+      <button onclick="closeInviteTenantModal()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">close</span></button>
     </div>
     
     <form id="invite-tenant-form" class="p-6 space-y-4 flex-1 overflow-y-auto">
       <div>
-        <label class="block text-[11px] font-bold text-on-surface-variant uppercase trackingwider mb-1">Tenant Full Name</label>
-        <input type="text" id="invite-tenant-name" required placeholder="e.g. Rahul Sharma" class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus9border-primary">
+        <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Property</label>
+        <select id="invite-property-select" required class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus:border-primary font-bold">
+          <option value="">Select property…</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Tenant Full Name</label>
+        <input type="text" id="invite-tenant-name" required placeholder="e.g. Rahul Sharma" class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus:border-primary">
       </div>
       <div>
         <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Tenant Email or Phone</label>
         <input type="text" id="invite-tenant-contact" required placeholder="rahul@example.com or 9876543210" class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus:border-primary">
       </div>
       <div>
-        <label class="block text-[11px] font-bold text-on-surface-variant uppercase trackingwider mb-1">Rent Due Date (Always 5th of Month)</label>
-        <input type="date" id="invite-select-due-date" class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus9border-primary font-bold">
+        <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Rent Due Date (Always 5th of Month)</label>
+        <input type="date" id="invite-select-due-date" class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus:border-primary font-bold">
       </div>
     </form>
 
     <div class="p-4 border-t border-outline bg-gray-50 flex justify-end gap-2">
-      <button olclick="closeInviteTenantModal()" class="px-4 py-2 text-xs font-semibold text-on-surface-variant hover:bg-gray-200 rounded-xl">Cancel</button>
+      <button onclick="closeInviteTenantModal()" class="px-4 py-2 text-xs font-semibold text-on-surface-variant hover:bg-gray-200 rounded-xl">Cancel</button>
       <button onclick="submitInviteTenant()" class="px-5 py-2.5 text-xs font-bold bg-primary text-white rounded-xl shadow-sm hover:bg-primary/90 flex items-center gap-1.5">
         <span class="material-symbols-outlined text-sm">send</span> Send Invitation
       </button>
@@ -865,12 +853,29 @@ function showAddPropertyModal() {
 </div>
 
 <script>
+async function populateInviteProperties() {
+  const select = document.getElementById('invite-property-select');
+  if (!select || select.options.length > 1) return;
+  const client = await getSupabaseClient();
+  if (!client) return;
+  const { data: { session } } = await client.auth.getSession();
+  if (!session) return;
+  const { data: properties } = await client.from('properties').select('id, name').eq('owner_id', session.user.id);
+  (properties || []).forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.id;
+    opt.textContent = p.name;
+    select.appendChild(opt);
+  });
+}
+
 function showInviteTenantModal() {
   const modal = document.getElementById('invite-tenant-modal');
   const panel = document.getElementById('invite-panel');
   modal.classList.remove('hidden');
   const nextDate = window.getNextInspectionDate ? window.getNextInspectionDate() : '2026-08-05';
   document.getElementById('invite-select-due-date').value = nextDate;
+  populateInviteProperties();
   setTimeout(() => panel.classList.remove('translate-x-full'), 10);
 }
 
@@ -881,12 +886,52 @@ function closeInviteTenantModal() {
   setTimeout(() => modal.classList.add('hidden'), 300);
 }
 
-function submitInviteTenant() {
-  const name = document.getElementById('invite-tenant-name').value;
-  const contact = document.getElementById('invite-tenant-contact').value;
-  if (!name || !contact) { aert('Please enter Tenant Name and Contact.'); return; }
-  alert('Invitation sent to ' + name + '!');
-  closeInviteTenantModal();
+async function submitInviteTenant() {
+  const propertyId = document.getElementById('invite-property-select').value;
+  const name = document.getElementById('invite-tenant-name').value.trim();
+  const contact = document.getElementById('invite-tenant-contact').value.trim();
+  const dueDate = document.getElementById('invite-select-due-date').value;
+
+  if (!propertyId || !name || !contact) {
+    alert('Please select a property and enter tenant name and contact.');
+    return;
+  }
+
+  const isEmail = contact.includes('@');
+  const payload = {
+    property_id: propertyId,
+    full_name: name,
+    email: isEmail ? contact : null,
+    phone: isEmail ? null : contact.replace(/\D/g, ''),
+    rent_due_date: dueDate ? new Date(dueDate).getDate() : 5
+  };
+
+  try {
+    const client = await getSupabaseClient();
+    if (!client) throw new Error('Not connected');
+
+    const { data: { session } } = await client.auth.getSession();
+    if (!session) { window.location.href = 'login.html'; return; }
+
+    const { error } = await client.from('tenants').insert({
+      property_id: propertyId,
+      name: name,
+      email: payload.email,
+      phone: payload.phone,
+      rent_due_date: payload.rent_due_date
+    });
+
+    if (error) throw error;
+
+    await client.from('properties').update({ status: 'occupied' }).eq('id', propertyId);
+
+    alert('Tenant ' + name + ' has been added successfully!');
+    closeInviteTenantModal();
+    document.getElementById('invite-tenant-form').reset();
+    window.location.reload();
+  } catch(e) {
+    alert('Could not invite tenant: ' + e.message);
+  }
 }
 </script>
 

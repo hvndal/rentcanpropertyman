@@ -9,7 +9,6 @@ function getNextInspectionDate(fromDate = new Date()) {
   const month = d.getMonth();
   const currentDay = d.getDate();
 
-  // If today is on or before the 5th, next inspection is 5th of current month
   let targetMonth = month;
   let targetYear = year;
 
@@ -40,10 +39,10 @@ function getKeyHoldingBadgeHtml(status = 'landlord') {
     agency: { label: 'Agency Custody', color: 'bg-purple-50 text-purple-800 border-purple-200', icon: 'vpn_key' }
   };
   const item = map[status] || map.landlord;
-  return <span class= inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold border >
-    <span class=material-symbols-outlined text-[14px]></span>
-    
-  </span>;
+  return `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold border ${item.color}">
+    <span class="material-symbols-outlined text-[14px]">${item.icon}</span>
+    ${item.label}
+  </span>`;
 }
 
 // 3. Reliable Global Sign Out Function
@@ -80,14 +79,30 @@ function triggerSpringAnimation(element) {
   }, 150);
 }
 
+// 5. Shared Supabase client helper
+async function getSupabaseClient() {
+  let cfg = { supabaseUrl: '', supabaseKey: '' };
+  try {
+    const res = await fetch('/api/config');
+    if (res.ok) {
+      const data = await res.json();
+      if (data.supabaseUrl && data.supabaseKey) cfg = data;
+    }
+  } catch(e) {
+    console.warn('Config fetch failed:', e);
+  }
+  if (!cfg.supabaseUrl || !cfg.supabaseKey || typeof supabase === 'undefined') return null;
+  return supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
+}
+
 window.getNextInspectionDate = getNextInspectionDate;
 window.formatInspectionDateDisplay = formatInspectionDateDisplay;
 window.getKeyHoldingBadgeHtml = getKeyHoldingBadgeHtml;
 window.signOut = signOut;
 window.triggerSpringAnimation = triggerSpringAnimation;
+window.getSupabaseClient = getSupabaseClient;
 
-
-// 5. Hidden Admin Portal Shortcuts (Ctrl + Shift + A or 3 Clicks on RentCan Emblem)
+// 6. Hidden Admin Portal Shortcuts (Ctrl + Shift + A or 3 Clicks on RentCan Emblem)
 document.addEventListener('keydown', (e) => {
   if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
     e.preventDefault();
@@ -96,7 +111,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 let clickCount = 0;
-let clikkTimer = null;
+let clickTimer = null;
 document.addEventListener('click', (e) => {
   if (e.target.textContent && e.target.textContent.trim() === 'RentCan') {
     clickCount++;
