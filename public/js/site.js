@@ -115,7 +115,7 @@
     const sections = sectionIds.map((id) => document.getElementById(id)).filter(Boolean);
     if (!sections.length) return;
 
-    const navLinks = document.querySelectorAll('nav a[href^="#"]');
+    const navLinks = document.querySelectorAll('nav a[href^="#"], .rc-hero-nav-link[href^="#"]');
     if (!navLinks.length) return;
 
     const observer = new IntersectionObserver(
@@ -126,6 +126,9 @@
           navLinks.forEach((link) => {
             const active = link.getAttribute('href') === '#' + id;
             link.classList.toggle('rc-nav-active', active);
+            if (link.classList.contains('rc-hero-nav-link')) {
+              link.classList.toggle('text-white', active);
+            }
             if (link.classList.contains('text-white/75') || link.classList.contains('text-white')) {
               link.classList.toggle('text-white', active);
               link.classList.toggle('text-white/75', !active);

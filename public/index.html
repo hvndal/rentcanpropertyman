@@ -465,17 +465,19 @@
 </div>
 <!-- Absolute Navbar overlaying the Hero Video -->
 <nav class="absolute top-0 left-0 right-0 z-30 px-margin-desktop py-4 max-w-container-max mx-auto">
-<div class="rc-glass-dark rounded-2xl px-5 py-3 flex justify-between items-center">
-<a href="/" class="rc-brand-logo rc-brand-logo--nav" aria-label="RentCan home">
-  <img src="/assets/logos/rentcan-logo.png" alt="RentCan">
+<div class="rc-glass-dark rounded-2xl px-5 py-3 rc-hero-nav-bar">
+<div class="rc-hero-nav-brand">
+<a href="/" class="rc-brand-logo rc-brand-logo--ghost rc-brand-logo--nav" aria-label="RentCan home">
+  <img src="/assets/logos/rentcan-wordmark-transparent.png" alt="RentCan">
 </a>
-<div class="hidden md:flex items-center gap-8">
-<a class="font-label-caps text-label-caps uppercase text-white/75 hover:text-white transition-colors duration-300 text-[11px] tracking-widest" href="#services">Services</a>
-<a class="font-label-caps text-label-caps uppercase text-white/75 hover:text-white transition-colors duration-300 text-[11px] tracking-widest" href="#pricing">Pricing</a>
-<a class="font-label-caps text-label-caps uppercase text-white/75 hover:text-white transition-colors duration-300 text-[11px] tracking-widest" href="#inspection">Inspections</a>
-<a class="font-label-caps text-label-caps uppercase text-white/75 hover:text-white transition-colors duration-300 text-[11px] tracking-widest" href="#contact">Contact</a>
 </div>
-<div class="flex items-center gap-3 ml-auto">
+<nav class="rc-hero-nav-links" aria-label="Main">
+<a class="rc-hero-nav-link" href="#services">Services</a>
+<a class="rc-hero-nav-link" href="#pricing">Pricing</a>
+<a class="rc-hero-nav-link" href="#inspection">Inspections</a>
+<a class="rc-hero-nav-link" href="#contact">Contact</a>
+</nav>
+<div class="rc-hero-nav-actions">
 <a class="font-label-caps text-label-caps uppercase text-white/75 hover:text-white transition-all duration-200 text-[11px] tracking-widest hidden sm:inline" href="/login">Login</a>
 <a class="px-5 py-2.5 bg-[#3D8A82] text-white font-label-caps text-label-caps uppercase tracking-[0.12em] hover:bg-[#2F736C] transition-all duration-300 rounded-lg text-[11px] font-bold shadow-lg hidden sm:inline-flex" href="/login">Get Started</a>
 <button type="button" id="hero-menu-btn" class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg border border-white/25 bg-white/10 text-white hover:bg-white/15 transition-colors" aria-label="Open menu" aria-expanded="false" aria-controls="hero-mobile-menu">
@@ -489,8 +491,8 @@
 <div class="rc-mobile-drawer-backdrop" data-close-menu></div>
 <div class="rc-mobile-drawer-panel">
 <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
-<a href="/" class="rc-brand-logo rc-brand-logo--sm" aria-label="RentCan home">
-  <img src="/assets/logos/rentcan-logo.png" alt="RentCan">
+<a href="/" class="rc-brand-logo rc-brand-logo--ghost rc-brand-logo--sm" aria-label="RentCan home">
+  <img src="/assets/logos/rentcan-wordmark-transparent.png" alt="RentCan">
 </a>
 <button type="button" class="w-9 h-9 flex items-center justify-center rounded-lg text-white/80 hover:bg-white/10" data-close-menu aria-label="Close menu">
 <span class="material-symbols-outlined">close</span>
@@ -508,16 +510,10 @@
 <div class="relative z-10 w-full max-w-container-max mx-auto px-margin-desktop text-center flex flex-col items-center pt-24 md:pt-28 pb-14 md:pb-20">
 
 <div class="hero-stack">
-  <!-- Readable white tagline on top (not the tiny bake-in on the PNG) -->
-  <div class="hero-iso hero-tagline-top">
-    <span class="line-a">No More “Kal Aaunga”</span>
-    <span class="line-b">Reliable on-time inspections</span>
-  </div>
-
-  <!-- Logo on mint + pink plate -->
+  <!-- Logo — wordmark only, transparent on hero -->
   <div class="hero-iso hero-logo-block">
-    <a href="/" class="rc-brand-logo rc-brand-logo--hero" aria-label="RentCan">
-      <img src="/assets/logos/rentcan-logo.png" alt="RentCan">
+    <a href="/" class="rc-brand-logo rc-brand-logo--ghost rc-brand-logo--hero" aria-label="RentCan">
+      <img src="/assets/logos/rentcan-wordmark-transparent.png" alt="RentCan">
     </a>
   </div>
 
@@ -776,7 +772,13 @@
 <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-desktop max-w-container-max mx-auto mb-12">
 <div class="col-span-1">
 <div class="mb-6">
-<span class="rc-brand-logo rc-brand-logo--footer inline-flex mb-4"><img src="/assets/logos/rentcan-logo.png" alt="RentCan"></span>
+<a href="/" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--footer inline-flex mb-4"><img src="/assets/logos/rentcan-wordmark.png" alt="RentCan"></a>
+<nav class="flex flex-wrap gap-x-4 gap-y-2 text-sm text-on-surface-variant mb-4" aria-label="Footer">
+  <a href="#services" class="hover:text-primary transition-colors">Services</a>
+  <a href="#pricing" class="hover:text-primary transition-colors">Pricing</a>
+  <a href="#inspection" class="hover:text-primary transition-colors">Inspections</a>
+  <a href="#contact" class="hover:text-primary transition-colors">Contact</a>
+</nav>
 <p class="font-body-base text-[14px] text-on-surface-variant/70 leading-relaxed max-w-xs font-light">© 2025 RentCan. On-ground property management with monthly inspections across Chandigarh, Mohali, Panchkula and Aerocity.</p>
 </div>
 </div>
@@ -833,7 +835,11 @@
   </a>
   <a href="#pricing" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
     <span class="material-symbols-outlined text-xl">loyalty</span>
-    <span>Plans</span>
+    <span>Pricing</span>
+  </a>
+  <a href="#inspection" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
+    <span class="material-symbols-outlined text-xl">fact_check</span>
+    <span>Inspections</span>
   </a>
   <a href="#contact" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
     <span class="material-symbols-outlined text-xl">mail</span>
