@@ -6,10 +6,10 @@
 
 /* ── Design Tokens ─────────────────────────────────────────────────── */
 :root {
-  --primary:   #023826;
-  --secondary: #FF3366;
-  --accent:    #00E599;
-  --bg:        #f7faf7;
+  --primary:   #5c3a2e;
+  --secondary: #a67c52;
+  --accent:    #c9a882;
+  --bg:        #faf6f1;
 
   /* Easing library */
   --ease-out-expo:   cubic-bezier(0.16, 1, 0.3, 1);
