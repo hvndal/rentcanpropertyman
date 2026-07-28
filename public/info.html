@@ -30,11 +30,11 @@ try {
   tailwind.config = {
     theme: { extend: {
       colors: {
-        "primary":"#023826","on-primary":"#ffffff","primary-container":"#005a4e",
-        "secondary":"#854f5b","on-secondary":"#ffffff","secondary-container":"#ffb9c8",
-        "surface":"#f9f9fc","on-surface":"#191c1b","on-surface-variant":"#3f4946",
-        "surface-container":"#eceeec","outline-variant":"#bec9c5",
-        "accent":"#00E599","background":"#f7faf7"
+        "primary":"#5c3a2e","on-primary":"#ffffff","primary-container":"#4a2f24",
+        "secondary":"#a67c52","on-secondary":"#ffffff","secondary-container":"#efe6dc",
+        "surface":"#faf6f1","on-surface":"#2a1810","on-surface-variant":"#6b5a52",
+        "surface-container":"#efe6dc","outline-variant":"#d4c4b8",
+        "accent":"#c9a882","background":"#faf6f1"
       },
       fontFamily:{"sans":["Plus Jakarta Sans","sans-serif"]}
     }}
@@ -115,7 +115,9 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
 <!-- ── Nav ── -->
 <nav class="sticky top-0 bg-white/90 backdrop-blur-md border-b border-outline-variant z-50">
   <div class="max-w-6xl mx-auto px-6 md:px-16 py-4 flex items-center justify-between">
-    <a href="/" class="font-bold text-sm tracking-[0.2em] uppercase text-primary no-underline">RentCan</a>
+    <a href="/" class="flex items-center gap-2 no-underline">
+      <img src="/assets/logos/rentcan-logo.png" alt="RentCan" class="h-9 w-auto">
+    </a>
     <div class="flex items-center gap-4">
       <a href="/" class="text-sm text-on-surface-variant hover:text-primary font-medium transition-colors">Home</a>
       <a href="/info#services" class="text-sm text-on-surface-variant hover:text-primary font-medium transition-colors hidden sm:inline">Services</a>
