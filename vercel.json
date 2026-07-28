@@ -25,6 +25,8 @@
     { "src": "/robots\\.txt", "dest": "/public/robots.txt" },
     { "src": "/sitemap\\.xml", "dest": "/public/sitemap.xml" },
     { "src": "/manifest\\.json", "dest": "/public/manifest.json" },
+    { "src": "/favicon\\.ico", "dest": "/public/favicon.ico" },
+    { "src": "/apple-touch-icon\\.png", "dest": "/public/apple-touch-icon.png" },
     { "src": "/(.*)", "dest": "/public/$1" }
   ]
 }
