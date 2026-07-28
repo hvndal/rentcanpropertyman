@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /documents
+Disallow: /payments
+Disallow: /inspections
+Disallow: /reports
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://rentcan.in/sitemap.xml
