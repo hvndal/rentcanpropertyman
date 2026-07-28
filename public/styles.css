@@ -6,10 +6,10 @@
 
 /* ── Design Tokens ─────────────────────────────────────────────────── */
 :root {
-  --primary:   #5c3a2e;
-  --secondary: #a67c52;
-  --accent:    #c9a882;
-  --bg:        #faf6f1;
+  --primary:   #6B4822;
+  --secondary: #D5B259;
+  --accent:    #F6CFDE;
+  --bg:        #F8F7F5;
 
   /* Easing library */
   --ease-out-expo:   cubic-bezier(0.16, 1, 0.3, 1);
@@ -500,7 +500,7 @@ body.rc-fade-boot {
   font-weight: 800;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: #023826;
+  color: #6B4822;
   margin-bottom: 28px;
 }
 .rc-auth-wait .rc-auth-title {
@@ -534,7 +534,7 @@ body.rc-fade-boot {
   padding: 8px 0;
   transition: color 300ms ease;
 }
-.rc-auth-wait .rc-auth-steps li.active { color: #023826; font-weight: 700; }
+.rc-auth-wait .rc-auth-steps li.active { color: #6B4822; font-weight: 700; }
 .rc-auth-wait .rc-auth-steps li.done { color: #005a4e; }
 .rc-auth-wait .rc-auth-dot {
   width: 8px;
@@ -554,7 +554,7 @@ body.rc-fade-boot {
   width: 36px;
   height: 36px;
   border: 3px solid #bec9c5;
-  border-top-color: #023826;
+  border-top-color: #6B4822;
   border-radius: 50%;
   animation: rc-spin 0.75s linear infinite;
   margin-bottom: 22px;
