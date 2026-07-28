@@ -30,17 +30,49 @@ body.rc-brand {
 }
 
 .rc-glass {
-  background: rgba(255, 252, 248, 0.72);
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: var(--rc-warm-white);
+  border: 1px solid var(--rc-border);
 }
 
 .rc-glass-dark {
-  background: rgba(50, 38, 28, 0.45);
-  backdrop-filter: blur(14px) saturate(130%);
-  -webkit-backdrop-filter: blur(14px) saturate(130%);
-  border: 1px solid rgba(207, 223, 222, 0.28);
+  background: var(--rc-brown-dark);
+  border: 1px solid color-mix(in srgb, var(--rc-brown) 40%, var(--rc-mint) 60%);
+}
+
+/* Sticky site header — one nav for the whole marketing site */
+.rc-site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--rc-warm-white);
+  border-bottom: 1px solid var(--rc-border);
+  box-shadow: 0 1px 0 rgba(50, 38, 28, 0.04);
+}
+
+.rc-site-header .rc-site-nav-bar {
+  max-width: 80rem;
+  padding: 0.65rem 1.25rem;
+  min-height: 3.5rem;
+}
+
+@media (min-width: 768px) {
+  .rc-site-header .rc-site-nav-bar {
+    padding: 0.65rem 2rem;
+  }
+}
+
+.rc-site-nav-link.rc-nav-active {
+  color: var(--rc-brown);
+  font-weight: 700;
+}
+
+.rc-site-nav-link.rc-nav-active::after {
+  content: '';
+  display: block;
+  height: 2px;
+  margin-top: 4px;
+  background: var(--rc-gold);
+  border-radius: 1px;
 }
 
 .rc-card {
@@ -137,13 +169,13 @@ body.rc-brand {
   object-position: top center;
 }
 
-/* Light pages: soft mint plate */
+/* Light pages: soft mint plate — subtle, not loud */
 .rc-brand-logo--light {
-  background: linear-gradient(145deg, var(--rc-mint) 0%, #ffffff 50%, var(--rc-pink) 100%);
-  border-radius: 0.75rem;
-  padding: 0.35rem 0.65rem;
-  border: 1px solid rgba(207, 223, 222, 0.65);
-  box-shadow: 0 4px 14px rgba(50, 38, 28, 0.1);
+  background: #ffffff;
+  border-radius: 0.65rem;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid var(--rc-border);
+  box-shadow: none;
 }
 
 /* Dark hero / nav: transparent wordmark, no plate */
@@ -380,19 +412,18 @@ body.rc-brand {
   gap: 0.4rem;
   padding: 0.55rem 0.95rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(207, 223, 222, 0.45);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid color-mix(in srgb, var(--rc-mint) 70%, #ffffff);
+  color: var(--rc-brown-dark);
   font-size: 0.78rem;
   font-weight: 600;
-  backdrop-filter: blur(10px);
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s ease, border-color 0.25s ease;
 }
 
 .hero-pill:hover {
-  transform: translateY(-3px);
-  background: rgba(246, 207, 222, 0.28);
-  border-color: rgba(246, 207, 222, 0.65);
+  transform: translateY(-2px);
+  background: #ffffff;
+  border-color: var(--rc-pink);
 }
 
 .hero-pill .material-symbols-outlined {
@@ -411,10 +442,34 @@ body.rc-brand {
 }
 
 .rc-section-mist {
-  background:
-    radial-gradient(ellipse 80% 50% at 10% 0%, rgba(207, 223, 222, 0.85) 0%, transparent 55%),
-    radial-gradient(ellipse 60% 40% at 90% 20%, rgba(246, 207, 222, 0.45) 0%, transparent 50%),
-    var(--rc-cream);
+  background: var(--rc-cream);
+}
+
+.rc-section-mint {
+  background: color-mix(in srgb, var(--rc-mint) 42%, var(--rc-cream));
+}
+
+.rc-section-pink {
+  background: color-mix(in srgb, var(--rc-pink) 28%, var(--rc-cream));
+}
+
+.rc-section-inspection {
+  background: color-mix(in srgb, var(--rc-mint) 55%, #ffffff);
+  color: var(--rc-ink);
+  border-top: 1px solid var(--rc-border);
+  border-bottom: 1px solid var(--rc-border);
+}
+
+.rc-section-inspection .rc-inspection-card {
+  background: #ffffff;
+  border: 1px solid var(--rc-border);
+  border-radius: var(--rc-radius-lg);
+  box-shadow: var(--rc-shadow);
+}
+
+.rc-section-cta {
+  background: var(--rc-brown);
+  color: #ffffff;
 }
 
 .rc-feat-yes {
@@ -573,8 +628,7 @@ body.rc-brand {
 .rc-mobile-drawer-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(50, 38, 28, 0.55);
-  backdrop-filter: blur(4px);
+  background: rgba(50, 38, 28, 0.4);
 }
 
 .rc-mobile-drawer-panel {
@@ -583,12 +637,12 @@ body.rc-brand {
   right: 0;
   width: min(300px, 88vw);
   height: 100%;
-  background: linear-gradient(180deg, #6B4822 0%, #32261C 55%, #6B4822 100%);
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--rc-warm-white);
+  border-left: 1px solid var(--rc-border);
   padding: 1.25rem;
   transform: translateX(100%);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: -12px 0 48px rgba(0, 0, 0, 0.35);
+  box-shadow: -8px 0 32px rgba(50, 38, 28, 0.12);
 }
 
 .rc-mobile-drawer.is-open .rc-mobile-drawer-panel {
@@ -600,11 +654,10 @@ body.rc-brand {
   align-items: center;
   gap: 0.75rem;
   padding: 0.875rem 1rem;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--rc-ink);
   font-size: 0.875rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
   border-radius: 0.625rem;
   transition: background 0.2s ease, color 0.2s ease;
   text-decoration: none;
@@ -612,8 +665,14 @@ body.rc-brand {
 
 .rc-mobile-drawer-link:hover,
 .rc-mobile-drawer-link:focus {
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  background: color-mix(in srgb, var(--rc-mint) 50%, #ffffff);
+  color: var(--rc-brown);
+}
+
+.rc-mobile-bottom-nav {
+  background: var(--rc-warm-white);
+  border-top: 1px solid var(--rc-border);
+  box-shadow: 0 -4px 20px rgba(50, 38, 28, 0.06);
 }
 
 /* Scroll reveal — visible by default when JS hasn't run yet */

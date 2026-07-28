@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  const HEADER_OFFSET = 96;
+  const HEADER_OFFSET = 80;
 
   function prefersReducedMotion() {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -115,7 +115,9 @@
     const sections = sectionIds.map((id) => document.getElementById(id)).filter(Boolean);
     if (!sections.length) return;
 
-    const navLinks = document.querySelectorAll('nav a[href^="#"], .rc-hero-nav-link[href^="#"]');
+    const navLinks = document.querySelectorAll(
+      'nav a[href^="#"], .rc-site-nav-link[href^="#"], .rc-hero-nav-link[href^="#"]'
+    );
     if (!navLinks.length) return;
 
     const observer = new IntersectionObserver(
@@ -128,10 +130,6 @@
             link.classList.toggle('rc-nav-active', active);
             if (link.classList.contains('rc-hero-nav-link')) {
               link.classList.toggle('text-white', active);
-            }
-            if (link.classList.contains('text-white/75') || link.classList.contains('text-white')) {
-              link.classList.toggle('text-white', active);
-              link.classList.toggle('text-white/75', !active);
             }
           });
         });
@@ -150,8 +148,8 @@
   }
 
   function closeMobileMenu() {
-    const drawer = document.getElementById('hero-mobile-menu');
-    const btn = document.getElementById('hero-menu-btn');
+    const drawer = document.getElementById('site-mobile-menu') || document.getElementById('hero-mobile-menu');
+    const btn = document.getElementById('site-menu-btn') || document.getElementById('hero-menu-btn');
     if (!drawer) return;
     drawer.classList.remove('is-open');
     drawer.setAttribute('aria-hidden', 'true');
@@ -160,8 +158,8 @@
   }
 
   function openMobileMenu() {
-    const drawer = document.getElementById('hero-mobile-menu');
-    const btn = document.getElementById('hero-menu-btn');
+    const drawer = document.getElementById('site-mobile-menu') || document.getElementById('hero-mobile-menu');
+    const btn = document.getElementById('site-menu-btn') || document.getElementById('hero-menu-btn');
     if (!drawer) return;
     drawer.classList.add('is-open');
     drawer.setAttribute('aria-hidden', 'false');
@@ -170,8 +168,8 @@
   }
 
   function initMobileMenu() {
-    const btn = document.getElementById('hero-menu-btn');
-    const drawer = document.getElementById('hero-mobile-menu');
+    const btn = document.getElementById('site-menu-btn') || document.getElementById('hero-menu-btn');
+    const drawer = document.getElementById('site-mobile-menu') || document.getElementById('hero-mobile-menu');
     if (!btn || !drawer) return;
 
     btn.addEventListener('click', () => {
