@@ -43,7 +43,7 @@
         baths: 3,
         sqft: 1650,
         status: 'occupied',
-        image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80'
+        image: '/assets/stock/residential.jpg'
       },
       {
         id: 'demo-prop-2',
@@ -55,7 +55,7 @@
         baths: 1,
         sqft: 620,
         status: 'occupied',
-        image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80'
+        image: '/assets/stock/airbnb.jpg'
       },
       {
         id: 'demo-prop-3',
@@ -67,7 +67,7 @@
         baths: 2,
         sqft: 2100,
         status: 'vacant',
-        image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80'
+        image: '/assets/stock/commercial.jpg'
       }
     ];
 
