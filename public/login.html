@@ -27,7 +27,6 @@
 <meta property="og:image" content="https://rentcan.in/assets/seo/og-image.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
-<link rel="stylesheet" href="/css/brand.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script type="text/javascript" src="https://verify.msg91.com/otp-provider.js"></script>
 <style>
@@ -46,7 +45,7 @@ body {
   width: 100%; max-width: 440px;
   background: #ffffff;
   border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 56, 38, 0.08);
+  box-shadow: 0 10px 40px rgba(50, 38, 28, 0.08);
   border: 1px solid color-mix(in srgb, #CFDFDE 70%, #6B4822 30%);
   padding: 32px 28px;
   margin: 20px 16px;
@@ -72,7 +71,7 @@ body {
   border-radius: 12px; font-family: inherit; font-size: 14px;
   font-weight: 700; cursor: pointer; transition: all 0.2s;
   display: flex; align-items: center; gap: 12px;
-  border: 1.5px solid #e0e4e0; background: #fff;
+  border: 1.5px solid #d4ccc4; background: #fff;
   color: #32261C; text-align: left;
   margin-bottom: 10px; box-sizing: border-box;
 }
@@ -92,8 +91,8 @@ body {
 .auth-btn .btn-sub {
   font-size: 11px; font-weight: 400; color: #5c4a3a; display: block; margin-top: 2px;
 }
-.auth-btn-google .btn-icon { background: #f4f6fb; border: 1px solid #e0e6f5; }
-.auth-btn-phone .btn-icon { background: #f0f6f3; border: 1px solid #d8e8e2; }
+.auth-btn-google .btn-icon { background: #f5f2f0; border: 1px solid #d4ccc4; }
+.auth-btn-phone .btn-icon { background: #f5f2f0; border: 1px solid #d4ccc4; }
 .auth-btn-email .btn-icon { background: #F6CFDE; border: 1px solid #CFDFDE; }
 
 /* ── OTP / Phone Views ── */
@@ -112,7 +111,7 @@ body {
   text-transform: uppercase; color: #5c4a3a; margin-bottom: 6px;
 }
 .field input:not(.phone-input-field):not(.country-code) {
-  width: 100%; padding: 12px 14px; border: 1.5px solid #bec9c5;
+  width: 100%; padding: 12px 14px; border: 1.5px solid #d4ccc4;
   border-radius: 10px; font-size: 14px; font-family: inherit; color: #32261C;
   background: #fff; outline: none; transition: border-color 0.2s; box-sizing: border-box;
 }
@@ -132,7 +131,7 @@ body {
   height: 48px !important;
   line-height: 48px !important;
   padding: 0 !important;
-  border: 1.5px solid #bec9c5 !important;
+  border: 1.5px solid #d4ccc4 !important;
   border-radius: 10px !important;
   font-size: 22px !important;
   font-weight: 800 !important;
@@ -155,7 +154,7 @@ body {
 .phone-wrap {
   display: flex;
   align-items: center;
-  border: 1.5px solid #bec9c5;
+  border: 1.5px solid #d4ccc4;
   border-radius: 12px;
   background: #fff;
   overflow: hidden;
@@ -188,7 +187,7 @@ body {
   box-sizing: border-box !important;
   -webkit-appearance: none !important;
   appearance: none !important;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%23023826'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E") !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%236B4822'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E") !important;
   background-repeat: no-repeat !important;
   background-position: right 6px center !important;
 }
@@ -213,7 +212,7 @@ body {
   appearance: none !important;
 }
 .phone-input-field::placeholder {
-  color: #bec9c5;
+  color: #a89888;
   font-weight: 500;
   letter-spacing: 0.02em;
 }
@@ -232,7 +231,7 @@ body {
 /* ── Onboarding: Role Cards ── */
 .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
 .role-card {
-  padding: 16px 12px; border: 1.5px solid #e0e4e0; border-radius: 12px;
+  padding: 16px 12px; border: 1.5px solid #d4ccc4; border-radius: 12px;
   background: #fff; cursor: pointer; text-align: center;
   transition: all 0.2s; position: relative;
 }
@@ -283,7 +282,34 @@ body {
   font-family: inherit; font-size: 13px; font-weight: 700;
   color: #6B4822; padding: 0;
 }
-.resend-row button:disabled { color: #bec9c5; cursor: not-allowed; }
+.resend-row button:disabled { color: #a89888; cursor: not-allowed; }
+
+.auth-title {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #32261C;
+  margin-bottom: 8px;
+}
+.auth-title-sm {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #32261C;
+  margin-bottom: 4px;
+}
+.auth-sub {
+  font-size: 14px;
+  color: #5c4a3a;
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+.auth-sub-tight {
+  font-size: 13px;
+  color: #5c4a3a;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
 </style>
 <link rel="stylesheet" href="/styles.css">
 <link rel="stylesheet" href="/css/brand.css">
@@ -294,7 +320,7 @@ body {
 <div class="left-panel">
 
   <!-- Logo -->
-  <a href="/" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--nav" style="display:inline-block;margin-bottom:24px;text-decoration:none;">
+  <a href="/" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--nav mb-6">
     <img src="/assets/logos/rentcan-wordmark.png" alt="RentCan">
   </a>
 

@@ -62,22 +62,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
-<script>
-try {
-  tailwind.config = {
-    theme: { extend: {
-      colors: {
-        "primary":"#6B4822","on-primary":"#ffffff","primary-container":"#32261C",
-        "secondary":"#F6CFDE","on-secondary":"#32261C","secondary-container":"#CFDFDE",
-        "surface":"#FFFCFB","on-surface":"#32261C","on-surface-variant":"#6B4822",
-        "surface-container":"#CFDFDE","outline-variant":"#CFDFDE",
-        "accent":"#F6CFDE","background":"#FFFCFB","brand-mint":"#CFDFDE","brand-pink":"#F6CFDE","brand-gold":"#D5B259"
-      },
-      fontFamily:{"sans":["Plus Jakarta Sans","sans-serif"]}
-    }}
-  };
-} catch(_e){}
-</script>
+<script src="/js/tailwind-brand.config.js"></script>
 <style>
   * { -webkit-tap-highlight-color: transparent; }
   button, a, input, select { touch-action: manipulation; }
@@ -85,6 +70,7 @@ try {
     body { padding-bottom: 72px; }
   }
 </style>
+<link rel="stylesheet" href="/styles.css">
 <link rel="stylesheet" href="/css/brand.css">
 <style>
 body { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -117,10 +103,10 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
 .expand-header {
   width: 100%; display: flex; justify-content: space-between; align-items: center;
   padding: 18px 24px; background: none; border: none; cursor: pointer;
-  font-family: inherit; font-size: 15px; font-weight: 700; color: #2a1810;
+  font-family: inherit; font-size: 15px; font-weight: 700; color: var(--rc-ink, #32261C);
   text-align: left; transition: background 0.2s ease;
 }
-.expand-header:hover { background: #F8F7F5; }
+.expand-header:hover { background: color-mix(in srgb, var(--rc-mint) 35%, #ffffff); }
 .expand-header .arrow {
   font-family: 'Material Symbols Outlined'; font-size: 20px; color: #6b5a52;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); flex-shrink: 0;
@@ -145,8 +131,8 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
 /* ── Sticky tab bar ── */
 .sticky-tabs {
   position: sticky; top: 65px; z-index: 40;
-  background: rgba(250, 246, 241, 0.95); backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(92, 58, 46, 0.12); padding: 12px 0;
+  background: var(--rc-cream, #FFFCFB);
+  border-bottom: 1px solid var(--rc-border, rgba(92, 58, 46, 0.12)); padding: 12px 0;
 }
 
 /* ── Section label ── */
@@ -181,20 +167,6 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
     <span class="text-accent text-xs font-bold uppercase tracking-[0.3em] mb-4 block">Property Management Company</span>
     <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.15] mb-8">Services &amp; Pricing<br/>for Real-World Care.</h1>
     <p class="text-white/70 text-lg max-w-2xl leading-relaxed">RentCan manages properties on the ground — monthly inspections, maintenance coordination, and hospitality operations — with an owner dashboard for visibility.</p>
-    <div class="flex flex-wrap gap-3 mt-10">
-      <span class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full text-sm text-white/80 border border-white/20">
-        <span class="material-symbols-outlined text-[16px] text-accent" style="font-variation-settings:'FILL' 1">location_on</span>Chandigarh
-      </span>
-      <span class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full text-sm text-white/80 border border-white/20">
-        <span class="material-symbols-outlined text-[16px] text-accent" style="font-variation-settings:'FILL' 1">location_on</span>Mohali (SAS Nagar)
-      </span>
-      <span class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full text-sm text-white/80 border border-white/20">
-        <span class="material-symbols-outlined text-[16px] text-accent" style="font-variation-settings:'FILL' 1">location_on</span>Panchkula
-      </span>
-      <span class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full text-sm text-white/80 border border-white/20">
-        <span class="material-symbols-outlined text-[16px] text-accent" style="font-variation-settings:'FILL' 1">location_on</span>Aerocity
-      </span>
-    </div>
   </div>
 </section>
 
@@ -229,7 +201,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
           <span class="text-4xl font-bold text-primary">₹1,499</span>
           <span class="text-on-surface-variant text-sm">/month</span>
         </div>
-        <p class="text-xs text-secondary font-semibold mb-4">+ ₹799/month per additional property</p>
+        <p class="text-xs text-brand-gold font-semibold mb-4">+ ₹799/month per additional property</p>
         <p class="text-sm text-on-surface-variant mb-6 leading-relaxed">Apartments, villas, independent homes, PGs and long-term rentals.</p>
         <ul class="space-y-2 text-sm text-on-surface-variant mb-8">
           <li class="check-item"><span class="check-icon">check</span><span>Monthly physical property inspection</span></li>
@@ -288,7 +260,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div class="flex gap-5 items-start">
           <div class="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-            <span class="material-symbols-outlined text-secondary" style="font-variation-settings:'FILL' 1">emergency</span>
+            <span class="material-symbols-outlined text-brand-gold" style="font-variation-settings:'FILL' 1">emergency</span>
           </div>
           <div>
             <h3 class="text-xl font-bold text-primary mb-1">SOS Property Inspection</h3>
@@ -342,7 +314,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
       <div class="expand-item">
         <button class="expand-header" onclick="toggleExpand(this)">
           <span class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-secondary" style="font-variation-settings:'FILL' 1">fact_check</span>
+            <span class="material-symbols-outlined text-brand-gold" style="font-variation-settings:'FILL' 1">fact_check</span>
             Monthly 15-Point Inspections (5th of every month)
           </span>
           <span class="arrow">expand_more</span>
@@ -372,7 +344,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
       <div class="expand-item">
         <button class="expand-header" onclick="toggleExpand(this)">
           <span class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-secondary" style="font-variation-settings:'FILL' 1">folder_open</span>
+            <span class="material-symbols-outlined text-brand-gold" style="font-variation-settings:'FILL' 1">folder_open</span>
             Digital Document Management
           </span>
           <span class="arrow">expand_more</span>
@@ -393,7 +365,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
       <div class="expand-item">
         <button class="expand-header" onclick="toggleExpand(this)">
           <span class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-secondary" style="font-variation-settings:'FILL' 1">build</span>
+            <span class="material-symbols-outlined text-brand-gold" style="font-variation-settings:'FILL' 1">build</span>
             Maintenance Management & Vendor Coordination
           </span>
           <span class="arrow">expand_more</span>
@@ -420,7 +392,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
       <div class="expand-item">
         <button class="expand-header" onclick="toggleExpand(this)">
           <span class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-secondary" style="font-variation-settings:'FILL' 1">key</span>
+            <span class="material-symbols-outlined text-brand-gold" style="font-variation-settings:'FILL' 1">key</span>
             Secure Key Holding
           </span>
           <span class="arrow">expand_more</span>
@@ -440,7 +412,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
       <div class="expand-item">
         <button class="expand-header" onclick="toggleExpand(this)">
           <span class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-secondary" style="font-variation-settings:'FILL' 1">travel_explore</span>
+            <span class="material-symbols-outlined text-brand-gold" style="font-variation-settings:'FILL' 1">travel_explore</span>
             Remote Property Management
           </span>
           <span class="arrow">expand_more</span>
@@ -462,7 +434,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
       <div class="expand-item">
         <button class="expand-header" onclick="toggleExpand(this)">
           <span class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-secondary" style="font-variation-settings:'FILL' 1">analytics</span>
+            <span class="material-symbols-outlined text-brand-gold" style="font-variation-settings:'FILL' 1">analytics</span>
             Reports & Dashboard Access
           </span>
           <span class="arrow">expand_more</span>
@@ -733,8 +705,8 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
     <h2 class="text-3xl font-bold text-primary mb-4">Talk to our team</h2>
     <p class="text-on-surface-variant mb-6 leading-relaxed">Sector 79, Mohali · SAS Nagar, Punjab</p>
     <div class="flex flex-col sm:flex-row gap-4">
-      <a href="mailto:hundalg968@gmail.com" class="text-primary font-semibold hover:text-secondary transition-colors">hundalg968@gmail.com</a>
-      <a href="tel:+918146298024" class="text-primary font-semibold hover:text-secondary transition-colors">+91 81462 98024</a>
+      <a href="mailto:hundalg968@gmail.com" class="text-primary font-semibold hover:text-brand-gold transition-colors">hundalg968@gmail.com</a>
+      <a href="tel:+918146298024" class="text-primary font-semibold hover:text-brand-gold transition-colors">+91 81462 98024</a>
     </div>
   </div>
 
@@ -756,7 +728,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
     <a href="/" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--footer no-underline">
       <img src="/assets/logos/rentcan-wordmark.png" alt="RentCan">
     </a>
-    <p class="text-sm text-on-surface-variant">© 2025 RentCan. On-ground property management across the Tricity.</p>
+    <p class="text-sm text-on-surface-variant">© 2026 RentCan. On-ground property management across the Tricity.</p>
     <div class="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm text-on-surface-variant">
       <a href="/#services" class="hover:text-primary transition-colors">Services</a>
       <a href="/#pricing" class="hover:text-primary transition-colors">Pricing</a>

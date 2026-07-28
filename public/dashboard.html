@@ -2,6 +2,10 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/seo/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
 <title>RentCan | Property Management Dashboard</title>
 <!-- Material Symbols -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
@@ -81,6 +85,7 @@
 
   <a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md" href="/dashboard">Properties</a>
   <a class="text-on-surface-variant hover:text-primary transition-colors pb-1 font-body-md text-body-md" href="/documents">Documents</a>
+  <a class="text-on-surface-variant hover:text-primary transition-colors pb-1 font-body-md text-body-md" href="/inspections">Inspections</a>
   <a class="text-on-surface-variant hover:text-primary transition-colors pb-1 font-body-md text-body-md" href="/payments">Payments</a>
   <a class="text-on-surface-variant hover:text-primary transition-colors pb-1 font-body-md text-body-md" href="/reports">Reports</a>
 
@@ -185,7 +190,7 @@
 <footer class="mt-auto grid grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop py-stack-xl w-full border-t border-outline bg-surface-container-lowest">
 <div class="col-span-4 lg:col-span-1">
 <a href="/dashboard" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--sm" aria-label="RentCan"><img src="/assets/logos/rentcan-wordmark.png" alt="RentCan"></a>
-<p class="font-body-md text-body-md text-on-surface-variant">© 2024 RentCan. Precision Property Management.</p>
+<p class="font-body-md text-body-md text-on-surface-variant">© 2026 RentCan. Precision Property Management.</p>
 </div>
 <div class="col-span-2 lg:col-span-1">
 <p class="font-label-lg text-label-lg text-on-surface font-bold mb-4">Resources</p>
@@ -217,7 +222,7 @@
         // Simple Micro-interaction for Stats
         document.querySelectorAll('section.swiss-grid > div').forEach(card => {
             card.addEventListener('mouseenter', () => {
-                card.style.backgroundColor = '#eceeec'; // surface-container
+                card.style.backgroundColor = '#f5f2f0'; // surface-container
                 card.style.transition = 'background-color 0.3s ease';
             });
             card.addEventListener('mouseleave', () => {
@@ -312,7 +317,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             card.innerHTML = `
                 <div class="h-48 w-full bg-surface-variant overflow-hidden relative">
                     <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="${prop.name}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
-                    <div class="absolute top-4 right-4 px-3 py-1 bg-surface-container-lowest/90 backdrop-blur-sm rounded-full font-label-caps text-[10px] tracking-wider text-primary font-bold">
+                    <div class="absolute top-4 right-4 px-3 py-1 bg-surface-container-lowest rounded-full shadow-sm border border-outline-variant/60 font-label-caps text-[10px] tracking-wider text-primary font-bold">
                         ${statusText}
                     </div>
                 </div>
@@ -371,7 +376,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (act.type === 'payment') {
                 icon = 'payments';
-                iconColor = act.status === 'paid' ? 'text-primary' : 'text-secondary';
+                iconColor = act.status === 'paid' ? 'text-primary' : 'text-brand-gold';
                 desc = `Rent payment ${act.status}: ${act.properties.name}`;
             } else {
                 icon = 'build';

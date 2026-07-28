@@ -267,30 +267,6 @@
     box-shadow: 0 10px 24px rgba(50,38,28,0.06);
   }
 
-  /* Showcase property cards — glassmorphism over dark bg */
-  .showcase-card {
-    transition:
-      transform     450ms cubic-bezier(0.16,1,0.3,1),
-      box-shadow    450ms cubic-bezier(0.16,1,0.3,1);
-    will-change: transform;
-    cursor: default;
-  }
-  .showcase-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 40px 80px rgba(0,0,0,0.25);
-    z-index: 2;
-  }
-  .showcase-card:hover .showcase-bg {
-    opacity: 0.45 !important;
-    transform: scale(1.04);
-  }
-  .showcase-bg {
-    transition: opacity 600ms cubic-bezier(0.16,1,0.3,1),
-                transform 600ms cubic-bezier(0.16,1,0.3,1);
-    will-change: opacity, transform;
-  }
-
-  /* Pricing table row hover */
   .pricing-row-hover {
     transition: background 180ms cubic-bezier(0.25,1,0.5,1);
   }
@@ -409,7 +385,7 @@
 <!-- Hero Section -->
 <section class="relative min-h-[min(88vh,720px)] flex items-center justify-center overflow-hidden border-b border-outline-variant/30">
 <div class="hero-video-container">
-<video autoplay loop muted playsinline webkit-playsinline src="hero-video.mp4" poster="/" class="object-cover w-full h-full object-center"></video>
+<video autoplay loop muted playsinline webkit-playsinline src="hero-video.mp4" poster="/assets/seo/og-image.jpg" class="object-cover w-full h-full object-center"></video>
 </div>
 <div class="relative z-10 w-full max-w-container-max mx-auto px-margin-desktop text-center flex flex-col items-center py-16 md:py-20">
 
@@ -438,12 +414,6 @@
     <span class="text-[10px] font-label-caps uppercase tracking-[0.25em] text-white/90" style="text-shadow:0 2px 12px rgba(0,0,0,0.45)">Made in India · Sector 79, Mohali</span>
   </div>
 
-  <!-- Isolated service pills — not a card wall -->
-  <div class="hero-pills hero-iso">
-    <a href="#services" class="hero-pill"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">home</span> Residential</a>
-    <a href="#services" class="hero-pill"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">apartment</span> Commercial</a>
-    <a href="#services" class="hero-pill"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">villa</span> Airbnb</a>
-  </div>
   </div>
 </div>
 </section>
@@ -485,22 +455,22 @@
   <!-- Plan headers -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-10">
     <div class="rc-card p-5 text-center">
-      <p class="text-[10px] font-label-caps uppercase tracking-widest text-secondary font-bold mb-1">Residential</p>
+      <p class="text-[10px] font-label-caps uppercase tracking-widest text-brand-gold font-bold mb-1">Residential</p>
       <p class="text-3xl font-bold text-primary">₹1,499<span class="text-sm font-normal text-on-surface-variant">/mo</span></p>
       <p class="text-xs text-on-surface-variant mt-1">+ ₹799 per extra property</p>
-      <a href="/login" class="inline-block mt-4 text-xs font-bold uppercase tracking-widest text-primary hover:text-secondary">Get Started →</a>
+      <a href="/login" class="inline-block mt-4 text-xs font-bold uppercase tracking-widest text-primary hover:text-brand-gold">Get Started →</a>
     </div>
     <div class="rc-card p-5 text-center ring-2 ring-primary/15">
       <p class="text-[10px] font-label-caps uppercase tracking-widest text-primary font-bold mb-1">Commercial</p>
       <p class="text-3xl font-bold text-primary">₹1,999<span class="text-sm font-normal text-on-surface-variant">/mo</span></p>
       <p class="text-xs text-on-surface-variant mt-1">+ ₹799 per extra property</p>
-      <a href="/login" class="inline-block mt-4 text-xs font-bold uppercase tracking-widest text-primary hover:text-secondary">Get Started →</a>
+      <a href="/login" class="inline-block mt-4 text-xs font-bold uppercase tracking-widest text-primary hover:text-brand-gold">Get Started →</a>
     </div>
     <div class="rc-card p-5 text-center">
-      <p class="text-[10px] font-label-caps uppercase tracking-widest text-secondary font-bold mb-1">Airbnb</p>
+      <p class="text-[10px] font-label-caps uppercase tracking-widest text-brand-gold font-bold mb-1">Airbnb</p>
       <p class="text-xl font-bold text-primary">Custom</p>
       <p class="text-xs text-on-surface-variant mt-1">Separate premium plan</p>
-      <a href="#contact" class="inline-block mt-4 text-xs font-bold uppercase tracking-widest text-primary hover:text-secondary">Contact Team →</a>
+      <a href="#contact" class="inline-block mt-4 text-xs font-bold uppercase tracking-widest text-primary hover:text-brand-gold">Contact Team →</a>
     </div>
   </div>
 
@@ -587,7 +557,7 @@
 <!-- Dashboard (secondary) -->
 <section class="py-16 px-margin-desktop max-w-container-max mx-auto rc-section-pink">
   <div class="rc-card p-10 md:p-14 bg-white">
-    <span class="font-label-caps text-label-caps text-secondary uppercase tracking-[0.3em] mb-4 block">Owner Visibility</span>
+    <span class="font-label-caps text-label-caps text-brand-gold uppercase tracking-[0.3em] mb-4 block">Owner Visibility</span>
     <h2 class="font-display-lg text-3xl md:text-4xl text-primary mb-4 tracking-tight">Your dashboard supports the service — it isn't the service.</h2>
     <p class="text-on-surface-variant max-w-3xl leading-relaxed mb-8">After RentCan's team inspects, maintains and coordinates on your behalf, the owner dashboard gives you a clear record of everything. Subscribe for hands-on management; use the dashboard to stay informed.</p>
     <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 text-sm text-on-surface-variant">
@@ -603,7 +573,7 @@
 <!-- Additional Services -->
 <section id="additional" class="py-16 px-margin-desktop max-w-container-max mx-auto scroll-mt-28">
   <div class="max-w-3xl mx-auto text-center mb-10">
-    <span class="font-label-caps text-label-caps text-secondary uppercase tracking-[0.3em] mb-4 block">Additional Services</span>
+    <span class="font-label-caps text-label-caps text-brand-gold uppercase tracking-[0.3em] mb-4 block">Additional Services</span>
     <h2 class="font-display-lg text-3xl md:text-4xl text-primary tracking-tight">SOS Property Inspection</h2>
   </div>
   <div class="max-w-2xl mx-auto rc-card p-10 text-center">
@@ -624,7 +594,7 @@
 <section id="pricing" class="py-20 px-margin-desktop scroll-mt-28 rc-section-mint">
   <div class="max-w-[1280px] mx-auto">
     <div class="text-center mb-12">
-      <span class="font-label-caps text-label-caps text-secondary uppercase tracking-[0.3em] mb-4 block font-bold">Transparent Pricing</span>
+      <span class="font-label-caps text-label-caps text-brand-gold uppercase tracking-[0.3em] mb-4 block font-bold">Transparent Pricing</span>
       <h2 class="font-display-lg text-4xl md:text-5xl text-primary tracking-tight mb-5">Flat fees. Real service.</h2>
       <p class="font-body-lg text-on-surface-variant max-w-2xl mx-auto">No percentage of your rent. You pay for on-ground property management — residential, commercial, or custom Airbnb hospitality.</p>
     </div>
@@ -674,32 +644,32 @@
   <a href="#inspection" class="hover:text-primary transition-colors">Inspections</a>
   <a href="#contact" class="hover:text-primary transition-colors">Contact</a>
 </nav>
-<p class="font-body-base text-[14px] text-on-surface-variant/70 leading-relaxed max-w-xs font-light">© 2025 RentCan. On-ground property management with monthly inspections across Chandigarh, Mohali, Panchkula and Aerocity.</p>
+<p class="font-body-base text-[14px] text-on-surface-variant/70 leading-relaxed max-w-xs font-light">© 2026 RentCan. On-ground property management with monthly inspections across Chandigarh, Mohali, Panchkula and Aerocity.</p>
 </div>
 </div>
 <div class="col-span-1">
 <h4 class="font-label-caps text-label-caps text-primary font-bold mb-5 uppercase tracking-[0.2em]">Regional Focus</h4>
 <ul class="space-y-3">
-<li class="text-on-surface-variant/70 text-sm hover:text-secondary transition-all cursor-pointer font-light"><a href="/#services">Mohali</a></li>
-<li class="text-on-surface-variant/70 text-sm hover:text-secondary transition-all cursor-pointer font-light"><a href="/#services">Chandigarh</a></li>
-<li class="text-on-surface-variant/70 text-sm hover:text-secondary transition-all cursor-pointer font-light"><a href="/#services">Panchkula</a></li>
-<li class="text-on-surface-variant/70 text-sm hover:text-secondary transition-all cursor-pointer font-light"><a href="/#services">Aerocity</a></li>
+<li class="text-on-surface-variant/70 text-sm hover:text-brand-gold transition-all cursor-pointer font-light"><a href="/#services">Mohali</a></li>
+<li class="text-on-surface-variant/70 text-sm hover:text-brand-gold transition-all cursor-pointer font-light"><a href="/#services">Chandigarh</a></li>
+<li class="text-on-surface-variant/70 text-sm hover:text-brand-gold transition-all cursor-pointer font-light"><a href="/#services">Panchkula</a></li>
+<li class="text-on-surface-variant/70 text-sm hover:text-brand-gold transition-all cursor-pointer font-light"><a href="/#services">Aerocity</a></li>
 <li class="text-on-surface-variant/30 text-sm cursor-not-allowed italic font-light">Zirakpur (Coming Soon)</li>
 </ul>
 </div>
 <div class="col-span-1">
 <h4 class="font-label-caps text-label-caps text-primary font-bold mb-5 uppercase tracking-[0.2em]">Resources</h4>
 <ul class="space-y-3">
-<li class="text-on-surface-variant/70 text-sm hover:text-secondary transition-all cursor-pointer font-light"><a href="/info#how">Investor Guide</a></li>
-<li class="text-on-surface-variant/70 text-sm hover:text-secondary transition-all cursor-pointer font-light"><a href="/info#services">Maintenance Matrix</a></li>
-<li class="text-on-surface-variant/70 text-sm hover:text-secondary transition-all cursor-pointer font-light"><a href="/info#faq">Legal &amp; Privacy</a></li>
+<li class="text-on-surface-variant/70 text-sm hover:text-brand-gold transition-all cursor-pointer font-light"><a href="/info#how">Investor Guide</a></li>
+<li class="text-on-surface-variant/70 text-sm hover:text-brand-gold transition-all cursor-pointer font-light"><a href="/info#services">Maintenance Matrix</a></li>
+<li class="text-on-surface-variant/70 text-sm hover:text-brand-gold transition-all cursor-pointer font-light"><a href="/info#faq">Legal &amp; Privacy</a></li>
 </ul>
 </div>
 <div id="contact" class="col-span-1 scroll-mt-28">
 <h4 class="font-label-caps text-label-caps text-primary font-bold mb-4 uppercase tracking-[0.2em]">Contact</h4>
 <p class="text-on-surface-variant text-sm mb-3 leading-relaxed font-light">Sector 79, Mohali<br/>SAS Nagar, Punjab</p>
-<a href="mailto:hundalg968@gmail.com" class="block text-sm font-semibold text-primary hover:text-secondary transition-colors mb-1.5">hundalg968@gmail.com</a>
-<a href="tel:+918146298024" class="block text-sm font-semibold text-primary hover:text-secondary transition-colors mb-4">+91 81462 98024</a>
+<a href="mailto:hundalg968@gmail.com" class="block text-sm font-semibold text-primary hover:text-brand-gold transition-colors mb-1.5">hundalg968@gmail.com</a>
+<a href="tel:+918146298024" class="block text-sm font-semibold text-primary hover:text-brand-gold transition-colors mb-4">+91 81462 98024</a>
 <div class="flex gap-6">
 <a href="mailto:hundalg968@gmail.com" aria-label="Email RentCan" class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-primary/5 text-primary hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-[20px]">mail</span></a>
 <a href="tel:+918146298024" aria-label="Call RentCan" class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-primary/5 text-primary hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-[20px]">call</span></a>
@@ -731,10 +701,6 @@
   <a href="#pricing" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
     <span class="material-symbols-outlined text-xl">loyalty</span>
     <span>Pricing</span>
-  </a>
-  <a href="#inspection" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
-    <span class="material-symbols-outlined text-xl">fact_check</span>
-    <span>Inspections</span>
   </a>
   <a href="#contact" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
     <span class="material-symbols-outlined text-xl">mail</span>
