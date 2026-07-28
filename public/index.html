@@ -231,7 +231,7 @@
   /* ── Bento tiles — solid cards, no glass ── */
   .bento-tile {
     position: relative;
-    background: #ffffff !important;
+    background: color-mix(in srgb, #CFDFDE 34%, #ffffff) !important;
     border: 1px solid rgba(107,72,34,0.12) !important;
     transition:
       transform     380ms cubic-bezier(0.16,1,0.3,1),
@@ -242,11 +242,11 @@
   .bento-tile:hover {
     transform: translateY(-4px);
     border-color: rgba(107,72,34,0.2) !important;
-    box-shadow: 0 16px 40px rgba(50,38,28,0.08);
+    box-shadow: 0 16px 40px rgba(78,66,56,0.08);
   }
 
   .bento-tile-hero {
-    background: #ffffff !important;
+    background: color-mix(in srgb, #CFDFDE 34%, #ffffff) !important;
     border: 1px solid rgba(107,72,34,0.12) !important;
     transition:
       transform     450ms cubic-bezier(0.16,1,0.3,1),
@@ -254,17 +254,17 @@
   }
   .bento-tile-hero:hover {
     transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgba(50,38,28,0.08);
+    box-shadow: 0 16px 40px rgba(78,66,56,0.08);
   }
 
   .bento-tile-mini {
-    background: #ffffff !important;
+    background: color-mix(in srgb, #CFDFDE 34%, #ffffff) !important;
     border: 1px solid rgba(107,72,34,0.12) !important;
     transition: transform 300ms cubic-bezier(0.16,1,0.3,1), box-shadow 300ms cubic-bezier(0.16,1,0.3,1);
   }
   .bento-tile-mini:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 24px rgba(50,38,28,0.06);
+    box-shadow: 0 10px 24px rgba(78,66,56,0.06);
   }
 
   .pricing-row-hover {
@@ -295,8 +295,8 @@
             width: 100%;
             height: 100%;
             background:
-              linear-gradient(180deg, rgba(50, 38, 28, 0.55) 0%, rgba(107, 72, 34, 0.58) 42%, rgba(50, 38, 28, 0.72) 100%),
-              linear-gradient(120deg, rgba(207, 223, 222, 0.35) 0%, rgba(246, 207, 222, 0.2) 55%);
+              linear-gradient(180deg, rgba(78, 66, 56, 0.42) 0%, rgba(107, 72, 34, 0.48) 45%, rgba(78, 66, 56, 0.62) 100%),
+              linear-gradient(120deg, rgba(207, 223, 222, 0.42) 0%, rgba(246, 207, 222, 0.18) 55%);
         }
         .hero-video-container::before {
             content: '';
@@ -304,7 +304,7 @@
             inset: 0;
             z-index: 1;
             pointer-events: none;
-            background: radial-gradient(ellipse 70% 55% at 50% 40%, transparent 0%, rgba(50, 38, 28, 0.38) 100%);
+            background: radial-gradient(ellipse 70% 55% at 50% 40%, transparent 0%, rgba(78, 66, 56, 0.28) 100%);
         }
         .swiss-grid {
             display: grid;
@@ -556,16 +556,16 @@
 
 <!-- Dashboard (secondary) -->
 <section class="py-16 px-margin-desktop max-w-container-max mx-auto rc-section-pink">
-  <div class="rc-card p-10 md:p-14 bg-white">
+  <div class="rc-card p-10 md:p-14 bg-surface">
     <span class="font-label-caps text-label-caps text-brand-gold uppercase tracking-[0.3em] mb-4 block">Owner Visibility</span>
     <h2 class="font-display-lg text-3xl md:text-4xl text-primary mb-4 tracking-tight">Your dashboard supports the service — it isn't the service.</h2>
     <p class="text-on-surface-variant max-w-3xl leading-relaxed mb-8">After RentCan's team inspects, maintains and coordinates on your behalf, the owner dashboard gives you a clear record of everything. Subscribe for hands-on management; use the dashboard to stay informed.</p>
     <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 text-sm text-on-surface-variant">
-      <div class="bg-white rounded-xl p-4 border border-outline-variant/20">View inspection reports</div>
-      <div class="bg-white rounded-xl p-4 border border-outline-variant/20">Track maintenance requests</div>
-      <div class="bg-white rounded-xl p-4 border border-outline-variant/20">Store lease documents</div>
-      <div class="bg-white rounded-xl p-4 border border-outline-variant/20">Monitor rent payments</div>
-      <div class="bg-white rounded-xl p-4 border border-outline-variant/20">Review property history</div>
+      <div class="bg-surface rounded-xl p-4 border border-outline-variant/20">View inspection reports</div>
+      <div class="bg-surface rounded-xl p-4 border border-outline-variant/20">Track maintenance requests</div>
+      <div class="bg-surface rounded-xl p-4 border border-outline-variant/20">Store lease documents</div>
+      <div class="bg-surface rounded-xl p-4 border border-outline-variant/20">Monitor rent payments</div>
+      <div class="bg-surface rounded-xl p-4 border border-outline-variant/20">Review property history</div>
     </div>
   </div>
 </section>
@@ -628,7 +628,7 @@
 <span class="font-label-caps text-label-caps text-[#F6CFDE] uppercase tracking-[0.4em] mb-5 block">On-Ground Property Care</span>
 <h2 class="font-display-lg text-white text-4xl md:text-[56px] mb-8 leading-[1.08] tracking-tight">Because your property deserves<br/>more than an app.</h2>
 <div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
-<a href="/login" class="px-12 sm:px-16 py-5 sm:py-6 bg-white text-primary font-label-caps text-label-caps uppercase tracking-[0.2em] font-bold hover:scale-[1.02] transition-all duration-300 shadow-lg rounded-sm inline-block">Get Started</a>
+<a href="/login" class="px-12 sm:px-16 py-5 sm:py-6 bg-surface text-primary font-label-caps text-label-caps uppercase tracking-[0.2em] font-bold hover:scale-[1.02] transition-all duration-300 shadow-lg rounded-sm inline-block">Get Started</a>
 <a href="#contact" class="px-12 sm:px-16 py-5 sm:py-6 border border-white/50 text-white font-label-caps text-label-caps uppercase tracking-[0.2em] hover:bg-white/10 transition-all duration-300 rounded-sm inline-block">Contact Team</a>
 </div>
 </div>

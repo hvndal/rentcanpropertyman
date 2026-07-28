@@ -2,9 +2,15 @@
 
 body.rc-app,
 body.flex.min-h-screen {
-  background-color: var(--rc-cream, #FFFCFB);
-  color: var(--rc-ink, #32261C);
+  background-color: var(--rc-cream, #F2F5F4);
+  color: var(--rc-ink, #4E4238);
   font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Soften Tailwind bg-white plates into mint-cream surfaces */
+body.rc-app .bg-white,
+body.flex.min-h-screen .bg-white {
+  background-color: var(--rc-surface, color-mix(in srgb, #CFDFDE 34%, #ffffff)) !important;
 }
 
 .material-symbols-outlined {
@@ -39,20 +45,25 @@ body.flex.min-h-screen {
   border-radius: 4px;
 }
 
-/* Solid app chrome — no glassy teal blur */
+/* Solid app chrome — mint wash, no stark white bar */
 .rc-app-header {
-  background: var(--rc-cream, #FFFCFB);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--rc-mint, #CFDFDE) 58%, var(--rc-warm-white, #F5F7F6)) 0%,
+    color-mix(in srgb, var(--rc-mint, #CFDFDE) 32%, var(--rc-cream, #F2F5F4)) 100%
+  );
   border-bottom: 1px solid var(--rc-border);
+  box-shadow: 0 8px 24px -18px rgba(78, 66, 56, 0.25);
 }
 
 .rc-app-mobile-nav {
-  background: var(--rc-warm-white, #FFFCFB);
+  background: color-mix(in srgb, var(--rc-mint, #CFDFDE) 52%, var(--rc-warm-white, #F5F7F6));
   border-top: 1px solid var(--rc-border);
-  box-shadow: 0 -4px 20px rgba(50, 38, 28, 0.06);
+  box-shadow: 0 -4px 20px rgba(78, 66, 56, 0.05);
 }
 
 .rc-app-modal-backdrop {
-  background: rgba(50, 38, 28, 0.45);
+  background: rgba(78, 66, 56, 0.38);
 }
 
 /* Demo sample banner */
@@ -62,7 +73,7 @@ body.flex.min-h-screen {
   z-index: 60;
   background: color-mix(in srgb, var(--rc-mint, #CFDFDE) 70%, #ffffff);
   border-bottom: 1px solid var(--rc-border, #d4ccc4);
-  color: var(--rc-ink, #32261C);
+  color: var(--rc-ink, #4E4238);
   font-size: 13px;
   line-height: 1.4;
 }
@@ -89,7 +100,7 @@ body.flex.min-h-screen {
   cursor: pointer;
 }
 .rc-demo-banner-btn:hover {
-  background: var(--rc-cream, #FFFCFB);
+  background: var(--rc-cream, #F2F5F4);
 }
 
 /* Status chips */
@@ -111,7 +122,7 @@ body.flex.min-h-screen {
 }
 .rc-status-pending {
   background: color-mix(in srgb, var(--rc-pink, #F6CFDE) 55%, #fff);
-  color: var(--rc-brown-dark, #32261C);
+  color: var(--rc-brown-dark, #4E4238);
 }
 .rc-status-warn {
   background: #ffdad6;

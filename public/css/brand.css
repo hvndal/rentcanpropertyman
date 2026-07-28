@@ -5,22 +5,24 @@
   --rc-pink:         #F6CFDE;
   --rc-gold:         #D5B259;
   --rc-brown:        #6B4822;
-  --rc-brown-dark:   #32261C;
+  /* Soft taupe ink — less brown, more neutral mocha */
+  --rc-brown-dark:   #4E4238;
 
-  /* Semantic — palette only (primary = logo brown) */
-  --rc-cream:        #FFFCFB;
+  /* Surfaces — cream blended with mint so nothing reads as stark white */
+  --rc-cream:        #F2F5F4;
   --rc-sand:         var(--rc-mint);
-  --rc-warm-white:   #FFFCFB;
+  --rc-warm-white:   #F5F7F6;
+  --rc-surface:      color-mix(in srgb, var(--rc-mint) 34%, #ffffff);
   --rc-green:        var(--rc-brown);
   --rc-green-soft:   var(--rc-brown-dark);
   --rc-green-mist:   var(--rc-mint);
   --rc-accent:       var(--rc-pink);
   --rc-accent-soft:  var(--rc-pink);
   --rc-ink:          var(--rc-brown-dark);
-  --rc-muted:        color-mix(in srgb, var(--rc-brown) 72%, var(--rc-mint));
-  --rc-border:       color-mix(in srgb, var(--rc-mint) 75%, var(--rc-brown) 25%);
-  --rc-shadow:       0 20px 50px rgba(50, 38, 28, 0.08);
-  --rc-shadow-lg:    0 28px 60px rgba(50, 38, 28, 0.12);
+  --rc-muted:        color-mix(in srgb, var(--rc-brown) 48%, var(--rc-mint));
+  --rc-border:       color-mix(in srgb, var(--rc-mint) 78%, var(--rc-brown) 22%);
+  --rc-shadow:       0 20px 50px rgba(78, 66, 56, 0.07);
+  --rc-shadow-lg:    0 28px 60px rgba(78, 66, 56, 0.11);
   --rc-radius:       1rem;
   --rc-radius-lg:    1.25rem;
 }
@@ -31,8 +33,8 @@ body.rc-brand {
 }
 
 .rc-glass {
-  /* Solid surface — not translucent glass */
-  background: var(--rc-warm-white);
+  /* Soft blended surface — not stark white */
+  background: var(--rc-surface);
   border: 1px solid var(--rc-border);
 }
 
@@ -41,14 +43,19 @@ body.rc-brand {
   border: 1px solid color-mix(in srgb, var(--rc-brown) 40%, var(--rc-mint) 60%);
 }
 
-/* Sticky site header — one nav for the whole marketing site */
+/* Sticky site header — mint wash that fades into the page (no stark white bar) */
 .rc-site-header {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: var(--rc-warm-white);
-  border-bottom: 1px solid var(--rc-border);
-  box-shadow: 0 1px 0 rgba(50, 38, 28, 0.04);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--rc-mint) 62%, var(--rc-warm-white)) 0%,
+    color-mix(in srgb, var(--rc-mint) 38%, var(--rc-cream)) 100%
+  );
+  border-bottom: 1px solid color-mix(in srgb, var(--rc-mint) 70%, var(--rc-brown) 30%);
+  box-shadow: 0 10px 28px -22px rgba(78, 66, 56, 0.28);
+  backdrop-filter: none;
 }
 
 .rc-site-header .rc-site-nav-bar {
@@ -78,7 +85,7 @@ body.rc-brand {
 }
 
 .rc-card {
-  background: var(--rc-warm-white);
+  background: var(--rc-surface);
   border: 1px solid var(--rc-border);
   border-radius: var(--rc-radius-lg);
   box-shadow: var(--rc-shadow);
@@ -99,7 +106,11 @@ body.rc-brand {
   justify-content: center;
   gap: 0.5rem;
   padding: 1rem 2rem;
-  background: linear-gradient(135deg, var(--rc-green) 0%, var(--rc-green-soft) 100%);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--rc-brown) 88%, var(--rc-mint)) 0%,
+    color-mix(in srgb, var(--rc-brown) 72%, var(--rc-brown-dark)) 100%
+  );
   color: #fff;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -107,13 +118,17 @@ body.rc-brand {
   font-size: 0.72rem;
   border-radius: 0.5rem;
   transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-  box-shadow: 0 10px 28px rgba(50, 38, 28, 0.22);
+  box-shadow: 0 10px 28px rgba(78, 66, 56, 0.16);
 }
 
 .rc-btn-primary:hover {
-  background: linear-gradient(135deg, var(--rc-brown-dark) 0%, var(--rc-brown) 100%);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--rc-brown) 82%, var(--rc-brown-dark)) 0%,
+    color-mix(in srgb, var(--rc-brown) 90%, var(--rc-mint)) 100%
+  );
   transform: translateY(-2px);
-  box-shadow: 0 14px 36px rgba(50, 38, 28, 0.28);
+  box-shadow: 0 14px 36px rgba(78, 66, 56, 0.2);
 }
 
 .rc-btn-outline {
@@ -171,9 +186,9 @@ body.rc-brand {
   object-position: top center;
 }
 
-/* Light pages: soft mint plate — subtle, not loud */
+/* Light pages: soft mint-cream plate — blends with header */
 .rc-brand-logo--light {
-  background: #ffffff;
+  background: color-mix(in srgb, var(--rc-mint) 35%, #ffffff);
   border-radius: 0.65rem;
   padding: 0.3rem 0.55rem;
   border: 1px solid var(--rc-border);
@@ -419,7 +434,7 @@ body.rc-brand {
   gap: 0.4rem;
   padding: 0.55rem 0.95rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
+  background: color-mix(in srgb, var(--rc-mint) 28%, #ffffff);
   border: 1px solid color-mix(in srgb, var(--rc-mint) 70%, #ffffff);
   color: var(--rc-brown-dark);
   font-size: 0.78rem;
@@ -429,7 +444,7 @@ body.rc-brand {
 
 .hero-pill:hover {
   transform: translateY(-2px);
-  background: #ffffff;
+  background: color-mix(in srgb, var(--rc-mint) 20%, #ffffff);
   border-color: var(--rc-pink);
 }
 
@@ -453,29 +468,33 @@ body.rc-brand {
 }
 
 .rc-section-mint {
-  background: color-mix(in srgb, var(--rc-mint) 42%, var(--rc-cream));
+  background: color-mix(in srgb, var(--rc-mint) 48%, var(--rc-cream));
 }
 
 .rc-section-pink {
-  background: color-mix(in srgb, var(--rc-pink) 28%, var(--rc-cream));
+  background: color-mix(in srgb, var(--rc-pink) 32%, var(--rc-cream));
 }
 
 .rc-section-inspection {
-  background: color-mix(in srgb, var(--rc-mint) 55%, #ffffff);
+  background: color-mix(in srgb, var(--rc-mint) 62%, var(--rc-cream));
   color: var(--rc-ink);
   border-top: 1px solid var(--rc-border);
   border-bottom: 1px solid var(--rc-border);
 }
 
 .rc-section-inspection .rc-inspection-card {
-  background: #ffffff;
+  background: var(--rc-surface);
   border: 1px solid var(--rc-border);
   border-radius: var(--rc-radius-lg);
   box-shadow: var(--rc-shadow);
 }
 
 .rc-section-cta {
-  background: var(--rc-brown);
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--rc-brown) 82%, var(--rc-mint)) 0%,
+    color-mix(in srgb, var(--rc-brown-dark) 88%, var(--rc-mint)) 100%
+  );
   color: #ffffff;
 }
 
@@ -537,7 +556,7 @@ body.rc-brand {
   -webkit-overflow-scrolling: touch;
   border-radius: var(--rc-radius-lg);
   border: 1px solid var(--rc-border);
-  background: var(--rc-warm-white);
+  background: var(--rc-surface);
   box-shadow: var(--rc-shadow);
 }
 
@@ -552,9 +571,9 @@ body.rc-brand {
   .rc-feature-matrix td:first-child {
     position: sticky;
     left: 0;
-    background: var(--rc-warm-white);
+    background: var(--rc-surface);
     z-index: 1;
-    box-shadow: 4px 0 8px rgba(50, 38, 28, 0.04);
+    box-shadow: 4px 0 8px rgba(78, 66, 56, 0.04);
   }
 
   .rc-feature-matrix thead th:first-child {
@@ -635,7 +654,7 @@ body.rc-brand {
 .rc-mobile-drawer-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(50, 38, 28, 0.4);
+  background: rgba(78, 66, 56, 0.4);
 }
 
 .rc-mobile-drawer-panel {
@@ -644,12 +663,12 @@ body.rc-brand {
   right: 0;
   width: min(300px, 88vw);
   height: 100%;
-  background: var(--rc-warm-white);
+  background: color-mix(in srgb, var(--rc-mint) 40%, var(--rc-warm-white));
   border-left: 1px solid var(--rc-border);
   padding: 1.25rem;
   transform: translateX(100%);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: -8px 0 32px rgba(50, 38, 28, 0.12);
+  box-shadow: -8px 0 32px rgba(78, 66, 56, 0.1);
 }
 
 .rc-mobile-drawer.is-open .rc-mobile-drawer-panel {
@@ -677,9 +696,9 @@ body.rc-brand {
 }
 
 .rc-mobile-bottom-nav {
-  background: var(--rc-warm-white);
+  background: color-mix(in srgb, var(--rc-mint) 50%, var(--rc-warm-white));
   border-top: 1px solid var(--rc-border);
-  box-shadow: 0 -4px 20px rgba(50, 38, 28, 0.06);
+  box-shadow: 0 -4px 20px rgba(78, 66, 56, 0.05);
 }
 
 /* Scroll reveal — visible by default when JS hasn't run yet */
@@ -727,7 +746,7 @@ html.rc-js .rc-reveal:not(.in-view):not(.is-visible) {
 .rc-pricing-tile:hover,
 .rc-pricing-tile.is-hovered {
   transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 28px 56px rgba(50, 38, 28, 0.14);
+  box-shadow: 0 28px 56px rgba(78, 66, 56, 0.14);
   border-color: rgba(107, 72, 34, 0.28);
 }
 
@@ -744,7 +763,7 @@ html.rc-js .rc-reveal:not(.in-view):not(.is-visible) {
   font-weight: 600;
   cursor: pointer;
   border: 1.5px solid var(--rc-border);
-  background: var(--rc-warm-white);
+  background: var(--rc-surface);
   color: var(--rc-muted);
   white-space: nowrap;
   transition:
@@ -759,7 +778,7 @@ html.rc-js .rc-reveal:not(.in-view):not(.is-visible) {
   border-color: rgba(107, 72, 34, 0.35);
   color: var(--rc-brown);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(50, 38, 28, 0.08);
+  box-shadow: 0 8px 20px rgba(78, 66, 56, 0.08);
 }
 
 .rc-tab-btn.active {
@@ -774,7 +793,7 @@ html.rc-js .rc-reveal:not(.in-view):not(.is-visible) {
   padding: 2rem;
   position: relative;
   overflow: hidden;
-  background: var(--rc-warm-white);
+  background: var(--rc-surface);
   border: 1px solid var(--rc-border);
   box-shadow: var(--rc-shadow);
   transition:
@@ -791,7 +810,7 @@ html.rc-js .rc-reveal:not(.in-view):not(.is-visible) {
 
 .rc-plan-card-featured {
   border: 2px solid rgba(213, 178, 89, 0.35);
-  background: linear-gradient(180deg, #fff 0%, var(--rc-mint) 100%);
+  background: linear-gradient(180deg, var(--rc-surface) 0%, var(--rc-mint) 100%);
 }
 
 @media (prefers-reduced-motion: reduce) {

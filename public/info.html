@@ -99,11 +99,11 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
 }
 
 /* ── Expandable items ── */
-.expand-item { border: 1px solid var(--rc-border, rgba(92, 58, 46, 0.14)); border-radius: 12px; overflow: hidden; margin-bottom: 12px; background: #fff; }
+.expand-item { border: 1px solid var(--rc-border, rgba(92, 58, 46, 0.14)); border-radius: 12px; overflow: hidden; margin-bottom: 12px; background: color-mix(in srgb, var(--rc-mint) 22%, #fff); }
 .expand-header {
   width: 100%; display: flex; justify-content: space-between; align-items: center;
   padding: 18px 24px; background: none; border: none; cursor: pointer;
-  font-family: inherit; font-size: 15px; font-weight: 700; color: var(--rc-ink, #32261C);
+  font-family: inherit; font-size: 15px; font-weight: 700; color: var(--rc-ink, #4E4238);
   text-align: left; transition: background 0.2s ease;
 }
 .expand-header:hover { background: color-mix(in srgb, var(--rc-mint) 35%, #ffffff); }
@@ -131,7 +131,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
 /* ── Sticky tab bar ── */
 .sticky-tabs {
   position: sticky; top: 65px; z-index: 40;
-  background: var(--rc-cream, #FFFCFB);
+  background: var(--rc-cream, #F2F5F4);
   border-bottom: 1px solid var(--rc-border, rgba(92, 58, 46, 0.12)); padding: 12px 0;
 }
 
@@ -457,7 +457,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </div>
 
     <!-- What's Coming -->
-    <div class="bg-white border border-outline-variant rounded-2xl p-8">
+    <div class="bg-surface border border-outline-variant rounded-2xl p-8">
       <span class="section-label mb-3 block">Roadmap</span>
       <h3 class="text-2xl font-bold text-primary mb-2">Coming soon.</h3>
       <p class="text-on-surface-variant text-sm mb-6">Features we're actively building for the next release.</p>
@@ -738,7 +738,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
 </main>
 
 <!-- ── Footer ── -->
-<footer class="bg-white border-t border-outline-variant py-10 mt-10">
+<footer class="bg-brand-cream border-t border-outline-variant py-10 mt-10">
   <div class="max-w-6xl mx-auto px-6 md:px-16 flex flex-col md:flex-row items-center justify-between gap-4">
     <a href="/" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--footer no-underline">
       <img src="/assets/logos/rentcan-wordmark.png" alt="RentCan">
