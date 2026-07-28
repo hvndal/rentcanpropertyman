@@ -110,70 +110,155 @@ body.rc-brand {
   filter: drop-shadow(0 4px 12px rgba(42, 24, 16, 0.15));
 }
 
-/* Hero spotlight — readable over stock video */
-.rc-hero-spotlight {
+/* Hero — isolated elements, no single title box */
+.hero-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   max-width: 44rem;
   margin: 0 auto;
-  padding: 1.5rem 1.25rem 1.75rem;
-  border-radius: 1.5rem;
-  background: linear-gradient(
-    165deg,
-    rgba(42, 24, 16, 0.92) 0%,
-    rgba(61, 38, 30, 0.88) 50%,
-    rgba(42, 24, 16, 0.9) 100%
-  );
-  backdrop-filter: blur(24px) saturate(130%);
-  -webkit-backdrop-filter: blur(24px) saturate(130%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow:
-    0 28px 80px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  gap: 0;
 }
 
-@media (min-width: 640px) {
-  .rc-hero-spotlight {
-    padding: 2rem 2.25rem 2.25rem;
-    max-width: 48rem;
-  }
-}
-
-.hero-tagline {
+.hero-lede {
   color: #ffffff;
   font-size: 0.9375rem;
-  line-height: 1.7;
+  line-height: 1.75;
   font-weight: 400;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.55);
+  max-width: 34rem;
 }
 
-@media (min-width: 768px) {
-  .hero-tagline {
-    font-size: 1.0625rem;
-  }
+.hero-lede strong {
+  font-weight: 600;
+  color: #fff;
 }
 
-.hero-logo-plate {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.875rem 1.5rem;
-  border-radius: 1rem;
-  background: linear-gradient(180deg, #fffcf8 0%, #f5ebe0 100%);
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+.hero-lede-lines {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  text-align: center;
 }
 
-.hero-logo-plate img {
+.hero-lede-lines li {
+  color: #ffffff;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
+  padding: 0.2rem 0;
+}
+
+.hero-lede-lines li::before {
+  content: '·';
+  margin-right: 0.5rem;
+  color: var(--rc-tan, #c9a882);
+  font-weight: 700;
+}
+
+.hero-logo-float {
+  display: block;
+  margin-bottom: 1.25rem;
+  filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.55));
+}
+
+.hero-logo-float img {
+  width: min(240px, 78vw);
   height: auto;
-  width: min(220px, 72vw);
   object-fit: contain;
 }
 
 @media (min-width: 640px) {
-  .hero-logo-plate img {
-    width: min(280px, 80vw);
+  .hero-logo-float img {
+    width: min(300px, 85vw);
+  }
+}
+
+.hero-headline {
+  text-shadow: 0 3px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* Feature matrix — ✓ available, − not */
+.rc-feature-matrix {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.8125rem;
+}
+
+.rc-feature-matrix th,
+.rc-feature-matrix td {
+  padding: 0.625rem 0.75rem;
+  border-bottom: 1px solid var(--rc-border);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.rc-feature-matrix th:first-child,
+.rc-feature-matrix td:first-child {
+  text-align: left;
+  font-weight: 500;
+  color: var(--rc-ink);
+  min-width: 10rem;
+}
+
+.rc-feature-matrix thead th {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--rc-brown);
+  background: var(--rc-sand);
+  border-bottom: 2px solid rgba(92, 58, 46, 0.15);
+}
+
+.rc-feature-matrix tbody tr:hover td {
+  background: rgba(239, 230, 220, 0.35);
+}
+
+.rc-feat-yes {
+  color: var(--rc-brown);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.rc-feat-no {
+  color: var(--rc-muted);
+  opacity: 0.45;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.rc-feature-matrix-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--rc-radius-lg);
+  border: 1px solid var(--rc-border);
+  background: var(--rc-warm-white);
+  box-shadow: var(--rc-shadow);
+}
+
+@media (max-width: 639px) {
+  .rc-feature-matrix th,
+  .rc-feature-matrix td {
+    padding: 0.5rem 0.4rem;
+    font-size: 0.75rem;
+  }
+
+  .rc-feature-matrix th:first-child,
+  .rc-feature-matrix td:first-child {
+    position: sticky;
+    left: 0;
+    background: var(--rc-warm-white);
+    z-index: 1;
+    box-shadow: 4px 0 8px rgba(61, 38, 30, 0.04);
+  }
+
+  .rc-feature-matrix thead th:first-child {
+    background: var(--rc-sand);
   }
 }
 

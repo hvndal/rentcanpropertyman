@@ -309,48 +309,51 @@
 </div>
 <div class="relative z-10 w-full max-w-container-max mx-auto px-margin-desktop text-center flex flex-col items-center pt-24 md:pt-28 pb-14 md:pb-20">
 
-<div class="rc-hero-spotlight mb-2 flex flex-col items-center max-w-4xl mx-auto w-full">
-  <p class="hero-tagline max-w-2xl mx-auto mb-5 md:mb-6 px-1 order-first">
-    From monthly property inspections to complete Airbnb management — RentCan helps landlords, investors and NRIs manage properties with confidence through reliable, on-ground service across the Tricity.
-  </p>
-  <div class="hero-logo-plate mb-5 md:mb-6">
-    <img src="/assets/logos/rentcan-logo.png" alt="RentCan — No More Kal Aaunga. Reliable on time inspections." class="hero-logo-glow">
-  </div>
-  <h1 class="font-display-lg text-white text-3xl sm:text-5xl md:text-[56px] leading-[1.12] mb-5 max-w-3xl tracking-tight font-bold px-1">
+<div class="hero-stack">
+  <ul class="hero-lede-lines mb-4 md:mb-5" aria-label="What RentCan offers">
+    <li>Monthly property inspections</li>
+    <li>Complete Airbnb management</li>
+    <li>On-ground service across the Tricity</li>
+  </ul>
+  <a href="/" class="hero-logo-float" aria-label="RentCan home">
+    <img src="/assets/logos/rentcan-logo.png" alt="RentCan">
+  </a>
+  <h1 class="hero-headline font-display-lg text-white text-3xl sm:text-5xl md:text-[56px] leading-[1.12] mb-3 max-w-3xl tracking-tight font-bold">
     Property Management,<br/><span class="font-brand-script text-accent not-italic" style="font-style:italic;">Simplified.</span>
   </h1>
-  <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 px-1 w-full sm:w-auto">
+  <p class="hero-lede mb-6 md:mb-8 px-2">
+    For <strong>landlords, investors &amp; NRIs</strong> who want reliable care — not just an app.
+  </p>
+  <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-7 w-full sm:w-auto">
     <a href="/login" class="rc-btn-primary w-full sm:w-auto justify-center">Get Started <span class="material-symbols-outlined text-base">arrow_forward</span></a>
     <a href="#contact" class="rc-btn-outline w-full sm:w-auto justify-center">Contact Team</a>
   </div>
   <div class="flex items-center justify-center gap-2 mb-6 sm:mb-8">
     <span class="inline-flex h-3 w-5 rounded-sm overflow-hidden border border-white/30"><span class="w-1/3 bg-[#FF9933]"></span><span class="w-1/3 bg-white"></span><span class="w-1/3 bg-[#138808]"></span></span>
-    <span class="text-[10px] font-label-caps uppercase tracking-[0.25em] text-white">Made in India · Tricity-based team</span>
+    <span class="text-[10px] font-label-caps uppercase tracking-[0.25em] text-white" style="text-shadow:0 2px 12px rgba(0,0,0,0.5)">Made in India · Tricity-based team</span>
   </div>
-  <!-- Desktop: three service tiles -->
   <div class="hidden sm:grid sm:grid-cols-3 gap-3 w-full max-w-3xl">
-    <div class="rc-glass-dark rounded-xl px-4 py-4 text-left">
-      <span class="material-symbols-outlined text-accent text-xl mb-2" style="font-variation-settings:'FILL' 1">home</span>
-      <p class="text-white font-semibold text-sm leading-snug">Residential Property Management</p>
+    <div class="rc-glass-dark rounded-xl px-4 py-3.5 text-left">
+      <span class="material-symbols-outlined text-accent text-lg mb-1.5 block" style="font-variation-settings:'FILL' 1">home</span>
+      <p class="text-white font-semibold text-sm leading-snug">Residential</p>
     </div>
-    <div class="rc-glass-dark rounded-xl px-4 py-4 text-left">
-      <span class="material-symbols-outlined text-accent text-xl mb-2" style="font-variation-settings:'FILL' 1">apartment</span>
-      <p class="text-white font-semibold text-sm leading-snug">Commercial Property Management</p>
+    <div class="rc-glass-dark rounded-xl px-4 py-3.5 text-left">
+      <span class="material-symbols-outlined text-accent text-lg mb-1.5 block" style="font-variation-settings:'FILL' 1">apartment</span>
+      <p class="text-white font-semibold text-sm leading-snug">Commercial</p>
     </div>
-    <div class="rc-glass-dark rounded-xl px-4 py-4 text-left">
-      <span class="material-symbols-outlined text-accent text-xl mb-2" style="font-variation-settings:'FILL' 1">star</span>
-      <p class="text-white font-semibold text-sm leading-snug">Airbnb Complete Management</p>
+    <div class="rc-glass-dark rounded-xl px-4 py-3.5 text-left">
+      <span class="material-symbols-outlined text-accent text-lg mb-1.5 block" style="font-variation-settings:'FILL' 1">villa</span>
+      <p class="text-white font-semibold text-sm leading-snug">Airbnb</p>
     </div>
   </div>
-  <!-- Mobile: tap to expand each service -->
-  <div class="sm:hidden w-full space-y-2 text-left">
+  <div class="sm:hidden w-full space-y-2 text-left max-w-sm mx-auto">
     <details class="hero-chip-acc">
       <summary>
         <span class="material-symbols-outlined text-accent text-xl" style="font-variation-settings:'FILL' 1">home</span>
         <span>Residential</span>
         <span class="chip-chevron">expand_more</span>
       </summary>
-      <p class="chip-body">Residential Property Management — apartments, villas, PGs and long-term rentals with monthly on-site inspections.</p>
+      <p class="chip-body">Apartments, villas, PGs — monthly on-site inspections.</p>
     </details>
     <details class="hero-chip-acc">
       <summary>
@@ -358,15 +361,15 @@
         <span>Commercial</span>
         <span class="chip-chevron">expand_more</span>
       </summary>
-      <p class="chip-body">Commercial Property Management — offices, retail shops, warehouses and industrial properties across the Tricity.</p>
+      <p class="chip-body">Offices, retail &amp; warehouses across the Tricity.</p>
     </details>
     <details class="hero-chip-acc">
       <summary>
-        <span class="material-symbols-outlined text-accent text-xl" style="font-variation-settings:'FILL' 1">star</span>
+        <span class="material-symbols-outlined text-accent text-xl" style="font-variation-settings:'FILL' 1">villa</span>
         <span>Airbnb</span>
         <span class="chip-chevron">expand_more</span>
       </summary>
-      <p class="chip-body">Airbnb Complete Management — end-to-end hospitality operations with custom pricing. Separate from residential plans.</p>
+      <p class="chip-body">End-to-end hospitality — custom pricing, separate plan.</p>
     </details>
   </div>
 </div>
@@ -406,86 +409,66 @@
 
 <!-- Services -->
 <section id="services" class="py-20 px-margin-desktop max-w-container-max mx-auto scroll-mt-24 bg-brand-cream">
-  <div class="mb-12 text-center max-w-3xl mx-auto">
+  <div class="mb-10 text-center max-w-2xl mx-auto">
     <span class="rc-section-label mb-4 block">Our Services</span>
-    <h2 class="font-display-lg text-4xl md:text-5xl mb-5 text-primary tracking-tight">On-ground management.<br/><span class="font-brand-script not-italic" style="font-style:italic;">Not just software.</span></h2>
-    <p class="text-on-surface-variant font-light text-base leading-relaxed">RentCan is a property management company that physically looks after your assets across Chandigarh, Mohali and Panchkula — with a modern owner dashboard for visibility, not as a substitute for service.</p>
+    <h2 class="font-display-lg text-4xl md:text-5xl mb-4 text-primary tracking-tight">On-ground management.<br/><span class="font-brand-script not-italic" style="font-style:italic;">Not just software.</span></h2>
+    <p class="text-on-surface-variant font-light text-sm md:text-base leading-relaxed">Physical care across Chandigarh, Mohali &amp; Panchkula — plus an owner dashboard for visibility.</p>
   </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-
-    <!-- Residential -->
-    <div class="rc-reveal rc-card p-8 md:p-10 flex flex-col h-full">
-      <span class="inline-block px-3.5 py-1 bg-brand-sand text-primary font-label-caps text-[10px] uppercase tracking-widest rounded-md font-bold w-max mb-5">Residential</span>
-      <h3 class="font-display-md text-2xl text-primary mb-2">Residential Property Management</h3>
-      <div class="flex items-baseline gap-2 mb-1">
-        <span class="font-display-lg text-4xl text-primary font-bold">₹1,499</span>
-        <span class="text-on-surface-variant/60 text-xs">/month</span>
-      </div>
-      <p class="text-xs text-secondary font-semibold mb-4">+ ₹799/month per additional property</p>
-      <p class="text-sm text-on-surface-variant mb-6 leading-relaxed">Designed for apartments, villas, independent homes, PGs and long-term rental properties.</p>
-      <ul class="space-y-2.5 text-sm text-on-surface-variant flex-1 mb-8">
-        <li class="flex gap-2"><span class="rc-check">✔</span> Monthly Physical Property Inspection</li>
-        <li class="flex gap-2"><span class="rc-check">✔</span> Standardized 15-Point Inspection</li>
-        <li class="flex gap-2"><span class="rc-check">✔</span> High Resolution Photo Reports</li>
-        <li class="flex gap-2"><span class="rc-check">✔</span> Property Condition Reports</li>
-        <li class="flex gap-2"><span class="rc-check">✔</span> Tenant Management</li>
-        <li class="flex gap-2"><span class="rc-check">✔</span> Rent Payment Tracking</li>
-        <li class="flex gap-2"><span class="rc-check">✔</span> Digital Lease &amp; Document Storage</li>
-        <li class="flex gap-2"><span class="rc-check">✔</span> Maintenance Request Tracking</li>
-        <li class="flex gap-2"><span class="rc-check">✔</span> Inspection History</li>
-        <li class="flex gap-2"><span class="rc-check">✔</span> Owner Dashboard</li>
-      </ul>
-      <a href="/login" class="block w-full py-3.5 bg-primary text-white text-center font-bold font-label-caps text-xs uppercase tracking-widest rounded-xl hover:opacity-90 transition-opacity">Get Started</a>
+  <!-- Plan headers -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-10">
+    <div class="rc-card p-5 text-center">
+      <p class="text-[10px] font-label-caps uppercase tracking-widest text-secondary font-bold mb-1">Residential</p>
+      <p class="text-3xl font-bold text-primary">₹1,499<span class="text-sm font-normal text-on-surface-variant">/mo</span></p>
+      <p class="text-xs text-on-surface-variant mt-1">+ ₹799 per extra property</p>
+      <a href="/login" class="inline-block mt-4 text-xs font-bold uppercase tracking-widest text-primary hover:text-secondary">Get Started →</a>
     </div>
-
-    <!-- Commercial -->
-    <div class="rc-reveal rc-card p-8 md:p-10 flex flex-col h-full ring-2 ring-primary/15">
-      <span class="inline-block px-3.5 py-1 bg-primary/10 text-primary font-label-caps text-[10px] uppercase tracking-widest rounded-md font-bold w-max mb-5">Commercial</span>
-      <h3 class="font-display-md text-2xl text-primary mb-2">Commercial Property Management</h3>
-      <div class="flex items-baseline gap-2 mb-1">
-        <span class="font-display-lg text-4xl text-primary font-bold">₹1,999</span>
-        <span class="text-on-surface-variant/60 text-xs">/month</span>
-      </div>
-      <p class="text-xs text-primary font-semibold mb-4">+ ₹799/month per additional property</p>
-      <p class="text-sm text-on-surface-variant mb-6 leading-relaxed">Designed for offices, retail shops, warehouses, commercial buildings and industrial properties.</p>
-      <p class="text-xs font-bold text-primary uppercase tracking-widest mb-3">Everything in Residential, plus:</p>
-      <ul class="space-y-2.5 text-sm text-on-surface-variant flex-1 mb-8">
-        <li class="flex gap-2"><span class="text-primary">✔</span> Commercial Property Inspections</li>
-        <li class="flex gap-2"><span class="text-primary">✔</span> Office &amp; Retail Monitoring</li>
-        <li class="flex gap-2"><span class="text-primary">✔</span> Warehouse Condition Checks</li>
-        <li class="flex gap-2"><span class="text-primary">✔</span> Commercial Safety Walkthroughs</li>
-        <li class="flex gap-2"><span class="text-primary">✔</span> Priority Support</li>
-      </ul>
-      <a href="/login" class="block w-full py-3.5 bg-primary text-white text-center font-bold font-label-caps text-xs uppercase tracking-widest rounded-xl hover:bg-primary/90 transition-colors">Get Started</a>
+    <div class="rc-card p-5 text-center ring-2 ring-primary/15">
+      <p class="text-[10px] font-label-caps uppercase tracking-widest text-primary font-bold mb-1">Commercial</p>
+      <p class="text-3xl font-bold text-primary">₹1,999<span class="text-sm font-normal text-on-surface-variant">/mo</span></p>
+      <p class="text-xs text-on-surface-variant mt-1">+ ₹799 per extra property</p>
+      <a href="/login" class="inline-block mt-4 text-xs font-bold uppercase tracking-widest text-primary hover:text-secondary">Get Started →</a>
     </div>
+    <div class="rc-card p-5 text-center">
+      <p class="text-[10px] font-label-caps uppercase tracking-widest text-secondary font-bold mb-1">Airbnb</p>
+      <p class="text-xl font-bold text-primary">Custom</p>
+      <p class="text-xs text-on-surface-variant mt-1">Separate premium plan</p>
+      <a href="#contact" class="inline-block mt-4 text-xs font-bold uppercase tracking-widest text-primary hover:text-secondary">Contact Team →</a>
+    </div>
+  </div>
 
-    <!-- Airbnb -->
-    <div class="rc-reveal rc-card p-8 md:p-10 flex flex-col h-full bg-gradient-to-b from-white to-brand-sand/40">
-      <span class="inline-block px-3.5 py-1 bg-primary/10 text-primary font-label-caps text-[10px] uppercase tracking-widest rounded-md font-bold w-max mb-5">Premium Hospitality</span>
-      <h3 class="font-display-md text-2xl text-primary mb-2">Airbnb Complete Management</h3>
-      <p class="text-2xl font-bold text-primary mb-1">Contact Team</p>
-      <p class="text-xs text-on-surface-variant/70 font-semibold uppercase tracking-widest mb-4">Custom Pricing</p>
-      <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">Complete end-to-end Airbnb management for hosts who want a completely hands-off experience. RentCan manages day-to-day operations while helping maximize occupancy, guest satisfaction and revenue.</p>
-      <p class="text-xs text-on-surface-variant/60 mb-3 italic">Separate from Residential — not included in the ₹1,499 plan.</p>
-      <ul class="space-y-2 text-sm text-on-surface-variant flex-1 mb-6 max-h-64 overflow-y-auto">
-        <li class="flex gap-2"><span>✔</span> Airbnb Listing Creation</li>
-        <li class="flex gap-2"><span>✔</span> Professional Photography</li>
-        <li class="flex gap-2"><span>✔</span> Listing Optimization</li>
-        <li class="flex gap-2"><span>✔</span> Dynamic Pricing Optimization</li>
-        <li class="flex gap-2"><span>✔</span> Calendar Management</li>
-        <li class="flex gap-2"><span>✔</span> Guest Communication</li>
-        <li class="flex gap-2"><span>✔</span> Booking Management</li>
-        <li class="flex gap-2"><span>✔</span> Check-in &amp; Check-out Coordination</li>
-        <li class="flex gap-2"><span>✔</span> Housekeeping Coordination</li>
-        <li class="flex gap-2"><span>✔</span> Monthly Property Inspection</li>
-        <li class="flex gap-2"><span>✔</span> Inventory Monitoring &amp; Restocking</li>
-        <li class="flex gap-2"><span>✔</span> Maintenance Coordination</li>
-        <li class="flex gap-2"><span>✔</span> Review &amp; Revenue Reports</li>
-        <li class="flex gap-2"><span>✔</span> Superhost Growth Strategy</li>
-      </ul>
-      <a href="#contact" class="block w-full py-3.5 bg-primary text-white text-center font-bold font-label-caps text-xs uppercase tracking-widest rounded-xl hover:bg-primary/90 transition-colors">Contact Team</a>
-      <p class="text-[11px] text-on-surface-variant/60 mt-4 leading-relaxed text-center">Management fees are customized based on your property portfolio, location and required services.</p>
+  <!-- Feature comparison: ✓ included, − not included -->
+  <div class="max-w-5xl mx-auto mb-6">
+    <p class="text-center text-xs text-on-surface-variant mb-4"><span class="rc-feat-yes">✓</span> included &nbsp;·&nbsp; <span class="rc-feat-no">−</span> not included</p>
+    <div class="rc-feature-matrix-wrap">
+      <table class="rc-feature-matrix w-full">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Residential</th>
+            <th>Commercial</th>
+            <th>Airbnb</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Monthly physical inspection</td><td><span class="rc-feat-yes" aria-label="Included">✓</span></td><td><span class="rc-feat-yes" aria-label="Included">✓</span></td><td><span class="rc-feat-yes" aria-label="Included">✓</span></td></tr>
+          <tr><td>15-point inspection checklist</td><td><span class="rc-feat-yes">✓</span></td><td><span class="rc-feat-yes">✓</span></td><td><span class="rc-feat-yes">✓</span></td></tr>
+          <tr><td>Photo &amp; condition reports</td><td><span class="rc-feat-yes">✓</span></td><td><span class="rc-feat-yes">✓</span></td><td><span class="rc-feat-yes">✓</span></td></tr>
+          <tr><td>Tenant management</td><td><span class="rc-feat-yes">✓</span></td><td><span class="rc-feat-yes">✓</span></td><td><span class="rc-feat-no" aria-label="Not included">−</span></td></tr>
+          <tr><td>Rent payment tracking</td><td><span class="rc-feat-yes">✓</span></td><td><span class="rc-feat-yes">✓</span></td><td><span class="rc-feat-no">−</span></td></tr>
+          <tr><td>Digital lease &amp; documents</td><td><span class="rc-feat-yes">✓</span></td><td><span class="rc-feat-yes">✓</span></td><td><span class="rc-feat-yes">✓</span></td></tr>
+          <tr><td>Maintenance coordination</td><td><span class="rc-feat-yes">✓</span></td><td><span class="rc-feat-yes">✓</span></td><td><span class="rc-feat-yes">✓</span></td></tr>
+          <tr><td>Owner dashboard</td><td><span class="rc-feat-yes">✓</span></td><td><span class="rc-feat-yes">✓</span></td><td><span class="rc-feat-yes">✓</span></td></tr>
+          <tr><td>Commercial safety walkthroughs</td><td><span class="rc-feat-no">−</span></td><td><span class="rc-feat-yes">✓</span></td><td><span class="rc-feat-no">−</span></td></tr>
+          <tr><td>Office &amp; retail monitoring</td><td><span class="rc-feat-no">−</span></td><td><span class="rc-feat-yes">✓</span></td><td><span class="rc-feat-no">−</span></td></tr>
+          <tr><td>Priority support</td><td><span class="rc-feat-no">−</span></td><td><span class="rc-feat-yes">✓</span></td><td><span class="rc-feat-yes">✓</span></td></tr>
+          <tr><td>Listing creation &amp; optimization</td><td><span class="rc-feat-no">−</span></td><td><span class="rc-feat-no">−</span></td><td><span class="rc-feat-yes">✓</span></td></tr>
+          <tr><td>Guest communication &amp; bookings</td><td><span class="rc-feat-no">−</span></td><td><span class="rc-feat-no">−</span></td><td><span class="rc-feat-yes">✓</span></td></tr>
+          <tr><td>Dynamic pricing &amp; calendar</td><td><span class="rc-feat-no">−</span></td><td><span class="rc-feat-no">−</span></td><td><span class="rc-feat-yes">✓</span></td></tr>
+          <tr><td>Housekeeping &amp; turnover</td><td><span class="rc-feat-no">−</span></td><td><span class="rc-feat-no">−</span></td><td><span class="rc-feat-yes">✓</span></td></tr>
+          <tr><td>Revenue &amp; review reports</td><td><span class="rc-feat-no">−</span></td><td><span class="rc-feat-no">−</span></td><td><span class="rc-feat-yes">✓</span></td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
