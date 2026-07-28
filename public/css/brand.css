@@ -836,6 +836,197 @@ html.rc-js .rc-reveal:not(.in-view):not(.is-visible) {
   opacity: 1;
 }
 
+/* ── Mobile pricing compare strip + swipe rails ── */
+.rc-price-compare {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.rc-price-compare__cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  padding: 0.75rem 0.4rem 0.85rem;
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--rc-mint) 28%, #ffffff);
+  border: 1px solid var(--rc-border);
+  color: var(--rc-ink);
+  min-height: 6.75rem;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rc-price-compare__cell--featured {
+  background: color-mix(in srgb, var(--rc-brown) 88%, var(--rc-mint));
+  border-color: color-mix(in srgb, var(--rc-brown) 70%, var(--rc-gold));
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(78, 66, 56, 0.18);
+}
+
+.rc-price-compare__cell--featured .rc-price-compare__label,
+.rc-price-compare__cell--featured .rc-price-compare__note,
+.rc-price-compare__cell--featured .rc-price-compare__unit {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.rc-price-compare__cell--featured .rc-price-compare__amount {
+  color: #fff;
+}
+
+.rc-price-compare__label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rc-muted);
+  margin-bottom: 0.35rem;
+}
+
+.rc-price-compare__amount {
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--rc-brown);
+}
+
+.rc-price-compare__amount--sm {
+  font-size: 1rem;
+}
+
+.rc-price-compare__unit {
+  font-size: 0.68rem;
+  color: var(--rc-muted);
+  margin-top: 0.15rem;
+}
+
+.rc-price-compare__note {
+  margin-top: auto;
+  padding-top: 0.45rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--rc-muted);
+  line-height: 1.25;
+}
+
+.rc-price-compare__cell:active {
+  transform: scale(0.98);
+}
+
+.rc-price-compare-hint {
+  text-align: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--rc-muted);
+  margin: 0 0 0.85rem;
+}
+
+/* Swipeable plan cards on phone — peek next plan for comparison */
+.rc-price-rail,
+.rc-plan-rail {
+  display: grid;
+  gap: 1.25rem;
+}
+
+@media (max-width: 767px) {
+  .rc-price-rail {
+    display: flex;
+    gap: 0.85rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0.15rem 0.15rem 0.85rem;
+    margin-left: -0.35rem;
+    margin-right: -0.35rem;
+    padding-left: 0.35rem;
+    padding-right: 12vw;
+    scrollbar-width: none;
+  }
+
+  .rc-price-rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .rc-price-rail > .rc-photo-tile {
+    flex: 0 0 min(78vw, 20.5rem);
+    scroll-snap-align: start;
+    min-height: 17.5rem;
+  }
+
+  .rc-price-rail > .rc-photo-tile:hover,
+  .rc-price-rail > .rc-photo-tile:focus-visible {
+    transform: none;
+  }
+}
+
+/* Info plan cards: swipe until desktop 3-col */
+@media (max-width: 1023px) {
+  .rc-plan-rail {
+    display: flex;
+    gap: 0.85rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0.15rem 0.15rem 0.85rem;
+    margin-left: -0.35rem;
+    margin-right: -0.35rem;
+    padding-left: 0.35rem;
+    padding-right: 10vw;
+    scrollbar-width: none;
+  }
+
+  .rc-plan-rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .rc-plan-rail > .rc-plan-card {
+    flex: 0 0 min(86vw, 22rem);
+    scroll-snap-align: start;
+    min-height: 0;
+  }
+
+  /* Keep compare strip readable while scrolling tall plan cards */
+  .rc-price-compare {
+    position: sticky;
+    top: 4.25rem;
+    z-index: 25;
+    padding: 0.35rem;
+    margin: -0.35rem -0.35rem 0.65rem;
+    border-radius: 1rem;
+    background: color-mix(in srgb, var(--rc-cream) 88%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+@media (min-width: 768px) {
+  .rc-price-rail {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .rc-plan-rail {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .rc-price-compare__amount {
+    font-size: 1rem;
+  }
+
+  .rc-price-compare__cell {
+    padding-inline: 0.25rem;
+    min-height: 6.25rem;
+  }
+}
+
 /* Photo plan tiles — stock bg + hover zoom */
 .rc-photo-tile {
   position: relative;

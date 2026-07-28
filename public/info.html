@@ -189,9 +189,32 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
   <div class="tab-pane active" id="tab-pricing">
     <span class="section-label mb-3 block">Transparent Pricing</span>
     <h2 class="text-4xl font-bold text-primary mb-3 tracking-tight">Flat fees. Real service.</h2>
-    <p class="text-on-surface-variant max-w-2xl mb-12 leading-relaxed">No percentage of your rent. You pay for on-ground property management — residential, commercial, or custom Airbnb hospitality. No lock-in period.</p>
+    <p class="text-on-surface-variant max-w-2xl mb-8 md:mb-12 leading-relaxed">No percentage of your rent. You pay for on-ground property management — residential, commercial, or custom Airbnb hospitality. No lock-in period.</p>
 
-    <div class="grid lg:grid-cols-3 gap-8 mb-12">
+    <!-- Mobile compare strip -->
+    <div class="rc-price-compare lg:hidden mb-5" role="group" aria-label="Compare plans">
+      <a href="/checkout?plan=residential" class="rc-price-compare__cell">
+        <span class="rc-price-compare__label">Residential</span>
+        <span class="rc-price-compare__amount">₹1,499</span>
+        <span class="rc-price-compare__unit">/mo</span>
+        <span class="rc-price-compare__note">+₹799 extra</span>
+      </a>
+      <a href="/checkout?plan=commercial" class="rc-price-compare__cell rc-price-compare__cell--featured">
+        <span class="rc-price-compare__label">Commercial</span>
+        <span class="rc-price-compare__amount">₹1,999</span>
+        <span class="rc-price-compare__unit">/mo</span>
+        <span class="rc-price-compare__note">+₹799 extra</span>
+      </a>
+      <a href="/#contact" class="rc-price-compare__cell">
+        <span class="rc-price-compare__label">Airbnb</span>
+        <span class="rc-price-compare__amount rc-price-compare__amount--sm">Custom</span>
+        <span class="rc-price-compare__unit">quote</span>
+        <span class="rc-price-compare__note">Hospitality</span>
+      </a>
+    </div>
+    <p class="rc-price-compare-hint lg:hidden">Swipe for full plan details</p>
+
+    <div class="rc-plan-rail mb-12">
 
       <!-- Residential -->
       <div class="rc-plan-card rc-plan-card--photo">

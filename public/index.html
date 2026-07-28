@@ -605,12 +605,36 @@
 <!-- Pricing summary -->
 <section id="pricing" class="py-20 px-margin-desktop scroll-mt-28 rc-section-mint">
   <div class="max-w-[1280px] mx-auto">
-    <div class="text-center mb-12">
+    <div class="text-center mb-8 md:mb-12">
       <span class="font-label-caps text-label-caps text-brand-gold uppercase tracking-[0.3em] mb-4 block font-bold">Transparent Pricing</span>
       <h2 class="font-display-lg text-4xl md:text-5xl text-primary tracking-tight mb-5">Flat fees. Real service.</h2>
       <p class="font-body-lg text-on-surface-variant max-w-2xl mx-auto">No percentage of your rent. You pay for on-ground property management — residential, commercial, or custom Airbnb hospitality.</p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+
+    <!-- Mobile: all three prices visible at once -->
+    <div class="rc-price-compare md:hidden mb-5" role="group" aria-label="Compare plans">
+      <a href="/checkout?plan=residential" class="rc-price-compare__cell">
+        <span class="rc-price-compare__label">Residential</span>
+        <span class="rc-price-compare__amount">₹1,499</span>
+        <span class="rc-price-compare__unit">/mo</span>
+        <span class="rc-price-compare__note">+₹799 extra</span>
+      </a>
+      <a href="/checkout?plan=commercial" class="rc-price-compare__cell rc-price-compare__cell--featured">
+        <span class="rc-price-compare__label">Commercial</span>
+        <span class="rc-price-compare__amount">₹1,999</span>
+        <span class="rc-price-compare__unit">/mo</span>
+        <span class="rc-price-compare__note">+₹799 extra</span>
+      </a>
+      <a href="#contact" class="rc-price-compare__cell">
+        <span class="rc-price-compare__label">Airbnb</span>
+        <span class="rc-price-compare__amount rc-price-compare__amount--sm">Custom</span>
+        <span class="rc-price-compare__unit">quote</span>
+        <span class="rc-price-compare__note">Hospitality</span>
+      </a>
+    </div>
+    <p class="rc-price-compare-hint md:hidden">Swipe cards · tap a price to continue</p>
+
+    <div class="rc-price-rail max-w-5xl mx-auto">
       <a href="/checkout?plan=residential" class="rc-photo-tile rc-photo-tile--residential">
         <span class="rc-photo-tile__media" aria-hidden="true"></span>
         <span class="rc-photo-tile__shade" aria-hidden="true"></span>
