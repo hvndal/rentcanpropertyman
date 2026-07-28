@@ -1,6 +1,10 @@
 {
   "version": 2,
   "headers": [
+    { "source": "/robots.txt", "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }] },
+    { "source": "/sitemap.xml", "headers": [{ "key": "Content-Type", "value": "application/xml; charset=utf-8" }] },
+    { "source": "/humans.txt", "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }] },
+    { "source": "/manifest.json", "headers": [{ "key": "Content-Type", "value": "application/manifest+json; charset=utf-8" }] },
     { "source": "/", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] },
     { "source": "/login", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] },
     { "source": "/dashboard", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] },
@@ -24,6 +28,7 @@
     { "src": "/admin/?", "dest": "/public/admin.html" },
     { "src": "/robots\\.txt", "dest": "/public/robots.txt" },
     { "src": "/sitemap\\.xml", "dest": "/public/sitemap.xml" },
+    { "src": "/humans\\.txt", "dest": "/public/humans.txt" },
     { "src": "/manifest\\.json", "dest": "/public/manifest.json" },
     { "src": "/favicon\\.ico", "dest": "/public/favicon.ico" },
     { "src": "/apple-touch-icon\\.png", "dest": "/public/apple-touch-icon.png" },
