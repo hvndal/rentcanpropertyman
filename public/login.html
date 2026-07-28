@@ -19,6 +19,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script type="text/javascript" src="https://verify.msg91.com/otp-provider.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -517,8 +518,48 @@ body {
 let sb = null;
 let otpRequestId = null;
 let selectedRole = null;
+let msg91WidgetReady = false;
+let msg91AccessToken = null;
 const DEFAULT_SUPABASE_URL = "https://pomxnutomfzmignmyjbi.supabase.co";
 const DEFAULT_SUPABASE_KEY = "sb_publishable_85_NJkwy59qf7ZChmG7ujg_BRIM0Y89";
+const DEFAULT_MSG91_WIDGET = {
+  widgetId: "366674716248383037373030",
+  tokenAuth: "535432TXjnw0dF6a5d0eb2P1"
+};
+
+function digitsPhone(countryCode, local) {
+  return String(countryCode || '').replace(/\D/g, '') + String(local || '').replace(/\D/g, '');
+}
+
+function initMsg91Widget(widgetCfg) {
+  const cfg = widgetCfg || DEFAULT_MSG91_WIDGET;
+  if (!cfg.widgetId || !cfg.tokenAuth) {
+    console.warn('MSG91 widget config missing');
+    return;
+  }
+  if (typeof initSendOTP !== 'function') {
+    console.warn('MSG91 otp-provider.js not loaded yet');
+    return;
+  }
+
+  try {
+    initSendOTP({
+      widgetId: cfg.widgetId,
+      tokenAuth: cfg.tokenAuth,
+      exposeMethods: true,
+      captchaRenderId: '',
+      success: function () {},
+      failure: function () {}
+    });
+    msg91WidgetReady = typeof window.sendOtp === 'function'
+      && typeof window.verifyOtp === 'function'
+      && typeof window.retryOtp === 'function';
+    console.log('[MSG91] widget methods ready:', msg91WidgetReady);
+  } catch (e) {
+    console.error('[MSG91] init failed:', e);
+    msg91WidgetReady = false;
+  }
+}
 
 // ─────────────────────────────────────────────────────────────────────
 // VIEW MANAGEMENT
@@ -739,12 +780,28 @@ async function initApp() {
           url = cfg.supabaseUrl;
           key = cfg.supabaseKey;
         }
+        if (cfg.msg91Widget) {
+          initMsg91Widget(cfg.msg91Widget);
+        } else {
+          initMsg91Widget(DEFAULT_MSG91_WIDGET);
+        }
       } catch(parseErr) {
         console.warn('Config response not JSON, using defaults');
+        initMsg91Widget(DEFAULT_MSG91_WIDGET);
       }
+    } else {
+      initMsg91Widget(DEFAULT_MSG91_WIDGET);
     }
   } catch(e) {
     console.warn('API config fallback used:', e);
+    initMsg91Widget(DEFAULT_MSG91_WIDGET);
+  }
+
+  // Retry widget init if script loaded late
+  if (!msg91WidgetReady) {
+    setTimeout(() => {
+      if (!msg91WidgetReady) initMsg91Widget(DEFAULT_MSG91_WIDGET);
+    }, 800);
   }
 
   if (window.supabase) {
@@ -853,95 +910,22 @@ async function signInWithEmail() {
 }
 
 // ─────────────────────────────────────────────────────────────────────
-// PHONE / MSG91 OTP
+// PHONE / MSG91 OTP WIDGET (sendOtp / verifyOtp / retryOtp)
 // ─────────────────────────────────────────────────────────────────────
-async function sendOTP() {
-  const phone = document.getElementById('phone-input').value.trim();
-  const countryCode = document.getElementById('country-select').value;
-  const expectedLen = countryCode === '+91' || countryCode === '+1' ? 10 : 7;
-  if (phone.length < expectedLen) {
-    showAlert(countryCode === '+91' ? 'Enter a valid 10-digit Indian mobile number.' : 'Please enter a valid mobile number.');
-    return;
-  }
-
-  const fullPhone = countryCode + phone;
-  const btn = document.getElementById('btn-send-otp');
-  btn.disabled = true;
-  btn.textContent = 'Sending OTP...';
+async function finishPhoneLogin(phoneDisplay, accessToken) {
+  sessionStorage.setItem('rentcan_phone', phoneDisplay);
+  msg91AccessToken = accessToken || null;
 
   try {
-    const res = await fetch('/api/send-otp', {
+    const res = await fetch('/api/phone-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone: fullPhone })
+      body: JSON.stringify({
+        phone: phoneDisplay,
+        access_token: accessToken || undefined
+      })
     });
-
-    let data;
-    const rawText = await res.text();
-    try {
-      data = JSON.parse(rawText);
-    } catch(err) {
-      throw new Error('OTP service connecting... Please try again in a moment.');
-    }
-
-    if (!res.ok || data.type === 'error') {
-      throw new Error(data.message || 'Failed to send OTP.');
-    }
-
-    if (data.mode === 'dev') {
-      showAlert('Dev mode: enter any 6-digit code (MSG91 not configured on server).', 'info');
-    } else {
-      showAlert('OTP sent! Check your SMS.', 'success');
-    }
-
-    otpRequestId = data.request_id;
-    document.getElementById('otp-phone-display').textContent = fullPhone;
-    showView('view-otp');
-    // Re-enable send button so "Change number" / resend works
-    btn.disabled = false;
-    btn.textContent = 'Send OTP →';
-    [0,1,2,3,4,5].forEach(i => { document.getElementById('otp-' + i).value = ''; });
-    document.getElementById('btn-verify-otp').disabled = true;
-    document.getElementById('otp-0').focus();
-    startResendTimer();
-  } catch(e) {
-    showAlert('Could not send OTP: ' + e.message);
-    btn.disabled = false;
-    btn.textContent = 'Send OTP →';
-  }
-}
-
-async function verifyOTP() {
-  const code = [0,1,2,3,4,5].map(i => document.getElementById('otp-' + i).value).join('');
-  const countryCode = document.getElementById('country-select').value;
-  const phone = countryCode + document.getElementById('phone-input').value.trim();
-
-  const btn = document.getElementById('btn-verify-otp');
-  btn.disabled = true;
-  btn.textContent = 'Verifying...';
-
-  try {
-    const res = await fetch('/api/verify-otp', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone, otp: code, request_id: otpRequestId })
-    });
-
-    let data;
-    const rawText = await res.text();
-    try {
-      data = JSON.parse(rawText);
-    } catch(err) {
-      throw new Error('OTP verification connecting... Please try again.');
-    }
-
-    if (!res.ok || data.type === 'error') {
-      throw new Error(data.message || 'Invalid OTP. Please try again.');
-    }
-
-    sessionStorage.setItem('rentcan_phone', phone);
-
-    // Prefer real Supabase session created server-side after MSG91 verify
+    const data = await res.json().catch(() => ({}));
     if (sb && data.session?.access_token && data.session?.refresh_token) {
       const { data: sessData, error: sessErr } = await sb.auth.setSession({
         access_token: data.session.access_token,
@@ -953,39 +937,164 @@ async function verifyOTP() {
       }
       console.warn('setSession failed:', sessErr);
     }
-
-    // Session unavailable (missing service role) — still allow onboarding with phone
-    showView('view-onboarding');
-
-  } catch(e) {
-    showAlert(e.message);
-    btn.disabled = false;
-    btn.textContent = 'Verify & Continue →';
+  } catch (e) {
+    console.warn('phone-session error:', e);
   }
+
+  showView('view-onboarding');
 }
 
-async function resendOTP() {
-  const btnResend = document.getElementById('btn-resend');
-  if (btnResend) btnResend.disabled = true;
-  // Resend from OTP view without requiring phone view button state
+function sendOTP() {
   const phone = document.getElementById('phone-input').value.trim();
   const countryCode = document.getElementById('country-select').value;
-  const fullPhone = countryCode + phone;
-  try {
-    const res = await fetch('/api/send-otp', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone: fullPhone })
-    });
-    const data = await res.json();
-    if (!res.ok || data.type === 'error') throw new Error(data.message || 'Failed to resend OTP.');
-    otpRequestId = data.request_id;
-    startResendTimer();
-    showAlert(data.mode === 'dev' ? 'Dev mode: enter any 6-digit code.' : 'OTP resent! Check your SMS.', data.mode === 'dev' ? 'info' : 'success');
-  } catch(e) {
-    showAlert('Could not resend OTP: ' + e.message);
-    if (btnResend) btnResend.disabled = false;
+  const expectedLen = countryCode === '+91' || countryCode === '+1' ? 10 : 7;
+  if (phone.length < expectedLen) {
+    showAlert(countryCode === '+91' ? 'Enter a valid 10-digit Indian mobile number.' : 'Please enter a valid mobile number.');
+    return;
   }
+
+  const identifier = digitsPhone(countryCode, phone); // e.g. 919876543210 (no +)
+  const displayPhone = countryCode + phone;
+  const btn = document.getElementById('btn-send-otp');
+  btn.disabled = true;
+  btn.textContent = 'Sending OTP...';
+
+  const onSent = (data) => {
+    console.log('[MSG91] sendOtp success', data);
+    otpRequestId = data?.requestId || data?.request_id || data?.reqId || otpRequestId;
+    document.getElementById('otp-phone-display').textContent = displayPhone;
+    showView('view-otp');
+    btn.disabled = false;
+    btn.textContent = 'Send OTP →';
+    [0,1,2,3,4,5].forEach(i => { document.getElementById('otp-' + i).value = ''; });
+    document.getElementById('btn-verify-otp').disabled = true;
+    document.getElementById('otp-0').focus();
+    startResendTimer();
+    showAlert('OTP sent! Check your SMS.', 'success');
+  };
+
+  const onFail = (error) => {
+    console.error('[MSG91] sendOtp failure', error);
+    const msg = (error && (error.message || error.msg || error.type)) || 'Failed to send OTP.';
+    showAlert('Could not send OTP: ' + msg);
+    btn.disabled = false;
+    btn.textContent = 'Send OTP →';
+  };
+
+  if (typeof window.sendOtp === 'function') {
+    try {
+      window.sendOtp(identifier, onSent, onFail);
+      return;
+    } catch (e) {
+      console.warn('widget sendOtp threw, falling back to API', e);
+    }
+  }
+
+  // Fallback to server API if widget methods unavailable
+  fetch('/api/send-otp', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ phone: displayPhone })
+  }).then(async (res) => {
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || data.type === 'error') throw new Error(data.message || 'Failed to send OTP.');
+    otpRequestId = data.request_id;
+    onSent(data);
+    if (data.mode === 'dev') showAlert('Dev mode: enter any 6-digit code.', 'info');
+  }).catch((e) => onFail({ message: e.message }));
+}
+
+function verifyOTP() {
+  const code = [0,1,2,3,4,5].map(i => document.getElementById('otp-' + i).value).join('');
+  const countryCode = document.getElementById('country-select').value;
+  const local = document.getElementById('phone-input').value.trim();
+  const displayPhone = countryCode + local;
+
+  if (code.length !== 6) {
+    showAlert('Enter the 6-digit OTP.');
+    return;
+  }
+
+  const btn = document.getElementById('btn-verify-otp');
+  btn.disabled = true;
+  btn.textContent = 'Verifying...';
+
+  const onOk = async (data) => {
+    console.log('[MSG91] verifyOtp success', data);
+    const token = data?.accessToken || data?.access_token || data?.token || null;
+    showAlert('Phone verified!', 'success');
+    await finishPhoneLogin(displayPhone, token);
+  };
+
+  const onFail = (error) => {
+    console.error('[MSG91] verifyOtp failure', error);
+    const msg = (error && (error.message || error.msg || error.type)) || 'Invalid OTP. Please try again.';
+    showAlert(String(msg));
+    btn.disabled = false;
+    btn.textContent = 'Verify & Continue →';
+  };
+
+  if (typeof window.verifyOtp === 'function') {
+    try {
+      // reqId optional — pass when we have one from sendOtp
+      if (otpRequestId) {
+        window.verifyOtp(code, onOk, onFail, otpRequestId);
+      } else {
+        window.verifyOtp(code, onOk, onFail);
+      }
+      return;
+    } catch (e) {
+      console.warn('widget verifyOtp threw, falling back to API', e);
+    }
+  }
+
+  fetch('/api/verify-otp', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ phone: displayPhone, otp: code, request_id: otpRequestId })
+  }).then(async (res) => {
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || data.type === 'error') throw new Error(data.message || 'Invalid OTP.');
+    await onOk(data);
+  }).catch((e) => onFail({ message: e.message }));
+}
+
+function resendOTP() {
+  const btnResend = document.getElementById('btn-resend');
+  if (btnResend) btnResend.disabled = true;
+
+  const onOk = (data) => {
+    console.log('[MSG91] retryOtp success', data);
+    if (data?.requestId || data?.request_id) {
+      otpRequestId = data.requestId || data.request_id;
+    }
+    startResendTimer();
+    showAlert('OTP resent! Check your SMS.', 'success');
+  };
+
+  const onFail = (error) => {
+    console.error('[MSG91] retryOtp failure', error);
+    const msg = (error && (error.message || error.msg || error.type)) || 'Failed to resend OTP.';
+    showAlert('Could not resend OTP: ' + msg);
+    if (btnResend) btnResend.disabled = false;
+  };
+
+  if (typeof window.retryOtp === 'function') {
+    try {
+      // null = default channel; '11' = SMS for custom configs
+      if (otpRequestId) {
+        window.retryOtp('11', onOk, onFail, otpRequestId);
+      } else {
+        window.retryOtp(null, onOk, onFail);
+      }
+      return;
+    } catch (e) {
+      console.warn('widget retryOtp threw, falling back', e);
+    }
+  }
+
+  // Fallback: send again via widget sendOtp or API
+  sendOTP();
 }
 
 // ─────────────────────────────────────────────────────────────────────

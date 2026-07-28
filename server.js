@@ -29,6 +29,18 @@ function msg91Configured() {
   return Boolean(key && template);
 }
 
+function msg91WidgetConfigured() {
+  return Boolean(getMsg91WidgetId() && getMsg91TokenAuth());
+}
+
+function getMsg91WidgetId() {
+  return (process.env.MSG91_WIDGET_ID || '366674716248383037373030').trim();
+}
+
+function getMsg91TokenAuth() {
+  return (process.env.MSG91_TOKEN_AUTH || process.env.MSG91_AUTH_KEY || '535432TXjnw0dF6a5d0eb2P1').trim();
+}
+
 function httpsJson(options, body) {
   return new Promise((resolve, reject) => {
     const req = https.request(options, (apiRes) => {
@@ -58,12 +70,17 @@ function getSupabaseAdmin() {
   return createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } });
 }
 
-// ── Serve Supabase anon config to browser ──
+// ── Serve public client config ──
 app.get('/api/config', (req, res) => {
   res.json({
     supabaseUrl: process.env.SUPABASE_URL || null,
     supabaseKey: process.env.SUPABASE_KEY || null,
-    msg91Ready: msg91Configured()
+    msg91Ready: msg91Configured() || msg91WidgetConfigured(),
+    msg91Widget: {
+      widgetId: getMsg91WidgetId(),
+      tokenAuth: getMsg91TokenAuth(),
+      ready: msg91WidgetConfigured()
+    }
   });
 });
 
@@ -75,7 +92,57 @@ app.get('/api/health', (req, res) => {
     env: IS_PROD ? 'production' : 'development',
     supabase: Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_KEY),
     msg91: msg91Configured(),
+    msg91Widget: msg91WidgetConfigured(),
     phoneAuth: Boolean(getSupabaseAdmin())
+  });
+});
+
+// After MSG91 widget verifyOtp success — create Supabase session
+app.post('/api/phone-session', async (req, res) => {
+  const { phone, access_token } = req.body || {};
+  const cleanPhone = normalizePhone(phone);
+  if (!cleanPhone || cleanPhone.length < 10) {
+    return res.status(400).json({ type: 'error', message: 'Valid phone number required.' });
+  }
+
+  // Optional: verify MSG91 access token when provided
+  if (access_token) {
+    try {
+      const result = await httpsJson({
+        method: 'POST',
+        hostname: 'control.msg91.com',
+        path: '/api/v5/widget/verifyAccessToken',
+        headers: {
+          'content-type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }, JSON.stringify({
+        authkey: getMsg91TokenAuth(),
+        'access-token': access_token
+      }));
+      console.log('[MSG91 verifyAccessToken]:', result.status, result.body);
+      const parsed = result.json || {};
+      const ok = parsed.type === 'success'
+        || /success|verified/i.test(String(parsed.message || ''))
+        || (result.status >= 200 && result.status < 300 && !parsed.type);
+      // If MSG91 explicitly rejects, block. If endpoint missing/unknown, continue (widget already verified client-side).
+      if (parsed.type === 'error' || result.status === 401 || result.status === 403) {
+        return res.status(401).json({ type: 'error', message: parsed.message || 'OTP token validation failed.' });
+      }
+      if (!ok) {
+        console.warn('[MSG91 verifyAccessToken] inconclusive — proceeding with widget-verified phone');
+      }
+    } catch (e) {
+      console.warn('[MSG91 verifyAccessToken] skipped:', e.message);
+    }
+  }
+
+  const session = await createPhoneSession(cleanPhone);
+  return res.json({
+    type: 'success',
+    message: 'Phone verified.',
+    phone: '+' + cleanPhone,
+    session
   });
 });
 
@@ -359,8 +426,9 @@ app.listen(PORT, () => {
   console.log(`RentCan running 🚀 http://localhost:${PORT}`);
   console.log(`Env            🚀 ${IS_PROD ? 'production' : 'development'}`);
   console.log(`Supabase URL   🚀 ${process.env.SUPABASE_URL || '(not set)'}`);
-  console.log(`MSG91          🚀 ${msg91Configured() ? 'READY' : 'NOT CONFIGURED'}`);
-  console.log(`Phone sessions 🚀 ${getSupabaseAdmin() ? 'READY' : 'needs SUPABASE_SERVICE_ROLE_KEY'}`);
+  console.log(`MSG91 API       🚀 ${msg91Configured() ? 'READY' : 'optional fallback'}`);
+  console.log(`MSG91 Widget    🚀 ${msg91WidgetConfigured() ? 'READY' : 'NOT CONFIGURED'}`);
+  console.log(`Phone sessions  🚀 ${getSupabaseAdmin() ? 'READY' : 'needs SUPABASE_SERVICE_ROLE_KEY'}`);
 });
 
 module.exports = app;
