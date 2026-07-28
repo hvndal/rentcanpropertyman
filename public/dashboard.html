@@ -132,18 +132,6 @@
 <script src="/js/app.js"></script></head>
 <body class="flex flex-col md:flex-row min-h-screen overflow-x-hidden md:overflow-hidden">
 
-<!-- Global Page Loader -->
-<div id="global-loader" class="page-loader">
-  <div class="wave-loader">
-      <div class="wave-bar"></div>
-      <div class="wave-bar"></div>
-      <div class="wave-bar"></div>
-      <div class="wave-bar"></div>
-      <div class="wave-bar"></div>
-    </div>
-  <p class="font-label-caps text-[10px] text-primary tracking-[0.35em] uppercase font-bold">RentCan</p>
-</div>
-
 <!-- SideNavBar (Shared Component) -->
 <aside class="hidden md:flex flex-col h-screen p-stack-md border-r border-outline bg-surface w-64 shrink-0 overflow-y-auto">
 <div class="mb-stack-xl px-2">
@@ -371,19 +359,6 @@ async function signOut() {
   }
 }
 </script>
-
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const loader = document.getElementById('global-loader');
-    if (loader) {
-      setTimeout(() => {
-        loader.classList.add('hidden');
-        setTimeout(() => loader.remove(), 500);
-      }, 300); // 300ms premium pause
-    }
-  });
-</script>
-
 
 <script>
 document.addEventListener('DOMContentLoaded', async () => {

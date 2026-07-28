@@ -457,18 +457,6 @@
 </head>
 <body class="rc-brand bg-brand-cream text-on-surface font-body-base antialiased">
 
-<!-- Global Page Loader -->
-<div id="global-loader" class="page-loader" style="background:#F4FAF9;">
-  <img src="/assets/logos/rentcan-logo.png" alt="RentCan" class="w-24 h-24 object-contain mb-2 opacity-90">
-  <div class="wave-loader">
-      <div class="wave-bar" style="background-color:#3D8A82;"></div>
-      <div class="wave-bar" style="background-color:#F6CFDE;"></div>
-      <div class="wave-bar" style="background-color:#3D8A82;"></div>
-      <div class="wave-bar" style="background-color:#F6CFDE;"></div>
-      <div class="wave-bar" style="background-color:#3D8A82;"></div>
-    </div>
-</div>
-
 <main class="fade-in-load">
 <!-- Hero Section -->
 <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -829,21 +817,6 @@
 </div>
 </div>
 </footer>
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const loader = document.getElementById('global-loader');
-    if (loader) {
-      const hide = () => {
-        loader.classList.add('hidden');
-        loader.style.pointerEvents = 'none';
-        setTimeout(() => loader.remove(), 500);
-      };
-      setTimeout(hide, 280);
-      setTimeout(hide, 1800); // safety — never block taps
-    }
-  });
-</script>
-
 
 <!-- Tag Pricing Info (Hidden) -->
 <div id="pricing-info-tag" style="display:none;" data-pricing-info="hidden" data-residential="1499" data-commercial="1999" data-additional-property="799" data-sos-visit="500" data-currency="INR"></div>

@@ -47,7 +47,31 @@
   async function createClient() {
     const cfg = await fetchConfig();
     if (typeof supabase === 'undefined' || !cfg.supabaseUrl || !cfg.supabaseKey) return null;
-    return supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
+    return supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey, {
+      auth: {
+        detectSessionInUrl: true,
+        persistSession: true,
+        autoRefreshToken: true,
+        flowType: 'pkce',
+        storage: window.localStorage
+      }
+    });
+  }
+
+  /** Canonical OAuth redirect — must match Supabase Auth → URL Configuration */
+  function getAuthRedirectUrl() {
+    const host = window.location.hostname;
+    if (host === 'rentcan.in' || host === 'www.rentcan.in') {
+      return 'https://rentcan.in/login';
+    }
+    const port = window.location.port;
+    const origin = window.location.protocol + '//' + host + (port ? ':' + port : '');
+    return origin + '/login';
+  }
+
+  function cleanAuthUrl() {
+    const path = window.location.pathname || '/login';
+    window.history.replaceState({}, document.title, path);
   }
 
   async function requireAuth() {
@@ -83,6 +107,8 @@
     DEFAULTS,
     fetchConfig,
     createClient,
-    requireAuth
+    requireAuth,
+    getAuthRedirectUrl,
+    cleanAuthUrl
   };
 })();

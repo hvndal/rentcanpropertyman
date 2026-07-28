@@ -99,7 +99,7 @@ body {
 .auth-btn:hover {
   border-color: #3D8A82;
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(107,72,34,0.1);
+  box-shadow: 0 4px 14px rgba(61,138,130,0.1);
 }
 .auth-btn .btn-icon {
   width: 36px; height: 36px; border-radius: 10px;
@@ -168,7 +168,7 @@ body {
 }
 .otp-input:focus {
   border-color: #3D8A82 !important;
-  box-shadow: 0 0 0 3px rgba(107,72,34,0.12) !important;
+  box-shadow: 0 0 0 3px rgba(61,138,130,0.12) !important;
 }
 
 /* ── Compact Phone input with country code ── */
@@ -186,7 +186,7 @@ body {
 }
 .phone-wrap:focus-within {
   border-color: #3D8A82;
-  box-shadow: 0 0 0 3px rgba(107,72,34,0.12);
+  box-shadow: 0 0 0 3px rgba(61,138,130,0.12);
 }
 .country-code-select {
   width: auto !important;
@@ -310,41 +310,12 @@ body {
 </head>
 <body>
 
-<!-- Loader -->
-<div id="loader">
-  <div class="spin"></div>
-  <p style="font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#3D8A82;font-weight:700;">RentCan</p>
-</div>
-<script>
-  // Clear stale service workers / caches that can pin a broken login shell
-  (function () {
-    try {
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(function (regs) {
-          regs.forEach(function (r) { r.unregister(); });
-        });
-      }
-      if (window.caches && caches.keys) {
-        caches.keys().then(function (keys) {
-          keys.forEach(function (k) { caches.delete(k); });
-        });
-      }
-    } catch (e) {}
-    setTimeout(function () {
-      var l = document.getElementById('loader');
-      if (l) l.classList.add('gone');
-    }, 500);
-  })();
-</script>
-
 <!-- ── Left Panel ── -->
 <div class="left-panel">
 
   <!-- Logo -->
-  <a href="/" style="display:inline-block; margin-bottom:24px; text-decoration:none;">
-  <a href="/" class="rc-brand-logo rc-brand-logo--nav">
+  <a href="/" class="rc-brand-logo rc-brand-logo--nav" style="display:inline-block;margin-bottom:24px;text-decoration:none;">
     <img src="/assets/logos/rentcan-logo.png" alt="RentCan">
-  </a>
   </a>
 
   <!-- Alert -->
@@ -356,7 +327,7 @@ body {
     <p style="font-size:14px;color:#73777f;margin-bottom:36px;line-height:1.6;">Sign in with your phone — no password needed.</p>
 
     <!-- Phone (primary) -->
-    <button class="auth-btn auth-btn-phone" onclick="showView('view-phone')" style="border-color:#3D8A82;box-shadow:0 4px 14px rgba(107,72,34,0.1);">
+    <button class="auth-btn auth-btn-phone" onclick="showView('view-phone')" style="border-color:#3D8A82;box-shadow:0 4px 14px rgba(61,138,130,0.1);">
       <div class="btn-icon">
         <span style="font-family:'Material Symbols Outlined';font-size:22px;color:#3D8A82;font-variation-settings:'FILL' 1;">smartphone</span>
       </div>
@@ -649,25 +620,22 @@ async function routeAfterAuth(user) {
     return;
   }
 
+  if (window.showAuthWait) {
+    showAuthWait({
+      title: 'Signing you in',
+      sub: 'Loading your profile…',
+      step: 0
+    });
+  }
+
   try {
-    if (window.showAuthWait) {
-      showAuthWait({
-        title: 'Signing you in',
-        sub: 'Confirming your account and preparing your workspace.',
-        step: 0
-      });
-    }
-
-    await new Promise(r => setTimeout(r, 550));
-    if (window.setAuthWaitStep) setAuthWaitStep(1);
-
     if (sb) {
       const { data: profile } = await sb.from('profiles')
         .select('full_name, role')
         .eq('id', user.id)
         .maybeSingle();
 
-      await new Promise(r => setTimeout(r, 450));
+      if (window.setAuthWaitStep) setAuthWaitStep(1);
 
       if (profile && profile.full_name && profile.role) {
         sessionStorage.setItem('rentcan_user', JSON.stringify({
@@ -677,6 +645,7 @@ async function routeAfterAuth(user) {
           role: profile.role,
         }));
         sessionStorage.setItem('rentcan_role', profile.role);
+        sessionStorage.removeItem('rc_auth_pending');
         if (window.finishAuthRedirect) {
           await finishAuthRedirect('/dashboard');
         } else {
@@ -687,6 +656,7 @@ async function routeAfterAuth(user) {
     }
 
     if (window.hideAuthWait) hideAuthWait();
+    sessionStorage.removeItem('rc_auth_pending');
     const nameInput = document.getElementById('onboard-name');
     if (nameInput && user.user_metadata?.full_name) {
       nameInput.value = user.user_metadata.full_name;
@@ -695,17 +665,30 @@ async function routeAfterAuth(user) {
 
   } catch(e) {
     console.warn('Route after auth error:', e);
+    if (window.hideAuthWait) hideAuthWait();
+    sessionStorage.removeItem('rc_auth_pending');
     sessionStorage.setItem('rentcan_user', JSON.stringify({
       id: user.id,
       email: user.email,
       name: user.user_metadata?.full_name || '',
     }));
-    if (window.finishAuthRedirect) {
-      await finishAuthRedirect('/dashboard');
-    } else {
-      window.location.href = '/dashboard';
-    }
+    window.location.href = '/dashboard';
   }
+}
+
+function isOAuthReturn() {
+  const hash = window.location.hash || '';
+  const search = window.location.search || '';
+  return hash.includes('access_token')
+    || hash.includes('code=')
+    || search.includes('code=')
+    || search.includes('error=');
+}
+
+function resetStaleAuthUi() {
+  sessionStorage.removeItem('rc_auth_pending');
+  if (window.hideAuthWait) hideAuthWait();
+  if (window.cancelAuthWait) cancelAuthWait();
 }
 
 // ─────────────────────────────────────────────────────────────────────
@@ -783,97 +766,119 @@ function startResendTimer() {
 // INITIALIZATION (DOMContentLoaded)
 // ─────────────────────────────────────────────────────────────────────
 async function initApp() {
+  // Clear stale service workers so auth/navigation never pins old shells
+  try {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function (regs) {
+        regs.forEach(function (r) { r.unregister(); });
+      });
+    }
+  } catch (e) {}
+
   if (!window.RentCan) {
     showAlert('Sign-in scripts failed to load. Please refresh this page.');
-    const loader = document.getElementById('loader');
-    if (loader) loader.classList.add('gone');
     return;
   }
 
-  // Check for hash errors from OAuth
+  const oauthReturn = isOAuthReturn();
+
+  // Stale pending flag (user hit back or abandoned Google) — don't trap them
+  if (!oauthReturn && sessionStorage.getItem('rc_auth_pending')) {
+    resetStaleAuthUi();
+  }
+
   const hashParams = new URLSearchParams(window.location.hash.substring(1));
-  const hasOAuthReturn = hashParams.has('access_token') || hashParams.has('code') || window.location.search.includes('code=');
   if (hashParams.has('error_description')) {
+    resetStaleAuthUi();
     showAlert(decodeURIComponent(hashParams.get('error_description').replace(/\+/g, ' ')));
-    window.location.hash = '';
+    if (RentCan.cleanAuthUrl) RentCan.cleanAuthUrl();
   }
-
-  // Returning from Google / magic link — keep a human waiting state
-  if (hasOAuthReturn || sessionStorage.getItem('rc_auth_pending') === 'google') {
-    if (window.showAuthWait) {
-      showAuthWait({
-        title: 'Welcome back',
-        sub: 'Finishing Google sign-in and securing your session…',
-        step: 0
-      });
-    }
-    const loader = document.getElementById('loader');
-    if (loader) loader.classList.add('gone');
-  } else {
-    setTimeout(() => {
-      const loader = document.getElementById('loader');
-      if (loader) loader.classList.add('gone');
-    }, 300);
-  }
-
-  let url = RentCan.DEFAULTS.supabaseUrl;
-  let key = RentCan.DEFAULTS.supabaseKey;
 
   if (window.location.search.includes('logout=true')) {
     sessionStorage.clear();
     localStorage.clear();
-    if (window.supabase) {
-      try {
-        const tempSb = window.supabase.createClient(url, key);
-        await tempSb.auth.signOut();
-      } catch(e){}
-    }
+    resetStaleAuthUi();
+    try {
+      const tempSb = await RentCan.createClient();
+      if (tempSb) await tempSb.auth.signOut();
+    } catch (e) {}
     window.history.replaceState({}, document.title, '/login');
-    if (window.hideAuthWait) hideAuthWait();
     showView('view-welcome');
     return;
   }
 
   try {
     const cfg = await RentCan.fetchConfig();
-    url = cfg.supabaseUrl;
-    key = cfg.supabaseKey;
     initMsg91Widget(cfg.msg91Widget);
-  } catch(e) {
+  } catch (e) {
     console.warn('API config fallback used:', e);
     initMsg91Widget(RentCan.DEFAULTS.msg91Widget);
   }
 
-  // Retry widget init if script loaded late
   if (!msg91WidgetReady) {
     setTimeout(() => {
       if (!msg91WidgetReady) initMsg91Widget(RentCan.DEFAULTS.msg91Widget);
     }, 800);
   }
 
-  if (window.supabase) {
-    sb = window.supabase.createClient(url, key);
+  sb = await RentCan.createClient();
+  if (!sb) {
+    showAlert('Could not connect to RentCan sign-in. Please refresh and try again.');
+    return;
+  }
 
+  // PKCE code exchange when returning from Google
+  const urlParams = new URLSearchParams(window.location.search);
+  const authCode = urlParams.get('code');
+  if (authCode) {
+    if (window.showAuthWait) {
+      showAuthWait({ title: 'Finishing sign-in', sub: 'Confirming your Google account…', step: 0 });
+    }
     try {
-      const { data: { session } } = await sb.auth.getSession();
-      if (session) {
-        sessionStorage.removeItem('rc_auth_pending');
-        await routeAfterAuth(session.user);
-        return;
-      }
-
-      sb.auth.onAuthStateChange(async (event, session) => {
-        if (event === 'SIGNED_IN' && session) {
-          sessionStorage.removeItem('rc_auth_pending');
-          await routeAfterAuth(session.user);
-        }
-      });
-    } catch(e) {
-      console.warn('Auth session check failed:', e);
-      if (window.hideAuthWait) hideAuthWait();
+      const { error } = await sb.auth.exchangeCodeForSession(authCode);
+      if (error) throw error;
+      if (RentCan.cleanAuthUrl) RentCan.cleanAuthUrl();
+    } catch (e) {
+      resetStaleAuthUi();
+      showAlert('Google sign-in could not be completed: ' + (e.message || e));
+      if (RentCan.cleanAuthUrl) RentCan.cleanAuthUrl();
     }
   }
+
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session?.user) {
+      sessionStorage.removeItem('rc_auth_pending');
+      await routeAfterAuth(session.user);
+      return;
+    }
+
+    resetStaleAuthUi();
+    showView('view-welcome');
+
+    sb.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) {
+        sessionStorage.removeItem('rc_auth_pending');
+        await routeAfterAuth(session.user);
+      }
+      if (event === 'SIGNED_OUT') {
+        resetStaleAuthUi();
+        showView('view-welcome');
+      }
+    });
+  } catch (e) {
+    console.warn('Auth session check failed:', e);
+    resetStaleAuthUi();
+    showView('view-welcome');
+  }
 }
+
+window.addEventListener('pageshow', function (e) {
+  if (e.persisted && !isOAuthReturn()) {
+    resetStaleAuthUi();
+    showView('view-welcome');
+  }
+});
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initApp);
@@ -894,40 +899,31 @@ async function signInWithGoogle() {
 
   const btn = document.getElementById('btn-google');
   btn.disabled = true;
-  btn.querySelector('.btn-label').innerHTML = 'Connecting…<span class="btn-sub">Opening Google securely</span>';
-
-  if (window.showAuthWait) {
-    showAuthWait({
-      title: 'Connecting to Google',
-      sub: 'You will confirm your account, then we will bring you straight back here.',
-      step: 0
-    });
-  }
+  btn.querySelector('.btn-label').innerHTML = 'Opening Google…<span class="btn-sub">You will return here after signing in</span>';
 
   try {
+    const redirectTo = RentCan.getAuthRedirectUrl ? RentCan.getAuthRedirectUrl() : (window.location.origin + '/login');
     sessionStorage.setItem('rc_auth_pending', 'google');
+
     const { data, error } = await sb.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin + '/login',
-        skipBrowserRedirect: true
+        redirectTo: redirectTo,
+        queryParams: { prompt: 'select_account' }
       }
     });
 
     if (error) throw error;
-    if (data?.url) {
-      if (window.setAuthWaitStep) setAuthWaitStep(1);
-      await new Promise(r => setTimeout(r, 700));
-      window.location.href = data.url;
-    } else {
-      throw new Error('Could not generate Google sign-in link.');
+    // Browser navigates to Google automatically (no skipBrowserRedirect)
+    if (!data?.url) {
+      throw new Error('Could not start Google sign-in. Check redirect URL in Supabase settings.');
     }
   } catch(e) {
     sessionStorage.removeItem('rc_auth_pending');
     if (window.hideAuthWait) hideAuthWait();
-    showAlert('Google Sign-In notice: ' + e.message);
+    showAlert('Google sign-in: ' + e.message);
     btn.disabled = false;
-    btn.querySelector('.btn-label').innerHTML = 'Continue with Google<span class="btn-sub">Secure sign-in with your Google account</span>';
+    btn.querySelector('.btn-label').innerHTML = 'Continue with Google<span class="btn-sub">Instant sign-in with your Google account</span>';
   }
 }
 
@@ -954,7 +950,7 @@ async function signInWithEmail() {
     const { error } = await sb.auth.signInWithOtp({
       email: email,
       options: {
-        emailRedirectTo: window.location.origin + '/login'
+        emailRedirectTo: RentCan.getAuthRedirectUrl ? RentCan.getAuthRedirectUrl() : (window.location.origin + '/login')
       }
     });
 

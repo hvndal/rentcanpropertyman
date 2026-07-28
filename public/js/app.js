@@ -191,7 +191,8 @@ function showAuthWait(options) {
         <li data-step="0"><span class="rc-auth-dot"></span><span>Confirming secure sign-in</span></li>
         <li data-step="1"><span class="rc-auth-dot"></span><span>Loading your profile</span></li>
         <li data-step="2"><span class="rc-auth-dot"></span><span>Opening your dashboard</span></li>
-      </ul>`;
+      </ul>
+      <button type="button" class="rc-auth-cancel" id="rc-auth-cancel" onclick="cancelAuthWait()">Cancel and go back</button>`;
     document.body.appendChild(el);
   }
   if (opts.title) document.getElementById('rc-auth-title').textContent = opts.title;
@@ -221,13 +222,20 @@ function hideAuthWait() {
   if (el) el.classList.remove('show');
 }
 
+function cancelAuthWait() {
+  sessionStorage.removeItem('rc_auth_pending');
+  hideAuthWait();
+  const btn = document.getElementById('btn-google');
+  if (btn) {
+    btn.disabled = false;
+    const label = btn.querySelector('.btn-label');
+    if (label) {
+      label.innerHTML = 'Continue with Google<span class="btn-sub">Instant sign-in with your Google account</span>';
+    }
+  }
+}
+
 async function finishAuthRedirect(dest) {
-  showAuthWait({
-    title: 'Welcome back',
-    sub: 'Everything looks good — taking you in now.',
-    step: 2
-  });
-  await new Promise(r => setTimeout(r, 900));
   window.location.href = rcCleanPath(dest || '/dashboard');
 }
 
@@ -249,6 +257,7 @@ window.rcCleanPath = rcCleanPath;
 window.showAuthWait = showAuthWait;
 window.setAuthWaitStep = setAuthWaitStep;
 window.hideAuthWait = hideAuthWait;
+window.cancelAuthWait = cancelAuthWait;
 window.finishAuthRedirect = finishAuthRedirect;
 
 // 6. Hidden Admin Portal Shortcuts (Ctrl + Shift + A or 3 Clicks on RentCan Emblem)
