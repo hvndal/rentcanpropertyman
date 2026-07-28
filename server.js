@@ -36,9 +36,13 @@ function normalizePhone(phone) {
 }
 
 function msg91Configured() {
-  const key = (process.env.MSG91_AUTH_KEY || '').trim();
+  const key = getMsg91AuthKey();
   const template = (process.env.MSG91_TEMPLATE_ID || '').trim();
   return Boolean(key && template);
+}
+
+function envPresent(name) {
+  return Boolean(String(process.env[name] || '').trim());
 }
 
 function msg91WidgetConfigured() {
@@ -107,6 +111,7 @@ app.get('/api/config', (req, res) => {
 
 // ── Health check ──
 app.get('/api/health', (req, res) => {
+  const hasServiceRole = envPresent('SUPABASE_SERVICE_ROLE_KEY') || envPresent('SUPABASE_SERVICE_KEY');
   res.json({
     ok: true,
     time: new Date().toISOString(),
@@ -115,7 +120,15 @@ app.get('/api/health', (req, res) => {
     msg91: msg91Configured(),
     msg91Widget: msg91WidgetConfigured(),
     msg91Verify: msg91VerifyReady(),
-    phoneAuth: Boolean(getSupabaseAdmin())
+    phoneAuth: Boolean(getSupabaseAdmin()),
+    // Booleans only — helps debug Vercel env without exposing values
+    config: {
+      MSG91_AUTH_KEY: envPresent('MSG91_AUTH_KEY') || envPresent('MSG91_AUTHKEY') || envPresent('MSG91_API_KEY'),
+      MSG91_TEMPLATE_ID: envPresent('MSG91_TEMPLATE_ID'),
+      MSG91_WIDGET_ID: envPresent('MSG91_WIDGET_ID'),
+      MSG91_TOKEN_AUTH: envPresent('MSG91_TOKEN_AUTH'),
+      SUPABASE_SERVICE_ROLE_KEY: hasServiceRole
+    }
   });
 });
 
