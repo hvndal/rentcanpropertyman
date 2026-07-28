@@ -132,7 +132,8 @@ const RC_PATHS = {
   '/inspections': 'inspections.html',
   '/reports': 'reports.html',
   '/info': 'info.html',
-  '/admin': 'admin.html'
+  '/admin': 'admin.html',
+  '/checkout': 'checkout.html'
 };
 
 function rcCleanPath(href) {
@@ -149,7 +150,8 @@ function rcCleanPath(href) {
       'inspections.html': '/inspections',
       'reports.html': '/reports',
       'info.html': '/info',
-      'admin.html': '/admin'
+      'admin.html': '/admin',
+      'checkout.html': '/checkout'
     };
     const file = u.pathname.split('/').pop();
     if (map[file]) {

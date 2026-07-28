@@ -16,6 +16,13 @@ const {
   extractVerifiedPhone
 } = require('./lib/msg91');
 const { rateLimit, clientIp } = require('./lib/rate-limit');
+const { getPlan, listPlans } = require('./lib/plans');
+const {
+  getKeyId,
+  isRazorpayReady,
+  getRazorpayClient,
+  verifyPaymentSignature
+} = require('./lib/razorpay');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -94,6 +101,24 @@ function getSupabaseAdmin() {
   return createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } });
 }
 
+function getSupabaseAuthClient() {
+  const url = resolveSupabaseUrl();
+  const key = resolveSupabaseAnonKey();
+  if (!url || !key) return null;
+  return createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } });
+}
+
+async function requireAuthUser(req) {
+  const header = req.headers.authorization || '';
+  const token = header.startsWith('Bearer ') ? header.slice(7).trim() : '';
+  if (!token) return null;
+  const client = getSupabaseAuthClient();
+  if (!client) return null;
+  const { data, error } = await client.auth.getUser(token);
+  if (error || !data?.user) return null;
+  return data.user;
+}
+
 // ── Serve public client config ──
 app.get('/api/config', (req, res) => {
   res.json({
@@ -105,7 +130,19 @@ app.get('/api/config', (req, res) => {
       tokenAuth: getMsg91TokenAuth(),
       ready: msg91WidgetConfigured(),
       serverVerify: msg91VerifyReady()
-    }
+    },
+    razorpay: {
+      ready: isRazorpayReady(),
+      keyId: isRazorpayReady() ? getKeyId() : null
+    },
+    plans: listPlans().map((p) => ({
+      id: p.id,
+      name: p.name,
+      description: p.description,
+      amountInr: p.amountInr,
+      interval: p.interval,
+      currency: p.currency
+    }))
   });
 });
 
@@ -121,13 +158,16 @@ app.get('/api/health', (req, res) => {
     msg91Widget: msg91WidgetConfigured(),
     msg91Verify: msg91VerifyReady(),
     phoneAuth: Boolean(getSupabaseAdmin()),
+    razorpay: isRazorpayReady(),
     // Booleans only — helps debug Vercel env without exposing values
     config: {
       MSG91_AUTH_KEY: envPresent('MSG91_AUTH_KEY') || envPresent('MSG91_AUTHKEY') || envPresent('MSG91_API_KEY'),
       MSG91_TEMPLATE_ID: envPresent('MSG91_TEMPLATE_ID'),
       MSG91_WIDGET_ID: envPresent('MSG91_WIDGET_ID'),
       MSG91_TOKEN_AUTH: envPresent('MSG91_TOKEN_AUTH'),
-      SUPABASE_SERVICE_ROLE_KEY: hasServiceRole
+      SUPABASE_SERVICE_ROLE_KEY: hasServiceRole,
+      RAZORPAY_KEY_ID: envPresent('RAZORPAY_KEY_ID'),
+      RAZORPAY_KEY_SECRET: envPresent('RAZORPAY_KEY_SECRET')
     }
   });
 });
@@ -495,6 +535,179 @@ async function createPhoneSession(cleanPhone) {
   }
 }
 
+// ── Razorpay: create order (login required) ──
+app.post('/api/payments/create-order', async (req, res) => {
+  const ip = clientIp(req);
+  const limit = rateLimit({ key: `rzp-order:${ip}`, limit: 20, windowMs: 15 * 60 * 1000 });
+  if (!limit.allowed) {
+    return res.status(429).json({
+      type: 'error',
+      code: 'RATE_LIMITED',
+      message: 'Too many payment attempts. Please wait and try again.'
+    });
+  }
+
+  if (!isRazorpayReady()) {
+    return res.status(503).json({
+      type: 'error',
+      code: 'RAZORPAY_NOT_CONFIGURED',
+      message: 'Online payments are not enabled yet. Please contact RentCan.'
+    });
+  }
+
+  const user = await requireAuthUser(req);
+  if (!user) {
+    return res.status(401).json({
+      type: 'error',
+      code: 'LOGIN_REQUIRED',
+      message: 'Please sign in to pay for a RentCan plan.'
+    });
+  }
+
+  const plan = getPlan(req.body?.plan);
+  if (!plan) {
+    return res.status(400).json({
+      type: 'error',
+      message: 'Choose a valid plan: residential, commercial, additional, or sos.'
+    });
+  }
+
+  try {
+    const rzp = getRazorpayClient();
+    const receipt = `rc_${String(user.id).replace(/-/g, '').slice(0, 10)}_${Date.now()}`.slice(0, 40);
+    const order = await rzp.orders.create({
+      amount: plan.amountPaise,
+      currency: plan.currency,
+      receipt,
+      notes: {
+        user_id: user.id,
+        plan_id: plan.id,
+        plan_name: plan.name,
+        email: user.email || ''
+      }
+    });
+
+    const admin = getSupabaseAdmin();
+    if (admin) {
+      await admin.from('service_orders').insert({
+        user_id: user.id,
+        plan_id: plan.id,
+        plan_name: plan.name,
+        amount_paise: plan.amountPaise,
+        currency: plan.currency,
+        status: 'created',
+        razorpay_order_id: order.id,
+        notes: { email: user.email || null }
+      });
+    }
+
+    return res.json({
+      type: 'success',
+      key_id: getKeyId(),
+      order_id: order.id,
+      amount: order.amount,
+      currency: order.currency,
+      plan: {
+        id: plan.id,
+        name: plan.name,
+        amountInr: plan.amountInr,
+        description: plan.description
+      },
+      prefill: {
+        email: user.email || '',
+        name: user.user_metadata?.full_name || user.user_metadata?.name || ''
+      }
+    });
+  } catch (e) {
+    console.error('[Razorpay] create-order failed:', e?.message || e);
+    return res.status(502).json({
+      type: 'error',
+      code: 'RAZORPAY_ORDER_FAILED',
+      message: 'Could not start payment. Please try again in a moment.'
+    });
+  }
+});
+
+// ── Razorpay: verify payment signature (login required) ──
+app.post('/api/payments/verify', async (req, res) => {
+  if (!isRazorpayReady()) {
+    return res.status(503).json({ type: 'error', code: 'RAZORPAY_NOT_CONFIGURED', message: 'Payments unavailable.' });
+  }
+
+  const user = await requireAuthUser(req);
+  if (!user) {
+    return res.status(401).json({ type: 'error', code: 'LOGIN_REQUIRED', message: 'Please sign in again.' });
+  }
+
+  const {
+    razorpay_order_id: orderId,
+    razorpay_payment_id: paymentId,
+    razorpay_signature: signature,
+    plan: planId
+  } = req.body || {};
+
+  if (!orderId || !paymentId || !signature) {
+    return res.status(400).json({ type: 'error', message: 'Missing payment confirmation details.' });
+  }
+
+  const ok = verifyPaymentSignature({ orderId, paymentId, signature });
+  if (!ok) {
+    return res.status(400).json({
+      type: 'error',
+      code: 'INVALID_SIGNATURE',
+      message: 'Payment could not be verified. If money was deducted, contact support with your payment ID.'
+    });
+  }
+
+  const plan = getPlan(planId);
+  const admin = getSupabaseAdmin();
+  if (admin) {
+    const { data: existing } = await admin
+      .from('service_orders')
+      .select('id, user_id, status')
+      .eq('razorpay_order_id', orderId)
+      .maybeSingle();
+
+    if (existing && existing.user_id !== user.id) {
+      return res.status(403).json({ type: 'error', message: 'This order does not belong to your account.' });
+    }
+
+    if (existing) {
+      await admin.from('service_orders').update({
+        status: 'paid',
+        razorpay_payment_id: paymentId,
+        razorpay_signature: signature,
+        paid_at: new Date().toISOString()
+      }).eq('id', existing.id);
+    } else {
+      await admin.from('service_orders').insert({
+        user_id: user.id,
+        plan_id: plan?.id || planId || 'unknown',
+        plan_name: plan?.name || planId || 'Plan',
+        amount_paise: plan?.amountPaise || 0,
+        currency: 'INR',
+        status: 'paid',
+        razorpay_order_id: orderId,
+        razorpay_payment_id: paymentId,
+        razorpay_signature: signature,
+        paid_at: new Date().toISOString()
+      });
+    }
+  }
+
+  return res.json({
+    type: 'success',
+    message: 'Payment successful. Welcome to RentCan.',
+    payment_id: paymentId,
+    order_id: orderId,
+    plan: plan ? { id: plan.id, name: plan.name, amountInr: plan.amountInr } : null
+  });
+});
+
+app.get('/api/payments/plans', (req, res) => {
+  res.json({ type: 'success', plans: listPlans() });
+});
+
 // Invite / Add Tenant API (fallback)
 app.post('/api/invite-tenant', async (req, res) => {
   const { property_id, full_name, email, phone, rent_due_date } = req.body;
@@ -539,7 +752,8 @@ const CLEAN_PAGES = {
   '/inspections': 'inspections.html',
   '/reports': 'reports.html',
   '/info': 'info.html',
-  '/admin': 'admin.html'
+  '/admin': 'admin.html',
+  '/checkout': 'checkout.html'
 };
 
 Object.keys(CLEAN_PAGES).forEach((route) => {
@@ -571,6 +785,7 @@ app.listen(PORT, () => {
   console.log(`MSG91 Widget    🚀 ${msg91WidgetConfigured() ? 'READY' : 'NOT CONFIGURED'}`);
   console.log(`MSG91 Verify    🚀 ${msg91VerifyReady() ? 'READY' : 'set MSG91_AUTH_KEY on server'}`);
   console.log(`Phone sessions  🚀 ${getSupabaseAdmin() ? 'READY' : 'needs SUPABASE_SERVICE_ROLE_KEY'}`);
+  console.log(`Razorpay        🚀 ${isRazorpayReady() ? 'READY' : 'set RAZORPAY_KEY_ID + RAZORPAY_KEY_SECRET'}`);
 });
 
 module.exports = app;

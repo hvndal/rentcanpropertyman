@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" class="rc-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<title>RentCan | Checkout — Pay Securely with Razorpay</title>
+<meta name="description" content="Sign in to RentCan and pay for residential or commercial property management via Razorpay. Secure checkout for landlords in Mohali, Chandigarh and Aerocity.">
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#6B4822">
+<link rel="canonical" href="https://rentcan.in/checkout">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/seo/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script src="/js/tailwind-brand.config.js"></script>
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/css/brand.css">
+<link rel="stylesheet" href="/css/app.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="/js/rentcan-config.js"></script>
+<script src="/js/app.js"></script>
+<style>
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: #FFFCFB; color: #32261C; }
+  .pay-card {
+    background: #fff;
+    border: 1px solid color-mix(in srgb, #CFDFDE 70%, #6B4822 30%);
+    border-radius: 1.25rem;
+    box-shadow: 0 16px 40px rgba(50, 38, 28, 0.08);
+  }
+  .plan-option {
+    border: 1.5px solid #d4ccc4;
+    border-radius: 1rem;
+    padding: 1rem 1.1rem;
+    cursor: pointer;
+    transition: border-color .2s, box-shadow .2s, background .2s;
+    background: #fff;
+  }
+  .plan-option:hover { border-color: #6B4822; }
+  .plan-option.selected {
+    border-color: #6B4822;
+    background: color-mix(in srgb, #CFDFDE 35%, #fff);
+    box-shadow: 0 0 0 3px rgba(107, 72, 34, 0.1);
+  }
+  .alert-box {
+    display: none;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .alert-box.show { display: block; }
+  .alert-box.error { background: #ffdad6; color: #93000a; }
+  .alert-box.success { background: color-mix(in srgb, #CFDFDE 55%, #fff); color: #32261C; }
+  .alert-box.info { background: #f5f2f0; color: #5c4a3a; }
+</style>
+</head>
+<body class="rc-brand min-h-screen">
+
+<header class="rc-site-header">
+  <div class="rc-site-nav-bar mx-auto">
+    <a href="/" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--nav" aria-label="RentCan">
+      <img src="/assets/logos/rentcan-wordmark.png" alt="RentCan">
+    </a>
+    <div class="rc-site-nav-actions">
+      <a href="/info#pricing" class="rc-site-nav-link hidden sm:inline">Plans</a>
+      <a href="/dashboard" class="text-sm font-bold text-primary" id="nav-account">Account</a>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-xl mx-auto px-4 py-10 pb-24">
+  <p class="text-xs font-bold uppercase tracking-[0.2em] text-brand-gold mb-3">Secure checkout</p>
+  <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-primary mb-2">Pay for RentCan</h1>
+  <p class="text-sm text-on-surface-variant mb-8 leading-relaxed">
+    You must be signed in to pay. Payments are processed securely by <strong>Razorpay</strong> (UPI, cards, netbanking).
+  </p>
+
+  <div id="alert" class="alert-box"></div>
+
+  <div class="pay-card p-5 sm:p-7 space-y-6">
+    <div>
+      <p class="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-3">Choose a plan</p>
+      <div class="space-y-3" id="plan-list"></div>
+    </div>
+
+    <div class="rounded-xl bg-surface-container-low border border-outline-variant p-4 text-sm leading-relaxed text-on-surface-variant">
+      <p class="font-bold text-on-surface mb-1">What you get</p>
+      <ul class="space-y-1 list-disc pl-4">
+        <li>On-ground property care across Mohali, Chandigarh, Panchkula &amp; Aerocity</li>
+        <li>Monthly inspections with photo updates in your dashboard</li>
+        <li>Cancel anytime — month-to-month, no lock-in</li>
+      </ul>
+    </div>
+
+    <div class="flex items-center justify-between gap-3 text-sm">
+      <span class="text-on-surface-variant">Total due now</span>
+      <span class="text-2xl font-extrabold text-primary" id="total-amount">—</span>
+    </div>
+
+    <button type="button" id="btn-pay" class="rc-btn-primary w-full justify-center min-h-[48px] disabled:opacity-50" disabled>
+      Sign in to pay
+    </button>
+
+    <p class="text-[11px] text-center text-on-surface-variant leading-relaxed">
+      By paying you agree to our
+      <a href="/info#faq" class="text-primary font-semibold underline">Terms</a>
+      and
+      <a href="/info#refunds" class="text-primary font-semibold underline">Refund Policy</a>.
+      Need help?
+      <a href="mailto:hundalg968@gmail.com" class="text-primary font-semibold">hundalg968@gmail.com</a>
+      ·
+      <a href="tel:+918146298024" class="text-primary font-semibold">+91 81462 98024</a>
+    </p>
+  </div>
+
+  <p class="text-center text-xs text-on-surface-variant mt-8">
+    Merchant: RentCan Property Management · Sector 79, Mohali · https://rentcan.in
+  </p>
+</main>
+
+<script>
+const PLANS_FALLBACK = [
+  { id: 'residential', name: 'Residential', description: 'Monthly management for 1 residential property', amountInr: 1499, interval: 'month' },
+  { id: 'commercial', name: 'Commercial', description: 'Monthly management for 1 commercial property', amountInr: 1999, interval: 'month' },
+  { id: 'additional', name: 'Additional property', description: 'Add-on for one extra property', amountInr: 799, interval: 'month' },
+  { id: 'sos', name: 'SOS inspection', description: 'One on-demand visit', amountInr: 500, interval: 'one_time' }
+];
+
+let selectedPlan = 'residential';
+let session = null;
+let razorpayReady = false;
+let keyId = null;
+
+function showAlert(msg, type) {
+  const el = document.getElementById('alert');
+  el.className = 'alert-box show ' + (type || 'info');
+  el.textContent = msg;
+}
+
+function formatINR(n) {
+  return '₹' + Number(n || 0).toLocaleString('en-IN');
+}
+
+function renderPlans(plans) {
+  const list = document.getElementById('plan-list');
+  list.innerHTML = plans.map((p) => `
+    <label class="plan-option ${p.id === selectedPlan ? 'selected' : ''} block" data-plan="${p.id}">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="font-bold text-on-surface">${p.name}</p>
+          <p class="text-xs text-on-surface-variant mt-1">${p.description || ''}</p>
+        </div>
+        <div class="text-right shrink-0">
+          <p class="font-extrabold text-primary">${formatINR(p.amountInr)}</p>
+          <p class="text-[10px] uppercase tracking-wider text-on-surface-variant">${p.interval === 'one_time' ? 'one-time' : '/ month'}</p>
+        </div>
+      </div>
+    </label>
+  `).join('');
+
+  list.querySelectorAll('.plan-option').forEach((el) => {
+    el.addEventListener('click', () => {
+      selectedPlan = el.getAttribute('data-plan');
+      list.querySelectorAll('.plan-option').forEach((x) => x.classList.remove('selected'));
+      el.classList.add('selected');
+      const plan = plans.find((p) => p.id === selectedPlan);
+      document.getElementById('total-amount').textContent = formatINR(plan?.amountInr);
+      updatePayButton();
+    });
+  });
+
+  const plan = plans.find((p) => p.id === selectedPlan) || plans[0];
+  selectedPlan = plan.id;
+  document.getElementById('total-amount').textContent = formatINR(plan.amountInr);
+}
+
+function updatePayButton() {
+  const btn = document.getElementById('btn-pay');
+  if (!session) {
+    btn.disabled = false;
+    btn.textContent = 'Sign in to pay →';
+    return;
+  }
+  if (!razorpayReady) {
+    btn.disabled = true;
+    btn.textContent = 'Payments activating soon';
+    return;
+  }
+  btn.disabled = false;
+  btn.textContent = 'Pay securely with Razorpay →';
+}
+
+async function getAccessToken() {
+  const client = await RentCan.createClient();
+  if (!client) return null;
+  const { data: { session: s } } = await client.auth.getSession();
+  return s?.access_token || null;
+}
+
+async function startCheckout() {
+  if (!session) {
+    const next = encodeURIComponent('/checkout?plan=' + selectedPlan);
+    window.location.href = '/login?next=' + next;
+    return;
+  }
+  if (!razorpayReady || typeof Razorpay === 'undefined') {
+    showAlert('Razorpay is not ready yet. We will enable pay once API keys are approved.', 'info');
+    return;
+  }
+
+  const btn = document.getElementById('btn-pay');
+  btn.disabled = true;
+  btn.textContent = 'Creating order…';
+
+  try {
+    const token = await getAccessToken();
+    if (!token) {
+      window.location.href = '/login?next=' + encodeURIComponent('/checkout?plan=' + selectedPlan);
+      return;
+    }
+
+    const res = await fetch('/api/payments/create-order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      },
+      body: JSON.stringify({ plan: selectedPlan })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || data.type === 'error') {
+      if (data.code === 'LOGIN_REQUIRED') {
+        window.location.href = '/login?next=' + encodeURIComponent('/checkout?plan=' + selectedPlan);
+        return;
+      }
+      throw new Error(data.message || 'Could not create order');
+    }
+
+    const options = {
+      key: data.key_id || keyId,
+      amount: data.amount,
+      currency: data.currency || 'INR',
+      name: 'RentCan',
+      description: data.plan?.name || 'Property management',
+      image: '/assets/seo/logo-square-512.png',
+      order_id: data.order_id,
+      prefill: {
+        name: data.prefill?.name || '',
+        email: data.prefill?.email || ''
+      },
+      notes: { plan: selectedPlan },
+      theme: { color: '#6B4822' },
+      handler: async function (response) {
+        try {
+          const verifyRes = await fetch('/api/payments/verify', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + token
+            },
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              plan: selectedPlan
+            })
+          });
+          const verified = await verifyRes.json().catch(() => ({}));
+          if (!verifyRes.ok || verified.type === 'error') {
+            throw new Error(verified.message || 'Verification failed');
+          }
+          showAlert('Payment successful! Opening your dashboard…', 'success');
+          setTimeout(() => { window.location.href = '/dashboard?paid=1'; }, 1200);
+        } catch (e) {
+          showAlert(e.message || 'Payment received but verification failed. Email us with your payment ID.', 'error');
+          updatePayButton();
+        }
+      },
+      modal: {
+        ondismiss: function () {
+          updatePayButton();
+          showAlert('Checkout closed. You can try again anytime.', 'info');
+        }
+      }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.on('payment.failed', function (resp) {
+      showAlert(resp?.error?.description || 'Payment failed. Please try again.', 'error');
+      updatePayButton();
+    });
+    rzp.open();
+    btn.textContent = 'Waiting for Razorpay…';
+  } catch (e) {
+    showAlert(e.message || 'Checkout failed', 'error');
+    updatePayButton();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const params = new URLSearchParams(window.location.search);
+  const qPlan = (params.get('plan') || '').toLowerCase();
+  if (['residential', 'commercial', 'additional', 'sos'].includes(qPlan)) {
+    selectedPlan = qPlan;
+  }
+
+  document.getElementById('btn-pay').addEventListener('click', startCheckout);
+
+  try {
+    const cfg = await RentCan.fetchConfig();
+    razorpayReady = Boolean(cfg.razorpay?.ready && cfg.razorpay?.keyId);
+    keyId = cfg.razorpay?.keyId || null;
+    renderPlans(cfg.plans?.length ? cfg.plans : PLANS_FALLBACK);
+  } catch (_) {
+    renderPlans(PLANS_FALLBACK);
+  }
+
+  try {
+    const client = await RentCan.createClient();
+    if (client) {
+      const { data } = await client.auth.getSession();
+      session = data.session || null;
+      if (session) {
+        document.getElementById('nav-account').textContent = 'Dashboard';
+        document.getElementById('nav-account').href = '/dashboard';
+      } else {
+        document.getElementById('nav-account').textContent = 'Sign in';
+        document.getElementById('nav-account').href = '/login?next=' + encodeURIComponent('/checkout?plan=' + selectedPlan);
+      }
+    }
+  } catch (_) {}
+
+  updatePayButton();
+  if (!razorpayReady) {
+    showAlert('Razorpay keys will work after website approval. Checkout UI is ready — add RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET on Vercel once approved.', 'info');
+  }
+});
+</script>
+</body>
+</html>

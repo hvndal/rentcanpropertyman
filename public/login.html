@@ -631,6 +631,21 @@ async function routeAfterAuth(user) {
     return;
   }
 
+  const params = new URLSearchParams(window.location.search);
+  let nextPath = params.get('next') || '';
+  try {
+    if (nextPath) {
+      const u = new URL(nextPath, window.location.origin);
+      if (u.origin === window.location.origin) nextPath = u.pathname + u.search + u.hash;
+      else nextPath = '';
+    }
+  } catch (_) {
+    nextPath = '';
+  }
+  const safeNext = nextPath && nextPath.startsWith('/') && !nextPath.startsWith('//')
+    ? nextPath
+    : '/dashboard';
+
   if (window.showAuthWait) {
     showAuthWait({
       title: 'Signing you in',
@@ -658,9 +673,9 @@ async function routeAfterAuth(user) {
         sessionStorage.setItem('rentcan_role', profile.role);
         sessionStorage.removeItem('rc_auth_pending');
         if (window.finishAuthRedirect) {
-          await finishAuthRedirect('/dashboard');
+          await finishAuthRedirect(safeNext);
         } else {
-          window.location.href = '/dashboard';
+          window.location.href = safeNext;
         }
         return;
       }
@@ -672,6 +687,8 @@ async function routeAfterAuth(user) {
     if (nameInput && user.user_metadata?.full_name) {
       nameInput.value = user.user_metadata.full_name;
     }
+    // After onboarding, honor next via session
+    if (safeNext !== '/dashboard') sessionStorage.setItem('rc_auth_next', safeNext);
     showView('view-onboarding');
 
   } catch(e) {
@@ -683,7 +700,7 @@ async function routeAfterAuth(user) {
       email: user.email,
       name: user.user_metadata?.full_name || '',
     }));
-    window.location.href = '/dashboard';
+    window.location.href = safeNext;
   }
 }
 
@@ -1304,9 +1321,12 @@ async function completeProfile() {
           });
         }
         if (window.finishAuthRedirect) {
-          await finishAuthRedirect('/dashboard');
+          await finishAuthRedirect(sessionStorage.getItem('rc_auth_next') || '/dashboard');
+          sessionStorage.removeItem('rc_auth_next');
         } else {
-          setTimeout(() => { window.location.href = '/dashboard'; }, 800);
+          const dest = sessionStorage.getItem('rc_auth_next') || '/dashboard';
+          sessionStorage.removeItem('rc_auth_next');
+          setTimeout(() => { window.location.href = dest; }, 800);
         }
         return;
       }

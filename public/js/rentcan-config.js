@@ -74,8 +74,12 @@
     window.history.replaceState({}, document.title, path);
   }
 
-  async function requireAuth() {
-    if (sessionStorage.getItem('rentcan_user')) return true;
+  async function requireAuth(opts) {
+    const options = opts || {};
+    const next = options.next || (window.location.pathname + window.location.search);
+    const loginUrl = '/login?next=' + encodeURIComponent(next);
+
+    if (sessionStorage.getItem('rentcan_user') && !options.force) return true;
 
     try {
       const client = await createClient();
@@ -83,7 +87,7 @@
 
       const { data: { session } } = await client.auth.getSession();
       if (!session) {
-        window.location.href = '/login';
+        window.location.href = loginUrl;
         return false;
       }
 
@@ -98,7 +102,7 @@
       return true;
     } catch (e) {
       console.warn('[RentCan] auth guard failed:', e);
-      window.location.href = '/login';
+      window.location.href = loginUrl;
       return false;
     }
   }
