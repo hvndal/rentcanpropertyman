@@ -1543,7 +1543,7 @@ html[data-plan-focus] .is-plan-focus.rc-plan-pulse {
 }
 
 
-/* Mobile drawer logo — reads on light cream panel */
+
 .rc-mobile-drawer-panel .rc-brand-logo--ghost img {
   filter: drop-shadow(0 1px 3px rgba(78, 66, 56, 0.18)) brightness(0.15);
 }
@@ -1582,4 +1582,30 @@ html[data-plan-focus] .is-plan-focus.rc-plan-pulse {
   filter: brightness(1) drop-shadow(0 2px 12px rgba(0,0,0,0.45));
 }
 
-/* temporary debug note: ensure logo has correct alignment on high-dpi mobile screens */
+
+
+/* ── Solid header state: logo shows as dark brown wordmark ── */
+.rc-site-header--solid #site-logo img,
+.rc-site-header--solid .rc-brand-logo--ghost img {
+  filter: brightness(0) saturate(100%) invert(22%) sepia(42%) saturate(700%) hue-rotate(10deg) brightness(0.6);
+}
+
+/* ── On-hero state: logo stays white ── */
+.rc-site-header--on-hero #site-logo img,
+.rc-site-header--on-hero .rc-brand-logo--ghost img {
+  filter: brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+}
+
+/* ── Mobile drawer: logo reads on cream panel ── */
+.rc-mobile-drawer-panel .rc-brand-logo img {
+  filter: brightness(0) saturate(100%) invert(22%) sepia(42%) saturate(700%) hue-rotate(10deg) brightness(0.6);
+}
+
+/* ── Footer ghost: dark brown ── */
+.rc-brand-logo--footer img {
+  filter: brightness(0) saturate(100%) invert(22%) sepia(42%) saturate(700%) hue-rotate(10deg) brightness(0.6);
+  height: 2.75rem;
+  max-width: 8rem;
+}
+
+/* ── Remove the broken duplicate filter rules from before ── */
