@@ -44,7 +44,7 @@ html {
   text-rendering: optimizeLegibility;
 }
 
-body { background: var(--bg); overflow-x: hidden; }
+html, body { margin: 0; padding: 0; background: var(--bg); overflow-x: hidden; }
 
 /* ── Page Loader ──────────────────────────────────────────────────── */
 .page-loader {
@@ -142,7 +142,7 @@ body { background: var(--bg); overflow-x: hidden; }
 
 /* ── Page Enter ───────────────────────────────────────────────────── */
 @keyframes page-enter {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; }
   to   { opacity: 1; transform: translateY(0); }
 }
 

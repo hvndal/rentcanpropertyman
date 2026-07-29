@@ -47,19 +47,19 @@ body.rc-brand {
 .rc-site-header {
   position: sticky;
   top: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
   z-index: 50;
   background: linear-gradient(
     180deg,
     color-mix(in srgb, var(--rc-mint) 62%, var(--rc-warm-white)) 0%,
     color-mix(in srgb, var(--rc-mint) 38%, var(--rc-cream)) 100%
   );
-  border-bottom: 1px solid color-mix(in srgb, var(--rc-mint) 70%, var(--rc-brown) 30%);
-  box-shadow: 0 10px 28px -22px rgba(78, 66, 56, 0.28);
+  border-bottom: none !important;
+  box-shadow: none;
   backdrop-filter: none;
-  transition:
-    background 0.35s ease,
-    border-color 0.35s ease,
-    box-shadow 0.35s ease;
+  transition: background 0.35s ease;
 }
 
 /* Homepage: sit on the hero so mobile doesn't show a white strip */
@@ -74,7 +74,7 @@ body.rc-brand {
     rgba(78, 66, 56, 0.22) 55%,
     transparent 100%
   );
-  border-bottom: 1px solid transparent;
+  border-bottom: none !important;
   box-shadow: none;
 }
 
@@ -112,7 +112,7 @@ body.rc-brand {
     color-mix(in srgb, var(--rc-mint) 62%, var(--rc-warm-white)) 0%,
     color-mix(in srgb, var(--rc-mint) 38%, var(--rc-cream)) 100%
   );
-  border-bottom: 1px solid color-mix(in srgb, var(--rc-mint) 70%, var(--rc-brown) 30%);
+  border-bottom: none !important;
   box-shadow: 0 10px 28px -22px rgba(78, 66, 56, 0.28);
 }
 
@@ -270,11 +270,10 @@ body.rc-brand {
 
 /* Light pages: soft mint-cream plate &mdash; blends with header */
 .rc-brand-logo--light {
-  background: color-mix(in srgb, var(--rc-mint) 35%, #ffffff);
-  border-radius: 0.65rem;
-  padding: 0.3rem 0.55rem;
-  border: 1px solid var(--rc-border);
-  box-shadow: none;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
 }
 
 /* Dark hero / nav: transparent wordmark, no plate */
@@ -290,8 +289,12 @@ body.rc-brand {
 }
 
 .rc-brand-logo--nav img {
-  height: 2.75rem;
-  max-width: 10.5rem;
+  height: 3.25rem !important;
+  max-height: 52px !important;
+  width: auto !important;
+  object-fit: contain !important;
+  object-position: left center !important;
+  display: block;
 }
 
 .rc-brand-logo--app img {
@@ -398,6 +401,9 @@ body.rc-brand {
   position: relative;
   z-index: 2;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .rc-site-nav-links {
@@ -1013,10 +1019,7 @@ html.rc-js .rc-reveal:not(.in-view):not(.is-visible) {
     min-height: 17.5rem;
   }
 
-  .rc-price-rail > .rc-photo-tile:hover,
-  .rc-price-rail > .rc-photo-tile:focus-visible {
-    transform: none;
-  }
+
 }
 
 /* Info plan cards: swipe until desktop 3-col */
@@ -1173,23 +1176,29 @@ html.rc-js .rc-reveal:not(.in-view):not(.is-visible) {
 }
 
 .rc-photo-tile:hover,
-.rc-photo-tile:focus-visible {
-  transform: translateY(-10px);
-  box-shadow: 0 32px 60px rgba(78, 66, 56, 0.22);
-  border-color: rgba(213, 178, 89, 0.45);
+.rc-photo-tile:active,
+.rc-photo-tile:focus-visible,
+.rc-photo-tile.is-active {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 28px 56px rgba(78, 66, 56, 0.28), 0 0 0 2px rgba(213, 178, 89, 0.65);
+  border-color: rgba(213, 178, 89, 0.8);
   outline: none;
+  cursor: pointer;
 }
 
 .rc-photo-tile:hover .rc-photo-tile__media,
-.rc-photo-tile:focus-visible .rc-photo-tile__media {
-  transform: scale(1.12);
+.rc-photo-tile:active .rc-photo-tile__media,
+.rc-photo-tile:focus-visible .rc-photo-tile__media,
+.rc-photo-tile.is-active .rc-photo-tile__media {
+  transform: scale(1.10);
 }
 
 .rc-photo-tile:hover .rc-photo-tile__shade,
-.rc-photo-tile:focus-visible .rc-photo-tile__shade {
+.rc-photo-tile:active .rc-photo-tile__shade,
+.rc-photo-tile:focus-visible .rc-photo-tile__shade,
+.rc-photo-tile.is-active .rc-photo-tile__shade {
   background:
-    linear-gradient(180deg, rgba(78, 66, 56, 0.1) 0%, rgba(78, 66, 56, 0.28) 40%, rgba(50, 40, 32, 0.9) 100%),
-    linear-gradient(120deg, rgba(246, 207, 222, 0.22) 0%, transparent 50%);
+    linear-gradient(180deg, rgba(30, 20, 10, 0.05) 0%, rgba(40, 25, 12, 0.35) 40%, rgba(20, 10, 4, 0.92) 100%);
 }
 
 .rc-photo-tile--featured {
