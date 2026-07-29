@@ -475,10 +475,11 @@
   </div>
   <p class="rc-plan-tabs-hint text-center text-xs text-on-surface-variant mb-6">Tap a plan to highlight what is included and matching price tiles</p>
 
-  <!-- Plan photo tiles -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-10" data-plan-group="tiles">
+  <!-- Plan photo tiles (Exactly 3 Equal-Height Cards) -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-10 items-stretch" data-plan-group="tiles">
+    
     <!-- Residential Card -->
-    <a href="#" data-wa-plan="residential" class="rc-photo-tile rc-photo-tile--residential group min-h-[380px] md:min-h-[420px] p-6 transition-all duration-300 shadow-xl border border-white/20 hover:border-brand-gold" data-plan="residential">
+    <a href="#" data-wa-plan="residential" class="rc-photo-tile rc-photo-tile--residential group min-h-[420px] p-6 transition-all duration-300 shadow-xl border border-white/20 hover:border-brand-gold flex flex-col justify-between" data-plan="residential">
       <span class="rc-photo-tile__media transition-transform duration-700 group-hover:scale-105" aria-hidden="true"></span>
       <span class="rc-photo-tile__shade" aria-hidden="true"></span>
       <div class="rc-photo-tile__body flex flex-col justify-between h-full relative z-10">
@@ -504,7 +505,7 @@
     </a>
 
     <!-- Commercial Card -->
-    <a href="#" data-wa-plan="commercial" class="rc-photo-tile rc-photo-tile--commercial rc-photo-tile--featured group min-h-[380px] md:min-h-[420px] p-6 transition-all duration-300 shadow-2xl border-2 border-brand-gold hover:border-brand-gold" data-plan="commercial">
+    <a href="#" data-wa-plan="commercial" class="rc-photo-tile rc-photo-tile--commercial rc-photo-tile--featured group min-h-[420px] p-6 transition-all duration-300 shadow-2xl border-2 border-brand-gold hover:border-brand-gold flex flex-col justify-between" data-plan="commercial">
       <span class="rc-photo-tile__media transition-transform duration-700 group-hover:scale-105" aria-hidden="true"></span>
       <span class="rc-photo-tile__shade" aria-hidden="true"></span>
       <div class="rc-photo-tile__body flex flex-col justify-between h-full relative z-10">
@@ -530,11 +531,20 @@
     </a>
 
     <!-- Airbnb Card -->
-    <a href="#" data-wa-plan="airbnb" class="rc-photo-tile rc-photo-tile--airbnb group min-h-[380px] md:min-h-[420px] p-6 transition-all duration-300 shadow-xl border border-white/20 hover:border-brand-gold" data-plan="airbnb">
+    <a href="#" data-wa-plan="airbnb" class="rc-photo-tile rc-photo-tile--airbnb group min-h-[420px] p-6 transition-all duration-300 shadow-xl border border-white/20 hover:border-brand-gold flex flex-col justify-between" data-plan="airbnb">
       <span class="rc-photo-tile__media transition-transform duration-700 group-hover:scale-105" aria-hidden="true"></span>
       <span class="rc-photo-tile__shade" aria-hidden="true"></span>
       <div class="rc-photo-tile__body flex flex-col justify-between h-full relative z-10">
-        <div></div>
+        
+        <!-- Top Badge: Official Airbnb Logo -->
+        <div class="flex justify-end">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-black/50 backdrop-blur-md rounded-full border border-white/20 text-white font-bold text-[11px] uppercase tracking-wider drop-shadow-md">
+            <svg viewBox="0 0 32 32" class="w-4 h-4 fill-[#FF385C]" aria-hidden="true">
+              <path d="M16 1c-2.008 0-3.47.886-4.52 2.656-1.5 2.532-1.921 5.92-1.282 10.158.461 3.053 1.637 6.136 3.502 9.176 1.155 1.88 2.27 3.324 2.3 3.363a.62.62 0 0 0 1.002 0c.03-.039 1.145-1.483 2.3-3.363 1.865-3.04 3.04-6.123 3.502-9.176.639-4.238.218-7.626-1.282-10.158C20.47 1.886 19.008 1 16 1zm0 2.247c1.378 0 2.298.544 3.088 1.878 1.173 1.98 1.545 4.887.994 8.52-.39 2.585-1.408 5.344-3.03 7.991C15.908 23.518 15.02 24.812 16 26.242c.98-1.43.092-2.724-1.052-4.606-1.622-2.647-2.64-5.406-3.03-7.991-.551-3.633-.179-6.54 1.994-8.52C14.702 3.79 15.622 3.247 16 3.247zm0 6.753a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </svg>
+            Airbnb
+          </span>
+        </div>
 
         <!-- Clean Text Layout over Full Photo -->
         <div>
@@ -555,118 +565,24 @@
       </div>
     </a>
   </div>
-    </a>
+</section>
 
-    <!-- Commercial Card -->
-    <a href="#" data-wa-plan="commercial" class="rc-photo-tile rc-photo-tile--commercial rc-photo-tile--featured group min-h-[370px] md:min-h-[400px] p-4 transition-all duration-300 shadow-2xl border-2 border-brand-gold hover:border-brand-gold" data-plan="commercial">
-      <span class="rc-photo-tile__media transition-transform duration-700 group-hover:scale-105" aria-hidden="true"></span>
-      <span class="rc-photo-tile__shade" aria-hidden="true"></span>
-      <div class="rc-photo-tile__body flex flex-col justify-between h-full">
-        <div></div>
-
-        <!-- Transparent Glass Compact Info Panel -->
-        <div class="bg-black/35 backdrop-blur-md p-3.5 sm:p-4 rounded-xl border border-white/20 shadow-lg">
-          <span class="text-brand-gold font-extrabold tracking-widest text-[10px] uppercase mb-0.5 block">Commercial</span>
-          <p class="rc-photo-tile__price text-2xl font-extrabold text-white mb-0.5">₹1,999<span class="text-xs text-white/80 font-normal">/mo</span></p>
-          <p class="rc-photo-tile__meta text-[10px] text-white/90 mb-3 font-medium">+ ₹799 per extra property</p>
-          
-          <!-- Compact Full Feature List -->
-          <ul class="space-y-1.5 text-[11px] text-white font-semibold leading-tight drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] mb-3.5">
-            <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-brand-gold text-sm shrink-0">check_circle</span> Safety &amp; Structural Walkthroughs</li>
-            <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-brand-gold text-sm shrink-0">check_circle</span> Office, Retail &amp; Warehouse Care</li>
-            <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-brand-gold text-sm shrink-0">check_circle</span> Commercial Lease Compliance Audit</li>
-            <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-brand-gold text-sm shrink-0">check_circle</span> Priority Field Rep Dispatch</li>
-          </ul>
-
-          <span class="w-full inline-flex items-center justify-center gap-1.5 py-2.5 bg-[#F6CFDE] text-[#4E2A38] text-xs font-extrabold rounded-xl hover:bg-[#F0B8CE] transition-all uppercase tracking-wider shadow">WhatsApp to join &rarr;</span>
-        </div>
-      </div>
-    </a>
-
-    <!-- Airbnb Card -->
-    <a href="#" data-wa-plan="airbnb" class="rc-photo-tile rc-photo-tile--airbnb group min-h-[370px] md:min-h-[400px] p-4 transition-all duration-300 shadow-xl border border-white/20 hover:border-brand-gold" data-plan="airbnb">
-      <span class="rc-photo-tile__media transition-transform duration-700 group-hover:scale-105" aria-hidden="true"></span>
-      <span class="rc-photo-tile__shade" aria-hidden="true"></span>
-      <div class="rc-photo-tile__body flex flex-col justify-between h-full">
-        <div></div>
-
-        <!-- Transparent Glass Compact Info Panel -->
-        <div class="bg-black/35 backdrop-blur-md p-3.5 sm:p-4 rounded-xl border border-white/20 shadow-lg">
-          <span class="text-brand-gold font-extrabold tracking-widest text-[10px] uppercase mb-0.5 block">Airbnb</span>
-          <p class="rc-photo-tile__price text-2xl font-extrabold text-white mb-0.5">Custom</p>
-          <p class="rc-photo-tile__meta text-[10px] text-white/90 mb-3 font-medium">Premium hospitality plan</p>
-          
-          <!-- Compact Full Feature List -->
-          <ul class="space-y-1.5 text-[11px] text-white font-semibold leading-tight drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] mb-3.5">
-            <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-brand-gold text-sm shrink-0">check_circle</span> 24/7 Guest Communication &amp; Check-in</li>
-            <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-brand-gold text-sm shrink-0">check_circle</span> Housekeeping &amp; Turnover Cleaning</li>
-            <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-brand-gold text-sm shrink-0">check_circle</span> Dynamic Revenue Pricing</li>
-            <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-brand-gold text-sm shrink-0">check_circle</span> Superhost Listing Optimization</li>
-          </ul>
-
-          <span class="w-full inline-flex items-center justify-center gap-1.5 py-2.5 bg-[#F6CFDE] text-[#4E2A38] text-xs font-extrabold rounded-xl hover:bg-[#F0B8CE] transition-all uppercase tracking-wider shadow">WhatsApp to join &rarr;</span>
-        </div>
-      </div>
-    </a>
-  </div>
-    </a>
-
-    <!-- Commercial Card -->
-    <a href="#" data-wa-plan="commercial" class="rc-photo-tile rc-photo-tile--commercial rc-photo-tile--featured group min-h-[380px] md:min-h-[410px] p-4 sm:p-5 transition-all duration-300 shadow-2xl border-2 border-brand-gold hover:border-brand-gold" data-plan="commercial">
-      <span class="rc-photo-tile__media transition-transform duration-700 group-hover:scale-105" aria-hidden="true"></span>
-      <span class="rc-photo-tile__shade" aria-hidden="true"></span>
-      <div class="rc-photo-tile__body flex flex-col justify-between h-full">
-        <div></div>
-
-        <!-- High-Contrast Text Box -->
-        <div class="bg-black/65 backdrop-blur-md p-4 sm:p-5 rounded-xl border border-white/15 shadow-2xl">
-          <span class="text-brand-gold font-bold tracking-widest text-[11px] uppercase mb-1 block">Commercial</span>
-          <p class="rc-photo-tile__price text-3xl font-extrabold text-white mb-0.5">₹1,999<span class="text-xs text-white/80 font-normal">/mo</span></p>
-          <p class="rc-photo-tile__meta text-[11px] text-white/80 mb-4 font-medium">+ ₹799 per extra property</p>
-          
-          <!-- Top Features Checklist -->
-          <ul class="space-y-2 text-xs text-white font-semibold mb-4">
-            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Safety Walkthroughs</li>
-            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Office &amp; Retail Care</li>
-            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Lease Compliance Audit</li>
-            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Priority Field Reps</li>
-          </ul>
-
-          <span class="rc-photo-tile__cta inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-brand-gold group-hover:translate-x-1.5 transition-transform">WhatsApp to join &rarr;</span>
-        </div>
-      </div>
-    </a>
-
-    <!-- Airbnb Card -->
-    <a href="#" data-wa-plan="airbnb" class="rc-photo-tile rc-photo-tile--airbnb group min-h-[380px] md:min-h-[410px] p-4 sm:p-5 transition-all duration-300 shadow-xl border border-white/20 hover:border-brand-gold" data-plan="airbnb">
-      <span class="rc-photo-tile__media transition-transform duration-700 group-hover:scale-105" aria-hidden="true"></span>
-      <span class="rc-photo-tile__shade" aria-hidden="true"></span>
-      <div class="rc-photo-tile__body flex flex-col justify-between h-full">
-        <div></div>
-
-        <!-- High-Contrast Text Box -->
-        <div class="bg-black/65 backdrop-blur-md p-4 sm:p-5 rounded-xl border border-white/15 shadow-2xl">
-          <span class="text-brand-gold font-bold tracking-widest text-[11px] uppercase mb-1 block">Airbnb</span>
-          <p class="rc-photo-tile__price text-3xl font-extrabold text-white mb-0.5">Custom</p>
-          <p class="rc-photo-tile__meta text-[11px] text-white/80 mb-4 font-medium">Premium hospitality plan</p>
-          
-          <!-- Top Features Checklist -->
-          <ul class="space-y-2 text-xs text-white font-semibold mb-4">
-            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> 24/7 Guest Care</li>
-            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Housekeeping Cleaning</li>
-            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Dynamic Revenue Pricing</li>
-            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Superhost Listing Care</li>
-          </ul>
-
-          <span class="rc-photo-tile__cta inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-brand-gold group-hover:translate-x-1.5 transition-transform">WhatsApp to join &rarr;</span>
-        </div>
-      </div>
-    </a>
-  </div>
+<!-- Dashboard (secondary) -->
+<section class="py-16 px-margin-desktop max-w-container-max mx-auto rc-section-pink">
+  <div class="rc-card p-10 md:p-14 bg-surface">
+    <span class="font-label-caps text-label-caps text-brand-gold uppercase tracking-[0.3em] mb-4 block">Owner Visibility</span>
+    <h2 class="font-display-lg text-3xl md:text-4xl text-primary mb-4 tracking-tight">Your dashboard supports the service &mdash; it isn't the service.</h2>
+    <p class="text-on-surface-variant max-w-3xl leading-relaxed mb-8">After RentCan't team inspects, maintains and coordinates on your behalf, the owner dashboard gives you a clear record of everything. Subscribe for hands-on management; use the dashboard to stay informed.</p>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 text-sm text-on-surface-variant">
+      <div class="bg-surface rounded-xl p-4 border border-outline-variant/20">View inspection reports</div>
+      <div class="bg-surface rounded-xl p-4 border border-outline-variant/20">Track maintenance requests</div>
+      <div class="bg-surface rounded-xl p-4 border border-outline-variant/20">Store lease documents</div>
+      <div class="bg-surface rounded-xl p-4 border border-outline-variant/20">Monitor rent payments</div>
+      <div class="bg-surface rounded-xl p-4 border border-outline-variant/20">Review property history</div>
+    </div>
   </div>
 </section>
 
-<!-- Pricing summary -->
 <!-- Dedicated Pricing Section -->
 <section id="pricing" class="py-20 px-margin-desktop scroll-mt-28 rc-section-mint">
   <div class="max-w-[1280px] mx-auto">
