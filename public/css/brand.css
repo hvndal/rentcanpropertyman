@@ -1,14 +1,14 @@
-/* RentCan brand — logo palette: mint, pink, gold, brown */
+﻿/* RentCan brand â€” logo palette: mint, pink, gold, brown */
 /* Logo standard sitewide: /assets/logos/rentcan-wordmark.png + .rc-brand-logo--light */
 :root {
   --rc-mint:         #CFDFDE;
   --rc-pink:         #F6CFDE;
   --rc-gold:         #D5B259;
   --rc-brown:        #6B4822;
-  /* Soft taupe ink — less brown, more neutral mocha */
+  /* Soft taupe ink â€” less brown, more neutral mocha */
   --rc-brown-dark:   #4E4238;
 
-  /* Surfaces — cream blended with mint so nothing reads as stark white */
+  /* Surfaces â€” cream blended with mint so nothing reads as stark white */
   --rc-cream:        #F2F5F4;
   --rc-sand:         var(--rc-mint);
   --rc-warm-white:   #F5F7F6;
@@ -33,7 +33,7 @@ body.rc-brand {
 }
 
 .rc-glass {
-  /* Soft blended surface — not stark white */
+  /* Soft blended surface â€” not stark white */
   background: var(--rc-surface);
   border: 1px solid var(--rc-border);
 }
@@ -43,7 +43,7 @@ body.rc-brand {
   border: 1px solid color-mix(in srgb, var(--rc-brown) 40%, var(--rc-mint) 60%);
 }
 
-/* Sticky site header — mint wash that fades into the page (no stark white bar) */
+/* Sticky site header â€” mint wash that fades into the page (no stark white bar) */
 .rc-site-header {
   position: sticky;
   top: 0;
@@ -248,7 +248,7 @@ body.rc-brand {
   filter: drop-shadow(0 4px 12px rgba(42, 24, 16, 0.15));
 }
 
-/* Logo — wordmark only (no baked slogan), transparent on dark UI */
+/* Logo â€” wordmark only (no baked slogan), transparent on dark UI */
 .rc-brand-logo {
   display: inline-flex;
   align-items: center;
@@ -266,7 +266,7 @@ body.rc-brand {
   object-position: top center;
 }
 
-/* Light pages: soft mint-cream plate — blends with header */
+/* Light pages: soft mint-cream plate â€” blends with header */
 .rc-brand-logo--light {
   background: color-mix(in srgb, var(--rc-mint) 35%, #ffffff);
   border-radius: 0.65rem;
@@ -312,7 +312,7 @@ body.rc-brand {
   max-width: 8rem;
 }
 
-/* Hero nav — logo | centered links | actions */
+/* Hero nav â€” logo | centered links | actions */
 .rc-hero-nav-bar {
   position: relative;
   display: flex;
@@ -440,7 +440,7 @@ body.rc-brand {
   margin-left: auto;
 }
 
-/* Hero — each title floats alone with breathing room */
+/* Hero â€” each title floats alone with breathing room */
 .hero-stack {
   display: flex;
   flex-direction: column;
@@ -593,7 +593,7 @@ body.rc-brand {
   line-height: 1;
 }
 
-/* Feature matrix — ✓ available, − not */
+/* Feature matrix â€” âœ“ available, âˆ’ not */
 .rc-feature-matrix {
   width: 100%;
   border-collapse: separate;
@@ -651,7 +651,7 @@ body.rc-brand {
   border-radius: 4px;
 }
 
-/* Plan focus — highlight selected column + included rows */
+/* Plan focus â€” highlight selected column + included rows */
 html[data-plan-focus] .rc-feature-matrix td[data-plan-col],
 html[data-plan-focus] .rc-feature-matrix thead th:nth-child(n+2) {
   opacity: 0.38;
@@ -716,7 +716,7 @@ html[data-plan-focus] .rc-feature-matrix tbody tr.is-plan-excluded {
   }
 }
 
-/* Mobile service chips — tap to expand titles */
+/* Mobile service chips â€” tap to expand titles */
 .hero-chip-acc {
   border-radius: 0.875rem;
   background: rgba(255, 255, 255, 0.08);
@@ -836,7 +836,7 @@ html[data-plan-focus] .rc-feature-matrix tbody tr.is-plan-excluded {
   box-shadow: 0 -4px 20px rgba(78, 66, 56, 0.05);
 }
 
-/* Scroll reveal — visible by default when JS hasn't run yet */
+/* Scroll reveal â€” visible by default when JS hasn't run yet */
 .rc-reveal {
   opacity: 1;
   transform: translateY(0);
@@ -858,7 +858,7 @@ html.rc-js .rc-reveal:not(.in-view):not(.is-visible) {
   transform: translateY(0);
 }
 
-/* Pricing summary tiles — lift + glow on hover */
+/* Pricing summary tiles â€” lift + glow on hover */
 .rc-pricing-tile {
   position: relative;
   overflow: hidden;
@@ -891,7 +891,7 @@ html.rc-js .rc-reveal:not(.in-view):not(.is-visible) {
   opacity: 1;
 }
 
-/* ── Mobile pricing compare strip + swipe rails ── */
+/* â”€â”€ Mobile pricing compare strip + swipe rails â”€â”€ */
 .rc-price-compare {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -979,7 +979,7 @@ html.rc-js .rc-reveal:not(.in-view):not(.is-visible) {
   margin: 0 0 0.85rem;
 }
 
-/* Swipeable plan cards on phone — peek next plan for comparison */
+/* Swipeable plan cards on phone â€” peek next plan for comparison */
 .rc-price-rail,
 .rc-plan-rail {
   display: grid;
@@ -1082,7 +1082,7 @@ html.rc-js .rc-reveal:not(.in-view):not(.is-visible) {
   }
 }
 
-/* Photo plan tiles — stock bg + hover zoom */
+/* Photo plan tiles â€” stock bg + hover zoom */
 .rc-photo-tile {
   position: relative;
   display: flex;
@@ -1204,7 +1204,7 @@ html.rc-js .rc-reveal:not(.in-view):not(.is-visible) {
   background-image: url('/assets/stock/airbnb.jpg');
 }
 
-/* Plan cards on info — optional photo header band */
+/* Plan cards on info â€” optional photo header band */
 .rc-plan-card.rc-plan-card--photo {
   padding-top: 0;
   padding-left: 0;
@@ -1399,7 +1399,7 @@ html[data-plan-focus] .is-plan-focus.rc-plan-pulse {
   }
 }
 
-/* Fixed Instagram handle — stays on the side while scrolling */
+/* Fixed Instagram handle â€” stays on the side while scrolling */
 .rc-side-ig {
   position: fixed;
   right: 0;
@@ -1541,3 +1541,4 @@ html[data-plan-focus] .is-plan-focus.rc-plan-pulse {
     transform: none;
   }
 }
+
