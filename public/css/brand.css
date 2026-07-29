@@ -1581,3 +1581,5 @@ html[data-plan-focus] .is-plan-focus.rc-plan-pulse {
 .rc-site-header--on-hero .rc-brand-logo--ghost img {
   filter: brightness(1) drop-shadow(0 2px 12px rgba(0,0,0,0.45));
 }
+
+/* temporary debug note: ensure logo has correct alignment on high-dpi mobile screens */
