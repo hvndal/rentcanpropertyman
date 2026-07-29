@@ -1,10 +1,10 @@
-﻿﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" class="rc-js">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-<title>RentCan | Get set up on WhatsApp</title>
-<meta name="description" content="WhatsApp RentCan at +91 81462 98024 to get set up. Full launch 1 October — first 100 owners lock in founding pricing and priority service.">
+<title>RentCan | Choose your plan</title>
+<meta name="description" content="Subscribe to RentCan residential or commercial property management. Secure test checkout via Razorpay.">
 <meta name="robots" content="noindex, follow">
 <meta name="theme-color" content="#6B4822">
 <link rel="canonical" href="https://rentcan.in/checkout">
@@ -15,6 +15,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
 <script src="/js/tailwind-brand.config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <link rel="stylesheet" href="/styles.css">
 <link rel="stylesheet" href="/css/brand.css">
 <link rel="stylesheet" href="/css/app.css">
@@ -42,6 +44,14 @@
     background: color-mix(in srgb, #CFDFDE 35%, #fff);
     box-shadow: 0 0 0 3px rgba(107, 72, 34, 0.1);
   }
+  .alert {
+    padding: 10px 12px; border-radius: 10px; font-size: 13px;
+    margin-bottom: 14px; display: none; font-weight: 500;
+  }
+  .alert.show { display: block; }
+  .alert.error { background: #ffdad6; color: #93000a; border: 1px solid #f2b8b5; }
+  .alert.success { background: #CFDFDE; color: #4E4238; border: 1px solid #F6CFDE; }
+  .alert.info { background: color-mix(in srgb, #CFDFDE 55%, #fff); color: #4E4238; border: 1px solid #CFDFDE; }
 </style>
 </head>
 <body class="rc-brand min-h-screen">
@@ -53,68 +63,99 @@
     </a>
     <div class="rc-site-nav-actions">
       <a href="/info#pricing" class="rc-site-nav-link hidden sm:inline">Plans</a>
-      <a href="/login" class="text-sm font-bold text-primary">Login</a>
+      <a href="/dashboard" class="text-sm font-bold text-primary">Dashboard</a>
     </div>
   </div>
 </header>
 
 <main class="max-w-xl mx-auto px-4 py-10 pb-24">
-  <p class="text-xs font-bold uppercase tracking-[0.2em] text-brand-gold mb-3">Founding owners</p>
-  <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-primary mb-2">Get set up on WhatsApp</h1>
+  <p class="text-xs font-bold uppercase tracking-[0.2em] text-brand-gold mb-3">Subscribe</p>
+  <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-primary mb-2">Choose your plan</h1>
   <p class="text-sm text-on-surface-variant mb-6 leading-relaxed">
-    Online payments are not live yet. Message us on WhatsApp and we'll set you up personally.
-    <strong>Full launch is 1 October</strong> — the first 100 owners keep today's pricing and get priority service.
+    Sign in with Google or email, pick <strong>Residential</strong> or <strong>Commercial</strong>, then pay securely.
+    Test mode uses Razorpay — no real charges.
   </p>
 
-  <div class="rc-launch-banner mb-8" style="margin-left:0;margin-right:0;max-width:none;text-align:left">
-    <strong>WhatsApp +91 81462 98024</strong>
-    <p>Pick a plan below, then tap through — your message will be pre-filled so we can onboard you fast.</p>
-  </div>
+  <div id="alert" class="alert" role="status"></div>
 
   <div class="setup-card p-6 sm:p-8">
-    <p class="text-xs font-bold uppercase tracking-[0.16em] text-primary mb-4">Choose a plan</p>
+    <p class="text-xs font-bold uppercase tracking-[0.16em] text-primary mb-4">Monthly management</p>
     <div class="space-y-3 mb-6" id="plan-list" role="listbox" aria-label="Plans"></div>
 
-    <a id="wa-cta" href="#" data-wa-plan="residential"
-       class="w-full inline-flex items-center justify-center gap-2 py-3.5 bg-primary text-white text-sm font-bold rounded-xl hover:opacity-90 transition-opacity uppercase tracking-wider">
-      <span class="material-symbols-outlined text-lg">chat</span>
-      WhatsApp to get set up
-    </a>
+    <div id="plan-summary" class="mb-5 p-4 rounded-xl bg-white/60 border border-brand-mint/40 text-sm hidden">
+      <p class="font-bold text-primary" id="summary-title"></p>
+      <p class="text-on-surface-variant mt-1" id="summary-desc"></p>
+      <p class="text-lg font-extrabold text-primary mt-2" id="summary-price"></p>
+    </div>
+
+    <button type="button" id="pay-btn"
+       class="w-full inline-flex items-center justify-center gap-2 py-3.5 bg-primary text-white text-sm font-bold rounded-xl hover:opacity-90 transition-opacity uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed">
+      <span class="material-symbols-outlined text-lg">payments</span>
+      <span id="pay-btn-label">Pay now</span>
+    </button>
 
     <p class="text-xs text-on-surface-variant text-center mt-4 leading-relaxed">
-      Or call <a href="tel:+918146298024" class="text-primary font-semibold">+91 81462 98024</a>
-      · <a href="/info#pricing" class="text-primary font-semibold">View all plans</a>
+      Need Airbnb or a one-time SOS visit?
+      <a href="#" data-wa-plan="airbnb" class="text-primary font-semibold">WhatsApp us</a>
+      · <a href="/info#pricing" class="text-primary font-semibold">All plans</a>
     </p>
   </div>
 </main>
 
 <script src="/js/site.js"></script>
+<script src="/js/rentcan-config.js"></script>
 <script>
 (function () {
   const plans = [
-    { id: 'residential', label: 'Residential', price: '₹1,499/mo', note: '+ ₹799 per extra property' },
-    { id: 'commercial', label: 'Commercial', price: '₹1,999/mo', note: '+ ₹799 per extra property' },
-    { id: 'airbnb', label: 'Airbnb', price: 'Custom', note: 'Premium hospitality management' },
-    { id: 'sos', label: 'SOS visit', price: '₹500', note: 'One-time inspection' }
+    {
+      id: 'residential',
+      label: 'Residential',
+      price: '₹1,499/mo',
+      amountInr: 1499,
+      note: '+ ₹799 per extra property',
+      description: 'Monthly on-ground management for 1 residential property (Mohali / Chandigarh / Tricity).'
+    },
+    {
+      id: 'commercial',
+      label: 'Commercial',
+      price: '₹1,999/mo',
+      amountInr: 1999,
+      note: '+ ₹799 per extra property',
+      description: 'Monthly on-ground management for 1 commercial property.'
+    }
   ];
 
   let selected = 'residential';
-  try {
-    selected = new URLSearchParams(window.location.search).get('plan') || 'residential';
-  } catch (_) {}
-  if (!plans.some((p) => p.id === selected)) selected = 'residential';
+  let sb = null;
+  let razorpayReady = false;
+  let paying = false;
 
   const list = document.getElementById('plan-list');
-  const cta = document.getElementById('wa-cta');
+  const payBtn = document.getElementById('pay-btn');
+  const alertEl = document.getElementById('alert');
 
-  function sync() {
+  function showAlert(msg, type) {
+    if (!alertEl) return;
+    alertEl.textContent = msg;
+    alertEl.className = 'alert show ' + (type || 'error');
+  }
+
+  function hideAlert() {
+    if (alertEl) alertEl.className = 'alert';
+  }
+
+  function syncSummary() {
+    const plan = plans.find((p) => p.id === selected);
+    if (!plan) return;
+    document.getElementById('summary-title').textContent = plan.label + ' plan';
+    document.getElementById('summary-desc').textContent = plan.description;
+    document.getElementById('summary-price').textContent = plan.price;
+    document.getElementById('plan-summary').classList.remove('hidden');
+    document.getElementById('pay-btn-label').textContent = 'Pay ₹' + plan.amountInr + ' / month';
     list.querySelectorAll('.plan-chip').forEach((btn) => {
       btn.classList.toggle('selected', btn.getAttribute('data-plan') === selected);
+      btn.setAttribute('aria-selected', btn.getAttribute('data-plan') === selected ? 'true' : 'false');
     });
-    cta.setAttribute('data-wa-plan', selected);
-    if (window.RentCanSite && typeof window.RentCanSite.waUrl === 'function') {
-      cta.href = window.RentCanSite.waUrl(selected);
-    }
   }
 
   plans.forEach((p) => {
@@ -130,14 +171,156 @@
       '<p class="font-extrabold text-primary whitespace-nowrap">' + p.price + '</p></div>';
     btn.addEventListener('click', () => {
       selected = p.id;
-      sync();
+      syncSummary();
+      hideAlert();
     });
     list.appendChild(btn);
   });
 
-  sync();
+  try {
+    selected = new URLSearchParams(window.location.search).get('plan') || 'residential';
+  } catch (_) {}
+  if (!plans.some((p) => p.id === selected)) selected = 'residential';
+  syncSummary();
+
+  async function getSession() {
+    if (!sb) sb = await RentCan.createClient();
+    if (!sb) throw new Error('Could not connect. Please refresh and try again.');
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) {
+      window.location.href = '/login?next=' + encodeURIComponent('/checkout?plan=' + selected);
+      return null;
+    }
+    return session;
+  }
+
+  async function apiPost(path, body) {
+    const session = await getSession();
+    if (!session) return null;
+    const res = await fetch(path, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session.access_token
+      },
+      body: JSON.stringify(body || {})
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || data.type === 'error') {
+      const err = new Error(data.message || 'Request failed.');
+      err.code = data.code;
+      throw err;
+    }
+    return data;
+  }
+
+  async function verifyPayment(response, planId) {
+    await apiPost('/api/payments/verify', {
+      razorpay_order_id: response.razorpay_order_id,
+      razorpay_payment_id: response.razorpay_payment_id,
+      razorpay_signature: response.razorpay_signature,
+      plan: planId
+    });
+    showAlert('Payment successful! Redirecting to your dashboard…', 'success');
+    setTimeout(() => { window.location.href = '/dashboard'; }, 1200);
+  }
+
+  async function startPayment() {
+    if (paying) return;
+    hideAlert();
+
+    if (!razorpayReady) {
+      showAlert('Online payments are not configured yet. Please try again shortly or contact RentCan.');
+      return;
+    }
+
+    if (typeof Razorpay === 'undefined') {
+      showAlert('Payment widget failed to load. Please refresh and try again.');
+      return;
+    }
+
+    paying = true;
+    payBtn.disabled = true;
+    document.getElementById('pay-btn-label').textContent = 'Starting checkout…';
+
+    try {
+      const data = await apiPost('/api/payments/create-order', { plan: selected });
+      if (!data) return;
+
+      const options = {
+        key: data.key_id,
+        amount: data.amount,
+        currency: data.currency,
+        name: 'RentCan',
+        description: data.plan.name,
+        order_id: data.order_id,
+        prefill: data.prefill || {},
+        theme: { color: '#6B4822' },
+        handler: async function (response) {
+          try {
+            await verifyPayment(response, selected);
+          } catch (e) {
+            showAlert(e.message || 'Payment verification failed. Contact support with your payment ID.');
+          } finally {
+            paying = false;
+            payBtn.disabled = false;
+            syncSummary();
+          }
+        },
+        modal: {
+          ondismiss: function () {
+            paying = false;
+            payBtn.disabled = false;
+            syncSummary();
+          }
+        }
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.on('payment.failed', function (resp) {
+        showAlert((resp.error && resp.error.description) || 'Payment failed. Please try again.');
+        paying = false;
+        payBtn.disabled = false;
+        syncSummary();
+      });
+      rzp.open();
+    } catch (e) {
+      if (e.code === 'LOGIN_REQUIRED') {
+        window.location.href = '/login?next=' + encodeURIComponent('/checkout?plan=' + selected);
+        return;
+      }
+      showAlert(e.message || 'Could not start payment.');
+      paying = false;
+      payBtn.disabled = false;
+      syncSummary();
+    }
+  }
+
+  payBtn.addEventListener('click', startPayment);
+
+  async function init() {
+    const ok = await RentCan.requireAuth({ next: '/checkout?plan=' + selected });
+    if (!ok) return;
+
+    try {
+      const cfg = await RentCan.fetchConfig();
+      razorpayReady = Boolean(cfg.razorpay && cfg.razorpay.ready && cfg.razorpay.keyId);
+      if (!razorpayReady) {
+        showAlert('Razorpay test keys are not set on the server yet. Add RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in Vercel (or use razor.env locally).', 'info');
+        payBtn.disabled = true;
+      }
+    } catch (e) {
+      showAlert('Could not load payment config. Please refresh.', 'error');
+      payBtn.disabled = true;
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
 </script>
 </body>
 </html>
-

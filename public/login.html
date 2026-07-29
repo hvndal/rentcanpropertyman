@@ -1,4 +1,4 @@
-﻿﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -28,7 +28,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script type="text/javascript" src="https://verify.msg91.com/otp-provider.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -330,23 +329,9 @@ body {
   <!-- ── VIEW: Welcome ── -->
   <div class="view active" id="view-welcome">
     <h1 style="font-size:28px;font-weight:800;letter-spacing:-0.02em;color:#4E4238;margin-bottom:8px;">Welcome back.</h1>
-    <p style="font-size:14px;color:#5c4a3a;margin-bottom:28px;line-height:1.6;">Sign in with phone, Google, or email — quick and secure.</p>
+    <p style="font-size:14px;color:#5c4a3a;margin-bottom:28px;line-height:1.6;">Sign in with Google or email — then choose your Residential or Commercial plan.</p>
 
-    <!-- Phone (primary) -->
-    <button class="auth-btn auth-btn-phone" onclick="showView('view-phone')" style="border-color:#6B4822;box-shadow:0 4px 14px rgba(107,72,34,0.1);">
-      <div class="btn-icon">
-        <span style="font-family:'Material Symbols Outlined';font-size:22px;color:#6B4822;font-variation-settings:'FILL' 1;">smartphone</span>
-      </div>
-      <div class="btn-label">
-        Continue with Phone Number
-        <span class="btn-sub">Get a one-time OTP via SMS</span>
-      </div>
-    </button>
-
-    <div class="divider">or</div>
-
-<!-- Google -->
-    <button class="auth-btn auth-btn-google" id="btn-google" onclick="signInWithGoogle()">
+    <button class="auth-btn auth-btn-google" id="btn-google" onclick="signInWithGoogle()" style="border-color:#6B4822;box-shadow:0 4px 14px rgba(107,72,34,0.1);">
       <div class="btn-icon">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -361,9 +346,7 @@ body {
       </div>
     </button>
 
-    
-
-    
+    <div class="divider">or</div>
 
     <!-- Email -->
     <button class="auth-btn auth-btn-email" onclick="showView('view-email')">
@@ -414,64 +397,6 @@ body {
     </div>
   </div>
 
-  <!-- ── VIEW: Phone Entry ── -->
-  <div class="view" id="view-phone">
-    <button class="back-link" onclick="showView('view-welcome')">
-      <span style="font-family:'Material Symbols Outlined';font-size:18px;">arrow_back</span>
-      Back to Sign In
-    </button>
-
-    <h2 style="font-size:22px;font-weight:800;letter-spacing:-0.02em;margin-bottom:4px;color:#4E4238;">Enter your number.</h2>
-    <p style="font-size:13px;color:#5c4a3a;margin-bottom:20px;line-height:1.4;">We'll send a 6-digit OTP code to verify.</p>
-
-    <div class="field" style="margin-bottom:28px;">
-      <label style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#5c4a3a;">Mobile Number</label>
-      <div class="phone-wrap">
-        <select id="country-select" class="country-code-select" onchange="updatePhonePlaceholder()">
-          <option value="+91" selected>ðŸ‡®ðŸ‡³ +91 (IN)</option>
-          <option value="+1">ðŸ‡ºðŸ‡¸ +1 (US)</option>
-          <option value="+44">ðŸ‡¬ðŸ‡§ +44 (UK)</option>
-        </select>
-        <input type="tel" id="phone-input" class="phone-input-field" placeholder="9876543210" maxlength="10" autocomplete="tel-national" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')">
-      </div>
-      <p style="font-size:11px;color:#5c4a3a;margin-top:8px;">India numbers: 10 digits. OTP arrives via SMS in a few seconds.</p>
-    </div>
-
-    <button class="btn-primary" id="btn-send-otp" onclick="sendOTP()" style="padding:16px;font-size:14px;border-radius:12px;">Send OTP &rarr;</button>
-
-    <div style="display:flex;align-items:center;gap:10px;margin-top:20px;padding:10px 12px;background:#f2f4f2;border-radius:10px;border:1px solid #e0e4e0;">
-      <span style="font-family:'Material Symbols Outlined';font-size:18px;color:#6B4822;font-variation-settings:'FILL' 1;">verified_user</span>
-      <span style="font-size:11px;color:#5c4a3a;line-height:1.4;font-weight:500;">Instant 6-digit SMS verification code sent to your phone.</span>
-    </div>
-  </div>
-
-  <!-- ── VIEW: OTP Verify ── -->
-  <div class="view" id="view-otp">
-    <button class="back-link" onclick="showView('view-phone')">
-      <span style="font-family:'Material Symbols Outlined';font-size:18px;">arrow_back</span>
-      Change number
-    </button>
-    <h2 style="font-size:24px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;">Check your messages.</h2>
-    <p style="font-size:14px;color:#5c4a3a;margin-bottom:4px;">Enter the 6-digit code sent to</p>
-    <p style="font-size:14px;font-weight:700;color:#6B4822;margin-bottom:28px;" id="otp-phone-display"></p>
-
-    <div class="otp-row" id="otp-row">
-      <input class="otp-input" maxlength="1" type="tel" inputmode="numeric" autocomplete="one-time-code" id="otp-0" oninput="otpInput(this,0)">
-      <input class="otp-input" maxlength="1" type="tel" inputmode="numeric" id="otp-1" oninput="otpInput(this,1)">
-      <input class="otp-input" maxlength="1" type="tel" inputmode="numeric" id="otp-2" oninput="otpInput(this,2)">
-      <input class="otp-input" maxlength="1" type="tel" inputmode="numeric" id="otp-3" oninput="otpInput(this,3)">
-      <input class="otp-input" maxlength="1" type="tel" inputmode="numeric" id="otp-4" oninput="otpInput(this,4)">
-      <input class="otp-input" maxlength="1" type="tel" inputmode="numeric" id="otp-5" oninput="otpInput(this,5)">
-    </div>
-
-    <button class="btn-primary" id="btn-verify-otp" onclick="verifyOTP()" disabled>Verify &amp; Continue &rarr;</button>
-
-    <div class="resend-row">
-      <span id="resend-timer">Resend in <span id="resend-count">30</span>s</span>
-      <button id="btn-resend" onclick="resendOTP()" disabled style="display:none;">Resend OTP</button>
-    </div>
-  </div>
-
   <!-- ── VIEW: Onboarding ── -->
   <div class="view" id="view-onboarding">
     <h2 style="font-size:24px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;">Just one more step.</h2>
@@ -510,15 +435,7 @@ body {
 // STATE
 // —————————————————————————————————————————————————————————————————————
 let sb = null;
-let otpRequestId = null;
 let selectedRole = null;
-let msg91WidgetReady = false;
-let msg91AccessToken = null;
-let serverPhoneAuthReady = true;
-
-function digitsPhone(countryCode, local) {
-  return String(countryCode || '').replace(/\D/g, '') + String(local || '').replace(/\D/g, '');
-}
 
 function friendlyAuthError(message) {
   const msg = String(message || '').toLowerCase();
@@ -529,7 +446,7 @@ function friendlyAuthError(message) {
     return 'Too many attempts. Please wait a minute and try again.';
   }
   if (msg.includes('invalid login credentials') || msg.includes('invalid otp')) {
-    return 'That code did not work. Please check and try again.';
+    return 'That sign-in did not work. Please try again.';
   }
   if (msg.includes('user already registered')) {
     return 'This account already exists. Try signing in with Google or email instead.';
@@ -537,71 +454,11 @@ function friendlyAuthError(message) {
   return message || 'Something went wrong. Please try again.';
 }
 
-function initMsg91Widget(widgetCfg) {
-  const cfg = widgetCfg || (window.RentCan && RentCan.DEFAULTS.msg91Widget);
-  if (!cfg.widgetId || !cfg.tokenAuth) {
-    console.warn('MSG91 widget config missing');
-    return;
-  }
-  if (typeof initSendOTP !== 'function') {
-    console.warn('MSG91 otp-provider.js not loaded yet');
-    return;
-  }
-
-  try {
-    initSendOTP({
-      widgetId: cfg.widgetId,
-      tokenAuth: cfg.tokenAuth,
-      exposeMethods: true,
-      captchaRenderId: '',
-      success: function () {},
-      failure: function () {}
-    });
-    msg91WidgetReady = typeof window.sendOtp === 'function'
-      && typeof window.verifyOtp === 'function'
-      && typeof window.retryOtp === 'function';
-    console.log('[MSG91] widget methods ready:', msg91WidgetReady);
-  } catch (e) {
-    console.error('[MSG91] init failed:', e);
-    msg91WidgetReady = false;
-  }
-}
-
-// —————————————————————————————————————————————————————————————————————
-// VIEW MANAGEMENT
-// —————————————————————————————————————————————————————————————————————
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   const target = document.getElementById(id);
   if (target) target.classList.add('active');
   hideAlert();
-  if (id === 'view-phone') {
-    const sendBtn = document.getElementById('btn-send-otp');
-    if (sendBtn) {
-      sendBtn.disabled = false;
-      sendBtn.textContent = 'Send OTP &rarr;';
-    }
-    setTimeout(() => {
-      const pi = document.getElementById('phone-input');
-      if (pi) pi.focus();
-    }, 100);
-  }
-}
-
-function updatePhonePlaceholder() {
-  const code = document.getElementById('country-select').value;
-  const input = document.getElementById('phone-input');
-  if (!input) return;
-  if (code === '+91') {
-    input.maxLength = 10;
-    input.placeholder = '9876543210';
-  } else if (code === '+1') {
-    input.maxLength = 10;
-    input.placeholder = '5551234567';
-  } else {
-    input.maxLength = 11;
-    input.placeholder = '7123456789';
-  }
 }
 
 // —————————————————————————————————————————————————————————————————————
@@ -644,7 +501,7 @@ async function routeAfterAuth(user) {
   }
   const safeNext = nextPath && nextPath.startsWith('/') && !nextPath.startsWith('//')
     ? nextPath
-    : '/dashboard';
+    : '/checkout';
 
   if (window.showAuthWait) {
     showAuthWait({
@@ -688,7 +545,7 @@ async function routeAfterAuth(user) {
       nameInput.value = user.user_metadata.full_name;
     }
     // After onboarding, honor next via session
-    if (safeNext !== '/dashboard') sessionStorage.setItem('rc_auth_next', safeNext);
+    if (safeNext !== '/checkout') sessionStorage.setItem('rc_auth_next', safeNext);
     showView('view-onboarding');
 
   } catch(e) {
@@ -768,84 +625,6 @@ async function handleAuthCallback() {
 }
 
 // —————————————————————————————————————————————————————————————————————
-// OTP INPUT HANDLER (auto-advance, backspace, paste)
-// —————————————————————————————————————————————————————————————————————
-function otpInput(el, idx) {
-  el.value = el.value.replace(/\D/g, '').slice(0, 1);
-  if (el.value && idx < 5) {
-    document.getElementById('otp-' + (idx + 1)).focus();
-  }
-  const allFilled = [0,1,2,3,4,5].every(i =>
-    document.getElementById('otp-' + i).value.length === 1
-  );
-  document.getElementById('btn-verify-otp').disabled = !allFilled;
-  if (allFilled) {
-    clearTimeout(window._otpAutoVerifyTimer);
-    window._otpAutoVerifyTimer = setTimeout(() => {
-      const btn = document.getElementById('btn-verify-otp');
-      if (btn && !btn.disabled) verifyOTP();
-    }, 200);
-  }
-}
-
-// Backspace navigation
-document.addEventListener('keydown', function(e) {
-  if (e.target.classList.contains('otp-input') && e.key === 'Backspace' && !e.target.value) {
-    const idx = parseInt(e.target.id.split('-')[1]);
-    if (idx > 0) {
-      const prev = document.getElementById('otp-' + (idx - 1));
-      prev.value = '';
-      prev.focus();
-    }
-  }
-});
-
-// Paste support
-document.addEventListener('paste', function(e) {
-  if (e.target.classList.contains('otp-input')) {
-    e.preventDefault();
-    const paste = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 6);
-    for (let i = 0; i < paste.length && i < 6; i++) {
-      document.getElementById('otp-' + i).value = paste[i];
-    }
-    const lastIdx = Math.min(paste.length, 5);
-    document.getElementById('otp-' + lastIdx).focus();
-    const allFilled = [0,1,2,3,4,5].every(i =>
-      document.getElementById('otp-' + i).value.length === 1
-    );
-    document.getElementById('btn-verify-otp').disabled = !allFilled;
-  }
-});
-
-// —————————————————————————————————————————————————————————————————————
-// RESEND TIMER
-// —————————————————————————————————————————————————————————————————————
-let resendInterval = null;
-
-function startResendTimer() {
-  let seconds = 30;
-  const timerEl = document.getElementById('resend-timer');
-  const countEl = document.getElementById('resend-count');
-  const btnResend = document.getElementById('btn-resend');
-
-  if (countEl) countEl.textContent = '30';
-  if (timerEl) timerEl.style.display = 'inline';
-  if (btnResend) { btnResend.style.display = 'none'; btnResend.disabled = true; }
-
-  if (resendInterval) clearInterval(resendInterval);
-
-  resendInterval = setInterval(() => {
-    seconds--;
-    if (countEl) countEl.textContent = seconds;
-    if (seconds <= 0) {
-      clearInterval(resendInterval);
-      if (timerEl) timerEl.style.display = 'none';
-      if (btnResend) { btnResend.style.display = 'inline'; btnResend.disabled = false; }
-    }
-  }, 1000);
-}
-
-// —————————————————————————————————————————————————————————————————————
 // INITIALIZATION (DOMContentLoaded)
 // —————————————————————————————————————————————————————————————————————
 async function initApp() {
@@ -872,10 +651,7 @@ async function initApp() {
 
   try {
     const healthRes = await fetch('/api/health');
-    if (healthRes.ok) {
-      const health = await healthRes.json();
-      serverPhoneAuthReady = Boolean(health.phoneAuth);
-    }
+    if (healthRes.ok) await healthRes.json();
   } catch (e) {}
 
   if (window.location.search.includes('logout=true')) {
@@ -889,20 +665,6 @@ async function initApp() {
     window.history.replaceState({}, document.title, '/login');
     showView('view-welcome');
     return;
-  }
-
-  try {
-    const cfg = await RentCan.fetchConfig();
-    initMsg91Widget(cfg.msg91Widget);
-  } catch (e) {
-    console.warn('API config fallback used:', e);
-    initMsg91Widget(RentCan.DEFAULTS.msg91Widget);
-  }
-
-  if (!msg91WidgetReady) {
-    setTimeout(() => {
-      if (!msg91WidgetReady) initMsg91Widget(RentCan.DEFAULTS.msg91Widget);
-    }, 800);
   }
 
   sb = await RentCan.createClient();
@@ -1036,231 +798,6 @@ async function signInWithEmail() {
 }
 
 // —————————————————————————————————————————————————————————————————————
-// PHONE / MSG91 OTP WIDGET (sendOtp / verifyOtp / retryOtp)
-// —————————————————————————————————————————————————————————————————————
-async function finishPhoneLogin(phoneDisplay, accessToken) {
-  sessionStorage.setItem('rentcan_phone', phoneDisplay);
-  const token = accessToken || msg91AccessToken || null;
-  msg91AccessToken = token;
-
-  if (!token) {
-    showAlert('Phone verification did not complete. Please enter the OTP code again.');
-    showView('view-otp');
-    return;
-  }
-
-  try {
-    const res = await fetch('/api/phone-session', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        phone: phoneDisplay,
-        access_token: token
-      })
-    });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok || data.type === 'error') {
-      let msg = data.message || 'Could not complete phone sign-in. Try Google or Email instead.';
-      if (data.code === 'PHONE_SESSION_UNAVAILABLE') {
-        msg = 'SMS verified, but phone sign-in is finishing setup. Please use Google or Email for now.';
-      } else if (data.code === 'MSG91_AUTH_KEY_MISSING' || data.code === 'MSG91_VERIFY_FAILED') {
-        msg = 'SMS sign-in could not be verified on our servers. Try Google or Email, or try again in a few minutes.';
-      } else if (data.code === 'RATE_LIMITED') {
-        msg = 'Too many attempts. Please wait a few minutes and try again.';
-      }
-      showAlert(msg);
-      if (res.status === 401) showView('view-otp');
-      else showView('view-welcome');
-      return;
-    }
-    if (sb && data.session?.access_token && data.session?.refresh_token) {
-      const { data: sessData, error: sessErr } = await sb.auth.setSession({
-        access_token: data.session.access_token,
-        refresh_token: data.session.refresh_token
-      });
-      if (!sessErr && sessData?.user) {
-        await routeAfterAuth(sessData.user);
-        return;
-      }
-      console.warn('setSession failed:', sessErr);
-    }
-  } catch (e) {
-    console.warn('phone-session error:', e);
-  }
-
-  showView('view-onboarding');
-}
-
-function sendOTP() {
-  const phone = document.getElementById('phone-input').value.trim();
-  const countryCode = document.getElementById('country-select').value;
-  const expectedLen = countryCode === '+91' || countryCode === '+1' ? 10 : 7;
-  if (phone.length < expectedLen) {
-    showAlert(countryCode === '+91' ? 'Enter a valid 10-digit Indian mobile number.' : 'Please enter a valid mobile number.');
-    return;
-  }
-
-  if (!serverPhoneAuthReady && !msg91WidgetReady) {
-    showAlert('SMS sign-in is temporarily unavailable. Please use Google or Email.');
-    return;
-  }
-
-  if (!serverPhoneAuthReady) {
-    showAlert('SMS will verify your number, but you may need Google or Email to finish sign-in until phone login is fully enabled.', 'info');
-  }
-
-  const identifier = digitsPhone(countryCode, phone); // e.g. 919876543210 (no +)
-  const displayPhone = countryCode + phone;
-  const btn = document.getElementById('btn-send-otp');
-  btn.disabled = true;
-  btn.textContent = 'Sending OTP...';
-
-  const onSent = (data) => {
-    console.log('[MSG91] sendOtp success', data);
-    otpRequestId = data?.requestId || data?.request_id || data?.reqId || otpRequestId;
-    document.getElementById('otp-phone-display').textContent = displayPhone;
-    showView('view-otp');
-    btn.disabled = false;
-    btn.textContent = 'Send OTP &rarr;';
-    [0,1,2,3,4,5].forEach(i => { document.getElementById('otp-' + i).value = ''; });
-    document.getElementById('btn-verify-otp').disabled = true;
-    document.getElementById('otp-0').focus();
-    startResendTimer();
-    showAlert('OTP sent! Check your SMS.', 'success');
-  };
-
-  const onFail = (error) => {
-    console.error('[MSG91] sendOtp failure', error);
-    const msg = (error && (error.message || error.msg || error.type)) || 'Failed to send OTP.';
-    showAlert('Could not send OTP: ' + msg);
-    btn.disabled = false;
-    btn.textContent = 'Send OTP &rarr;';
-  };
-
-  if (typeof window.sendOtp === 'function') {
-    try {
-      window.sendOtp(identifier, onSent, onFail);
-      return;
-    } catch (e) {
-      console.warn('widget sendOtp threw, falling back to API', e);
-    }
-  }
-
-  // Fallback to server API if widget methods unavailable
-  fetch('/api/send-otp', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ phone: displayPhone })
-  }).then(async (res) => {
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok || data.type === 'error') throw new Error(data.message || 'Failed to send OTP.');
-    otpRequestId = data.request_id;
-    onSent(data);
-    if (data.mode === 'dev') showAlert('Dev mode: enter any 6-digit code.', 'info');
-  }).catch((e) => onFail({ message: e.message }));
-}
-
-function verifyOTP() {
-  const code = [0,1,2,3,4,5].map(i => document.getElementById('otp-' + i).value).join('');
-  const countryCode = document.getElementById('country-select').value;
-  const local = document.getElementById('phone-input').value.trim();
-  const displayPhone = countryCode + local;
-
-  if (code.length !== 6) {
-    showAlert('Enter the 6-digit OTP.');
-    return;
-  }
-
-  const btn = document.getElementById('btn-verify-otp');
-  btn.disabled = true;
-  btn.textContent = 'Verifying...';
-
-  const onOk = async (data) => {
-    console.log('[MSG91] verifyOtp success', data);
-    const token = data?.accessToken || data?.access_token || data?.token || null;
-    if (!token) {
-      showAlert('OTP verified but secure token was missing. Please try again.');
-      btn.disabled = false;
-      btn.textContent = 'Verify & Continue &rarr;';
-      return;
-    }
-    msg91AccessToken = token;
-    showAlert('Phone verified!', 'success');
-    await finishPhoneLogin(displayPhone, token);
-  };
-
-  const onFail = (error) => {
-    console.error('[MSG91] verifyOtp failure', error);
-    const msg = (error && (error.message || error.msg || error.type)) || 'Invalid OTP. Please try again.';
-    showAlert(String(msg));
-    btn.disabled = false;
-    btn.textContent = 'Verify & Continue &rarr;';
-  };
-
-  if (typeof window.verifyOtp === 'function') {
-    try {
-      // reqId optional — pass when we have one from sendOtp
-      if (otpRequestId) {
-        window.verifyOtp(code, onOk, onFail, otpRequestId);
-      } else {
-        window.verifyOtp(code, onOk, onFail);
-      }
-      return;
-    } catch (e) {
-      console.warn('widget verifyOtp threw, falling back to API', e);
-    }
-  }
-
-  fetch('/api/verify-otp', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ phone: displayPhone, otp: code, request_id: otpRequestId })
-  }).then(async (res) => {
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok || data.type === 'error') throw new Error(data.message || 'Invalid OTP.');
-    await onOk(data);
-  }).catch((e) => onFail({ message: e.message }));
-}
-
-function resendOTP() {
-  const btnResend = document.getElementById('btn-resend');
-  if (btnResend) btnResend.disabled = true;
-
-  const onOk = (data) => {
-    console.log('[MSG91] retryOtp success', data);
-    if (data?.requestId || data?.request_id) {
-      otpRequestId = data.requestId || data.request_id;
-    }
-    startResendTimer();
-    showAlert('OTP resent! Check your SMS.', 'success');
-  };
-
-  const onFail = (error) => {
-    console.error('[MSG91] retryOtp failure', error);
-    const msg = (error && (error.message || error.msg || error.type)) || 'Failed to resend OTP.';
-    showAlert('Could not resend OTP: ' + msg);
-    if (btnResend) btnResend.disabled = false;
-  };
-
-  if (typeof window.retryOtp === 'function') {
-    try {
-      // null = default channel; '11' = SMS for custom configs
-      if (otpRequestId) {
-        window.retryOtp('11', onOk, onFail, otpRequestId);
-      } else {
-        window.retryOtp(null, onOk, onFail);
-      }
-      return;
-    } catch (e) {
-      console.warn('widget retryOtp threw, falling back', e);
-    }
-  }
-
-  // Fallback: send again via widget sendOtp or API
-  sendOTP();
-}
-
-// —————————————————————————————————————————————————————————————————————
 // ONBOARDING / PROFILE CREATION
 // —————————————————————————————————————————————————————————————————————
 function selectRole(role) {
@@ -1321,10 +858,13 @@ async function completeProfile() {
           });
         }
         if (window.finishAuthRedirect) {
-          await finishAuthRedirect(sessionStorage.getItem('rc_auth_next') || '/dashboard');
+          const dest = sessionStorage.getItem('rc_auth_next')
+            || (selectedRole === 'tenant' ? '/dashboard' : '/checkout');
           sessionStorage.removeItem('rc_auth_next');
+          await finishAuthRedirect(dest);
         } else {
-          const dest = sessionStorage.getItem('rc_auth_next') || '/dashboard';
+          const dest = sessionStorage.getItem('rc_auth_next')
+            || (selectedRole === 'tenant' ? '/dashboard' : '/checkout');
           sessionStorage.removeItem('rc_auth_next');
           setTimeout(() => { window.location.href = dest; }, 800);
         }
@@ -1355,10 +895,6 @@ document.addEventListener('keydown', function(e) {
   if (active.id === 'view-email' && !document.getElementById('btn-send-email')?.disabled) {
     e.preventDefault();
     signInWithEmail();
-  }
-  if (active.id === 'view-phone' && !document.getElementById('btn-send-otp')?.disabled) {
-    e.preventDefault();
-    sendOTP();
   }
 });
 </script>

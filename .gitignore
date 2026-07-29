@@ -4,6 +4,8 @@ node_modules/
 # ── Environment & Secrets (NEVER commit these) ───────────────────────
 .env
 .env.*
+razor.env
+*.env.local
 .env.local
 .env.development
 .env.development.local

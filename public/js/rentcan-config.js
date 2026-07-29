@@ -17,6 +17,7 @@
 
   function mergeConfig(data) {
     const widget = data?.msg91Widget || {};
+    const rzp = data?.razorpay || {};
     return {
       supabaseUrl: data?.supabaseUrl || DEFAULTS.supabaseUrl,
       supabaseKey: data?.supabaseKey || DEFAULTS.supabaseKey,
@@ -25,7 +26,12 @@
         widgetId: widget.widgetId || DEFAULTS.msg91Widget.widgetId,
         tokenAuth: widget.tokenAuth || DEFAULTS.msg91Widget.tokenAuth,
         ready: widget.ready ?? DEFAULTS.msg91Widget.ready
-      }
+      },
+      razorpay: {
+        ready: Boolean(rzp.ready),
+        keyId: rzp.keyId || null
+      },
+      plans: Array.isArray(data?.plans) ? data.plans : []
     };
   }
 

@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('./lib/load-env').loadRazorEnv();
 const express = require('express');
 const cors    = require('cors');
 const path    = require('path');
@@ -631,10 +632,10 @@ app.post('/api/payments/create-order', async (req, res) => {
   }
 
   const plan = getPlan(req.body?.plan);
-  if (!plan) {
+  if (!plan || !['residential', 'commercial'].includes(plan.id)) {
     return res.status(400).json({
       type: 'error',
-      message: 'Choose a valid plan: residential, commercial, additional, or sos.'
+      message: 'Choose a valid plan: residential or commercial.'
     });
   }
 
