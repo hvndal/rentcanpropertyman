@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html><html class="light" lang="en"><head>
+﻿﻿<!DOCTYPE html><html class="light" lang="en"><head>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/js/rentcan-config.js"></script>
 <script>RentCan.requireAuth();</script>
@@ -64,12 +64,12 @@
 <div class="flex gap-gutter rc-kpi-row" id="ledger-kpis">
 <div class="text-right">
 <span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">COLLECTED</span>
-<span class="font-headline-md text-headline-md text-primary" id="kpi-collected">â€”</span>
+<span class="font-headline-md text-headline-md text-primary" id="kpi-collected">"”</span>
 </div>
 <div class="w-[1px] h-12 bg-outline-variant hidden md:block"></div>
 <div class="text-right">
 <span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">PENDING</span>
-<span class="font-headline-md text-headline-md text-brand-gold" id="kpi-pending">â€”</span>
+<span class="font-headline-md text-headline-md text-brand-gold" id="kpi-pending">"”</span>
 </div>
 </div>
 </header>
@@ -106,7 +106,7 @@
 </table>
 </div>
 <div class="px-stack-md py-4 bg-white flex justify-between items-center border-t border-outline-variant">
-<span class="text-label-sm text-on-surface-variant" id="payments-count">Loadingâ€¦</span>
+<span class="text-label-sm text-on-surface-variant" id="payments-count">Loading"¦</span>
 </div>
 </section>
 
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       mobile.innerHTML = '<p class="text-sm text-on-surface-variant text-center py-8">No payments yet.</p>';
     } else {
       tbody.innerHTML = payments.map(p => {
-        const name = p.tenant_name || 'â€”';
+        const name = p.tenant_name || '"”';
         const prop = p.properties?.name || 'Property';
         return `<tr class="hover:bg-surface-container-low transition-colors">
           <td class="px-stack-md py-5 border-b border-outline-variant">${escapeHtml(formatDate(p.paid_at || p.due_date || p.created_at))}</td>

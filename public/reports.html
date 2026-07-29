@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html><html lang="en" class="light"><head>
+﻿﻿<!DOCTYPE html><html lang="en" class="light"><head>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/js/rentcan-config.js"></script>
 <script>RentCan.requireAuth();</script>
@@ -179,8 +179,8 @@ function showReportDetail(btn) {
     const lines = [
       r.title || 'Inspection report',
       '',
-      'Property: ' + (r.property || 'â€”'),
-      'Date: ' + (formatDate(r.date) || 'â€”'),
+      'Property: ' + (r.property || '"”'),
+      'Date: ' + (formatDate(r.date) || '"”'),
       '',
       r.summary || 'No additional notes.',
       r.value ? ('Value note: ' + formatINR(r.value)) : ''
@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <div class="flex-1 p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <h3 class="font-title-lg text-title-lg text-on-surface">${escapeHtml(r.title)}</h3>
-              <p class="font-body-md text-body-md text-on-surface-variant">${escapeHtml(r.property)} â€” ${escapeHtml(r.summary || '')}</p>
+              <p class="font-body-md text-body-md text-on-surface-variant">${escapeHtml(r.property)} "” ${escapeHtml(r.summary || '')}</p>
             </div>
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <div class="sm:text-right">

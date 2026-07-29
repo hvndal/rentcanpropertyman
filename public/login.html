@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -17,8 +17,8 @@
   * { -webkit-tap-highlight-color: transparent; }
   button, a, input, select { touch-action: manipulation; }
 </style>
-<title>RentCan | Sign In â€” Property Management Tricity &amp; Aerocity</title>
-<meta name="description" content="Sign in to RentCan â€” on-ground property management for landlords across Chandigarh, Mohali, Panchkula and Aerocity.">
+<title>RentCan | Sign In "” Property Management Tricity &amp; Aerocity</title>
+<meta name="description" content="Sign in to RentCan "” on-ground property management for landlords across Chandigarh, Mohali, Panchkula and Aerocity.">
 <meta name="robots" content="noindex, follow">
 <link rel="canonical" href="https://rentcan.in/login">
 <meta property="og:title" content="Sign in to RentCan">
@@ -330,7 +330,7 @@ body {
   <!-- â•â• VIEW: Welcome â•â• -->
   <div class="view active" id="view-welcome">
     <h1 style="font-size:28px;font-weight:800;letter-spacing:-0.02em;color:#4E4238;margin-bottom:8px;">Welcome back.</h1>
-    <p style="font-size:14px;color:#5c4a3a;margin-bottom:28px;line-height:1.6;">Sign in with phone, Google, or email â€” quick and secure.</p>
+    <p style="font-size:14px;color:#5c4a3a;margin-bottom:28px;line-height:1.6;">Sign in with phone, Google, or email "” quick and secure.</p>
 
     <!-- Phone (primary) -->
     <button class="auth-btn auth-btn-phone" onclick="showView('view-phone')" style="border-color:#6B4822;box-shadow:0 4px 14px rgba(107,72,34,0.1);">
@@ -649,7 +649,7 @@ async function routeAfterAuth(user) {
   if (window.showAuthWait) {
     showAuthWait({
       title: 'Signing you in',
-      sub: 'Loading your profileâ€¦',
+      sub: 'Loading your profile"¦',
       step: 0
     });
   }
@@ -735,7 +735,7 @@ async function handleAuthCallback() {
   const authCode = urlParams.get('code');
   if (authCode && sb) {
     if (window.showAuthWait) {
-      showAuthWait({ title: 'Finishing sign-in', sub: 'Confirming your accountâ€¦', step: 0 });
+      showAuthWait({ title: 'Finishing sign-in', sub: 'Confirming your account"¦', step: 0 });
     }
     try {
       const { error } = await sb.auth.exchangeCodeForSession(authCode);
@@ -753,7 +753,7 @@ async function handleAuthCallback() {
   const otpType = urlParams.get('type');
   if (tokenHash && otpType && sb) {
     if (window.showAuthWait) {
-      showAuthWait({ title: 'Finishing sign-in', sub: 'Verifying your email linkâ€¦', step: 0 });
+      showAuthWait({ title: 'Finishing sign-in', sub: 'Verifying your email link"¦', step: 0 });
     }
     try {
       const { error } = await sb.auth.verifyOtp({ token_hash: tokenHash, type: otpType });
@@ -865,7 +865,7 @@ async function initApp() {
 
   const oauthReturn = isOAuthReturn();
 
-  // Stale pending flag (user hit back or abandoned Google) â€” don't trap them
+  // Stale pending flag (user hit back or abandoned Google) "” don't trap them
   if (!oauthReturn && sessionStorage.getItem('rc_auth_pending')) {
     resetStaleAuthUi();
   }
@@ -967,7 +967,7 @@ async function signInWithGoogle() {
 
   const btn = document.getElementById('btn-google');
   btn.disabled = true;
-  btn.querySelector('.btn-label').innerHTML = 'Opening Googleâ€¦<span class="btn-sub">You will return here after signing in</span>';
+  btn.querySelector('.btn-label').innerHTML = 'Opening Google"¦<span class="btn-sub">You will return here after signing in</span>';
 
   try {
     const redirectTo = RentCan.getAuthRedirectUrl ? RentCan.getAuthRedirectUrl() : (window.location.origin + '/login');
@@ -1199,7 +1199,7 @@ function verifyOTP() {
 
   if (typeof window.verifyOtp === 'function') {
     try {
-      // reqId optional â€” pass when we have one from sendOtp
+      // reqId optional "” pass when we have one from sendOtp
       if (otpRequestId) {
         window.verifyOtp(code, onOk, onFail, otpRequestId);
       } else {
@@ -1277,7 +1277,7 @@ async function completeProfile() {
 
   const btn = document.getElementById('btn-complete-profile');
   btn.disabled = true;
-  btn.textContent = 'Setting up your accountâ€¦';
+  btn.textContent = 'Setting up your account"¦';
 
   try {
     if (sb) {
@@ -1316,7 +1316,7 @@ async function completeProfile() {
         if (window.showAuthWait) {
           showAuthWait({
             title: "You're all set",
-            sub: 'Setting up your RentCan workspaceâ€¦',
+            sub: 'Setting up your RentCan workspace"¦',
             step: 2
           });
         }

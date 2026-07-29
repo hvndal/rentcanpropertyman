@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html class="light" lang="en">
 <head>
 <meta charset="utf-8">
@@ -57,19 +57,19 @@
     <section class="grid grid-cols-2 lg:grid-cols-4 gap-3" id="insp-kpis">
       <div class="rc-kpi border border-outline rounded-xl p-4 bg-surface-container-lowest">
         <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Next cycle</p>
-        <p class="text-xl font-bold text-primary mt-1" id="kpi-next">â€”</p>
+        <p class="text-xl font-bold text-primary mt-1" id="kpi-next">"”</p>
       </div>
       <div class="rc-kpi border border-outline rounded-xl p-4 bg-surface-container-lowest">
         <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Published</p>
-        <p class="text-xl font-bold text-primary mt-1" id="kpi-published">â€”</p>
+        <p class="text-xl font-bold text-primary mt-1" id="kpi-published">"”</p>
       </div>
       <div class="rc-kpi border border-outline rounded-xl p-4 bg-surface-container-lowest">
         <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Due / open</p>
-        <p class="text-xl font-bold text-primary mt-1" id="kpi-open">â€”</p>
+        <p class="text-xl font-bold text-primary mt-1" id="kpi-open">"”</p>
       </div>
       <div class="rc-kpi border border-outline rounded-xl p-4 bg-surface-container-lowest">
         <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Properties</p>
-        <p class="text-xl font-bold text-primary mt-1" id="kpi-props">â€”</p>
+        <p class="text-xl font-bold text-primary mt-1" id="kpi-props">"”</p>
       </div>
     </section>
 
@@ -129,7 +129,7 @@
       </div>
       <div>
         <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Details</label>
-        <textarea id="complaint-details" rows="3" required class="w-full border border-outline rounded-xl p-3 text-sm" placeholder="Describe the issueâ€¦"></textarea>
+        <textarea id="complaint-details" rows="3" required class="w-full border border-outline rounded-xl p-3 text-sm" placeholder="Describe the issue"¦"></textarea>
       </div>
       <div>
         <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Priority</label>
@@ -154,7 +154,7 @@ function outcomeBadge(status, outcome) {
   if (s === 'pass' || s === 'published' || s === 'resolved') return '<span class="rc-status rc-status-ok">' + escapeHtml(s.replace('_', ' ')) + '</span>';
   if (s === 'minor_issue' || s === 'scheduled' || s === 'in_progress' || s === 'pending') return '<span class="rc-status rc-status-pending">' + escapeHtml(s.replace('_', ' ')) + '</span>';
   if (s === 'urgent' || s === 'overdue') return '<span class="rc-status rc-status-warn">' + escapeHtml(s) + '</span>';
-  return '<span class="rc-status">' + escapeHtml(s || 'â€”') + '</span>';
+  return '<span class="rc-status">' + escapeHtml(s || '"”') + '</span>';
 }
 
 async function fetchInspections(client, propertyIds) {
@@ -288,7 +288,7 @@ async function submitComplaint() {
   window.open('https://wa.me/918146298024?text=' + msg, '_blank');
   closeComplaintModal();
   if (saved) alert('Repair request saved and WhatsApp opened for our team.');
-  else alert('WhatsApp opened for our team. Could not save to your account â€” please confirm on WhatsApp.');
+  else alert('WhatsApp opened for our team. Could not save to your account "” please confirm on WhatsApp.');
 }
 
 function renderPage() {

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html><html class="light" lang="en"><head>
+﻿﻿<!DOCTYPE html><html class="light" lang="en"><head>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/js/rentcan-config.js"></script>
 <script>RentCan.requireAuth();</script>
@@ -64,7 +64,7 @@
     </div>
     <div>
       <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-1">Name</label>
-      <input id="upload-name" type="text" class="w-full border border-outline rounded-xl p-3 text-sm" placeholder="Lease Agreement â€” Tenant">
+      <input id="upload-name" type="text" class="w-full border border-outline rounded-xl p-3 text-sm" placeholder="Lease Agreement "” Tenant">
     </div>
     <div>
       <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-1">Type</label>
@@ -121,11 +121,11 @@ async function submitUpload() {
   const btn = document.getElementById('upload-btn');
   if (!name || !file) { status.textContent = 'Name and file are required.'; return; }
   if (DOC_STATE.isDemo || String(propertyId).startsWith('demo-')) {
-    status.textContent = 'Sample portfolio canâ€™t store files. Add a real property first, or dismiss the demo banner.';
+    status.textContent = 'Sample portfolio can't store files. Add a real property first, or dismiss the demo banner.';
     return;
   }
   btn.disabled = true;
-  status.textContent = 'Uploadingâ€¦';
+  status.textContent = 'Uploading"¦';
   try {
     const client = DOC_STATE.client;
     const path = `${DOC_STATE.userId}/${Date.now()}-${file.name.replace(/[^\w.\-]+/g, '_')}`;
