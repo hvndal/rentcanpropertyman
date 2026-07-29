@@ -4,48 +4,273 @@
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
       ]
     },
-    { "source": "/robots.txt", "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }] },
-    { "source": "/sitemap.xml", "headers": [{ "key": "Content-Type", "value": "application/xml; charset=utf-8" }] },
-    { "source": "/humans.txt", "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }] },
-    { "source": "/manifest.json", "headers": [{ "key": "Content-Type", "value": "application/manifest+json; charset=utf-8" }] },
-    { "source": "/", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] },
-    { "source": "/login", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] },
-    { "source": "/dashboard", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] },
-    { "source": "/checkout", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] },
-    { "source": "/info", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] },
-    { "source": "/investors", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] },
-    { "source": "/(.*)\\.html", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] }
+    {
+      "source": "/robots.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/xml; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/humans.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/manifest.json",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/manifest+json; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/login",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/dashboard",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/checkout",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/info",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/investors",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    }
   ],
   "builds": [
-    { "src": "server.js", "use": "@vercel/node" },
-    { "src": "public/**/*", "use": "@vercel/static" }
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "public/**/*",
+      "use": "@vercel/static"
+    }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "/server.js" },
-    { "src": "/", "dest": "/public/index.html" },
-    { "src": "/login/?", "dest": "/public/login.html" },
-    { "src": "/dashboard/?", "dest": "/public/dashboard.html" },
-    { "src": "/documents/?", "dest": "/public/documents.html" },
-    { "src": "/payments/?", "dest": "/public/payments.html" },
-    { "src": "/inspections/?", "dest": "/public/inspections.html" },
-    { "src": "/reports/?", "dest": "/public/reports.html" },
-    { "src": "/info/?", "dest": "/public/info.html" },
-    { "src": "/investors/?", "dest": "/public/investors.html" },
-    { "src": "/checkout/?", "dest": "/public/checkout.html" },
-    { "src": "/admin/?", "dest": "/public/admin.html" },
-    { "src": "/404/?", "dest": "/public/404.html" },
-    { "src": "/robots\\.txt", "dest": "/public/robots.txt" },
-    { "src": "/sitemap\\.xml", "dest": "/public/sitemap.xml" },
-    { "src": "/humans\\.txt", "dest": "/public/humans.txt" },
-    { "src": "/manifest\\.json", "dest": "/public/manifest.json" },
-    { "src": "/favicon\\.ico", "dest": "/public/favicon.ico" },
-    { "src": "/apple-touch-icon\\.png", "dest": "/public/apple-touch-icon.png" },
-    { "src": "/(.*)", "dest": "/public/$1" }
+    {
+      "src": "/api/(.*)",
+      "dest": "/server.js"
+    },
+    {
+      "src": "/",
+      "dest": "/public/index.html"
+    },
+    {
+      "src": "/login/?",
+      "dest": "/public/login.html"
+    },
+    {
+      "src": "/dashboard/?",
+      "dest": "/public/dashboard.html"
+    },
+    {
+      "src": "/documents/?",
+      "dest": "/public/documents.html"
+    },
+    {
+      "src": "/payments/?",
+      "dest": "/public/payments.html"
+    },
+    {
+      "src": "/inspections/?",
+      "dest": "/public/inspections.html"
+    },
+    {
+      "src": "/reports/?",
+      "dest": "/public/reports.html"
+    },
+    {
+      "src": "/info/?",
+      "dest": "/public/info.html"
+    },
+    {
+      "src": "/investors/?",
+      "dest": "/public/investors.html"
+    },
+    {
+      "src": "/checkout/?",
+      "dest": "/public/checkout.html"
+    },
+    {
+      "src": "/admin/?",
+      "dest": "/public/admin.html"
+    },
+    {
+      "src": "/404/?",
+      "dest": "/public/404.html"
+    },
+    {
+      "src": "/robots\\.txt",
+      "dest": "/public/robots.txt"
+    },
+    {
+      "src": "/sitemap\\.xml",
+      "dest": "/public/sitemap.xml"
+    },
+    {
+      "src": "/humans\\.txt",
+      "dest": "/public/humans.txt"
+    },
+    {
+      "src": "/manifest\\.json",
+      "dest": "/public/manifest.json"
+    },
+    {
+      "src": "/favicon\\.ico",
+      "dest": "/public/favicon.ico"
+    },
+    {
+      "src": "/apple-touch-icon\\.png",
+      "dest": "/public/apple-touch-icon.png"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/$1"
+    }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/login.html",
+      "destination": "/login",
+      "permanent": true
+    },
+    {
+      "source": "/dashboard.html",
+      "destination": "/dashboard",
+      "permanent": true
+    },
+    {
+      "source": "/documents.html",
+      "destination": "/documents",
+      "permanent": true
+    },
+    {
+      "source": "/payments.html",
+      "destination": "/payments",
+      "permanent": true
+    },
+    {
+      "source": "/inspections.html",
+      "destination": "/inspections",
+      "permanent": true
+    },
+    {
+      "source": "/reports.html",
+      "destination": "/reports",
+      "permanent": true
+    },
+    {
+      "source": "/info.html",
+      "destination": "/info",
+      "permanent": true
+    },
+    {
+      "source": "/investors.html",
+      "destination": "/investors",
+      "permanent": true
+    },
+    {
+      "source": "/checkout.html",
+      "destination": "/checkout",
+      "permanent": true
+    },
+    {
+      "source": "/admin.html",
+      "destination": "/admin",
+      "permanent": true
+    }
   ]
 }

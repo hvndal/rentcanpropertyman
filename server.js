@@ -851,6 +851,16 @@ app.post('/api/submit-maintenance', async (req, res) => {
   });
 });
 
+// 301 Redirect .html extensions to Clean URLs (e.g. /investors.html -> /investors)
+app.use((req, res, next) => {
+  if (req.path.endsWith('.html') && req.path !== '/404.html') {
+    const cleanPath = req.path.slice(0, -5);
+    const query = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
+    return res.redirect(301, cleanPath + query);
+  }
+  next();
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 const CLEAN_PAGES = {
