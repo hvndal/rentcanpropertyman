@@ -61,11 +61,11 @@ body {
   }
 }
 
-/* â”€â”€ View System â”€â”€ */
+/* —— View System —— */
 .view { display: none; }
 .view.active { display: block; }
 
-/* â”€â”€ Welcome / Auth Buttons â”€â”€ */
+/* —— Welcome / Auth Buttons —— */
 .auth-btn {
   width: 100%; padding: 12px 14px;
   border-radius: 12px; font-family: inherit; font-size: 14px;
@@ -95,7 +95,7 @@ body {
 .auth-btn-phone .btn-icon { background: #f5f2f0; border: 1px solid #d4ccc4; }
 .auth-btn-email .btn-icon { background: #F6CFDE; border: 1px solid #CFDFDE; }
 
-/* â”€â”€ OTP / Phone Views â”€â”€ */
+/* —— OTP / Phone Views —— */
 .back-link {
   background: none; border: none; cursor: pointer; color: #5c4a3a;
   font-family: inherit; font-size: 12px; font-weight: 700;
@@ -150,7 +150,7 @@ body {
   box-shadow: 0 0 0 3px rgba(107, 72, 34, 0.12) !important;
 }
 
-/* â”€â”€ Compact Phone input with country code â”€â”€ */
+/* —— Compact Phone input with country code —— */
 .phone-wrap {
   display: flex;
   align-items: center;
@@ -217,7 +217,7 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* â”€â”€ Primary button â”€â”€ */
+/* —— Primary button —— */
 .btn-primary {
   width: 100%; padding: 13px; background: #6B4822; color: #fff;
   border: none; border-radius: 12px; font-family: inherit; font-size: 13px;
@@ -228,7 +228,7 @@ body {
 .btn-primary:hover { background: #5C4330; transform: translateY(-1px); }
 .btn-primary:disabled { background: #bec9c5; cursor: not-allowed; transform: none; }
 
-/* â”€â”€ Onboarding: Role Cards â”€â”€ */
+/* —— Onboarding: Role Cards —— */
 .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
 .role-card {
   padding: 16px 12px; border: 1.5px solid #d4ccc4; border-radius: 12px;
@@ -258,7 +258,7 @@ body {
 .role-card { position: relative; }
 .role-card.selected .check-badge { display: block; }
 
-/* â”€â”€ Alert â”€â”€ */
+/* —— Alert —— */
 .alert {
   padding: 10px 12px; border-radius: 10px; font-size: 12px;
   margin-bottom: 14px; display: none; font-weight: 500;
@@ -316,7 +316,7 @@ body {
 </head>
 <body class="rc-brand">
 
-<!-- â”€â”€ Left Panel â”€â”€ -->
+<!-- —— Left Panel —— -->
 <div class="left-panel">
 
   <!-- Logo -->
@@ -327,7 +327,7 @@ body {
   <!-- Alert -->
   <div class="alert" id="alert"></div>
 
-  <!-- â•â• VIEW: Welcome â•â• -->
+  <!-- ── VIEW: Welcome ── -->
   <div class="view active" id="view-welcome">
     <h1 style="font-size:28px;font-weight:800;letter-spacing:-0.02em;color:#4E4238;margin-bottom:8px;">Welcome back.</h1>
     <p style="font-size:14px;color:#5c4a3a;margin-bottom:28px;line-height:1.6;">Sign in with phone, Google, or email — quick and secure.</p>
@@ -381,7 +381,7 @@ body {
     </p>
   </div>
 
-  <!-- â•â• VIEW: Email Entry â•â• -->
+  <!-- ── VIEW: Email Entry ── -->
   <div class="view" id="view-email">
     <button class="back-link" onclick="showView('view-welcome')">
       <span style="font-family:'Material Symbols Outlined';font-size:18px;">arrow_back</span>
@@ -396,10 +396,10 @@ body {
       <input type="email" id="email-input" placeholder="name@example.com" autocomplete="email" required>
     </div>
 
-    <button class="btn-primary" id="btn-send-email" onclick="signInWithEmail()" style="padding:16px;font-size:14px;border-radius:12px;">Send Magic Link â†’</button>
+    <button class="btn-primary" id="btn-send-email" onclick="signInWithEmail()" style="padding:16px;font-size:14px;border-radius:12px;">Send Magic Link &rarr;</button>
   </div>
 
-  <!-- â•â• VIEW: Email Sent â•â• -->
+  <!-- ── VIEW: Email Sent ── -->
   <div class="view" id="view-email-sent">
     <div style="text-align:center;padding:12px 0 8px;">
       <span style="font-family:'Material Symbols Outlined';font-size:48px;color:#6B4822;font-variation-settings:'FILL' 1;display:block;margin-bottom:16px;">mark_email_read</span>
@@ -414,7 +414,7 @@ body {
     </div>
   </div>
 
-  <!-- â•â• VIEW: Phone Entry â•â• -->
+  <!-- ── VIEW: Phone Entry ── -->
   <div class="view" id="view-phone">
     <button class="back-link" onclick="showView('view-welcome')">
       <span style="font-family:'Material Symbols Outlined';font-size:18px;">arrow_back</span>
@@ -437,7 +437,7 @@ body {
       <p style="font-size:11px;color:#5c4a3a;margin-top:8px;">India numbers: 10 digits. OTP arrives via SMS in a few seconds.</p>
     </div>
 
-    <button class="btn-primary" id="btn-send-otp" onclick="sendOTP()" style="padding:16px;font-size:14px;border-radius:12px;">Send OTP â†’</button>
+    <button class="btn-primary" id="btn-send-otp" onclick="sendOTP()" style="padding:16px;font-size:14px;border-radius:12px;">Send OTP &rarr;</button>
 
     <div style="display:flex;align-items:center;gap:10px;margin-top:20px;padding:10px 12px;background:#f2f4f2;border-radius:10px;border:1px solid #e0e4e0;">
       <span style="font-family:'Material Symbols Outlined';font-size:18px;color:#6B4822;font-variation-settings:'FILL' 1;">verified_user</span>
@@ -445,7 +445,7 @@ body {
     </div>
   </div>
 
-  <!-- â•â• VIEW: OTP Verify â•â• -->
+  <!-- ── VIEW: OTP Verify ── -->
   <div class="view" id="view-otp">
     <button class="back-link" onclick="showView('view-phone')">
       <span style="font-family:'Material Symbols Outlined';font-size:18px;">arrow_back</span>
@@ -464,7 +464,7 @@ body {
       <input class="otp-input" maxlength="1" type="tel" inputmode="numeric" id="otp-5" oninput="otpInput(this,5)">
     </div>
 
-    <button class="btn-primary" id="btn-verify-otp" onclick="verifyOTP()" disabled>Verify &amp; Continue â†’</button>
+    <button class="btn-primary" id="btn-verify-otp" onclick="verifyOTP()" disabled>Verify &amp; Continue &rarr;</button>
 
     <div class="resend-row">
       <span id="resend-timer">Resend in <span id="resend-count">30</span>s</span>
@@ -472,7 +472,7 @@ body {
     </div>
   </div>
 
-  <!-- â•â• VIEW: Onboarding â•â• -->
+  <!-- ── VIEW: Onboarding ── -->
   <div class="view" id="view-onboarding">
     <h2 style="font-size:24px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;">Just one more step.</h2>
     <p style="font-size:14px;color:#5c4a3a;margin-bottom:28px;">Tell us about yourself to set up your account.</p>
@@ -498,7 +498,7 @@ body {
       </div>
     </div>
 
-    <button class="btn-primary" id="btn-complete-profile" onclick="completeProfile()">Complete Setup â†’</button>
+    <button class="btn-primary" id="btn-complete-profile" onclick="completeProfile()">Complete Setup &rarr;</button>
   </div>
 
 </div>
@@ -506,9 +506,9 @@ body {
 <script src="/js/rentcan-config.js"></script>
 <script src="/js/app.js"></script>
 <script>
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
 // STATE
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
 let sb = null;
 let otpRequestId = null;
 let selectedRole = null;
@@ -567,9 +567,9 @@ function initMsg91Widget(widgetCfg) {
   }
 }
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
 // VIEW MANAGEMENT
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   const target = document.getElementById(id);
@@ -579,7 +579,7 @@ function showView(id) {
     const sendBtn = document.getElementById('btn-send-otp');
     if (sendBtn) {
       sendBtn.disabled = false;
-      sendBtn.textContent = 'Send OTP â†’';
+      sendBtn.textContent = 'Send OTP &rarr;';
     }
     setTimeout(() => {
       const pi = document.getElementById('phone-input');
@@ -604,9 +604,9 @@ function updatePhonePlaceholder() {
   }
 }
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
 // ALERT HELPERS
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
 function showAlert(msg, type) {
   const el = document.getElementById('alert');
   if (!el) return;
@@ -621,9 +621,9 @@ function hideAlert() {
   if (el) { el.className = 'alert'; el.textContent = ''; }
 }
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// ROUTE AFTER AUTH (check profile â†’ dashboard or onboarding)
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
+// ROUTE AFTER AUTH (check profile &rarr; dashboard or onboarding)
+// —————————————————————————————————————————————————————————————————————
 async function routeAfterAuth(user) {
   if (!user) {
     if (window.hideAuthWait) hideAuthWait();
@@ -767,9 +767,9 @@ async function handleAuthCallback() {
   }
 }
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
 // OTP INPUT HANDLER (auto-advance, backspace, paste)
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
 function otpInput(el, idx) {
   el.value = el.value.replace(/\D/g, '').slice(0, 1);
   if (el.value && idx < 5) {
@@ -817,9 +817,9 @@ document.addEventListener('paste', function(e) {
   }
 });
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
 // RESEND TIMER
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
 let resendInterval = null;
 
 function startResendTimer() {
@@ -845,9 +845,9 @@ function startResendTimer() {
   }, 1000);
 }
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
 // INITIALIZATION (DOMContentLoaded)
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
 async function initApp() {
   // Clear stale service workers so auth/navigation never pins old shells
   try {
@@ -954,9 +954,9 @@ if (document.readyState === 'loading') {
   initApp();
 }
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
 // GOOGLE SIGN IN
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
 async function signInWithGoogle() {
   if (!sb) sb = await RentCan.createClient();
 
@@ -995,9 +995,9 @@ async function signInWithGoogle() {
   }
 }
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
 // EMAIL SIGN IN
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
 async function signInWithEmail() {
   const email = document.getElementById('email-input').value.trim();
   if (!email || !email.includes('@')) {
@@ -1031,13 +1031,13 @@ async function signInWithEmail() {
   } catch(e) {
     showAlert(friendlyAuthError(e.message));
     btn.disabled = false;
-    btn.textContent = 'Send Magic Link â†’';
+    btn.textContent = 'Send Magic Link &rarr;';
   }
 }
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
 // PHONE / MSG91 OTP WIDGET (sendOtp / verifyOtp / retryOtp)
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
 async function finishPhoneLogin(phoneDisplay, accessToken) {
   sessionStorage.setItem('rentcan_phone', phoneDisplay);
   const token = accessToken || msg91AccessToken || null;
@@ -1121,7 +1121,7 @@ function sendOTP() {
     document.getElementById('otp-phone-display').textContent = displayPhone;
     showView('view-otp');
     btn.disabled = false;
-    btn.textContent = 'Send OTP â†’';
+    btn.textContent = 'Send OTP &rarr;';
     [0,1,2,3,4,5].forEach(i => { document.getElementById('otp-' + i).value = ''; });
     document.getElementById('btn-verify-otp').disabled = true;
     document.getElementById('otp-0').focus();
@@ -1134,7 +1134,7 @@ function sendOTP() {
     const msg = (error && (error.message || error.msg || error.type)) || 'Failed to send OTP.';
     showAlert('Could not send OTP: ' + msg);
     btn.disabled = false;
-    btn.textContent = 'Send OTP â†’';
+    btn.textContent = 'Send OTP &rarr;';
   };
 
   if (typeof window.sendOtp === 'function') {
@@ -1181,7 +1181,7 @@ function verifyOTP() {
     if (!token) {
       showAlert('OTP verified but secure token was missing. Please try again.');
       btn.disabled = false;
-      btn.textContent = 'Verify & Continue â†’';
+      btn.textContent = 'Verify & Continue &rarr;';
       return;
     }
     msg91AccessToken = token;
@@ -1194,7 +1194,7 @@ function verifyOTP() {
     const msg = (error && (error.message || error.msg || error.type)) || 'Invalid OTP. Please try again.';
     showAlert(String(msg));
     btn.disabled = false;
-    btn.textContent = 'Verify & Continue â†’';
+    btn.textContent = 'Verify & Continue &rarr;';
   };
 
   if (typeof window.verifyOtp === 'function') {
@@ -1260,9 +1260,9 @@ function resendOTP() {
   sendOTP();
 }
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
 // ONBOARDING / PROFILE CREATION
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —————————————————————————————————————————————————————————————————————
 function selectRole(role) {
   selectedRole = role;
   document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
@@ -1344,7 +1344,7 @@ async function completeProfile() {
   } catch(e) {
     showAlert(friendlyAuthError(e.message));
     btn.disabled = false;
-    btn.textContent = 'Complete Setup â†’';
+    btn.textContent = 'Complete Setup &rarr;';
   }
 }
 
