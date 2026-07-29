@@ -340,7 +340,7 @@
   <div class="rc-site-nav-bar">
     <div class="rc-site-nav-brand">
       <a href="/" id="site-logo" class="rc-brand-logo rc-brand-logo--ghost rc-brand-logo--nav" aria-label="RentCan home">
-        <img src="/assets/logos/rentcan-wordmark.png" alt="RentCan">
+        <img src="/assets/logos/rentcan-wordmark-transparent.png" alt="RentCan">
       </a>
     </div>
     <nav class="rc-site-nav-links" aria-label="Main">
@@ -364,8 +364,8 @@
   <div class="rc-mobile-drawer-backdrop" data-close-menu></div>
   <div class="rc-mobile-drawer-panel">
     <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline-variant">
-      <a href="/" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--sm" aria-label="RentCan home">
-        <img src="/assets/logos/rentcan-wordmark.png" alt="RentCan">
+      <a href="/" class="rc-brand-logo rc-brand-logo--ghost rc-brand-logo--sm" aria-label="RentCan home">
+        <img src="/assets/logos/rentcan-wordmark-transparent.png" alt="RentCan">
       </a>
       <button type="button" class="w-9 h-9 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-low" data-close-menu aria-label="Close menu">
         <span class="material-symbols-outlined">close</span>
@@ -462,7 +462,7 @@
 
   <!-- Plan photo tiles -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-5xl mx-auto mb-10" data-plan-group="tiles">
-    <a href="/checkout?plan=residential" class="rc-photo-tile rc-photo-tile--residential" data-plan="residential">
+    <a href="#" data-wa-plan="residential" class="rc-photo-tile rc-photo-tile--residential" data-plan="residential">
       <span class="rc-photo-tile__media" aria-hidden="true"></span>
       <span class="rc-photo-tile__shade" aria-hidden="true"></span>
       <div class="rc-photo-tile__body">
@@ -472,7 +472,7 @@
         <span class="rc-photo-tile__cta">WhatsApp to join â†’</span>
       </div>
     </a>
-    <a href="/checkout?plan=commercial" class="rc-photo-tile rc-photo-tile--commercial rc-photo-tile--featured" data-plan="commercial">
+    <a href="#" data-wa-plan="commercial" class="rc-photo-tile rc-photo-tile--commercial rc-photo-tile--featured" data-plan="commercial">
       <span class="rc-photo-tile__media" aria-hidden="true"></span>
       <span class="rc-photo-tile__shade" aria-hidden="true"></span>
       <div class="rc-photo-tile__body">
@@ -632,13 +632,13 @@
 
     <!-- Mobile: all three prices visible at once -->
     <div class="rc-price-compare md:hidden mb-5" role="group" aria-label="Compare plans">
-      <a href="/checkout?plan=residential" class="rc-price-compare__cell" data-plan="residential">
+      <a href="#" data-wa-plan="residential" class="rc-price-compare__cell" data-plan="residential">
         <span class="rc-price-compare__label">Residential</span>
         <span class="rc-price-compare__amount">â‚¹1,499</span>
         <span class="rc-price-compare__unit">/mo</span>
         <span class="rc-price-compare__note">+â‚¹799 extra</span>
       </a>
-      <a href="/checkout?plan=commercial" class="rc-price-compare__cell rc-price-compare__cell--featured" data-plan="commercial">
+      <a href="#" data-wa-plan="commercial" class="rc-price-compare__cell rc-price-compare__cell--featured" data-plan="commercial">
         <span class="rc-price-compare__label">Commercial</span>
         <span class="rc-price-compare__amount">â‚¹1,999</span>
         <span class="rc-price-compare__unit">/mo</span>
@@ -654,7 +654,7 @@
     <p class="rc-price-compare-hint md:hidden">Tap a plan tab Â· swipe cards for details</p>
 
     <div class="rc-price-rail max-w-5xl mx-auto" data-plan-group="pricing">
-      <a href="/checkout?plan=residential" class="rc-photo-tile rc-photo-tile--residential" data-plan="residential">
+      <a href="#" data-wa-plan="residential" class="rc-photo-tile rc-photo-tile--residential" data-plan="residential">
         <span class="rc-photo-tile__media" aria-hidden="true"></span>
         <span class="rc-photo-tile__shade" aria-hidden="true"></span>
         <div class="rc-photo-tile__body">
@@ -664,7 +664,7 @@
           <span class="rc-photo-tile__cta">WhatsApp to join â†’</span>
         </div>
       </a>
-      <a href="/checkout?plan=commercial" class="rc-photo-tile rc-photo-tile--commercial rc-photo-tile--featured" data-plan="commercial">
+      <a href="#" data-wa-plan="commercial" class="rc-photo-tile rc-photo-tile--commercial rc-photo-tile--featured" data-plan="commercial">
         <span class="rc-photo-tile__media" aria-hidden="true"></span>
         <span class="rc-photo-tile__shade" aria-hidden="true"></span>
         <div class="rc-photo-tile__body">
@@ -685,7 +685,7 @@
         </div>
       </a>
     </div>
-    <p class="text-center text-on-surface-variant/60 font-light mt-10 text-sm">SOS visits: <a href="/checkout?plan=sos" class="text-primary font-semibold underline">â‚¹500/visit</a> Â· Base plan covers 1 property Â· WhatsApp to get set up â€” online payments open at full launch</p>
+    <p class="text-center text-on-surface-variant/60 font-light mt-10 text-sm">SOS visits: <a href="#" data-wa-plan="sos" class="text-primary font-semibold underline">â‚¹500/visit</a> Â· Base plan covers 1 property Â· WhatsApp to get set up â€” online payments open at full launch</p>
   </div>
 </section>
 
@@ -707,7 +707,7 @@
 <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-desktop max-w-container-max mx-auto mb-12">
 <div class="col-span-1">
 <div class="mb-6">
-<a href="/" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--footer inline-flex mb-4"><img src="/assets/logos/rentcan-wordmark.png" alt="RentCan"></a>
+<a href="/" class="rc-brand-logo rc-brand-logo--ghost rc-brand-logo--footer inline-flex mb-4"><img src="/assets/logos/rentcan-wordmark-transparent.png" alt="RentCan"></a>
 <nav class="flex flex-wrap gap-x-4 gap-y-2 text-sm text-on-surface-variant mb-4" aria-label="Footer">
   <a href="#services" class="hover:text-primary transition-colors">Services</a>
   <a href="#pricing" class="hover:text-primary transition-colors">Pricing</a>
@@ -789,3 +789,4 @@
 <script src="/js/site.js"></script>
 <script src="/js/app.js"></script>
 </body></html>
+

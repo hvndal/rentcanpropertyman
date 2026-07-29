@@ -1542,3 +1542,42 @@ html[data-plan-focus] .is-plan-focus.rc-plan-pulse {
   }
 }
 
+
+/* Mobile drawer logo — reads on light cream panel */
+.rc-mobile-drawer-panel .rc-brand-logo--ghost img {
+  filter: drop-shadow(0 1px 3px rgba(78, 66, 56, 0.18)) brightness(0.15);
+}
+
+/* ── Mobile Hero text overflow fixes ──────────────────────────────── */
+.hero-sub {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  hyphens: none;
+}
+
+@media (max-width: 480px) {
+  .hero-headline {
+    font-size: clamp(1.75rem, 8vw, 2.75rem);
+    letter-spacing: -0.01em;
+  }
+  .hero-sub {
+    font-size: 0.9rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  .hero-cta-row a {
+    font-size: 0.7rem;
+    padding: 0.85rem 1.25rem;
+  }
+}
+
+/* ── Ghost logo readable on cream/light backgrounds ──────────────── */
+.rc-site-header--solid .rc-brand-logo--ghost img,
+.rc-mobile-drawer-panel .rc-brand-logo--ghost img {
+  filter: brightness(0.18) drop-shadow(0 1px 2px rgba(0,0,0,0.08));
+}
+
+/* On-hero: keep white ghost with shadow */
+.rc-site-header--on-hero .rc-brand-logo--ghost img {
+  filter: brightness(1) drop-shadow(0 2px 12px rgba(0,0,0,0.45));
+}

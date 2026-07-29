@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class="light" lang="en"><head>
+﻿<!DOCTYPE html><html class="light" lang="en"><head>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/js/rentcan-config.js"></script>
 <script>RentCan.requireAuth();</script>
@@ -26,7 +26,7 @@
 <div class="flex min-h-screen w-full">
 <aside class="hidden md:flex flex-col h-screen sticky top-0 p-stack-md border-r border-outline bg-surface w-64 shrink-0">
 <div class="mb-stack-xl">
-<a href="/dashboard" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--app" aria-label="RentCan"><img src="/assets/logos/rentcan-wordmark.png" alt="RentCan"></a>
+<a href="/dashboard" class="rc-brand-logo rc-brand-logo--ghost rc-brand-logo--app" aria-label="RentCan"><img src="/assets/logos/rentcan-wordmark-transparent.png" alt="RentCan"></a>
 </div>
 <div class="flex flex-col space-y-1 flex-grow">
 <a href="/dashboard" class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-all font-label-lg text-label-lg">
@@ -64,12 +64,12 @@
 <div class="flex gap-gutter rc-kpi-row" id="ledger-kpis">
 <div class="text-right">
 <span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">COLLECTED</span>
-<span class="font-headline-md text-headline-md text-primary" id="kpi-collected">—</span>
+<span class="font-headline-md text-headline-md text-primary" id="kpi-collected">â€”</span>
 </div>
 <div class="w-[1px] h-12 bg-outline-variant hidden md:block"></div>
 <div class="text-right">
 <span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">PENDING</span>
-<span class="font-headline-md text-headline-md text-brand-gold" id="kpi-pending">—</span>
+<span class="font-headline-md text-headline-md text-brand-gold" id="kpi-pending">â€”</span>
 </div>
 </div>
 </header>
@@ -106,13 +106,13 @@
 </table>
 </div>
 <div class="px-stack-md py-4 bg-white flex justify-between items-center border-t border-outline-variant">
-<span class="text-label-sm text-on-surface-variant" id="payments-count">Loading…</span>
+<span class="text-label-sm text-on-surface-variant" id="payments-count">Loadingâ€¦</span>
 </div>
 </section>
 
 <footer class="mt-stack-xl pt-stack-lg border-t border-outline grid grid-cols-1 md:grid-cols-4 gap-gutter mb-stack-lg">
 <div class="col-span-1 md:col-span-2">
-<a href="/dashboard" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--sm" aria-label="RentCan"><img src="/assets/logos/rentcan-wordmark.png" alt="RentCan"></a>
+<a href="/dashboard" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--sm" aria-label="RentCan"><img src="/assets/logos/rentcan-wordmark-transparent.png" alt="RentCan"></a>
 <p class="font-body-md text-body-md text-on-surface-variant mt-3">On-ground property management for Mohali, Chandigarh &amp; Aerocity.</p>
 </div>
 <div class="flex flex-col gap-2">
@@ -125,7 +125,7 @@
 <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary" href="/info">Help Center</a>
 </div>
 <div class="col-span-full mt-stack-md text-on-surface-variant opacity-70">
-<p class="font-body-md text-body-md">© 2026 RentCan. Precision Property Management.</p>
+<p class="font-body-md text-body-md">Â© 2026 RentCan. Precision Property Management.</p>
 </div>
 </footer>
 </main>
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       mobile.innerHTML = '<p class="text-sm text-on-surface-variant text-center py-8">No payments yet.</p>';
     } else {
       tbody.innerHTML = payments.map(p => {
-        const name = p.tenant_name || '—';
+        const name = p.tenant_name || 'â€”';
         const prop = p.properties?.name || 'Property';
         return `<tr class="hover:bg-surface-container-low transition-colors">
           <td class="px-stack-md py-5 border-b border-outline-variant">${escapeHtml(formatDate(p.paid_at || p.due_date || p.created_at))}</td>
@@ -244,3 +244,4 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 </script>
 </body></html>
+

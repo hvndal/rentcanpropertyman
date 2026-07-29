@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class="light" lang="en"><head>
+﻿<!DOCTYPE html><html class="light" lang="en"><head>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" name="viewport">
@@ -26,7 +26,7 @@
 <!-- SideNavBar (Shared Component) -->
 <aside class="hidden md:flex flex-col h-screen p-stack-md border-r border-outline bg-surface w-64 shrink-0 overflow-y-auto">
 <div class="mb-stack-xl px-2">
-<a href="/dashboard" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--app" aria-label="RentCan"><img src="/assets/logos/rentcan-wordmark.png" alt="RentCan"></a>
+<a href="/dashboard" class="rc-brand-logo rc-brand-logo--ghost rc-brand-logo--app" aria-label="RentCan"><img src="/assets/logos/rentcan-wordmark-transparent.png" alt="RentCan"></a>
 <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-1" id="sidebar-role-label">Dashboard</p>
 </div>
 <nav class="flex-1 space-y-1">
@@ -72,7 +72,7 @@
                 RC
             </div>
 <div>
-<p class="font-label-lg text-label-lg text-on-surface" id="sidebar-user-name">Loading…</p>
+<p class="font-label-lg text-label-lg text-on-surface" id="sidebar-user-name">Loadingâ€¦</p>
   <p class="font-label-sm text-label-sm text-on-surface-variant" id="sidebar-user-email"></p>
 </div>
 </div>
@@ -112,7 +112,7 @@
 <div class="col-span-12 md:col-span-4 border border-outline p-stack-lg flex flex-col justify-between bg-surface-container-lowest">
 <div>
 <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Portfolio Occupancy <span id="stat-total-properties" class="text-on-surface-variant/60"></span></p>
-<h3 class="font-display-lg text-display-lg text-primary font-bold" id="stat-occupancy">—</h3>
+<h3 class="font-display-lg text-display-lg text-primary font-bold" id="stat-occupancy">â€”</h3>
 </div>
 <div class="mt-stack-md flex items-center gap-2">
 <span class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
@@ -125,7 +125,7 @@
 <div class="col-span-12 md:col-span-4 border border-outline p-stack-lg flex flex-col justify-between bg-surface-container-lowest">
 <div>
 <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Current Rent Collection</p>
-<h3 class="font-display-lg text-display-lg text-primary font-bold" id="stat-monthly-revenue">—</h3>
+<h3 class="font-display-lg text-display-lg text-primary font-bold" id="stat-monthly-revenue">â€”</h3>
 </div>
 <div class="mt-stack-md">
 <p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
@@ -138,16 +138,16 @@
 <div class="col-span-12 md:col-span-4 border border-outline p-stack-lg flex flex-col justify-between bg-surface-container-lowest">
 <div>
 <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Open Requests</p>
-<h3 class="font-display-lg text-display-lg text-primary font-bold" id="stat-active-requests">—</h3>
+<h3 class="font-display-lg text-display-lg text-primary font-bold" id="stat-active-requests">â€”</h3>
 </div>
 <div class="mt-stack-md flex gap-gutter">
 <div>
 <p class="font-label-sm text-label-sm text-on-surface-variant">Open requests</p>
-<p class="font-title-lg text-title-lg text-error" id="stat-pending-docs">—</p>
+<p class="font-title-lg text-title-lg text-error" id="stat-pending-docs">â€”</p>
 </div>
 <div class="border-l border-outline-variant pl-4">
 <p class="font-label-sm text-label-sm text-on-surface-variant">In vault</p>
-<p class="font-title-lg text-title-lg text-primary" id="stat-signed-docs">—</p>
+<p class="font-title-lg text-title-lg text-primary" id="stat-signed-docs">â€”</p>
 </div>
 </div>
 </div>
@@ -170,7 +170,7 @@
 <div id="properties-grid" class="swiss-grid gap-stack-lg">
   <div id="empty-state-properties" class="col-span-12 flex flex-col items-center justify-center py-16 md:py-24 text-center border border-dashed border-outline-variant rounded-lg bg-surface-container-lowest px-4">
     <span class="material-symbols-outlined text-[56px] text-outline mb-4">home_work</span>
-    <p class="font-title-lg text-title-lg text-on-surface mb-2">Loading portfolio…</p>
+    <p class="font-title-lg text-title-lg text-on-surface mb-2">Loading portfolioâ€¦</p>
     <p class="font-body-md text-body-md text-on-surface-variant max-w-xs mb-6">Preparing your properties.</p>
   </div>
 </div>
@@ -186,8 +186,8 @@
 <!-- Footer (Shared Component) -->
 <footer class="mt-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop py-stack-xl w-full border-t border-outline bg-surface-container-lowest pb-28 md:pb-stack-xl">
 <div class="col-span-4 lg:col-span-1">
-<a href="/dashboard" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--sm" aria-label="RentCan"><img src="/assets/logos/rentcan-wordmark.png" alt="RentCan"></a>
-<p class="font-body-md text-body-md text-on-surface-variant">© 2026 RentCan. Precision Property Management.</p>
+<a href="/dashboard" class="rc-brand-logo rc-brand-logo--light rc-brand-logo--sm" aria-label="RentCan"><img src="/assets/logos/rentcan-wordmark-transparent.png" alt="RentCan"></a>
+<p class="font-body-md text-body-md text-on-surface-variant">Â© 2026 RentCan. Precision Property Management.</p>
 </div>
 <div class="col-span-2 lg:col-span-1">
 <p class="font-label-lg text-label-lg text-on-surface font-bold mb-4">Resources</p>
@@ -310,7 +310,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <div class="flex justify-between items-center pt-4 border-t border-outline-variant">
                         <span class="font-label-lg text-label-lg text-primary font-bold">${formatINR(prop.rent_amount)}/mo</span>
                         <div class="flex gap-2 font-label-sm text-on-surface-variant">
-                            <span>${prop.beds || 0}B</span> • <span>${prop.baths || 0}BA</span>
+                            <span>${prop.beds || 0}B</span> â€¢ <span>${prop.baths || 0}BA</span>
                         </div>
                     </div>
                 </div>`;
@@ -351,7 +351,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (act.type === 'payment') {
                     icon = 'payments';
                     iconColor = act.status === 'paid' ? 'text-primary' : 'text-brand-gold';
-                    desc = `Rent ${act.status}: ${act.properties?.name || 'Property'} · ${formatINR(act.amount)}`;
+                    desc = `Rent ${act.status}: ${act.properties?.name || 'Property'} Â· ${formatINR(act.amount)}`;
                 } else {
                     icon = 'build';
                     iconColor = act.status === 'resolved' ? 'text-primary' : 'text-brand-gold';
@@ -376,7 +376,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 </script>
 
 <script>
-// ── Render user info from sessionStorage + role-gate UI ──
+// â”€â”€ Render user info from sessionStorage + role-gate UI â”€â”€
 document.addEventListener('DOMContentLoaded', () => {
   const rawUser  = sessionStorage.getItem('rentcan_user');
   const role     = sessionStorage.getItem('rentcan_role') || 'landlord';
@@ -467,7 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </select>
               </div>
               <div>
-                <label class="block font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Expected Rent (₹)</label>
+                <label class="block font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Expected Rent (â‚¹)</label>
                 <input type="number" id="prop-rent" required placeholder="25000" class="w-full bg-surface-container-lowest border border-outline rounded p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
               </div>
             </div>
@@ -585,7 +585,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (sb) {
     const { data: { session } } = await sb.auth.getSession();
     if (!session && !storedUser) {
-      // Not authenticated — redirect to login
+      // Not authenticated â€” redirect to login
       window.location.href = '/login';
       return;
     }
@@ -602,7 +602,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (storedUser) {
     const nameEl = document.getElementById('sidebar-user-name');
     const emailEl = document.getElementById('sidebar-user-email');
-    if (nameEl && nameEl.textContent === 'Loading…') nameEl.textContent = storedUser.name || 'User';
+    if (nameEl && nameEl.textContent === 'Loadingâ€¦') nameEl.textContent = storedUser.name || 'User';
     if (emailEl && !emailEl.textContent) emailEl.textContent = storedUser.email || '';
   }
 
@@ -653,7 +653,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <div>
         <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Property</label>
         <select id="invite-property-select" required class="w-full border border-outline/70 rounded-xl p-3 text-sm outline-none focus:border-primary font-bold">
-          <option value="">Select property…</option>
+          <option value="">Select propertyâ€¦</option>
         </select>
       </div>
       <div>
