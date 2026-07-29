@@ -360,6 +360,20 @@
   function initPlanFocus() {
     if (!document.querySelector('[data-plan-tab], [data-plan], [data-plan-matrix]')) return;
 
+    // Trigger focus seamlessly on HOVER / TOUCH without needing a click
+    document.querySelectorAll('[data-plan-tab], [data-plan]').forEach((el) => {
+      const plan = el.getAttribute('data-plan-tab') || el.getAttribute('data-plan');
+      if (!plan) return;
+
+      el.addEventListener('mouseenter', () => {
+        setPlanFocus(plan, { scroll: false, pulse: false });
+      });
+
+      el.addEventListener('touchstart', () => {
+        setPlanFocus(plan, { scroll: false, pulse: false });
+      }, { passive: true });
+    });
+
     document.addEventListener('click', (e) => {
       const tab = e.target.closest('[data-plan-tab]');
       if (tab) {
@@ -370,11 +384,10 @@
 
       const planEl = e.target.closest('[data-plan]');
       if (!planEl) return;
-      // Focus matching plan when tapping a tile/compare cell (still allow navigation)
-      setPlanFocus(planEl.getAttribute('data-plan'), { scroll: true, pulse: true });
+      setPlanFocus(planEl.getAttribute('data-plan'), { scroll: false, pulse: false });
     });
 
-    // Default: residential so the compare pattern is obvious on first visit
+    // Default: residential
     setPlanFocus('residential', { scroll: false, pulse: false });
   }
 

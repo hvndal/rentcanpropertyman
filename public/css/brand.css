@@ -289,8 +289,8 @@ body.rc-brand {
 }
 
 .rc-brand-logo--nav img {
-  height: 3.25rem !important;
-  max-height: 52px !important;
+  height: 46px !important;
+  max-height: 46px !important;
   width: auto !important;
   object-fit: contain !important;
   object-position: left center !important;
@@ -1122,10 +1122,8 @@ html.rc-js .rc-reveal:not(.in-view):not(.is-visible) {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background:
-    linear-gradient(180deg, rgba(78, 66, 56, 0.15) 0%, rgba(78, 66, 56, 0.35) 42%, rgba(50, 40, 32, 0.88) 100%),
-    linear-gradient(120deg, rgba(207, 223, 222, 0.18) 0%, transparent 55%);
-  transition: background 0.45s ease;
+  background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 45%, rgba(0,0,0,0.85) 100%);
+  transition: background 0.4s ease;
 }
 
 .rc-photo-tile__body {
