@@ -17,8 +17,8 @@
   * { -webkit-tap-highlight-color: transparent; }
   button, a, input, select { touch-action: manipulation; }
 </style>
-<title>RentCan | Sign In "” Property Management Tricity &amp; Aerocity</title>
-<meta name="description" content="Sign in to RentCan "” on-ground property management for landlords across Chandigarh, Mohali, Panchkula and Aerocity.">
+<title>RentCan | Sign In — Property Management Tricity &amp; Aerocity</title>
+<meta name="description" content="Sign in to RentCan — on-ground property management for landlords across Chandigarh, Mohali, Panchkula and Aerocity.">
 <meta name="robots" content="noindex, follow">
 <link rel="canonical" href="https://rentcan.in/login">
 <meta property="og:title" content="Sign in to RentCan">
@@ -330,7 +330,7 @@ body {
   <!-- â•â• VIEW: Welcome â•â• -->
   <div class="view active" id="view-welcome">
     <h1 style="font-size:28px;font-weight:800;letter-spacing:-0.02em;color:#4E4238;margin-bottom:8px;">Welcome back.</h1>
-    <p style="font-size:14px;color:#5c4a3a;margin-bottom:28px;line-height:1.6;">Sign in with phone, Google, or email "” quick and secure.</p>
+    <p style="font-size:14px;color:#5c4a3a;margin-bottom:28px;line-height:1.6;">Sign in with phone, Google, or email — quick and secure.</p>
 
     <!-- Phone (primary) -->
     <button class="auth-btn auth-btn-phone" onclick="showView('view-phone')" style="border-color:#6B4822;box-shadow:0 4px 14px rgba(107,72,34,0.1);">
@@ -865,7 +865,7 @@ async function initApp() {
 
   const oauthReturn = isOAuthReturn();
 
-  // Stale pending flag (user hit back or abandoned Google) "” don't trap them
+  // Stale pending flag (user hit back or abandoned Google) — don't trap them
   if (!oauthReturn && sessionStorage.getItem('rc_auth_pending')) {
     resetStaleAuthUi();
   }
@@ -1199,7 +1199,7 @@ function verifyOTP() {
 
   if (typeof window.verifyOtp === 'function') {
     try {
-      // reqId optional "” pass when we have one from sendOtp
+      // reqId optional — pass when we have one from sendOtp
       if (otpRequestId) {
         window.verifyOtp(code, onOk, onFail, otpRequestId);
       } else {

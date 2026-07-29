@@ -112,7 +112,7 @@
 <div class="col-span-12 md:col-span-4 border border-outline p-stack-lg flex flex-col justify-between bg-surface-container-lowest">
 <div>
 <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Portfolio Occupancy <span id="stat-total-properties" class="text-on-surface-variant/60"></span></p>
-<h3 class="font-display-lg text-display-lg text-primary font-bold" id="stat-occupancy">"”</h3>
+<h3 class="font-display-lg text-display-lg text-primary font-bold" id="stat-occupancy">—</h3>
 </div>
 <div class="mt-stack-md flex items-center gap-2">
 <span class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
@@ -125,7 +125,7 @@
 <div class="col-span-12 md:col-span-4 border border-outline p-stack-lg flex flex-col justify-between bg-surface-container-lowest">
 <div>
 <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Current Rent Collection</p>
-<h3 class="font-display-lg text-display-lg text-primary font-bold" id="stat-monthly-revenue">"”</h3>
+<h3 class="font-display-lg text-display-lg text-primary font-bold" id="stat-monthly-revenue">—</h3>
 </div>
 <div class="mt-stack-md">
 <p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
@@ -138,16 +138,16 @@
 <div class="col-span-12 md:col-span-4 border border-outline p-stack-lg flex flex-col justify-between bg-surface-container-lowest">
 <div>
 <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Open Requests</p>
-<h3 class="font-display-lg text-display-lg text-primary font-bold" id="stat-active-requests">"”</h3>
+<h3 class="font-display-lg text-display-lg text-primary font-bold" id="stat-active-requests">—</h3>
 </div>
 <div class="mt-stack-md flex gap-gutter">
 <div>
 <p class="font-label-sm text-label-sm text-on-surface-variant">Open requests</p>
-<p class="font-title-lg text-title-lg text-error" id="stat-pending-docs">"”</p>
+<p class="font-title-lg text-title-lg text-error" id="stat-pending-docs">—</p>
 </div>
 <div class="border-l border-outline-variant pl-4">
 <p class="font-label-sm text-label-sm text-on-surface-variant">In vault</p>
-<p class="font-title-lg text-title-lg text-primary" id="stat-signed-docs">"”</p>
+<p class="font-title-lg text-title-lg text-primary" id="stat-signed-docs">—</p>
 </div>
 </div>
 </div>
@@ -351,7 +351,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (act.type === 'payment') {
                     icon = 'payments';
                     iconColor = act.status === 'paid' ? 'text-primary' : 'text-brand-gold';
-                    desc = `Rent ${act.status}: ${act.properties?.name || 'Property'} Â· ${formatINR(act.amount)}`;
+                    desc = `Rent ${act.status}: ${act.properties?.name || 'Property'} · ${formatINR(act.amount)}`;
                 } else {
                     icon = 'build';
                     iconColor = act.status === 'resolved' ? 'text-primary' : 'text-brand-gold';
@@ -467,7 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </select>
               </div>
               <div>
-                <label class="block font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Expected Rent (â‚¹)</label>
+                <label class="block font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Expected Rent (₹)</label>
                 <input type="number" id="prop-rent" required placeholder="25000" class="w-full bg-surface-container-lowest border border-outline rounded p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
               </div>
             </div>
@@ -585,7 +585,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (sb) {
     const { data: { session } } = await sb.auth.getSession();
     if (!session && !storedUser) {
-      // Not authenticated "” redirect to login
+      // Not authenticated — redirect to login
       window.location.href = '/login';
       return;
     }

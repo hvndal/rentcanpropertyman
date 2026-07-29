@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>RentCan | Premium Property Management Mohali, Chandigarh &amp; Aerocity</title>
-<meta name="description" content="Premium property management in Mohali, Chandigarh, Panchkula and Aerocity "” monthly on-ground inspections, tenant care, commercial oversight and Airbnb management from Sector 79, Mohali. Trusted by Tricity landlords and NRIs."/>
+<meta name="description" content="Premium property management in Mohali, Chandigarh, Panchkula and Aerocity — monthly on-ground inspections, tenant care, commercial oversight and Airbnb management from Sector 79, Mohali. Trusted by Tricity landlords and NRIs."/>
 <meta name="keywords" content="premium property management Mohali, property management Chandigarh, property management Panchkula, Aerocity property management, Tricity property management, Airbnb management Mohali, NRI landlord Chandigarh, monthly property inspection Mohali, commercial property management Chandigarh, Sector 79 Mohali, SAS Nagar property manager, RentCan"/>
 <meta name="author" content="RentCan"/>
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
@@ -32,7 +32,7 @@
 <meta property="og:image:type" content="image/jpeg"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
-<meta property="og:image:alt" content="RentCan "” Premium property management in Mohali, Chandigarh, Panchkula and Aerocity"/>
+<meta property="og:image:alt" content="RentCan — Premium property management in Mohali, Chandigarh, Panchkula and Aerocity"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="RentCan | Premium Property Management Mohali &amp; Chandigarh"/>
 <meta name="twitter:description" content="Monthly inspections, commercial care and Airbnb management across Mohali, Chandigarh, Panchkula and Aerocity."/>
@@ -90,7 +90,7 @@
       "url": "https://rentcan.in/",
       "telephone": "+91-81462-98024",
       "email": "hundalg968@gmail.com",
-      "priceRange": "â‚¹â‚¹",
+      "priceRange": "₹₹",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Sector 79",
@@ -228,7 +228,7 @@
     font-weight: 600;
   }
 
-  /* â”€â”€ Bento tiles "” solid cards, no glass â”€â”€ */
+  /* â”€â”€ Bento tiles — solid cards, no glass â”€â”€ */
   .bento-tile {
     position: relative;
     background: color-mix(in srgb, #CFDFDE 34%, #ffffff) !important;
@@ -281,11 +281,16 @@
             width: 100%;
             height: 100%;
             z-index: 0;
+            overflow: hidden;
+            background: #120C06;
         }
         .hero-video-container video {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
+            z-index: 0;
         }
         .hero-video-container::after {
             content: '';
@@ -294,17 +299,16 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background:
-              linear-gradient(180deg, rgba(78, 66, 56, 0.28) 0%, rgba(107, 72, 34, 0.48) 45%, rgba(78, 66, 56, 0.62) 100%),
-              linear-gradient(120deg, rgba(207, 223, 222, 0.42) 0%, rgba(246, 207, 222, 0.18) 55%);
+            z-index: 1;
+            background: linear-gradient(180deg, rgba(12, 8, 4, 0.20) 0%, rgba(12, 8, 4, 0.38) 40%, rgba(12, 8, 4, 0.65) 80%, rgba(12, 8, 4, 0.78) 100%);
         }
         .hero-video-container::before {
             content: '';
             position: absolute;
             inset: 0;
-            z-index: 1;
+            z-index: 2;
             pointer-events: none;
-            background: radial-gradient(ellipse 70% 55% at 50% 40%, transparent 0%, rgba(78, 66, 56, 0.28) 100%);
+            background: linear-gradient(to bottom, transparent 70%, var(--rc-cream, #F2F5F4) 100%);
         }
         .swiss-grid {
             display: grid;
@@ -335,7 +339,7 @@
 </head>
 <body class="rc-brand bg-brand-cream  text-on-surface font-body-base antialiased pb-20 md:pb-0">
 
-<!-- Site header "” overlays hero, then solidifies on scroll -->
+<!-- Site header — overlays hero, then solidifies on scroll -->
 <header id="site-header" class="rc-site-header rc-site-header--on-hero">
   <div class="rc-site-nav-bar">
     <div class="rc-site-nav-brand">
@@ -385,19 +389,28 @@
 <!-- Hero Section -->
 <section id="hero" class="relative min-h-[min(90vh,760px)] flex items-center justify-center overflow-hidden">
 <div class="hero-video-container">
-<video autoplay loop muted playsinline webkit-playsinline src="hero-video.mp4" poster="/assets/seo/og-image.jpg" class="object-cover w-full h-full object-center"></video>
+<video id="hero-vid" autoplay loop muted playsinline webkit-playsinline x5-playsinline="true" disablepictureinpicture src="/hero-video.mp4" poster="/assets/seo/og-image.jpg" class="object-cover w-full h-full object-center"></video>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var v = document.getElementById('hero-vid');
+    if (v) {
+      v.muted = true;
+      v.play().catch(function() {});
+    }
+  });
+</script>
 </div>
 <div class="relative z-10 w-full max-w-container-max mx-auto px-margin-desktop text-center flex flex-col items-center py-16 md:py-20">
 
 <div class="hero-stack">
-  <!-- Headline only "” logo lives in the sticky header -->
+  <!-- Headline only — logo lives in the sticky header -->
   <h1 class="hero-iso hero-headline font-display-lg text-3xl sm:text-5xl md:text-[56px] leading-[1.12] tracking-tight font-bold">
     Property Management,<br/><span class="accent-script">Simplified.</span>
   </h1>
 
   <!-- Isolated subtitle -->
   <p class="hero-iso hero-sub">
-    Premium on-ground property management for landlords, investors &amp; NRIs in Mohali, Chandigarh, Panchkula &amp; Aerocity. Full platform launch 1 October "” first 100 owners lock in today's pricing + priority service.
+    Premium on-ground property management for landlords, investors &amp; NRIs in Mohali, Chandigarh, Panchkula &amp; Aerocity. Full platform launch 1 October — first 100 owners lock in today's pricing + priority service.
   </p>
 
   <div class="hero-iso hero-cta-row flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
@@ -411,7 +424,7 @@
       <span class="flex-1 bg-white"></span>
       <span class="flex-1 bg-[#138808]"></span>
     </span>
-    <span class="text-[10px] font-label-caps uppercase tracking-[0.25em] text-white/90" style="text-shadow:0 2px 12px rgba(0,0,0,0.45)">Made in India Â· Sector 79, Mohali</span>
+    <span class="text-[10px] font-label-caps uppercase tracking-[0.25em] text-white/90" style="text-shadow:0 2px 12px rgba(0,0,0,0.45)">Made in India · Sector 79, Mohali</span>
   </div>
 
   </div>
@@ -449,10 +462,10 @@
   <div class="mb-10 text-center max-w-2xl mx-auto">
     <span class="rc-section-label mb-4 block">Our Services</span>
     <h2 class="font-display-lg text-4xl md:text-5xl mb-4 text-primary tracking-tight">On-ground management.<br/><span class="font-brand-script not-italic" style="font-style:italic;">Not just software.</span></h2>
-    <p class="text-on-surface-variant font-light text-sm md:text-base leading-relaxed">Premium physical care across Mohali, Chandigarh, Panchkula &amp; Aerocity "” plus an owner dashboard for visibility.</p>
+    <p class="text-on-surface-variant font-light text-sm md:text-base leading-relaxed">Premium physical care across Mohali, Chandigarh, Panchkula &amp; Aerocity — plus an owner dashboard for visibility.</p>
   </div>
 
-  <!-- Plan selector "” highlights matching tiles + included features -->
+  <!-- Plan selector — highlights matching tiles + included features -->
   <div class="rc-plan-tabs max-w-5xl mx-auto mb-6" role="tablist" aria-label="Compare plans">
     <button type="button" class="rc-plan-tab" role="tab" data-plan-tab="residential" aria-selected="false">Residential</button>
     <button type="button" class="rc-plan-tab" role="tab" data-plan-tab="commercial" aria-selected="false">Commercial</button>
@@ -467,8 +480,8 @@
       <span class="rc-photo-tile__shade" aria-hidden="true"></span>
       <div class="rc-photo-tile__body">
         <p class="rc-photo-tile__eyebrow">Residential</p>
-        <p class="rc-photo-tile__price">â‚¹1,499<span>/mo</span></p>
-        <p class="rc-photo-tile__meta">+ â‚¹799 per extra property</p>
+        <p class="rc-photo-tile__price">₹1,499<span>/mo</span></p>
+        <p class="rc-photo-tile__meta">+ ₹799 per extra property</p>
         <span class="rc-photo-tile__cta">WhatsApp to join â†’</span>
       </div>
     </a>
@@ -477,8 +490,8 @@
       <span class="rc-photo-tile__shade" aria-hidden="true"></span>
       <div class="rc-photo-tile__body">
         <p class="rc-photo-tile__eyebrow">Commercial</p>
-        <p class="rc-photo-tile__price">â‚¹1,999<span>/mo</span></p>
-        <p class="rc-photo-tile__meta">+ â‚¹799 per extra property</p>
+        <p class="rc-photo-tile__price">₹1,999<span>/mo</span></p>
+        <p class="rc-photo-tile__meta">+ ₹799 per extra property</p>
         <span class="rc-photo-tile__cta">WhatsApp to join â†’</span>
       </div>
     </a>
@@ -496,7 +509,7 @@
 
   <!-- Feature comparison: âœ“ included, âˆ’ not included -->
   <div class="max-w-5xl mx-auto mb-6">
-    <p class="text-center text-xs text-on-surface-variant mb-4"><span class="rc-feat-yes">âœ“</span> included &nbsp;Â·&nbsp; <span class="rc-feat-no">âˆ’</span> not included Â· tap a column to focus</p>
+    <p class="text-center text-xs text-on-surface-variant mb-4"><span class="rc-feat-yes">âœ“</span> included &nbsp;·&nbsp; <span class="rc-feat-no">âˆ’</span> not included · tap a column to focus</p>
     <div class="rc-feature-matrix-wrap">
       <table class="rc-feature-matrix w-full" data-plan-matrix>
         <thead>
@@ -537,7 +550,7 @@
       <div>
         <span class="rc-section-label mb-4 block">Flagship Service</span>
         <h2 class="font-display-lg text-4xl md:text-5xl mb-6 tracking-tight text-primary">Monthly Physical Property Inspection</h2>
-        <p class="text-on-surface-variant text-base leading-relaxed mb-4">A RentCan field rep visits your property on schedule "” documenting condition and catching issues early.</p>
+        <p class="text-on-surface-variant text-base leading-relaxed mb-4">A RentCan field rep visits your property on schedule — documenting condition and catching issues early.</p>
         <p class="text-on-surface-variant/80 text-sm leading-relaxed mb-8">Real-world care, not just tenant updates.</p>
         <div class="rc-inspection-card p-6">
           <p class="font-label-caps text-xs uppercase tracking-widest text-primary mb-4">Every inspection includes</p>
@@ -578,7 +591,7 @@
 <section class="py-16 px-margin-desktop max-w-container-max mx-auto rc-section-pink">
   <div class="rc-card p-10 md:p-14 bg-surface">
     <span class="font-label-caps text-label-caps text-brand-gold uppercase tracking-[0.3em] mb-4 block">Owner Visibility</span>
-    <h2 class="font-display-lg text-3xl md:text-4xl text-primary mb-4 tracking-tight">Your dashboard supports the service "” it isn't the service.</h2>
+    <h2 class="font-display-lg text-3xl md:text-4xl text-primary mb-4 tracking-tight">Your dashboard supports the service — it isn't the service.</h2>
     <p class="text-on-surface-variant max-w-3xl leading-relaxed mb-8">After RentCan's team inspects, maintains and coordinates on your behalf, the owner dashboard gives you a clear record of everything. Subscribe for hands-on management; use the dashboard to stay informed.</p>
     <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 text-sm text-on-surface-variant">
       <div class="bg-surface rounded-xl p-4 border border-outline-variant/20">View inspection reports</div>
@@ -597,7 +610,7 @@
     <h2 class="font-display-lg text-3xl md:text-4xl text-primary tracking-tight">SOS Property Inspection</h2>
   </div>
   <div class="max-w-2xl mx-auto rc-card p-10 text-center">
-    <p class="text-5xl font-bold text-primary mb-2">â‚¹500</p>
+    <p class="text-5xl font-bold text-primary mb-2">₹500</p>
     <p class="text-sm text-on-surface-variant mb-6">per visit</p>
     <p class="text-on-surface-variant leading-relaxed mb-6">Need someone to physically check your property? Perfect for emergency situations, pre-handover inspections, maintenance verification or complete peace of mind.</p>
     <ul class="text-sm text-on-surface-variant space-y-2 mb-8 text-left max-w-md mx-auto">
@@ -616,7 +629,7 @@
     <div class="text-center mb-8 md:mb-12">
       <span class="font-label-caps text-label-caps text-brand-gold uppercase tracking-[0.3em] mb-4 block font-bold">Transparent Pricing</span>
       <h2 class="font-display-lg text-4xl md:text-5xl text-primary tracking-tight mb-5">Flat fees. Real service.</h2>
-      <p class="font-body-lg text-on-surface-variant max-w-2xl mx-auto">No percentage of your rent. You pay for on-ground property management "” residential, commercial, or custom Airbnb hospitality.</p>
+      <p class="font-body-lg text-on-surface-variant max-w-2xl mx-auto">No percentage of your rent. You pay for on-ground property management — residential, commercial, or custom Airbnb hospitality.</p>
     </div>
 
     <div class="rc-plan-tabs max-w-5xl mx-auto mb-5" role="tablist" aria-label="Pricing plans">
@@ -626,7 +639,7 @@
     </div>
 
     <div class="rc-launch-banner">
-      <strong>Full launch Â· 1 October</strong>
+      <strong>Full launch · 1 October</strong>
       <p>WhatsApp <a href="#" data-wa-plan="general">+91 81462 98024</a> to get set up now. First 100 owners keep today's pricing and get priority service.</p>
     </div>
 
@@ -634,15 +647,15 @@
     <div class="rc-price-compare md:hidden mb-5" role="group" aria-label="Compare plans">
       <a href="#" data-wa-plan="residential" class="rc-price-compare__cell" data-plan="residential">
         <span class="rc-price-compare__label">Residential</span>
-        <span class="rc-price-compare__amount">â‚¹1,499</span>
+        <span class="rc-price-compare__amount">₹1,499</span>
         <span class="rc-price-compare__unit">/mo</span>
-        <span class="rc-price-compare__note">+â‚¹799 extra</span>
+        <span class="rc-price-compare__note">+₹799 extra</span>
       </a>
       <a href="#" data-wa-plan="commercial" class="rc-price-compare__cell rc-price-compare__cell--featured" data-plan="commercial">
         <span class="rc-price-compare__label">Commercial</span>
-        <span class="rc-price-compare__amount">â‚¹1,999</span>
+        <span class="rc-price-compare__amount">₹1,999</span>
         <span class="rc-price-compare__unit">/mo</span>
-        <span class="rc-price-compare__note">+â‚¹799 extra</span>
+        <span class="rc-price-compare__note">+₹799 extra</span>
       </a>
       <a href="#" data-wa-plan="airbnb" class="rc-price-compare__cell" data-plan="airbnb">
         <span class="rc-price-compare__label">Airbnb</span>
@@ -651,7 +664,7 @@
         <span class="rc-price-compare__note">Hospitality</span>
       </a>
     </div>
-    <p class="rc-price-compare-hint md:hidden">Tap a plan tab Â· swipe cards for details</p>
+    <p class="rc-price-compare-hint md:hidden">Tap a plan tab · swipe cards for details</p>
 
     <div class="rc-price-rail max-w-5xl mx-auto" data-plan-group="pricing">
       <a href="#" data-wa-plan="residential" class="rc-photo-tile rc-photo-tile--residential" data-plan="residential">
@@ -659,8 +672,8 @@
         <span class="rc-photo-tile__shade" aria-hidden="true"></span>
         <div class="rc-photo-tile__body">
           <p class="rc-photo-tile__eyebrow">Residential</p>
-          <p class="rc-photo-tile__price">â‚¹1,499<span>/mo</span></p>
-          <p class="rc-photo-tile__meta">+ â‚¹799/additional property</p>
+          <p class="rc-photo-tile__price">₹1,499<span>/mo</span></p>
+          <p class="rc-photo-tile__meta">+ ₹799/additional property</p>
           <span class="rc-photo-tile__cta">WhatsApp to join â†’</span>
         </div>
       </a>
@@ -669,8 +682,8 @@
         <span class="rc-photo-tile__shade" aria-hidden="true"></span>
         <div class="rc-photo-tile__body">
           <p class="rc-photo-tile__eyebrow">Commercial</p>
-          <p class="rc-photo-tile__price">â‚¹1,999<span>/mo</span></p>
-          <p class="rc-photo-tile__meta">+ â‚¹799/additional property</p>
+          <p class="rc-photo-tile__price">₹1,999<span>/mo</span></p>
+          <p class="rc-photo-tile__meta">+ ₹799/additional property</p>
           <span class="rc-photo-tile__cta">WhatsApp to join â†’</span>
         </div>
       </a>
@@ -685,7 +698,7 @@
         </div>
       </a>
     </div>
-    <p class="text-center text-on-surface-variant/60 font-light mt-10 text-sm">SOS visits: <a href="#" data-wa-plan="sos" class="text-primary font-semibold underline">â‚¹500/visit</a> Â· Base plan covers 1 property Â· WhatsApp to get set up "” online payments open at full launch</p>
+    <p class="text-center text-on-surface-variant/60 font-light mt-10 text-sm">SOS visits: <a href="#" data-wa-plan="sos" class="text-primary font-semibold underline">₹500/visit</a> · Base plan covers 1 property · WhatsApp to get set up — online payments open at full launch</p>
   </div>
 </section>
 
@@ -751,7 +764,7 @@
 </div>
 </div>
 <div class="max-w-container-max mx-auto px-margin-desktop pt-12 border-t border-outline-variant/10 flex flex-col md:flex-row justify-between items-center text-[10px] text-on-surface-variant/40 font-bold uppercase tracking-[0.3em]">
-<span class="text-on-surface-variant/50">Proudly Made in India Â· Reliable on-time inspections</span>
+<span class="text-on-surface-variant/50">Proudly Made in India · Reliable on-time inspections</span>
 <div class="flex gap-12 mt-8 md:mt-0">
 <a href="https://instagram.com/rentcan.in" target="_blank" rel="noopener" class="hover:text-primary transition-colors">Instagram</a>
 <a href="https://www.linkedin.com/" target="_blank" rel="noopener" class="hover:text-primary transition-colors">LinkedIn</a>

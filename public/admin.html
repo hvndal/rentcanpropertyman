@@ -217,7 +217,7 @@ async function loadAdminProperties() {
   (properties || []).forEach(p => {
     const opt = document.createElement('option');
     opt.value = p.id;
-    opt.textContent = p.name + (p.address ? ' "” ' + p.address : '');
+    opt.textContent = p.name + (p.address ? ' — ' + p.address : '');
     select.appendChild(opt);
   });
   if (!(properties || []).length) {
@@ -230,7 +230,7 @@ async function publishInspectionReport() {
   const propId = document.getElementById('admin-prop-select').value;
   const date = document.getElementById('admin-inspection-date').value;
   const outcome = document.getElementById('admin-outcome').value;
-  const summary = document.getElementById('admin-summary').value.trim() || ('Inspection "” ' + date);
+  const summary = document.getElementById('admin-summary').value.trim() || ('Inspection — ' + date);
   const notes = document.getElementById('admin-notes').value.trim();
   const photos = document.getElementById('admin-photos').value.split('\n').map(s => s.trim()).filter(Boolean);
   const statusEl = document.getElementById('publish-status');

@@ -45,7 +45,7 @@
   <header class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 px-margin-mobile md:px-margin-desktop py-stack-md sticky top-0 rc-app-header z-10">
     <div>
       <h1 class="font-headline-lg text-headline-lg text-primary">Inspections</h1>
-      <p class="text-sm text-on-surface-variant mt-0.5">Monthly 5th-of-month checks Â· 15-point checklist Â· photo reports</p>
+      <p class="text-sm text-on-surface-variant mt-0.5">Monthly 5th-of-month checks · 15-point checklist · photo reports</p>
     </div>
     <div class="flex items-center gap-2">
       <button id="tenant-repair-btn" type="button" onclick="showComplaintModal()" class="hidden bg-red-600 text-white px-4 py-2.5 rounded-lg text-sm font-bold">Raise Repair</button>
@@ -57,19 +57,19 @@
     <section class="grid grid-cols-2 lg:grid-cols-4 gap-3" id="insp-kpis">
       <div class="rc-kpi border border-outline rounded-xl p-4 bg-surface-container-lowest">
         <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Next cycle</p>
-        <p class="text-xl font-bold text-primary mt-1" id="kpi-next">"”</p>
+        <p class="text-xl font-bold text-primary mt-1" id="kpi-next">—</p>
       </div>
       <div class="rc-kpi border border-outline rounded-xl p-4 bg-surface-container-lowest">
         <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Published</p>
-        <p class="text-xl font-bold text-primary mt-1" id="kpi-published">"”</p>
+        <p class="text-xl font-bold text-primary mt-1" id="kpi-published">—</p>
       </div>
       <div class="rc-kpi border border-outline rounded-xl p-4 bg-surface-container-lowest">
         <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Due / open</p>
-        <p class="text-xl font-bold text-primary mt-1" id="kpi-open">"”</p>
+        <p class="text-xl font-bold text-primary mt-1" id="kpi-open">—</p>
       </div>
       <div class="rc-kpi border border-outline rounded-xl p-4 bg-surface-container-lowest">
         <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Properties</p>
-        <p class="text-xl font-bold text-primary mt-1" id="kpi-props">"”</p>
+        <p class="text-xl font-bold text-primary mt-1" id="kpi-props">—</p>
       </div>
     </section>
 
@@ -154,7 +154,7 @@ function outcomeBadge(status, outcome) {
   if (s === 'pass' || s === 'published' || s === 'resolved') return '<span class="rc-status rc-status-ok">' + escapeHtml(s.replace('_', ' ')) + '</span>';
   if (s === 'minor_issue' || s === 'scheduled' || s === 'in_progress' || s === 'pending') return '<span class="rc-status rc-status-pending">' + escapeHtml(s.replace('_', ' ')) + '</span>';
   if (s === 'urgent' || s === 'overdue') return '<span class="rc-status rc-status-warn">' + escapeHtml(s) + '</span>';
-  return '<span class="rc-status">' + escapeHtml(s || '"”') + '</span>';
+  return '<span class="rc-status">' + escapeHtml(s || '—') + '</span>';
 }
 
 async function fetchInspections(client, propertyIds) {
@@ -180,7 +180,7 @@ function openDetail(propId) {
   const history = STATE.inspections.filter(i => i.property_id === propId);
   const fallback = STATE.maintenance.filter(m => m.property_id === propId && m.category === 'inspection');
   document.getElementById('detail-title').textContent = prop.name;
-  document.getElementById('detail-sub').textContent = (prop.address || '') + ' Â· Next: ' + formatInspectionDateDisplay(next);
+  document.getElementById('detail-sub').textContent = (prop.address || '') + ' · Next: ' + formatInspectionDateDisplay(next);
 
   const checklist = (RC_INSPECTION_CHECKLIST || []).map(item =>
     `<li class="flex items-start gap-2 text-sm text-on-surface py-1.5 border-b border-outline-variant/50"><span class="material-symbols-outlined text-primary text-[18px] mt-0.5">check_circle</span><span>${escapeHtml(item)}</span></li>`
@@ -288,7 +288,7 @@ async function submitComplaint() {
   window.open('https://wa.me/918146298024?text=' + msg, '_blank');
   closeComplaintModal();
   if (saved) alert('Repair request saved and WhatsApp opened for our team.');
-  else alert('WhatsApp opened for our team. Could not save to your account "” please confirm on WhatsApp.');
+  else alert('WhatsApp opened for our team. Could not save to your account — please confirm on WhatsApp.');
 }
 
 function renderPage() {
@@ -341,14 +341,14 @@ function renderPage() {
     const prop = STATE.properties.find(p => p.id === i.property_id);
     rows.push({
       title: i.summary || 'Inspection report',
-      meta: (prop?.name || 'Property') + ' Â· ' + formatDate(i.inspection_date || i.created_at),
+      meta: (prop?.name || 'Property') + ' · ' + formatDate(i.inspection_date || i.created_at),
       status: i.outcome || i.status
     });
   });
   STATE.maintenance.filter(m => m.category === 'inspection' || m.category === 'plumbing' || m.category === 'appliance').slice(0, 8).forEach(m => {
     rows.push({
       title: m.title,
-      meta: (m.properties?.name || '') + ' Â· ' + formatDate(m.created_at),
+      meta: (m.properties?.name || '') + ' · ' + formatDate(m.created_at),
       status: m.status
     });
   });
@@ -378,7 +378,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     STATE.userId = session.user.id;
     STATE.role = sessionStorage.getItem('rentcan_role') || 'landlord';
     document.getElementById('sidebar-role-label').textContent =
-      (STATE.role.charAt(0).toUpperCase() + STATE.role.slice(1)) + ' Â· Inspections';
+      (STATE.role.charAt(0).toUpperCase() + STATE.role.slice(1)) + ' · Inspections';
 
     if (STATE.role === 'tenant') {
       document.getElementById('tenant-repair-btn')?.classList.remove('hidden');

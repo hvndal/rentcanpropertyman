@@ -64,12 +64,12 @@
 <div class="flex gap-gutter rc-kpi-row" id="ledger-kpis">
 <div class="text-right">
 <span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">COLLECTED</span>
-<span class="font-headline-md text-headline-md text-primary" id="kpi-collected">"”</span>
+<span class="font-headline-md text-headline-md text-primary" id="kpi-collected">—</span>
 </div>
 <div class="w-[1px] h-12 bg-outline-variant hidden md:block"></div>
 <div class="text-right">
 <span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">PENDING</span>
-<span class="font-headline-md text-headline-md text-brand-gold" id="kpi-pending">"”</span>
+<span class="font-headline-md text-headline-md text-brand-gold" id="kpi-pending">—</span>
 </div>
 </div>
 </header>
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       mobile.innerHTML = '<p class="text-sm text-on-surface-variant text-center py-8">No payments yet.</p>';
     } else {
       tbody.innerHTML = payments.map(p => {
-        const name = p.tenant_name || '"”';
+        const name = p.tenant_name || '—';
         const prop = p.properties?.name || 'Property';
         return `<tr class="hover:bg-surface-container-low transition-colors">
           <td class="px-stack-md py-5 border-b border-outline-variant">${escapeHtml(formatDate(p.paid_at || p.due_date || p.created_at))}</td>

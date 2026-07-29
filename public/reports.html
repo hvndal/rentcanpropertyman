@@ -179,8 +179,8 @@ function showReportDetail(btn) {
     const lines = [
       r.title || 'Inspection report',
       '',
-      'Property: ' + (r.property || '"”'),
-      'Date: ' + (formatDate(r.date) || '"”'),
+      'Property: ' + (r.property || '—'),
+      'Date: ' + (formatDate(r.date) || '—'),
       '',
       r.summary || 'No additional notes.',
       r.value ? ('Value note: ' + formatINR(r.value)) : ''
@@ -241,12 +241,12 @@ document.addEventListener('DOMContentLoaded', async () => {
           <div class="flex-1 p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <h3 class="font-title-lg text-title-lg text-on-surface">${escapeHtml(r.title)}</h3>
-              <p class="font-body-md text-body-md text-on-surface-variant">${escapeHtml(r.property)} "” ${escapeHtml(r.summary || '')}</p>
+              <p class="font-body-md text-body-md text-on-surface-variant">${escapeHtml(r.property)} — ${escapeHtml(r.summary || '')}</p>
             </div>
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <div class="sm:text-right">
                 <p class="font-label-lg text-label-lg">${escapeHtml(formatDate(r.date))}</p>
-                <p class="font-label-sm text-label-sm text-on-surface-variant">${escapeHtml(r.outcome || 'PDF')}${r.value ? ' Â· ' + escapeHtml(formatINR(r.value)) : ''}</p>
+                <p class="font-label-sm text-label-sm text-on-surface-variant">${escapeHtml(r.outcome || 'PDF')}${r.value ? ' · ' + escapeHtml(formatINR(r.value)) : ''}</p>
               </div>
               <button type="button" data-report="${payload}" onclick="showReportDetail(this)" class="rc-tap bg-primary text-on-primary px-4 py-2 font-label-lg text-label-lg rounded">View Report</button>
             </div>
@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <div>
             <span class="material-symbols-outlined text-primary mb-3 text-3xl">description</span>
             <h4 class="font-title-lg text-title-lg mb-2 text-on-surface">${escapeHtml(d.name)}</h4>
-            <p class="font-body-md text-body-md text-on-surface-variant">${escapeHtml(d.property_name || '')} Â· ${escapeHtml(formatDate(d.created_at))}</p>
+            <p class="font-body-md text-body-md text-on-surface-variant">${escapeHtml(d.property_name || '')} · ${escapeHtml(formatDate(d.created_at))}</p>
           </div>
           <div class="flex justify-between items-center pt-stack-md border-t border-outline-variant mt-4">
             ${RentCanDemo.statusBadge(String(d.type || 'file').replace('_',' '))}

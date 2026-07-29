@@ -64,7 +64,7 @@
     </div>
     <div>
       <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-1">Name</label>
-      <input id="upload-name" type="text" class="w-full border border-outline rounded-xl p-3 text-sm" placeholder="Lease Agreement "” Tenant">
+      <input id="upload-name" type="text" class="w-full border border-outline rounded-xl p-3 text-sm" placeholder="Lease Agreement — Tenant">
     </div>
     <div>
       <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-1">Type</label>
@@ -185,7 +185,7 @@ function renderDocs(docs) {
         </div>
         <div class="min-w-0">
           <p class="font-bold text-on-surface truncate">${escapeHtml(d.name)}</p>
-          <p class="text-sm text-on-surface-variant">${escapeHtml(d.property_name || 'Property')} Â· ${escapeHtml(formatDate(d.created_at))}</p>
+          <p class="text-sm text-on-surface-variant">${escapeHtml(d.property_name || 'Property')} · ${escapeHtml(formatDate(d.created_at))}</p>
         </div>
       </div>
       <div class="flex items-center gap-2 justify-between sm:justify-end">
