@@ -1,4 +1,4 @@
-﻿/* RentCan brand &mdash; logo palette: mint, pink, gold, brown */
+/* RentCan brand &mdash; logo palette: mint, pink, gold, brown */
 /* Logo standard sitewide: /assets/logos/rentcan-wordmark.png + .rc-brand-logo--light */
 :root {
   --rc-mint:         #CFDFDE;
@@ -1552,9 +1552,26 @@ html[data-plan-focus] .is-plan-focus.rc-plan-pulse {
 }
 
 
+/* rc-photo-tile--grid: used in Why Choose Us tiles (smaller, icon-centered) */
+.rc-photo-tile--grid {
+  min-height: 11rem;
+  justify-content: center;
+}
 
-.rc-mobile-drawer-panel .rc-brand-logo--ghost img {
-  filter: drop-shadow(0 1px 3px rgba(78, 66, 56, 0.18)) brightness(0.15);
+.rc-photo-tile--grid .rc-photo-tile__body {
+  text-align: center;
+}
+
+/* Marquee animation for trust badges ticker */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+  display: flex;
+  will-change: transform;
 }
 
 /* ── Mobile Hero text overflow fixes ──────────────────────────────── */
