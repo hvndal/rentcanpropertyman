@@ -341,8 +341,28 @@
 <script src="/js/sound_manager.js"></script>
 </head>
 <body class="rc-brand bg-brand-cream  text-on-surface font-body-base antialiased pb-20 md:pb-0">
+<!-- Top Announcement Bar -->
+<div id="rc-top-bar" class="w-full bg-primary text-white text-center px-4 py-2 text-[11px] font-semibold tracking-wide flex items-center justify-center gap-3 relative z-[60]" role="banner">
+  <span class="inline-flex items-center gap-2">
+    <span class="material-symbols-outlined text-brand-gold text-base" style="font-variation-settings:'FILL' 1">phone_in_talk</span>
+    <span>When you call — <strong class="font-black">real people answer.</strong> No AI. No hold queue. No customer care scripts.</span>
+    <a href="tel:+918146298024" class="ml-1 underline underline-offset-2 font-black hover:text-brand-gold transition-colors whitespace-nowrap">+91 81462 98024</a>
+  </span>
+  <button id="rc-top-bar-close" aria-label="Dismiss" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors p-1">
+    <span class="material-symbols-outlined text-base leading-none">close</span>
+  </button>
+</div>
+<script>
+  (function(){
+    var bar = document.getElementById('rc-top-bar');
+    var btn = document.getElementById('rc-top-bar-close');
+    if(sessionStorage.getItem('rc_bar_closed')){if(bar)bar.style.display='none';}
+    if(btn){btn.addEventListener('click',function(){if(bar)bar.style.display='none';sessionStorage.setItem('rc_bar_closed','1');});}
+  })();
+</script>
 
 <!-- Site header &mdash; overlays hero, then solidifies on scroll -->
+
 <header id="site-header" class="rc-site-header rc-site-header--on-hero">
   <div class="rc-site-nav-bar">
     <div class="rc-site-nav-brand">
