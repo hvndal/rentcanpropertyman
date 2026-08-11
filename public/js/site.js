@@ -237,17 +237,17 @@
   const WA_PHONE = '918146298024';
   const WA_MESSAGES = {
     residential:
-      "Hi RentCan — I'd like to get set up for Residential (₹1,499/mo). Full launch is 1 October; please lock me in as one of the first 100 owners at this pricing with priority service.",
+      "Hi RentCan — I'm interested in property management for my home. Please share details.",
     commercial:
-      "Hi RentCan — I'd like to get set up for Commercial (₹1,999/mo). Full launch is 1 October; please lock me in as one of the first 100 owners at this pricing with priority service.",
+      "Hi RentCan — I'm interested in commercial property management. Please share details.",
     airbnb:
-      "Hi RentCan — I'd like custom Airbnb management. Full launch is 1 October; please lock me in as one of the first 100 owners with founding pricing and priority service.",
+      "Hi RentCan — I'm interested in Airbnb management. Please share details.",
     sos:
-      "Hi RentCan — I need an SOS property inspection (₹500/visit). Please help me book one.",
+      "Hi RentCan — I need an urgent property inspection. Please share details.",
     investor:
       "Hi Herman — I came from the RentCan investors page. Would love to learn more and set up a call.",
     general:
-      "Hi RentCan — I'd like to get set up. Full launch is 1 October — please lock me in as one of the first 100 owners at today's pricing with priority service.",
+      "Hi RentCan — I'm interested in your property management services. Please share details.",
   };
 
   function waUrl(plan) {
