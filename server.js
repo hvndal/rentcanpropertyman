@@ -17,6 +17,12 @@ const {
   extractVerifiedPhone
 } = require('./lib/msg91');
 const { rateLimit, clientIp } = require('./lib/rate-limit');
+const {
+  securityHeaders,
+  canonicalHost,
+  robotsTagForPrivateRoutes,
+  buildSitemap
+} = require('./lib/seo');
 const { getPlan, listPlans } = require('./lib/plans');
 const {
   getKeyId,
@@ -34,6 +40,11 @@ const PORT = process.env.PORT || 3000;
 const IS_PROD = process.env.VERCEL === '1'
   || process.env.NODE_ENV === 'production'
   || !!process.env.VERCEL_ENV;
+
+// ── SEO + security layer (see lib/seo.js — vercel.json headers never applied) ──
+app.use(securityHeaders);
+app.use(canonicalHost);
+app.use(robotsTagForPrivateRoutes);
 
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
@@ -845,8 +856,14 @@ app.post('/api/submit-maintenance', async (req, res) => {
   });
 });
 
+// sitemap.xml is generated from the lib/seo.js page registry, never hand-edited,
+// so it cannot drift out of sync with what is actually indexable.
+app.get('/sitemap.xml', (req, res) => {
+  res.type('application/xml').set('Cache-Control', 'public, max-age=3600').send(buildSitemap());
+});
+
 // SEO / crawler files — explicit routes so they never fall through to SPA fallback
-['/robots.txt', '/sitemap.xml', '/humans.txt', '/manifest.json', '/favicon.ico', '/apple-touch-icon.png'].forEach((file) => {
+['/robots.txt', '/humans.txt', '/manifest.json', '/favicon.ico', '/apple-touch-icon.png'].forEach((file) => {
   app.get(file, (req, res) => {
     res.sendFile(path.join(__dirname, 'public', file.replace(/^\//, '')));
   });

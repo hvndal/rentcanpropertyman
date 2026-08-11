@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
+    "seo:audit": "node scripts/seo-audit.js",
+    "seo:audit:prod": "node scripts/seo-audit.js https://rentcan.in",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

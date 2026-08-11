@@ -1,44 +1,28 @@
-# RentCan Property Management — https://rentcan.in
-# Mohali · Chandigarh · Panchkula · Aerocity
+# RentCan — Property Management, Tricity (Mohali · Chandigarh · Panchkula · Zirakpur)
+# https://rentcan.in
+#
+# Note: Disallow here only stops crawling, not indexing. The application routes
+# below also send `X-Robots-Tag: noindex, nofollow` from lib/seo.js, which is
+# what actually keeps them out of the index.
 
 User-agent: *
 Allow: /
-Allow: /info
-Allow: /investors
-Allow: /assets/
+
+# Private application surface — nothing here is useful in a search result.
+Disallow: /dashboard
+Disallow: /documents
+Disallow: /payments
+Disallow: /inspections
+Disallow: /reports
+Disallow: /admin
+Disallow: /login
+Disallow: /checkout
+Disallow: /api/
+
+# Crawlers must be able to fetch CSS/JS to render the page as a user sees it.
+# Blocking them causes mobile-usability and rendering failures in Search Console.
 Allow: /css/
 Allow: /js/
-Allow: /favicon.ico
-Allow: /apple-touch-icon.png
-Allow: /manifest.json
-
-Disallow: /dashboard
-Disallow: /documents
-Disallow: /payments
-Disallow: /inspections
-Disallow: /reports
-Disallow: /admin
-Disallow: /login
-Disallow: /checkout
-Disallow: /api/
-
-User-agent: Googlebot
-Allow: /
-Allow: /info
-Allow: /investors
-Allow: /assets/
-Allow: /assets/seo/
-Disallow: /dashboard
-Disallow: /documents
-Disallow: /payments
-Disallow: /inspections
-Disallow: /reports
-Disallow: /admin
-Disallow: /login
-Disallow: /checkout
-Disallow: /api/
-
-User-agent: Googlebot-Image
 Allow: /assets/
 
 Sitemap: https://rentcan.in/sitemap.xml
