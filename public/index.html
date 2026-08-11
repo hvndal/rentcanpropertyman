@@ -150,26 +150,33 @@
     },
     {
       "@type": "Service",
-      "name": "Premium Residential Property Management Mohali & Chandigarh",
-      "serviceType": "Residential Property Management",
+      "name": "Housing Society & Building Management Mohali & Chandigarh",
+      "serviceType": "Housing Society Management",
+      "provider": {"@id": "https://rentcan.in/#organization"},
+      "areaServed": ["Mohali", "Chandigarh", "Panchkula", "Aerocity"]
+    },
+    {
+      "@type": "Service",
+      "name": "Airbnb Management & Setup Tricity",
+      "serviceType": "Airbnb Property Management",
       "provider": {"@id": "https://rentcan.in/#organization"},
       "areaServed": ["Mohali", "Chandigarh", "Panchkula", "Aerocity"],
-      "offers": {"@type": "Offer", "price": "1499", "priceCurrency": "INR", "description": "Per month per property"}
+      "offers": {"@type": "Offer", "price": "9999", "priceCurrency": "INR", "description": "Setup starting price"}
     },
     {
       "@type": "Service",
       "name": "Commercial Property Management Chandigarh & Tricity",
       "serviceType": "Commercial Property Management",
       "provider": {"@id": "https://rentcan.in/#organization"},
-      "areaServed": ["Mohali", "Chandigarh", "Panchkula", "Aerocity"],
-      "offers": {"@type": "Offer", "price": "1999", "priceCurrency": "INR", "description": "Per month per property"}
+      "areaServed": ["Mohali", "Chandigarh", "Panchkula", "Aerocity"]
     },
     {
       "@type": "Service",
-      "name": "Airbnb Management Aerocity & Tricity",
-      "serviceType": "Short-term Rental Management",
+      "name": "Residential Property Management Mohali & Chandigarh",
+      "serviceType": "Residential Property Management",
       "provider": {"@id": "https://rentcan.in/#organization"},
-      "areaServed": ["Mohali", "Chandigarh", "Panchkula", "Aerocity"]
+      "areaServed": ["Mohali", "Chandigarh", "Panchkula", "Aerocity"],
+      "offers": {"@type": "Offer", "price": "1499", "priceCurrency": "INR", "description": "Per month, 1 BHK starting price"}
     },
     {
       "@type": "FAQPage",
@@ -371,10 +378,10 @@
       </a>
     </div>
     <nav class="rc-site-nav-links" aria-label="Main">
-      <a class="rc-site-nav-link" href="/homes">Homes &amp; Kothis</a>
-      <a class="rc-site-nav-link" href="/buildings">Buildings &amp; Communities</a>
-      <a class="rc-site-nav-link" href="/commercial">Commercial</a>
+      <a class="rc-site-nav-link" href="/buildings">Buildings &amp; Societies</a>
       <a class="rc-site-nav-link" href="/airbnb">Airbnb &amp; Hospitality</a>
+      <a class="rc-site-nav-link" href="/commercial">Commercial</a>
+      <a class="rc-site-nav-link" href="/homes">Homes &amp; Kothis</a>
     </nav>
     <div class="rc-site-nav-actions">
       <a class="hidden sm:inline text-xs font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" href="/login">Login</a>
@@ -399,11 +406,13 @@
       </button>
     </div>
     <nav class="flex flex-col gap-1">
-      <a href="#services" class="rc-mobile-drawer-link" data-close-menu><span class="material-symbols-outlined text-primary text-xl">grid_view</span> Services</a>
-      <a href="#pricing" class="rc-mobile-drawer-link" data-close-menu><span class="material-symbols-outlined text-primary text-xl">loyalty</span> Pricing</a>
-      <a href="#inspection" class="rc-mobile-drawer-link" data-close-menu><span class="material-symbols-outlined text-primary text-xl">fact_check</span> Inspections</a>
+      <a href="/buildings" class="rc-mobile-drawer-link" data-close-menu><span class="material-symbols-outlined text-primary text-xl">apartment</span> Buildings &amp; Societies</a>
+      <a href="/airbnb" class="rc-mobile-drawer-link" data-close-menu><span class="material-symbols-outlined text-primary text-xl">hotel</span> Airbnb &amp; Hospitality</a>
+      <a href="/commercial" class="rc-mobile-drawer-link" data-close-menu><span class="material-symbols-outlined text-primary text-xl">storefront</span> Commercial</a>
+      <a href="/homes" class="rc-mobile-drawer-link" data-close-menu><span class="material-symbols-outlined text-primary text-xl">home</span> Homes &amp; Kothis</a>
+      <a href="/pricing" class="rc-mobile-drawer-link" data-close-menu><span class="material-symbols-outlined text-primary text-xl">loyalty</span> Pricing</a>
       <a href="#contact" class="rc-mobile-drawer-link" data-close-menu><span class="material-symbols-outlined text-primary text-xl">mail</span> Contact</a>
-      <a href="#" data-wa-plan="general" class="rc-mobile-drawer-link mt-3 border border-outline-variant"><span class="material-symbols-outlined text-primary text-xl">chat</span> WhatsApp to join</a>
+      <a href="#" data-wa-plan="general" class="rc-mobile-drawer-link mt-3 border border-outline-variant"><span class="material-symbols-outlined text-primary text-xl">chat</span> WhatsApp to get set up</a>
     </nav>
   </div>
 </div>
@@ -561,110 +570,89 @@
     <p class="text-on-surface-variant font-light text-sm md:text-base leading-relaxed">Premium physical care across Mohali, Chandigarh, Panchkula &amp; Aerocity &mdash; plus an owner dashboard for visibility.</p>
   </div>
 
-  <!-- Plan selector &mdash; highlights matching tiles + included features -->
-  <div class="rc-plan-tabs max-w-5xl mx-auto mb-6" role="tablist" aria-label="Compare plans">
-    <button type="button" class="rc-plan-tab" role="tab" data-plan-tab="residential" aria-selected="false">Residential</button>
-    <button type="button" class="rc-plan-tab" role="tab" data-plan-tab="commercial" aria-selected="false">Commercial</button>
-    <button type="button" class="rc-plan-tab" role="tab" data-plan-tab="airbnb" aria-selected="false">Airbnb</button>
-  </div>
-  <p class="rc-plan-tabs-hint text-center text-xs text-on-surface-variant mb-6">Tap a plan to highlight what is included and matching price tiles</p>
+  <!-- Service tiles (4 categories) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-10 items-stretch">
 
-  <!-- Plan photo tiles (Exactly 3 Equal-Height Cards) -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-10 items-stretch" data-plan-group="tiles">
-    
-    <!-- Residential Card -->
-    <a href="#" data-wa-plan="residential" class="rc-photo-tile rc-photo-tile--residential group min-h-[420px] p-6 transition-all duration-300 shadow-xl border border-white/20 hover:border-brand-gold flex flex-col justify-between" data-plan="residential">
+    <!-- Buildings & Societies -->
+    <a href="/buildings" class="rc-photo-tile rc-photo-tile--commercial group min-h-[380px] p-6 transition-all duration-300 shadow-xl border border-white/20 hover:border-brand-gold flex flex-col justify-between">
       <span class="rc-photo-tile__media transition-transform duration-700 group-hover:scale-105" aria-hidden="true"></span>
       <span class="rc-photo-tile__shade" aria-hidden="true"></span>
       <div class="rc-photo-tile__body flex flex-col justify-between h-full relative z-10">
         <div></div>
-
-        <!-- Clean Text Layout over Full Photo -->
         <div>
-          <span class="text-brand-gold font-extrabold tracking-widest text-[11px] uppercase mb-1 block drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">Residential</span>
-          <p class="rc-photo-tile__price text-3xl font-extrabold text-white mb-0.5 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">₹1,499<span class="text-xs text-white/90 font-normal">/mo</span></p>
-          <p class="rc-photo-tile__meta text-[11px] text-white/90 mb-4 font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">+ ₹799 per extra property</p>
-          
-          <!-- Compact Full Feature List -->
-          <ul class="space-y-2 text-[11px] text-white font-semibold leading-tight drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)] mb-5">
-            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> 15-Point Monthly Physical Inspection</li>
-            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Tenant Care &amp; Dispute Management</li>
-            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Rent Payment Tracking &amp; Receipts</li>
-            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Photo Reports &amp; Lease Storage</li>
+          <span class="text-brand-gold font-extrabold tracking-widest text-[11px] uppercase mb-1 block drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">Buildings &amp; Societies</span>
+          <p class="rc-photo-tile__price text-2xl font-extrabold text-white mb-0.5 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">Talk to Sales</p>
+          <ul class="space-y-1.5 text-[11px] text-white font-semibold leading-tight drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)] mb-5 mt-3">
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> QR Issue Reporting</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Building &amp; Unit Inspections</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Vendor Coordination</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Resident Management</li>
           </ul>
-
-          <span class="w-full inline-flex items-center justify-center gap-1.5 py-3 bg-[#F6CFDE] text-[#4E2A38] text-xs font-extrabold rounded-xl hover:bg-[#F0B8CE] transition-all uppercase tracking-wider shadow-lg">WhatsApp to join &rarr;</span>
+          <span class="w-full inline-flex items-center justify-center gap-1.5 py-3 bg-[#F6CFDE] text-[#4E2A38] text-xs font-extrabold rounded-xl hover:bg-[#F0B8CE] transition-all uppercase tracking-wider shadow-lg">Learn more &rarr;</span>
         </div>
       </div>
+    </a>
 
-    <!-- Commercial Card -->
-    <a href="#" data-wa-plan="commercial" class="rc-photo-tile rc-photo-tile--commercial group min-h-[420px] p-6 transition-all duration-300 shadow-2xl border-2 border-brand-gold hover:border-brand-gold flex flex-col justify-between" data-plan="commercial">
+    <!-- Airbnb & Hospitality -->
+    <a href="/airbnb" class="rc-photo-tile rc-photo-tile--airbnb group min-h-[380px] p-6 transition-all duration-300 shadow-xl border border-white/20 hover:border-brand-gold flex flex-col justify-between">
       <span class="rc-photo-tile__media transition-transform duration-700 group-hover:scale-105" aria-hidden="true"></span>
       <span class="rc-photo-tile__shade" aria-hidden="true"></span>
       <div class="rc-photo-tile__body flex flex-col justify-between h-full relative z-10">
         <div></div>
+        <div>
+          <span class="text-brand-gold font-extrabold tracking-widest text-[11px] uppercase mb-1 block drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">Airbnb &amp; Hospitality</span>
+          <p class="rc-photo-tile__price text-2xl font-extrabold text-white mb-0.5 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">From ₹9,999</p>
+          <ul class="space-y-1.5 text-[11px] text-white font-semibold leading-tight drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)] mb-5 mt-3">
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Listing Setup &amp; Optimisation</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Guest Communication</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Cleaning &amp; Turnover</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Full Management Available</li>
+          </ul>
+          <span class="w-full inline-flex items-center justify-center gap-1.5 py-3 bg-[#F6CFDE] text-[#4E2A38] text-xs font-extrabold rounded-xl hover:bg-[#F0B8CE] transition-all uppercase tracking-wider shadow-lg">Learn more &rarr;</span>
+        </div>
+      </div>
+    </a>
 
-        <!-- Clean Text Layout over Full Photo -->
+    <!-- Commercial -->
+    <a href="/commercial" class="rc-photo-tile rc-photo-tile--residential group min-h-[380px] p-6 transition-all duration-300 shadow-xl border border-white/20 hover:border-brand-gold flex flex-col justify-between">
+      <span class="rc-photo-tile__media transition-transform duration-700 group-hover:scale-105" aria-hidden="true"></span>
+      <span class="rc-photo-tile__shade" aria-hidden="true"></span>
+      <div class="rc-photo-tile__body flex flex-col justify-between h-full relative z-10">
+        <div></div>
         <div>
           <span class="text-brand-gold font-extrabold tracking-widest text-[11px] uppercase mb-1 block drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">Commercial</span>
-          <p class="rc-photo-tile__price text-3xl font-extrabold text-white mb-0.5 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">₹1,999<span class="text-xs text-white/90 font-normal">/mo</span></p>
-          <p class="rc-photo-tile__meta text-[11px] text-white/90 mb-4 font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">+ ₹799 per extra property</p>
-          
-          <!-- Compact Full Feature List -->
-          <ul class="space-y-2 text-[11px] text-white font-semibold leading-tight drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)] mb-5">
-            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Safety &amp; Structural Walkthroughs</li>
-            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Office, Retail &amp; Warehouse Care</li>
-            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Commercial Lease Compliance Audit</li>
-            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Priority Field Rep Dispatch</li>
+          <p class="rc-photo-tile__price text-2xl font-extrabold text-white mb-0.5 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">Talk to Sales</p>
+          <ul class="space-y-1.5 text-[11px] text-white font-semibold leading-tight drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)] mb-5 mt-3">
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Property Inspections</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Maintenance &amp; Work Orders</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Photo Evidence</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Tenant Management</li>
           </ul>
-
-          <span class="w-full inline-flex items-center justify-center gap-1.5 py-3 bg-[#F6CFDE] text-[#4E2A38] text-xs font-extrabold rounded-xl hover:bg-[#F0B8CE] transition-all uppercase tracking-wider shadow-lg">WhatsApp to join &rarr;</span>
+          <span class="w-full inline-flex items-center justify-center gap-1.5 py-3 bg-[#F6CFDE] text-[#4E2A38] text-xs font-extrabold rounded-xl hover:bg-[#F0B8CE] transition-all uppercase tracking-wider shadow-lg">Learn more &rarr;</span>
         </div>
       </div>
     </a>
 
-    <!-- Airbnb Card -->
-    <a href="#" data-wa-plan="airbnb" class="rc-photo-tile rc-photo-tile--airbnb group min-h-[420px] p-6 transition-all duration-300 shadow-xl border border-white/20 hover:border-brand-gold flex flex-col justify-between" data-plan="airbnb">
+    <!-- Homes & Kothis -->
+    <a href="/homes" class="rc-photo-tile rc-photo-tile--residential group min-h-[380px] p-6 transition-all duration-300 shadow-2xl border-2 border-brand-gold hover:border-brand-gold flex flex-col justify-between">
       <span class="rc-photo-tile__media transition-transform duration-700 group-hover:scale-105" aria-hidden="true"></span>
       <span class="rc-photo-tile__shade" aria-hidden="true"></span>
       <div class="rc-photo-tile__body flex flex-col justify-between h-full relative z-10">
-        
-        <!-- Top Badges: Airbnb Logo + 3x Rental Value -->
-        <div class="flex items-start justify-between gap-2">
-          <!-- Airbnb Logo Badge -->
-          <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-black/55 backdrop-blur-md rounded-full border border-white/20 text-white font-bold text-[11px] uppercase tracking-wider drop-shadow-md">
-            <svg viewBox="0 0 32 32" class="w-4 h-4 flex-shrink-0" style="fill:#FF385C" aria-label="Airbnb">
-              <path d="M16 1c-2.008 0-3.47.886-4.52 2.656-1.5 2.532-1.921 5.92-1.282 10.158.461 3.053 1.637 6.136 3.502 9.176 1.155 1.88 2.27 3.324 2.3 3.363a.62.62 0 0 0 1.002 0c.03-.039 1.145-1.483 2.3-3.363 1.865-3.04 3.04-6.123 3.502-9.176.639-4.238.218-7.626-1.282-10.158C20.47 1.886 19.008 1 16 1zm0 2.247c1.378 0 2.298.544 3.088 1.878 1.173 1.98 1.545 4.887.994 8.52-.39 2.585-1.408 5.344-3.03 7.991C15.908 23.518 15.02 24.812 16 26.242c.98-1.43.092-2.724-1.052-4.606-1.622-2.647-2.64-5.406-3.03-7.991-.551-3.633-.179-6.54 1.994-8.52C14.702 3.79 15.622 3.247 16 3.247zm0 6.753a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-            </svg>
-            Airbnb
-          </span>
-
-          <!-- 3× Rental Value Badge -->
-          <span class="inline-flex flex-col items-center px-2.5 py-1.5 bg-gradient-to-br from-[#FF385C]/90 to-[#c0254a]/90 backdrop-blur-md rounded-xl border border-white/25 shadow-lg drop-shadow-md">
-            <span class="text-white font-black text-lg leading-none tracking-tight">3×</span>
-            <span class="text-white/90 font-bold text-[9px] uppercase tracking-widest leading-tight">Rental Value</span>
-            <span class="text-white/70 font-medium text-[8px] leading-tight">avg. boost</span>
-          </span>
-        </div>
-
-        <!-- Clean Text Layout over Full Photo -->
+        <div></div>
         <div>
-          <span class="text-brand-gold font-extrabold tracking-widest text-[11px] uppercase mb-1 block drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">Airbnb</span>
-          <p class="rc-photo-tile__price text-3xl font-extrabold text-white mb-0.5 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">Custom</p>
-          <p class="rc-photo-tile__meta text-[11px] text-white/90 mb-4 font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">Premium hospitality plan</p>
-          
-          <!-- Compact Full Feature List -->
-          <ul class="space-y-2 text-[11px] text-white font-semibold leading-tight drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)] mb-5">
-            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> 24/7 Guest Communication &amp; Check-in</li>
-            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Housekeeping &amp; Turnover Cleaning</li>
-            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Dynamic Revenue Pricing</li>
-            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Superhost Listing Optimization</li>
+          <span class="text-brand-gold font-extrabold tracking-widest text-[11px] uppercase mb-1 block drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">Homes &amp; Kothis</span>
+          <p class="rc-photo-tile__price text-2xl font-extrabold text-white mb-0.5 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">From ₹1,499<span class="text-xs text-white/90 font-normal">/mo</span></p>
+          <ul class="space-y-1.5 text-[11px] text-white font-semibold leading-tight drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)] mb-5 mt-3">
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Scheduled Inspections</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Rent Tracking &amp; Receipts</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Maintenance Coordination</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Before/After Photo Evidence</li>
           </ul>
-
-          <span class="w-full inline-flex items-center justify-center gap-1.5 py-3 bg-[#F6CFDE] text-[#4E2A38] text-xs font-extrabold rounded-xl hover:bg-[#F0B8CE] transition-all uppercase tracking-wider shadow-lg">WhatsApp to join &rarr;</span>
+          <span class="w-full inline-flex items-center justify-center gap-1.5 py-3 bg-[#F6CFDE] text-[#4E2A38] text-xs font-extrabold rounded-xl hover:bg-[#F0B8CE] transition-all uppercase tracking-wider shadow-lg">Learn more &rarr;</span>
         </div>
       </div>
     </a>
+
   </div>
 </section>
 
@@ -690,208 +678,102 @@
     <div class="text-center mb-10">
       <span class="font-label-caps text-label-caps text-brand-gold uppercase tracking-[0.3em] mb-3 block font-bold">Transparent Pricing</span>
       <h2 class="font-display-lg text-4xl md:text-5xl text-primary tracking-tight mb-4">Flat fees. Real service.</h2>
-      <p class="font-body-lg text-on-surface-variant max-w-2xl mx-auto">No percentage of your rent. Straightforward pricing for residential, commercial, Airbnb management &amp; on-demand SOS inspections.</p>
+      <p class="font-body-lg text-on-surface-variant max-w-2xl mx-auto">Flat monthly fees for homes. Quoted pricing for buildings, commercial and hospitality. See <a href="/pricing" class="text-primary font-semibold hover:underline">full pricing</a> for details.</p>
     </div>
 
     <div class="rc-launch-banner mb-8">
       <p>WhatsApp <a href="#" data-wa-plan="general">+91 81462 98024</a> to get set up now.</p>
     </div>
 
-    <!-- 4-Card Dedicated Pricing Grid -->
+    <!-- Pricing summary cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-10">
-      
-      <!-- Card 1: Residential — Interactive Quiz -->
-      <div class="bg-surface rounded-2xl p-6 border border-outline-variant/30 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between" data-plan="residential">
+
+      <!-- Homes & Kothis -->
+      <div class="bg-surface rounded-2xl p-6 border-2 border-brand-gold/60 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between">
         <div>
-          <span class="text-xs font-bold uppercase tracking-widest text-brand-gold mb-2 block">Residential</span>
-
-          <!-- Quiz Step 1: How many properties? -->
-          <div id="rq-step1">
-            <p class="text-sm font-semibold text-primary mb-3 leading-snug">How many properties do you own?</p>
-            <div class="flex flex-col gap-2">
-              <button onclick="rqSelectCount(1)" class="rq-btn text-left px-4 py-2.5 rounded-xl border border-outline-variant/40 bg-surface hover:border-brand-gold hover:bg-brand-gold/5 text-xs font-semibold text-on-surface transition-all">🏠 1 property</button>
-              <button onclick="rqSelectCount(2)" class="rq-btn text-left px-4 py-2.5 rounded-xl border border-outline-variant/40 bg-surface hover:border-brand-gold hover:bg-brand-gold/5 text-xs font-semibold text-on-surface transition-all">🏠🏠 2–3 properties</button>
-              <button onclick="rqSelectCount(3)" class="rq-btn text-left px-4 py-2.5 rounded-xl border border-outline-variant/40 bg-surface hover:border-brand-gold hover:bg-brand-gold/5 text-xs font-semibold text-on-surface transition-all">🏘️ 4–10 properties</button>
-            </div>
-          </div>
-
-          <!-- Quiz Step 2: Property size (shown only for count = 1 or 2) -->
-          <div id="rq-step2" style="display:none">
-            <button onclick="rqBack()" class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/60 hover:text-primary mb-3 flex items-center gap-1 transition-colors"><span class="material-symbols-outlined text-sm">arrow_back</span> Back</button>
-            <p class="text-sm font-semibold text-primary mb-3 leading-snug">What type of property?</p>
-            <div class="flex flex-col gap-2">
-              <button onclick="rqSelectType('small')" class="rq-btn text-left px-4 py-2.5 rounded-xl border border-outline-variant/40 bg-surface hover:border-brand-gold hover:bg-brand-gold/5 text-xs font-semibold text-on-surface transition-all">🛏️ 1–2 BHK flat / apartment</button>
-              <button onclick="rqSelectType('large')" class="rq-btn text-left px-4 py-2.5 rounded-xl border border-outline-variant/40 bg-surface hover:border-brand-gold hover:bg-brand-gold/5 text-xs font-semibold text-on-surface transition-all">🏡 3 BHK / Kothi / Villa</button>
-            </div>
-          </div>
-
-          <!-- Quiz Result -->
-          <div id="rq-result" style="display:none">
-            <button onclick="rqReset()" class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/60 hover:text-primary mb-3 flex items-center gap-1 transition-colors"><span class="material-symbols-outlined text-sm">refresh</span> Start over</button>
-            <div id="rq-plan-label" class="text-[10px] font-black uppercase tracking-widest text-brand-gold mb-0.5"></div>
-            <div class="flex items-baseline gap-1 mb-1">
-              <span id="rq-price" class="text-4xl font-extrabold text-primary"></span>
-              <span id="rq-unit" class="text-xs text-on-surface-variant font-medium"></span>
-            </div>
-            <p id="rq-note" class="text-xs text-on-surface-variant/80 mb-4"></p>
-            <ul id="rq-features" class="space-y-2 text-xs text-on-surface-variant mb-5 font-medium"></ul>
-          </div>
-        </div>
-
-        <a id="rq-cta" href="#" data-wa-plan="residential" class="w-full inline-flex items-center justify-center gap-2 py-3 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary/90 transition-colors uppercase tracking-wider shadow mt-4">
-          WhatsApp to get a quote &rarr;
-        </a>
-      </div>
-
-      <!-- Card 2: Commercial — Custom / Ask Sales -->
-      <div class="bg-surface rounded-2xl p-6 border-2 border-brand-gold/60 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between relative" data-plan="commercial">
-        <span class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-brand-gold text-white text-[10px] font-extrabold uppercase tracking-widest rounded-full shadow">Custom</span>
-        <div>
-          <span class="text-xs font-bold uppercase tracking-widest text-brand-gold mb-3 block">Commercial</span>
+          <span class="text-xs font-bold uppercase tracking-widest text-brand-gold mb-2 block">Homes &amp; Kothis</span>
           <div class="flex items-baseline gap-1 mb-1">
-            <span class="text-3xl font-extrabold text-primary">Ask Sales</span>
+            <span class="text-3xl font-extrabold text-primary">₹1,499</span>
+            <span class="text-xs text-on-surface-variant font-medium">/mo</span>
           </div>
-          <p class="text-xs text-on-surface-variant/80 mb-5">Tailored quote based on your space, size &amp; needs</p>
-
-          <ul class="space-y-2.5 text-xs text-on-surface-variant mb-6 font-medium">
-            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-brand-gold text-base">check</span> Safety &amp; Structural Walkthroughs</li>
-            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-brand-gold text-base">check</span> Office, Retail &amp; Warehouse Care</li>
-            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-brand-gold text-base">check</span> Commercial Lease Compliance</li>
-            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-brand-gold text-base">check</span> Priority Field Rep Dispatch</li>
+          <p class="text-xs text-on-surface-variant/80 mb-5">1 BHK starting price · up to ₹3,499 for kothis</p>
+          <ul class="space-y-2 text-xs text-on-surface-variant mb-5 font-medium">
+            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-brand-gold text-base">check</span> Scheduled Inspections</li>
+            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-brand-gold text-base">check</span> Rent Tracking &amp; Receipts</li>
+            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-brand-gold text-base">check</span> Maintenance Coordination</li>
+            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-brand-gold text-base">check</span> Before/After Photo Evidence</li>
           </ul>
         </div>
-        <a href="#" data-wa-plan="commercial" class="w-full inline-flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-brand-gold to-[#B8860B] text-white text-xs font-extrabold rounded-xl hover:opacity-90 transition-opacity uppercase tracking-wider shadow-md">
-          Get a Custom Quote &rarr;
+        <a href="/homes" class="w-full inline-flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-brand-gold to-[#B8860B] text-white text-xs font-extrabold rounded-xl hover:opacity-90 transition-opacity uppercase tracking-wider shadow-md">
+          View Plans &rarr;
         </a>
       </div>
 
-      <!-- Card 3: Airbnb — Custom -->
-      <div class="bg-surface rounded-2xl p-6 border border-outline-variant/30 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between" data-plan="airbnb">
+      <!-- Buildings & Societies -->
+      <div class="bg-surface rounded-2xl p-6 border border-outline-variant/30 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
         <div>
-          <span class="text-xs font-bold uppercase tracking-widest text-brand-gold mb-2 block">Airbnb</span>
-          <div class="flex items-baseline gap-1 mb-2">
-            <span class="text-3xl font-extrabold text-primary">Custom</span>
+          <span class="text-xs font-bold uppercase tracking-widest text-brand-gold mb-2 block">Buildings &amp; Societies</span>
+          <div class="flex items-baseline gap-1 mb-1">
+            <span class="text-3xl font-extrabold text-primary">Talk to Sales</span>
           </div>
-          <p class="text-xs text-on-surface-variant/80 mb-5">Premium hospitality management</p>
+          <p class="text-xs text-on-surface-variant/80 mb-5">Quoted per building, units and scope</p>
+          <ul class="space-y-2 text-xs text-on-surface-variant mb-5 font-medium">
+            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> QR Issue Reporting</li>
+            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> Building &amp; Unit Inspections</li>
+            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> Vendor Coordination</li>
+            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> Resident Management</li>
+          </ul>
+        </div>
+        <a href="#" data-wa-plan="general" class="w-full inline-flex items-center justify-center gap-2 py-3 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary/90 transition-colors uppercase tracking-wider shadow">
+          Talk to Sales &rarr;
+        </a>
+      </div>
 
-          <ul class="space-y-2.5 text-xs text-on-surface-variant mb-6 font-medium">
-            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> 24/7 Guest Communication</li>
-            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> Turnover Housekeeping &amp; Linen</li>
-            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> Dynamic Revenue Pricing</li>
-            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> Superhost Listing Optimization</li>
+      <!-- Airbnb -->
+      <div class="bg-surface rounded-2xl p-6 border border-outline-variant/30 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-brand-gold mb-2 block">Airbnb &amp; Hospitality</span>
+          <div class="flex items-baseline gap-1 mb-1">
+            <span class="text-3xl font-extrabold text-primary">₹9,999+</span>
+          </div>
+          <p class="text-xs text-on-surface-variant/80 mb-5">Setup · management at 15% of booking revenue</p>
+          <ul class="space-y-2 text-xs text-on-surface-variant mb-5 font-medium">
+            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> Listing Setup &amp; Optimisation</li>
+            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> Guest Communication</li>
+            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> Cleaning &amp; Turnover</li>
+            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> Full Management Available</li>
           </ul>
         </div>
         <a href="#" data-wa-plan="airbnb" class="w-full inline-flex items-center justify-center gap-2 py-3 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary/90 transition-colors uppercase tracking-wider shadow">
-          WhatsApp to join &rarr;
+          Talk to Sales &rarr;
         </a>
       </div>
 
-      <!-- Card 4: SOS Visit -->
-      <div class="bg-surface rounded-2xl p-6 border border-outline-variant/30 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between" data-plan="sos">
+      <!-- Commercial -->
+      <div class="bg-surface rounded-2xl p-6 border border-outline-variant/30 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
         <div>
-          <span class="text-xs font-bold uppercase tracking-widest text-brand-gold mb-2 block">SOS Visit</span>
-          <div class="flex items-baseline gap-1 mb-2">
-            <span class="text-4xl font-extrabold text-primary">₹500</span>
-            <span class="text-xs text-on-surface-variant font-medium">/visit</span>
+          <span class="text-xs font-bold uppercase tracking-widest text-brand-gold mb-2 block">Commercial</span>
+          <div class="flex items-baseline gap-1 mb-1">
+            <span class="text-3xl font-extrabold text-primary">Talk to Sales</span>
           </div>
-          <p class="text-xs text-on-surface-variant/80 mb-5">Single on-demand physical check</p>
-
-          <ul class="space-y-2.5 text-xs text-on-surface-variant mb-6 font-medium">
-            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> On-Demand Site Visit</li>
-            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> 15-Point Checklist Report</li>
-            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> Photo Documentation</li>
-            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> Urgent Issue Summary</li>
+          <p class="text-xs text-on-surface-variant/80 mb-5">Quoted per property type and size</p>
+          <ul class="space-y-2 text-xs text-on-surface-variant mb-5 font-medium">
+            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> Property Inspections</li>
+            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> Maintenance &amp; Work Orders</li>
+            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> Photo Evidence</li>
+            <li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> Tenant Management</li>
           </ul>
         </div>
-        <a href="#" data-wa-plan="sos" class="w-full inline-flex items-center justify-center gap-2 py-3 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary/90 transition-colors uppercase tracking-wider shadow">
-          Book SOS ₹500 &rarr;
+        <a href="#" data-wa-plan="commercial" class="w-full inline-flex items-center justify-center gap-2 py-3 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary/90 transition-colors uppercase tracking-wider shadow">
+          Talk to Sales &rarr;
         </a>
       </div>
 
     </div>
 
-    <p class="text-center text-on-surface-variant/70 text-xs font-medium">Residential plans cover 1 property · Commercial &amp; Airbnb pricing tailored to your needs · WhatsApp to get set up instantly</p>
+    <p class="text-center text-on-surface-variant/70 text-xs font-medium">Homes &amp; Kothis from ₹1,499/mo · Buildings, commercial &amp; Airbnb quoted for your property · <a href="/pricing" class="text-primary hover:underline">Full pricing</a></p>
   </div>
 </section>
-
-<script>
-/* ── Residential Pricing Quiz ─────────────────────────── */
-(function() {
-  var _count = 0;
-
-  var PLANS = {
-    starter:   { label:'Starter Plan', price:'₹1,499', unit:'/mo', note:'1–2 BHK flat or apartment', features:['15-Point Monthly Inspection','Tenant Care & Dispute Support','Rent Collection & Receipts','Digital Lease Storage'], wa:'residential_starter' },
-    premium:   { label:'Premium Plan', price:'₹2,499', unit:'/mo', note:'3 BHK, kothi, villa — one property', features:['2 Inspections per Month','All Starter features included','Priority Field Rep Dispatch','Maintenance Supervision'], wa:'residential_premium' },
-    portfolio: { label:'Portfolio Plan', price:'₹4,999', unit:'/mo', note:'Up to 3 properties included', features:['Unlimited Inspections','Dedicated Contact Number','1 Free SOS Visit / month','Full Rent & Lease Management'], wa:'residential_portfolio' },
-    concierge: { label:'Concierge Plan', price:'₹9,999', unit:'/mo', note:'Up to 10 properties — white-glove', features:['Everything in Portfolio','Key Holding & Access Management','Move-In / Move-Out Coordination','Vendor Booking & Supervision'], wa:'residential_concierge' },
-  };
-
-  window.rqSelectCount = function(n) {
-    _count = n;
-    if (n === 3) {
-      // 4-10 properties → Portfolio or Concierge? Ask next
-      showResult(n <= 3 ? 'portfolio' : 'concierge');
-      return;
-    }
-    document.getElementById('rq-step1').style.display = 'none';
-    document.getElementById('rq-step2').style.display = 'block';
-  };
-
-  window.rqSelectType = function(size) {
-    var plan;
-    if (_count === 1) plan = size === 'small' ? 'starter' : 'premium';
-    else plan = size === 'small' ? 'portfolio' : 'portfolio'; // 2-3 props → portfolio
-    showResult(plan);
-  };
-
-  window.rqBack = function() {
-    document.getElementById('rq-step2').style.display = 'none';
-    document.getElementById('rq-step1').style.display = 'block';
-  };
-
-  window.rqReset = function() {
-    _count = 0;
-    document.getElementById('rq-result').style.display = 'none';
-    document.getElementById('rq-step2').style.display = 'none';
-    document.getElementById('rq-step1').style.display = 'block';
-    var cta = document.getElementById('rq-cta');
-    cta.setAttribute('href', '#');
-    cta.setAttribute('data-wa-plan', 'residential');
-    cta.textContent = 'WhatsApp to get a quote →';
-    // Re-wire WA CTAs
-    if (window.RentCanSite) window.RentCanSite.wireWhatsAppCtas && window.RentCanSite.wireWhatsAppCtas();
-  };
-
-  function showResult(planKey) {
-    var p = PLANS[planKey];
-    document.getElementById('rq-step1').style.display = 'none';
-    document.getElementById('rq-step2').style.display = 'none';
-    document.getElementById('rq-plan-label').textContent = p.label;
-    document.getElementById('rq-price').textContent = p.price;
-    document.getElementById('rq-unit').textContent = p.unit;
-    document.getElementById('rq-note').textContent = p.note;
-    var featEl = document.getElementById('rq-features');
-    featEl.innerHTML = p.features.map(function(f) {
-      return '<li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base">check</span> ' + f + '</li>';
-    }).join('');
-    document.getElementById('rq-result').style.display = 'block';
-
-    // Wire CTA with correct WA message
-    var cta = document.getElementById('rq-cta');
-    var msgs = {
-      residential_starter:   "Hi RentCan — I'd like the Residential Starter Plan (₹1,499/mo) for my 1–2 BHK property. Please lock me in.",
-      residential_premium:   "Hi RentCan — I'd like the Residential Premium Plan (₹2,499/mo) for my kothi/villa. Please lock me in.",
-      residential_portfolio: "Hi RentCan — I'd like the Residential Portfolio Plan (₹4,999/mo) covering up to 3 properties. Please lock me in.",
-      residential_concierge: "Hi RentCan — I'd like the Concierge Plan (₹9,999/mo) for up to 10 properties with key handling. Please lock me in.",
-    };
-    var waUrl = 'https://wa.me/918146298024?text=' + encodeURIComponent(msgs[p.wa] || msgs.residential_starter);
-    cta.setAttribute('href', waUrl);
-    cta.setAttribute('target', '_blank');
-    cta.setAttribute('rel', 'noopener noreferrer');
-    cta.innerHTML = 'WhatsApp to join — ' + p.price + ' &rarr;';
-  }
-})();
-</script>
 
 
 
@@ -1028,7 +910,7 @@
 </footer>
 
 <!-- Tag Pricing Info (Hidden) -->
-<div id="pricing-info-tag" style="display:none;" data-pricing-info="hidden" data-residential="1499" data-commercial="1999" data-additional-property="799" data-sos-visit="500" data-currency="INR"></div>
+<div id="pricing-info-tag" style="display:none;" data-pricing-info="hidden" data-residential-from="1499" data-airbnb-setup-from="9999" data-currency="INR"></div>
 
 <!-- Mobile Bottom App Bar -->
 <nav class="md:hidden fixed bottom-0 left-0 right-0 rc-mobile-bottom-nav px-3 py-2 z-40 flex justify-around items-center text-on-surface" style="padding-bottom:max(10px, env(safe-area-inset-bottom))">
