@@ -856,6 +856,10 @@ app.post('/api/submit-maintenance', async (req, res) => {
   });
 });
 
+// Product pages (segments, platform, pricing) rendered from lib/catalog.js.
+// Registered before express.static so they cannot be shadowed by a stray file.
+require('./lib/pages').register(app);
+
 // sitemap.xml is generated from the lib/seo.js page registry, never hand-edited,
 // so it cannot drift out of sync with what is actually indexable.
 app.get('/sitemap.xml', (req, res) => {
