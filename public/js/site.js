@@ -288,25 +288,7 @@
     });
   }
 
-  function injectSideSocial() {
-    if (document.querySelector('.rc-side-ig')) return;
-    const path = pagePath();
-    const allow =
-      path === '/' || path === '/info' || path === '/checkout' || path === '/login' || path === '/investors';
-    if (!allow) return;
-
-    const ig = document.createElement('a');
-    ig.className = 'rc-side-ig';
-    ig.href = 'https://instagram.com/rentcan.in';
-    ig.target = '_blank';
-    ig.rel = 'noopener noreferrer';
-    ig.setAttribute('aria-label', 'RentCan on Instagram @rentcan.in');
-    ig.innerHTML =
-      '<span class="rc-side-ig__icon" aria-hidden="true">' +
-      '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8A3.6 3.6 0 0 0 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6A3.6 3.6 0 0 0 16.4 4H7.6m9.65 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>' +
-      '</span><span class="rc-side-ig__handle">@rentcan.in</span>';
-    document.body.appendChild(ig);
-  }
+  function injectSideSocial() {}
 
   function setPlanFocus(plan, options) {
     const opts = options || {};
@@ -411,88 +393,3 @@
 })();
 
 
-/* ── PWA Add to Home Screen (A2HS) Installer ────────────────────── */
-(function initPWAInstaller() {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
-  }
-
-  let deferredPrompt = null;
-
-  function createBanner() {
-    if (document.getElementById('pwa-install-banner')) return;
-
-    const banner = document.createElement('div');
-    banner.id = 'pwa-install-banner';
-    banner.className = 'fixed bottom-16 md:bottom-6 left-4 right-4 md:left-auto md:right-6 md:max-w-sm z-50 bg-[#1C1B1F] text-white p-4 rounded-2xl border border-white/20 shadow-2xl flex items-center justify-between gap-3';
-    banner.style.display = 'none';
-
-    banner.innerHTML = `
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 bg-white/10 p-1.5 rounded-xl shrink-0 flex items-center justify-center border border-white/10">
-          <img src="/assets/logos/rentcan-logo-transparent.png" class="max-w-full max-h-full object-contain" alt="RentCan App">
-        </div>
-        <div>
-          <h4 class="text-xs font-bold uppercase tracking-wider text-white">Install RentCan App</h4>
-          <p class="text-[10px] text-white/70 font-medium">Add to Home Screen for 1-tap access</p>
-        </div>
-      </div>
-      <div class="flex items-center gap-2 shrink-0">
-        <button id="pwa-install-btn" class="px-3 py-1.5 bg-[#F6CFDE] text-[#4E2A38] text-xs font-extrabold rounded-lg hover:bg-[#F0B8CE] transition-all uppercase tracking-wider shadow">Install</button>
-        <button id="pwa-dismiss-btn" class="p-1 text-white/60 hover:text-white" aria-label="Close"><span class="material-symbols-outlined text-base">close</span></button>
-      </div>
-    `;
-
-    document.body.appendChild(banner);
-
-    const installBtn = document.getElementById('pwa-install-btn');
-    const dismissBtn = document.getElementById('pwa-dismiss-btn');
-
-    if (dismissBtn) {
-      dismissBtn.addEventListener('click', () => {
-        banner.style.display = 'none';
-        sessionStorage.setItem('pwa_dismissed', 'true');
-      });
-    }
-
-    if (installBtn) {
-      installBtn.addEventListener('click', async () => {
-        if (deferredPrompt) {
-          deferredPrompt.prompt();
-          const { outcome } = await deferredPrompt.userChoice;
-          if (outcome === 'accepted') {
-            banner.style.display = 'none';
-          }
-          deferredPrompt = null;
-        } else {
-          // iOS Safari fallback instructions
-          alert('To add RentCan to your Home Screen: tap the Share button in Safari, then select "Add to Home Screen".');
-        }
-      });
-    }
-  }
-
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    if (sessionStorage.getItem('pwa_dismissed')) return;
-
-    createBanner();
-    const banner = document.getElementById('pwa-install-banner');
-    if (banner) banner.style.display = 'flex';
-  });
-
-  // Prompt iOS users or direct prompt trigger
-  window.addEventListener('DOMContentLoaded', () => {
-    const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) && !window.MSStream;
-    const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
-
-    if (isIOS && !isStandalone && !sessionStorage.getItem('pwa_dismissed')) {
-      setTimeout(() => {
-        createBanner();
-        const banner = document.getElementById('pwa-install-banner');
-        if (banner) banner.style.display = 'flex';
-      }, 2000);
-    }
-  });
-})();

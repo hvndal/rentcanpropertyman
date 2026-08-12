@@ -6,13 +6,13 @@
 
 /* ── Design Tokens ─────────────────────────────────────────────────── */
 :root {
-  --primary:   #6B4822;
-  --secondary: #F6CFDE;
-  --accent:    #CFDFDE;
-  --gold:      #D5B259;
-  --brown:     #6B4822;
-  --ink:       #4E4238;
-  --bg:        #F2F5F4;
+  --primary:   #183D35;
+  --secondary: #5F5D58;
+  --accent:    #B9654A;
+  --gold:      #B9654A;
+  --brown:     #183D35;
+  --ink:       #111111;
+  --bg:        #F5F3EE;
 
   /* Easing library */
   --ease-out-expo:   cubic-bezier(0.16, 1, 0.3, 1);
@@ -46,53 +46,7 @@ html {
 
 html, body { margin: 0; padding: 0; background: var(--bg); overflow-x: hidden; }
 
-/* ── Page Loader ──────────────────────────────────────────────────── */
-.page-loader {
-  position: fixed;
-  inset: 0;
-  background: #F2F5F4;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
-  transition: opacity var(--dur-slow) var(--ease-out-quart),
-              transform var(--dur-slow) var(--ease-out-quart);
-  will-change: opacity, transform;
-}
-
-.page-loader.hidden {
-  opacity: 0;
-  transform: scale(0.98);
-  pointer-events: none;
-}
-
-.wave-loader {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  height: 32px;
-}
-.wave-bar {
-  width: 4px;
-  height: 100%;
-  background-color: var(--secondary);
-  border-radius: 2px;
-  animation: wave 1s var(--ease-in-out) infinite;
-  will-change: transform, opacity;
-}
-.wave-bar:nth-child(1) { animation-delay: -1.0s; background-color: var(--primary); }
-.wave-bar:nth-child(2) { animation-delay: -0.8s; background-color: var(--primary); }
-.wave-bar:nth-child(3) { animation-delay: -0.6s; background-color: var(--secondary); }
-.wave-bar:nth-child(4) { animation-delay: -0.4s; background-color: var(--accent); }
-.wave-bar:nth-child(5) { animation-delay: -0.2s; background-color: var(--accent); }
-
-@keyframes wave {
-  0%, 40%, 100% { transform: scaleY(0.4); opacity: 0.5; }
-  20% { transform: scaleY(1); opacity: 1; }
-}
+/* Page loader removed — content renders immediately */
 
 /* ── Scroll Reveal ────────────────────────────────────────────────── */
 .reveal {

@@ -12,7 +12,7 @@
 <meta name="geo.placename" content="Mohali, Chandigarh, Panchkula, Aerocity"/>
 <meta name="geo.position" content="30.6799;76.7221"/>
 <meta name="ICBM" content="30.6799, 76.7221"/>
-<meta name="theme-color" content="#6B4822"/>
+<meta name="theme-color" content="#183D35"/>
 <link rel="canonical" href="https://rentcan.in/"/>
 <link rel="icon" href="/favicon.ico" sizes="any"/>
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/seo/favicon-32.png"/>
@@ -213,74 +213,55 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link rel="preconnect" href="https://use.typekit.net" crossorigin/>
-<link href="https://use.typekit.net/jrc7ooj.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600;1,700&display=swap" rel="stylesheet"/>
 <style>
-  /* Cursive / editorial italic */
-  .font-cursive {
-    font-family: 'Playfair Display', 'DM Serif Display', Georgia, serif;
-    font-style: italic;
-    font-weight: 600;
-  }
   /* Color accents */
-  .text-green-pop { color: #6B4822; }
-  .text-pink-pop { color: #F6CFDE; }
-  .text-green-soft { color: #CFDFDE; }
-  .text-pink-soft  { color: #F6CFDE; }
-  .font-brand-script {
-    font-family: 'Playfair Display', 'DM Serif Display', Georgia, serif;
-    font-style: italic;
-    font-weight: 600;
-  }
+  .text-green-pop { color: #183D35; }
+  .text-pink-pop { color: #B9654A; }
+  .text-green-soft { color: #5F5D58; }
+  .text-pink-soft  { color: #B9654A; }
 
-  /* &mdash;&mdash; Bento tiles &mdash; solid cards, no glass &mdash;&mdash; */
   .bento-tile {
     position: relative;
-    background: color-mix(in srgb, #CFDFDE 34%, #ffffff) !important;
-    border: 1px solid rgba(107,72,34,0.12) !important;
-    transition:
-      transform     380ms cubic-bezier(0.16,1,0.3,1),
-      box-shadow    380ms cubic-bezier(0.16,1,0.3,1),
-      border-color  260ms cubic-bezier(0.25,1,0.5,1);
+    background: #FAF9F6 !important;
+    border: 1px solid rgba(17,17,17,0.08) !important;
+    border-radius: 10px !important;
+    transition: transform 250ms cubic-bezier(0.16,1,0.3,1), box-shadow 250ms ease;
     will-change: transform, box-shadow;
   }
   .bento-tile:hover {
-    transform: translateY(-4px);
-    border-color: rgba(107,72,34,0.2) !important;
-    box-shadow: 0 16px 40px rgba(78,66,56,0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
   }
 
   .bento-tile-hero {
-    background: color-mix(in srgb, #CFDFDE 34%, #ffffff) !important;
-    border: 1px solid rgba(107,72,34,0.12) !important;
-    transition:
-      transform     450ms cubic-bezier(0.16,1,0.3,1),
-      box-shadow    450ms cubic-bezier(0.16,1,0.3,1);
+    background: #FAF9F6 !important;
+    border: 1px solid rgba(17,17,17,0.08) !important;
+    border-radius: 10px !important;
+    transition: transform 250ms cubic-bezier(0.16,1,0.3,1), box-shadow 250ms ease;
   }
   .bento-tile-hero:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgba(78,66,56,0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
   }
 
   .bento-tile-mini {
-    background: color-mix(in srgb, #CFDFDE 34%, #ffffff) !important;
-    border: 1px solid rgba(107,72,34,0.12) !important;
-    transition: transform 300ms cubic-bezier(0.16,1,0.3,1), box-shadow 300ms cubic-bezier(0.16,1,0.3,1);
+    background: #FAF9F6 !important;
+    border: 1px solid rgba(17,17,17,0.08) !important;
+    border-radius: 8px !important;
+    transition: transform 200ms cubic-bezier(0.16,1,0.3,1), box-shadow 200ms ease;
   }
   .bento-tile-mini:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 24px rgba(78,66,56,0.06);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   }
 
   .pricing-row-hover {
-    transition: background 180ms cubic-bezier(0.25,1,0.5,1);
+    transition: background 180ms ease;
   }
-  .pricing-row-hover:hover { background: rgba(207,223,222,0.35); }
+  .pricing-row-hover:hover { background: rgba(17,17,17,0.03); }
 </style>
 <script src="/js/tailwind-brand.config.js"></script>
 <style>
@@ -347,25 +328,9 @@
 </script>
 <script src="/js/sound_manager.js"></script>
 </head>
-<body class="rc-brand bg-brand-cream  text-on-surface font-body-base antialiased pb-20 md:pb-0">
-<!-- Top Announcement Bar -->
-<div id="rc-top-bar" class="w-full bg-primary text-white text-center px-4 py-2 text-[11px] font-semibold tracking-wide flex items-center justify-center gap-3 relative z-[60]" role="banner">
-  <span class="inline-flex items-center gap-2">
-    <span class="material-symbols-outlined text-brand-gold text-base" style="font-variation-settings:'FILL' 1">phone_in_talk</span>
-    <span>When you call — <strong class="font-black">real people answer.</strong> No AI. No hold queue. No customer care scripts.</span>
-    <a href="tel:+918146298024" class="ml-1 underline underline-offset-2 font-black hover:text-brand-gold transition-colors whitespace-nowrap">+91 81462 98024</a>
-  </span>
-  <button id="rc-top-bar-close" aria-label="Dismiss" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors p-1">
-    <span class="material-symbols-outlined text-base leading-none">close</span>
-  </button>
-</div>
-<script>
-  (function(){
-    var bar = document.getElementById('rc-top-bar');
-    var btn = document.getElementById('rc-top-bar-close');
-    if(sessionStorage.getItem('rc_bar_closed')){if(bar)bar.style.display='none';}
-    if(btn){btn.addEventListener('click',function(){if(bar)bar.style.display='none';sessionStorage.setItem('rc_bar_closed','1');});}
-  })();
+<body class="rc-brand bg-brand-cream text-on-surface font-body-base antialiased" style="font-family:'Manrope',sans-serif">
+<script>
+  (function(){})();
 </script>
 
 <!-- Site header &mdash; overlays hero, then solidifies on scroll -->
@@ -475,92 +440,6 @@
   </div>
 </div>
 </section>
-<!-- Trust Badges -->
-
-<section class="border-b border-outline-variant/20 py-5 bg-brand-cream overflow-hidden relative">
-  <div class="absolute left-0 top-0 w-24 h-full bg-gradient-to-r from-brand-cream to-transparent z-10 pointer-events-none"></div>
-  <div class="absolute right-0 top-0 w-24 h-full bg-gradient-to-l from-brand-cream to-transparent z-10 pointer-events-none"></div>
-  <div class="flex whitespace-nowrap animate-marquee opacity-60">
-    <div class="flex items-center gap-12 px-6">
-      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Sector 15, Chandigarh</span></div>
-      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Sector 79, Mohali</span></div>
-      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Aerocity</span></div>
-      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">MDC Sector 4, Panchkula</span></div>
-      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Phase 8, Mohali</span></div>
-      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Sector 36, Chandigarh</span></div>
-      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Sector 10, Chandigarh</span></div>
-      <!-- Duplicate for infinite scroll loop -->
-      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Sector 15, Chandigarh</span></div>
-      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Sector 79, Mohali</span></div>
-      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Aerocity</span></div>
-      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">MDC Sector 4, Panchkula</span></div>
-      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Phase 8, Mohali</span></div>
-      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Sector 36, Chandigarh</span></div>
-      <div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-xl">location_on</span><span class="font-label-caps text-[11px] uppercase tracking-widest text-primary">Sector 10, Chandigarh</span></div>
-    </div>
-  </div>
-</section>
-
-
-
-
-<!-- Origin Credential Strip -->
-<section class="py-10 px-margin-desktop bg-brand-cream border-b border-outline-variant/15">
-  <div class="max-w-container-max mx-auto flex flex-col items-center gap-4">
-
-    <span class="font-label-caps text-[10px] uppercase tracking-[0.35em] text-on-surface-variant/50 font-bold">The experience behind the service</span>
-
-    <!-- Journey row -->
-    <div class="flex flex-wrap items-center justify-center gap-0">
-
-      <!-- London, UK -->
-      <div class="flex flex-col items-center gap-1 px-4 py-2 group">
-        <span class="text-2xl leading-none">🇬🇧</span>
-        <span class="text-[11px] font-bold text-primary uppercase tracking-widest mt-0.5 group-hover:text-brand-gold transition-colors">London</span>
-        <span class="text-[9px] text-on-surface-variant/50 font-medium uppercase tracking-wider">United Kingdom</span>
-      </div>
-
-      <!-- Arrow -->
-      <span class="text-on-surface-variant/25 text-lg font-thin px-1 select-none hidden sm:block">›</span>
-
-      <!-- Ontario, Canada -->
-      <div class="flex flex-col items-center gap-1 px-4 py-2 group">
-        <span class="text-2xl leading-none">🇨🇦</span>
-        <span class="text-[11px] font-bold text-primary uppercase tracking-widest mt-0.5 group-hover:text-brand-gold transition-colors">Ontario</span>
-        <span class="text-[9px] text-on-surface-variant/50 font-medium uppercase tracking-wider">Canada</span>
-      </div>
-
-      <!-- Arrow -->
-      <span class="text-on-surface-variant/25 text-lg font-thin px-1 select-none hidden sm:block">›</span>
-
-      <!-- Massachusetts, USA -->
-      <div class="flex flex-col items-center gap-1 px-4 py-2 group">
-        <span class="text-2xl leading-none">🇺🇸</span>
-        <span class="text-[11px] font-bold text-primary uppercase tracking-widest mt-0.5 group-hover:text-brand-gold transition-colors">Massachusetts</span>
-        <span class="text-[9px] text-on-surface-variant/50 font-medium uppercase tracking-wider">United States</span>
-      </div>
-
-      <!-- Arrow — final, with emphasis -->
-      <span class="text-brand-gold text-xl font-black px-2 select-none">→</span>
-
-      <!-- Tricity — destination / highlight -->
-      <div class="flex flex-col items-center gap-1 px-4 py-2 relative">
-        <span class="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-brand-gold text-white text-[8px] font-black uppercase tracking-widest rounded-full whitespace-nowrap shadow-sm">First in Tricity</span>
-        <span class="text-2xl leading-none mt-1">🇮🇳</span>
-        <span class="text-[11px] font-black text-brand-gold uppercase tracking-widest mt-0.5">Tricity</span>
-        <span class="text-[9px] text-on-surface-variant/60 font-medium uppercase tracking-wider">Mohali · Chandigarh · Panchkula</span>
-      </div>
-
-    </div>
-
-    <p class="text-center text-[12px] text-on-surface-variant/65 font-light max-w-md leading-relaxed italic">
-      International property standards, brought home. Premium management the Tricity has never seen before.
-    </p>
-
-  </div>
-</section>
-
-
 <!-- Services -->
 
 <section id="services" class="py-20 px-margin-desktop max-w-container-max mx-auto scroll-mt-28 rc-section-mist">
@@ -783,74 +662,6 @@
 <!-- Why Choose Us Grid Section (Minimalist & Hoverable) -->
 <section id="why-us" class="py-14 md:py-20 px-margin-desktop max-w-container-max mx-auto border-t border-outline-variant/20">
   <div class="text-center max-w-3xl mx-auto mb-10">
-    <span class="font-label-caps text-label-caps text-brand-gold uppercase tracking-[0.3em] mb-2 block font-bold">Why People Choose Us</span>
-    <h2 id="why-us-heading" class="font-display-lg text-3xl md:text-4xl font-extrabold text-primary tracking-tight mb-2 uppercase">Physical Care. Real Peace of Mind.</h2>
-    <p class="text-on-surface-variant italic text-xs md:text-sm font-light">Where on-ground field execution meets modern owner visibility across Mohali, Chandigarh, Panchkula &amp; Aerocity.</p>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-stretch">
-    <!-- Tile 1: Real Human Support -->
-    <div class="rc-photo-tile rc-photo-tile--grid min-h-[170px] p-6 rounded-2xl flex flex-col justify-end border border-outline-variant/30">
-      <div class="rc-photo-tile__media" style="background-image: url('/assets/stock/why_support.jpg'); background-position: center center; background-size: cover;"></div>
-      <div class="rc-photo-tile__shade"></div>
-      <div class="rc-photo-tile__body flex flex-col items-center text-center justify-center h-full py-2">
-        <span class="material-symbols-outlined text-3xl text-brand-gold mb-2">handshake</span>
-        <h3 class="text-base font-extrabold text-white uppercase tracking-wider">Real Human Support</h3>
-      </div>
-    </div>
-
-    <!-- Tile 2: Rent Collection -->
-    <div class="rc-photo-tile rc-photo-tile--grid min-h-[170px] p-6 rounded-2xl flex flex-col justify-end border border-outline-variant/30">
-      <div class="rc-photo-tile__media" style="background-image: url('/assets/stock/why_savings.jpg'); background-position: center center; background-size: cover;"></div>
-      <div class="rc-photo-tile__shade"></div>
-      <div class="rc-photo-tile__body flex flex-col items-center text-center justify-center h-full py-2">
-        <span class="material-symbols-outlined text-3xl text-brand-gold mb-2">payments</span>
-        <h3 class="text-base font-extrabold text-white uppercase tracking-wider">Rent Collection</h3>
-      </div>
-    </div>
-
-    <!-- Tile 3: Physical Inspections -->
-    <div class="rc-photo-tile rc-photo-tile--grid min-h-[170px] p-6 rounded-2xl flex flex-col justify-end border border-outline-variant/30">
-      <div class="rc-photo-tile__media" style="background-image: url('/assets/stock/why_inspections.jpg'); background-position: center center; background-size: cover;"></div>
-      <div class="rc-photo-tile__shade"></div>
-      <div class="rc-photo-tile__body flex flex-col items-center text-center justify-center h-full py-2">
-        <span class="material-symbols-outlined text-3xl text-brand-gold mb-2">home_work</span>
-        <h3 class="text-base font-extrabold text-white uppercase tracking-wider">Physical Inspections</h3>
-      </div>
-    </div>
-
-    <!-- Tile 4: Emergency Visits -->
-    <div class="rc-photo-tile rc-photo-tile--grid min-h-[170px] p-6 rounded-2xl flex flex-col justify-end border border-outline-variant/30">
-      <div class="rc-photo-tile__media" style="background-image: url('/assets/stock/why_vendors.jpg'); background-position: center center; background-size: cover;"></div>
-      <div class="rc-photo-tile__shade"></div>
-      <div class="rc-photo-tile__body flex flex-col items-center text-center justify-center h-full py-2">
-        <span class="material-symbols-outlined text-3xl text-brand-gold mb-2">e911_emergency</span>
-        <h3 class="text-base font-extrabold text-white uppercase tracking-wider">Emergency Visits</h3>
-      </div>
-    </div>
-
-    <!-- Tile 5: Key Handling -->
-    <div class="rc-photo-tile rc-photo-tile--grid min-h-[170px] p-6 rounded-2xl flex flex-col justify-end border border-outline-variant/30">
-      <div class="rc-photo-tile__media" style="background-image: url('/assets/stock/why_dashboard.jpg'); background-position: center center; background-size: cover;"></div>
-      <div class="rc-photo-tile__shade"></div>
-      <div class="rc-photo-tile__body flex flex-col items-center text-center justify-center h-full py-2">
-        <span class="material-symbols-outlined text-3xl text-brand-gold mb-2">key</span>
-        <h3 class="text-base font-extrabold text-white uppercase tracking-wider">Key Handling</h3>
-      </div>
-    </div>
-
-    <!-- Tile 6: One Dedicated Contact -->
-    <div class="bg-surface border border-outline-variant/30 rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-md hover:shadow-xl transition-all min-h-[170px]">
-      <span class="material-symbols-outlined text-3xl text-primary mb-1">person</span>
-      <h3 class="text-base font-extrabold text-primary uppercase tracking-wider mb-0.5">One Dedicated Contact</h3>
-      <p class="text-[10px] font-semibold text-brand-gold mb-3 uppercase tracking-widest">One Team. One Number.</p>
-      <a href="https://wa.me/918146298024" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-1.5 py-2.5 bg-primary text-white text-xs font-bold rounded-xl hover:opacity-90 transition-opacity uppercase tracking-wider shadow">
-        <span class="material-symbols-outlined text-sm">chat</span>
-        WhatsApp +91 81462 98024
-      </a>
-    </div>
-  </div>
-</section>
 </main>
 <!-- Footer -->
 <footer id="footer" class="w-full pt-16 pb-12 bg-brand-cream border-t border-outline-variant/20">
@@ -912,29 +723,6 @@
 <!-- Tag Pricing Info (Hidden) -->
 <div id="pricing-info-tag" style="display:none;" data-pricing-info="hidden" data-residential-from="1499" data-airbnb-setup-from="9999" data-currency="INR"></div>
 
-<!-- Mobile Bottom App Bar -->
-<nav class="md:hidden fixed bottom-0 left-0 right-0 rc-mobile-bottom-nav px-3 py-2 z-40 flex justify-around items-center text-on-surface" style="padding-bottom:max(10px, env(safe-area-inset-bottom))">
-  <a href="/" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-primary font-bold">
-    <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">home</span>
-    <span>Home</span>
-  </a>
-  <a href="#services" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
-    <span class="material-symbols-outlined text-xl">grid_view</span>
-    <span>Services</span>
-  </a>
-  <a href="#pricing" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
-    <span class="material-symbols-outlined text-xl">loyalty</span>
-    <span>Pricing</span>
-  </a>
-  <a href="#contact" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-on-surface-variant/70 hover:text-primary">
-    <span class="material-symbols-outlined text-xl">mail</span>
-    <span>Contact</span>
-  </a>
-  <a href="/login" class="flex flex-col items-center gap-1 text-[10px] font-label-caps uppercase tracking-wider text-primary font-bold bg-primary/10 px-3.5 py-1 rounded-full border border-primary/20">
-    <span class="material-symbols-outlined text-xl">account_circle</span>
-    <span>Sign In</span>
-  </a>
-</nav>
 
 <script src="/js/site.js"></script>
 <script src="/js/app.js"></script>

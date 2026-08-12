@@ -1,30 +1,27 @@
-/* RentCan brand &mdash; logo palette: mint, pink, gold, brown */
-/* Logo standard sitewide: /assets/logos/rentcan-wordmark.png + .rc-brand-logo--light */
+/* RentCan brand — Soft Swiss Brutalism × Chandigarh Modernism */
 :root {
-  --rc-mint:         #CFDFDE;
-  --rc-pink:         #F6CFDE;
-  --rc-gold:         #D5B259;
-  --rc-brown:        #6B4822;
-  /* Soft taupe ink &mdash; less brown, more neutral mocha */
-  --rc-brown-dark:   #4E4238;
+  --rc-mint:         #E8E6E1;
+  --rc-pink:         #B9654A;
+  --rc-gold:         #B9654A;
+  --rc-brown:        #183D35;
+  --rc-brown-dark:   #111111;
 
-  /* Surfaces &mdash; cream blended with mint so nothing reads as stark white */
-  --rc-cream:        #F2F5F4;
-  --rc-sand:         var(--rc-mint);
-  --rc-warm-white:   #F5F7F6;
-  --rc-surface:      color-mix(in srgb, var(--rc-mint) 34%, #ffffff);
-  --rc-green:        var(--rc-brown);
-  --rc-green-soft:   var(--rc-brown-dark);
-  --rc-green-mist:   var(--rc-mint);
-  --rc-accent:       var(--rc-pink);
-  --rc-accent-soft:  var(--rc-pink);
-  --rc-ink:          var(--rc-brown-dark);
-  --rc-muted:        color-mix(in srgb, var(--rc-brown) 48%, var(--rc-mint));
-  --rc-border:       color-mix(in srgb, var(--rc-mint) 78%, var(--rc-brown) 22%);
-  --rc-shadow:       0 20px 50px rgba(78, 66, 56, 0.07);
-  --rc-shadow-lg:    0 28px 60px rgba(78, 66, 56, 0.11);
-  --rc-radius:       1rem;
-  --rc-radius-lg:    1.25rem;
+  --rc-cream:        #F5F3EE;
+  --rc-sand:         #E8E6E1;
+  --rc-warm-white:   #FAF9F6;
+  --rc-surface:      #FAF9F6;
+  --rc-green:        #183D35;
+  --rc-green-soft:   #5F5D58;
+  --rc-green-mist:   #ECEAE5;
+  --rc-accent:       #B9654A;
+  --rc-accent-soft:  #B9654A;
+  --rc-ink:          #111111;
+  --rc-muted:        #5F5D58;
+  --rc-border:       rgba(17, 17, 17, 0.1);
+  --rc-shadow:       0 2px 8px rgba(0, 0, 0, 0.04);
+  --rc-shadow-lg:    0 8px 24px rgba(0, 0, 0, 0.08);
+  --rc-radius:       0.625rem;
+  --rc-radius-lg:    0.75rem;
 }
 
 body.rc-brand {
@@ -43,7 +40,6 @@ body.rc-brand {
   border: 1px solid color-mix(in srgb, var(--rc-brown) 40%, var(--rc-mint) 60%);
 }
 
-/* Sticky site header &mdash; mint wash that fades into the page (no stark white bar) */
 .rc-site-header {
   position: sticky;
   top: 0;
@@ -51,15 +47,11 @@ body.rc-brand {
   right: 0;
   margin: 0;
   z-index: 50;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--rc-mint) 62%, var(--rc-warm-white)) 0%,
-    color-mix(in srgb, var(--rc-mint) 38%, var(--rc-cream)) 100%
-  );
-  border-bottom: none !important;
+  background: var(--rc-cream);
+  border-bottom: 1px solid var(--rc-border);
   box-shadow: none;
   backdrop-filter: none;
-  transition: background 0.35s ease;
+  transition: background 0.25s ease;
 }
 
 /* Homepage: sit on the hero so mobile doesn't show a white strip */
@@ -101,19 +93,14 @@ body.rc-brand {
   background: rgba(255, 255, 255, 0.16);
 }
 
-/* After scroll: solid mint-cream chrome again */
 .rc-site-header.rc-site-header--solid {
   position: fixed;
   left: 0;
   right: 0;
   top: 0;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--rc-mint) 62%, var(--rc-warm-white)) 0%,
-    color-mix(in srgb, var(--rc-mint) 38%, var(--rc-cream)) 100%
-  );
-  border-bottom: none !important;
-  box-shadow: 0 10px 28px -22px rgba(78, 66, 56, 0.28);
+  background: var(--rc-cream);
+  border-bottom: 1px solid var(--rc-border);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 .rc-site-header.rc-site-header--solid .rc-site-nav-link {
@@ -185,30 +172,24 @@ body.rc-brand {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 1rem 2rem;
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--rc-brown) 88%, var(--rc-mint)) 0%,
-    color-mix(in srgb, var(--rc-brown) 72%, var(--rc-brown-dark)) 100%
-  );
+  padding: 0.875rem 2rem;
+  min-height: 3rem;
+  background: var(--rc-brown);
   color: #fff;
+  font-family: 'Manrope', sans-serif;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   border-radius: 0.5rem;
-  transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-  box-shadow: 0 10px 28px rgba(78, 66, 56, 0.16);
+  transition: background 0.2s ease, transform 0.2s ease;
+  box-shadow: none;
 }
 
 .rc-btn-primary:hover {
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--rc-brown) 82%, var(--rc-brown-dark)) 0%,
-    color-mix(in srgb, var(--rc-brown) 90%, var(--rc-mint)) 100%
-  );
-  transform: translateY(-2px);
-  box-shadow: 0 14px 36px rgba(78, 66, 56, 0.2);
+  background: var(--rc-brown-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .rc-btn-outline {
@@ -486,10 +467,9 @@ body.rc-brand {
 }
 
 .hero-headline .accent-script {
-  color: var(--rc-pink);
-  font-family: 'Playfair Display', 'DM Serif Display', Georgia, serif;
-  font-style: italic;
-  font-weight: 600;
+  color: var(--rc-accent);
+  font-style: normal;
+  font-weight: 700;
 }
 
 .hero-sub {
@@ -522,18 +502,17 @@ body.rc-brand {
   gap: 0.4rem;
   padding: 0.55rem 0.95rem;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--rc-mint) 28%, #ffffff);
-  border: 1px solid color-mix(in srgb, var(--rc-mint) 70%, #ffffff);
-  color: var(--rc-brown-dark);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
   font-size: 0.78rem;
   font-weight: 600;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s ease, border-color 0.25s ease;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease;
 }
 
 .hero-pill:hover {
-  transform: translateY(-2px);
-  background: color-mix(in srgb, var(--rc-mint) 20%, #ffffff);
-  border-color: var(--rc-pink);
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.18);
 }
 
 .hero-pill .material-symbols-outlined {
@@ -578,11 +557,7 @@ body.rc-brand {
 }
 
 .rc-section-cta {
-  background: linear-gradient(
-    160deg,
-    color-mix(in srgb, var(--rc-brown) 82%, var(--rc-mint)) 0%,
-    color-mix(in srgb, var(--rc-brown-dark) 88%, var(--rc-mint)) 100%
-  );
+  background: var(--rc-brown);
   color: #ffffff;
 }
 
@@ -806,12 +781,12 @@ html[data-plan-focus] .rc-feature-matrix tbody tr.is-plan-excluded {
   right: 0;
   width: min(300px, 88vw);
   height: 100%;
-  background: color-mix(in srgb, var(--rc-mint) 40%, var(--rc-warm-white));
+  background: var(--rc-cream);
   border-left: 1px solid var(--rc-border);
   padding: 1.25rem;
   transform: translateX(100%);
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: -8px 0 32px rgba(78, 66, 56, 0.1);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.06);
 }
 
 .rc-mobile-drawer.is-open .rc-mobile-drawer-panel {
@@ -839,9 +814,9 @@ html[data-plan-focus] .rc-feature-matrix tbody tr.is-plan-excluded {
 }
 
 .rc-mobile-bottom-nav {
-  background: color-mix(in srgb, var(--rc-mint) 50%, var(--rc-warm-white));
+  background: var(--rc-cream);
   border-top: 1px solid var(--rc-border);
-  box-shadow: 0 -4px 20px rgba(78, 66, 56, 0.05);
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.04);
 }
 
 /* Scroll reveal &mdash; visible by default when JS hasn't run yet */
