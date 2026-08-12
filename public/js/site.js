@@ -392,4 +392,26 @@
   window.RentCanSite = { smoothScrollToHash, revealInSection, setPlanFocus, waUrl };
 })();
 
+/* ── Tile scroll-hover animation ─────────────────────────────────── */
+(function initTileScrollHover() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+  var tiles = document.querySelectorAll('.tile-scroll-hover');
+  if (!tiles.length || !('IntersectionObserver' in window)) {
+    tiles.forEach(function(t) { t.classList.add('tile-visible', 'tile-settled'); });
+    return;
+  }
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var el = entry.target;
+        el.classList.add('tile-visible');
+        setTimeout(function() { el.classList.add('tile-settled'); }, 700);
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+  tiles.forEach(function(t) { observer.observe(t); });
+})();

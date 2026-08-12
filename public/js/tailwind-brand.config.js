@@ -80,19 +80,19 @@ try {
           'container-max': '1280px'
         },
         fontFamily: {
-          brand: ['Manrope', 'sans-serif'],
-          sans: ['Manrope', 'sans-serif'],
-          'title-lg': ['Manrope'],
-          'headline-md': ['Manrope'],
-          'body-md': ['Manrope'],
-          'display-lg': ['Manrope'],
-          'body-lg': ['Manrope'],
-          'display-lg-mobile': ['Manrope'],
-          'headline-lg': ['Manrope'],
-          'label-sm': ['Manrope'],
-          'label-lg': ['Manrope'],
-          'label-caps': ['Manrope', 'sans-serif'],
-          'body-base': ['Manrope', 'sans-serif']
+          brand: ['Space Grotesk', 'sans-serif'],
+          sans: ['Space Grotesk', 'sans-serif'],
+          'title-lg': ['Space Grotesk'],
+          'headline-md': ['Space Grotesk'],
+          'body-md': ['Space Grotesk'],
+          'display-lg': ['Space Grotesk'],
+          'body-lg': ['Space Grotesk'],
+          'display-lg-mobile': ['Space Grotesk'],
+          'headline-lg': ['Space Grotesk'],
+          'label-sm': ['Space Grotesk'],
+          'label-lg': ['Space Grotesk'],
+          'label-caps': ['Space Grotesk', 'sans-serif'],
+          'body-base': ['Space Grotesk', 'sans-serif']
         },
         fontSize: {
           'title-lg': ['20px', { lineHeight: '1.4', fontWeight: '600' }],

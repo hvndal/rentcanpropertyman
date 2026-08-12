@@ -213,7 +213,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <style>
@@ -328,7 +328,7 @@
 </script>
 <script src="/js/sound_manager.js"></script>
 </head>
-<body class="rc-brand bg-brand-cream text-on-surface font-body-base antialiased" style="font-family:'Manrope',sans-serif">
+<body class="rc-brand bg-brand-cream text-on-surface font-body-base antialiased" style="font-family:'Space Grotesk',sans-serif">
 <script>
   (function(){})();
 </script>
@@ -384,20 +384,38 @@
 
 <main class="fade-in-load">
 <!-- Hero Section -->
-<section id="hero" class="relative min-h-[min(90vh,760px)] flex items-center justify-center overflow-hidden">
+<section id="hero" class="relative min-h-[min(75vh,580px)] md:min-h-[min(90vh,760px)] flex items-center justify-center overflow-hidden">
 <div class="hero-video-container">
-<video id="hero-vid" fetchpriority="high" autoplay loop muted playsinline webkit-playsinline x5-playsinline="true" disablepictureinpicture src="/hero-video.mp4" poster="/assets/seo/og-image.jpg" class="object-cover w-full h-full object-center"></video>
+<video id="hero-vid" fetchpriority="high" autoplay loop muted playsinline webkit-playsinline x5-playsinline="true" disablepictureinpicture preload="auto" src="/hero-video.mp4" poster="/assets/seo/og-image.jpg" class="object-cover w-full h-full object-center"></video>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  (function() {
     var v = document.getElementById('hero-vid');
-    if (v) {
+    if (!v) return;
+    v.muted = true;
+    v.setAttribute('muted', '');
+    function forcePlay() {
       v.muted = true;
-      v.play().catch(function() {});
+      var p = v.play();
+      if (p && p.catch) p.catch(function() {
+        setTimeout(forcePlay, 500);
+      });
     }
-  });
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', forcePlay);
+    } else {
+      forcePlay();
+    }
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden) forcePlay();
+    });
+    window.addEventListener('focus', forcePlay);
+    v.addEventListener('pause', function() {
+      setTimeout(forcePlay, 100);
+    });
+  })();
 </script>
 </div>
-<div class="relative z-10 w-full max-w-container-max mx-auto px-margin-desktop text-center flex flex-col items-center py-16 md:py-20">
+<div class="relative z-10 w-full max-w-container-max mx-auto px-5 md:px-margin-desktop text-center flex flex-col items-center py-10 md:py-20">
 
 <div class="hero-stack">
   <!-- Headline only &mdash; logo lives in the sticky header -->
@@ -453,7 +471,7 @@
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-10 items-stretch">
 
     <!-- Buildings & Societies -->
-    <a href="/buildings" class="rc-photo-tile rc-photo-tile--commercial group min-h-[380px] p-6 transition-all duration-300 shadow-xl border border-white/20 hover:border-brand-gold flex flex-col justify-between">
+    <a href="/buildings" class="rc-photo-tile rc-photo-tile--commercial group min-h-[320px] md:min-h-[380px] p-6 transition-all duration-300 shadow-xl border border-white/20 hover:border-brand-gold flex flex-col justify-between tile-scroll-hover">
       <span class="rc-photo-tile__media transition-transform duration-700 group-hover:scale-105" aria-hidden="true"></span>
       <span class="rc-photo-tile__shade" aria-hidden="true"></span>
       <div class="rc-photo-tile__body flex flex-col justify-between h-full relative z-10">
@@ -467,13 +485,13 @@
             <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Vendor Coordination</li>
             <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Resident Management</li>
           </ul>
-          <span class="w-full inline-flex items-center justify-center gap-1.5 py-3 bg-[#F6CFDE] text-[#4E2A38] text-xs font-extrabold rounded-xl hover:bg-[#F0B8CE] transition-all uppercase tracking-wider shadow-lg">Learn more &rarr;</span>
+          <span class="w-full inline-flex items-center justify-center gap-1.5 py-2.5 text-white/80 text-[10px] font-bold uppercase tracking-widest">Explore &rarr;</span>
         </div>
       </div>
     </a>
 
     <!-- Airbnb & Hospitality -->
-    <a href="/airbnb" class="rc-photo-tile rc-photo-tile--airbnb group min-h-[380px] p-6 transition-all duration-300 shadow-xl border border-white/20 hover:border-brand-gold flex flex-col justify-between">
+    <a href="/airbnb" class="rc-photo-tile rc-photo-tile--airbnb group min-h-[320px] md:min-h-[380px] p-6 transition-all duration-300 shadow-xl border border-white/20 hover:border-brand-gold flex flex-col justify-between tile-scroll-hover">
       <span class="rc-photo-tile__media transition-transform duration-700 group-hover:scale-105" aria-hidden="true"></span>
       <span class="rc-photo-tile__shade" aria-hidden="true"></span>
       <div class="rc-photo-tile__body flex flex-col justify-between h-full relative z-10">
@@ -487,13 +505,13 @@
             <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Cleaning &amp; Turnover</li>
             <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Full Management Available</li>
           </ul>
-          <span class="w-full inline-flex items-center justify-center gap-1.5 py-3 bg-[#F6CFDE] text-[#4E2A38] text-xs font-extrabold rounded-xl hover:bg-[#F0B8CE] transition-all uppercase tracking-wider shadow-lg">Learn more &rarr;</span>
+          <span class="w-full inline-flex items-center justify-center gap-1.5 py-2.5 text-white/80 text-[10px] font-bold uppercase tracking-widest">Explore &rarr;</span>
         </div>
       </div>
     </a>
 
     <!-- Commercial -->
-    <a href="/commercial" class="rc-photo-tile rc-photo-tile--residential group min-h-[380px] p-6 transition-all duration-300 shadow-xl border border-white/20 hover:border-brand-gold flex flex-col justify-between">
+    <a href="/commercial" class="rc-photo-tile rc-photo-tile--residential group min-h-[320px] md:min-h-[380px] p-6 transition-all duration-300 shadow-xl border border-white/20 hover:border-brand-gold flex flex-col justify-between tile-scroll-hover">
       <span class="rc-photo-tile__media transition-transform duration-700 group-hover:scale-105" aria-hidden="true"></span>
       <span class="rc-photo-tile__shade" aria-hidden="true"></span>
       <div class="rc-photo-tile__body flex flex-col justify-between h-full relative z-10">
@@ -507,13 +525,13 @@
             <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Photo Evidence</li>
             <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Tenant Management</li>
           </ul>
-          <span class="w-full inline-flex items-center justify-center gap-1.5 py-3 bg-[#F6CFDE] text-[#4E2A38] text-xs font-extrabold rounded-xl hover:bg-[#F0B8CE] transition-all uppercase tracking-wider shadow-lg">Learn more &rarr;</span>
+          <span class="w-full inline-flex items-center justify-center gap-1.5 py-2.5 text-white/80 text-[10px] font-bold uppercase tracking-widest">Explore &rarr;</span>
         </div>
       </div>
     </a>
 
     <!-- Homes & Kothis -->
-    <a href="/homes" class="rc-photo-tile rc-photo-tile--residential group min-h-[380px] p-6 transition-all duration-300 shadow-2xl border-2 border-brand-gold hover:border-brand-gold flex flex-col justify-between">
+    <a href="/homes" class="rc-photo-tile rc-photo-tile--residential group min-h-[320px] md:min-h-[380px] p-6 transition-all duration-300 shadow-2xl border-2 border-brand-gold hover:border-brand-gold flex flex-col justify-between tile-scroll-hover">
       <span class="rc-photo-tile__media transition-transform duration-700 group-hover:scale-105" aria-hidden="true"></span>
       <span class="rc-photo-tile__shade" aria-hidden="true"></span>
       <div class="rc-photo-tile__body flex flex-col justify-between h-full relative z-10">
@@ -527,7 +545,7 @@
             <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Maintenance Coordination</li>
             <li class="flex items-center gap-2"><span class="material-symbols-outlined text-brand-gold text-base shrink-0">check_circle</span> Before/After Photo Evidence</li>
           </ul>
-          <span class="w-full inline-flex items-center justify-center gap-1.5 py-3 bg-[#F6CFDE] text-[#4E2A38] text-xs font-extrabold rounded-xl hover:bg-[#F0B8CE] transition-all uppercase tracking-wider shadow-lg">Learn more &rarr;</span>
+          <span class="w-full inline-flex items-center justify-center gap-1.5 py-2.5 text-white/80 text-[10px] font-bold uppercase tracking-widest">Explore &rarr;</span>
         </div>
       </div>
     </a>
@@ -540,7 +558,7 @@
   <div class="rc-card p-10 md:p-14 bg-surface">
     <span class="font-label-caps text-label-caps text-brand-gold uppercase tracking-[0.3em] mb-4 block">Owner Visibility</span>
     <h2 class="font-display-lg text-3xl md:text-4xl text-primary mb-4 tracking-tight">Your dashboard supports the service &mdash; it isn't the service.</h2>
-    <p class="text-on-surface-variant max-w-3xl leading-relaxed mb-8">After RentCan't team inspects, maintains and coordinates on your behalf, the owner dashboard gives you a clear record of everything. Subscribe for hands-on management; use the dashboard to stay informed.</p>
+    <p class="text-on-surface-variant max-w-3xl leading-relaxed mb-8">Everything our team does on-ground shows up here — inspections, maintenance, rent, documents.</p>
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 text-sm text-on-surface-variant">
       <div class="bg-surface rounded-xl p-4 border border-outline-variant/20 flex items-center gap-2 font-medium"><span class="material-symbols-outlined text-primary text-base shrink-0">fact_check</span>View Inspection Reports</div>
       <div class="bg-surface rounded-xl p-4 border border-outline-variant/20 flex items-center gap-2 font-medium"><span class="material-symbols-outlined text-primary text-base shrink-0">build</span>Track Maintenance</div>
@@ -568,7 +586,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-10">
 
       <!-- Homes & Kothis -->
-      <div class="bg-surface rounded-2xl p-6 border-2 border-brand-gold/60 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between">
+      <div class="bg-surface rounded-2xl p-6 border border-outline-variant/30 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
         <div>
           <span class="text-xs font-bold uppercase tracking-widest text-brand-gold mb-2 block">Homes &amp; Kothis</span>
           <div class="flex items-baseline gap-1 mb-1">
@@ -583,7 +601,7 @@
             <li class="flex items-start gap-2"><span class="material-symbols-outlined text-brand-gold text-base">check</span> Before/After Photo Evidence</li>
           </ul>
         </div>
-        <a href="/homes" class="w-full inline-flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-brand-gold to-[#B8860B] text-white text-xs font-extrabold rounded-xl hover:opacity-90 transition-opacity uppercase tracking-wider shadow-md">
+        <a href="/homes" class="w-full inline-flex items-center justify-center gap-2 py-3 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary/90 transition-colors uppercase tracking-wider shadow">
           View Plans &rarr;
         </a>
       </div>
@@ -658,10 +676,6 @@
 
 <!-- Inspection anchor for nav -->
 <div id="inspection" class="scroll-mt-28 -mt-28 pt-28 absolute" aria-hidden="true"></div>
-
-<!-- Why Choose Us Grid Section (Minimalist & Hoverable) -->
-<section id="why-us" class="py-14 md:py-20 px-margin-desktop max-w-container-max mx-auto border-t border-outline-variant/20">
-  <div class="text-center max-w-3xl mx-auto mb-10">
 </main>
 <!-- Footer -->
 <footer id="footer" class="w-full pt-16 pb-12 bg-brand-cream border-t border-outline-variant/20">
